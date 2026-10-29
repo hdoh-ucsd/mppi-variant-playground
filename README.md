@@ -135,7 +135,6 @@ their theoretical guarantees.
 | V03 | IT-MPPI / Tube tracking architecture | Disturbance, model mismatch | 24 |
 | V04 | IT-MPPI / Robust augmented planning | Disturbance, model mismatch | 24 |
 | V05 | IT-MPPI / CC state covariance | Open, narrow passage; shared stochastic actuation | 24 |
-| V06 | All six formulations | Open, narrow, two-route, disturbance, mismatch, S-turn | 216 |
 
 Each condition uses paired evaluation seeds **48000–48002**, horizon 20, the same
 scene geometry, initial state, finish conditions, external task cost and 160-step episode
@@ -153,9 +152,9 @@ work are additionally reflected in planning time, rather than disguised as dynam
 
 **Measured wall-clock protocol.** Independent calibration seeds 47900–47902 select
 settings per algorithm and scenario. After warmup, the largest tested sample count with
-90th-percentile time ≤120 ms is selected for a common **150 ms deadline**. V06 scans an
-ascending grid until the first overrun; if no setting fits, it uses the minimum and records
-violations. Calibration records are retained. This is a common calibrated ceiling, not
+90th-percentile time ≤120 ms is selected for a common **150 ms deadline**. The broader
+supplementary campaign scans an ascending grid until the first overrun; if no setting
+fits, it uses the minimum and records violations. Calibration records are retained. This is a common calibrated ceiling, not
 identical consumed runtimes or a hard real-time scheduler. V01's original grid ended at
 384 and left substantial unused budget. Later grids extend to 3,072 samples.
 
@@ -178,8 +177,8 @@ formulations relative to the information-theoretic baseline:
 - **V05 — CC-MPPI:** State covariance steering and uncertainty propagation.
 
 Each study presents its defining formulation, experimental setup, measured numerical
-behavior, and limitations. **V06** then evaluates all six formulations across the
-shared vehicle scenarios under the two computational protocols.
+behavior, and limitations. The broader original comparison is retained in the
+supplementary expandable section at the end of this README.
 
 The original comparison figures use this reading order: **top** is completion with Wilson 95%
 intervals, **middle** is planning time, and **bottom** is external cost for individual
@@ -187,10 +186,28 @@ seeds and their mean. The left column fixes dynamics work; the right uses serial
 calibrated wall-clock settings. Read cost together with completion because timeouts
 and completed episodes have different durations. The cost axis is logarithmic.
 
+### Reading the experiment videos
+
+The six linked MP4s replay saved numerical evidence at **1280×720, H.264, 30 FPS**.
+The [video manifest](media/experiments/manifest.json) records selection rules, exact
+configurations and seeds, source and rendering commits, file hashes, and validation.
+Selection uses the first declared seed and specified scenarios, not the best outcome.
+The original `representative_paths.json` schema was checked against complete raw
+trajectory tables for both V01 and V02; all ten time/state/progress columns match.
+
+Vehicle poses use recorded position and yaw with zero-order hold between samples;
+there is no interpolated or synthesized motion. A capsule enclosing the 0.80 m axle
+segment is a reference footprint, distinct from the dashed 0.22 m centered collision
+disk used by the experiments. Neither establishes full-body safety. Shaded obstacle
+halos show disk-proxy inflation. Completion labels reproduce the original projected-
+progress criterion, which can accept longitudinal overshoot; they do not assert
+Euclidean arrival at the goal. Failure and contact records are never filtered out.
+
 ### Recorded mechanism experiments
 
 The five mechanism figures below add **actual numerical evidence** to the formulation
-comparison; the original V01–V06 comparisons remain alongside them. Experiment rules
+comparison; the original formulation comparisons remain, with the broader campaign
+in the supplementary section. Experiment rules
 were committed at `bcfb998` before execution in
 [the mechanism configuration](configs/variants/mechanisms.yaml).
 
@@ -217,6 +234,11 @@ mechanism interventions through the nonlinear plant; V01, V02 and V04 measure fr
 decisions and their predictions.
 
 ### V01 · Divergence and weighting
+
+[Watch the two-route experiment](media/experiments/V01_tsallis.mp4): paired
+**seed 48000**, dynamics-work protocol. Executed IT-MPPI and Tsallis poses, progress,
+and recorded termination are shown together; the Tsallis timeout stays visible.
+There are no synchronized weight populations in these original episodes.
 
 **Mathematical question.** How does replacing exponential weighting with a finite-support deformed likelihood change which samples contribute to the update? Inspect support and ESS alongside progress in the two-route task.
 
@@ -260,6 +282,14 @@ Both methods completed open space. In the two-route task, IT-MPPI completed 3/3 
 
 ### V02 · Refinement and annealing
 
+[Watch the two-route execution](media/experiments/V02_dial.mp4): paired **seed 48000**,
+dynamics-work protocol. The vehicles execute their recorded trajectories; the original
+episodes did not save synchronized nominal plans. The separate
+[DIAL decision clip](media/experiments/V02_dial_decision.mp4) shows **seed 51000**,
+frozen source seed **49000**, step **8** (1.20 s): all 95 saved rollouts in each of
+four internal passes, with cumulative work and updated-plan cost. Its vehicle stays
+fixed; prediction clouds are not physical state uncertainty.
+
 **Mathematical question.** How does repeated refinement with $C_{j,t}$ change the plan when every pass is counted against the same total work allowance? Compare DIAL with both IT-MPPI and the fixed-noise DIAL ablation.
 
 **Annealing mechanism.** Each inner pass samples a different Gaussian neighborhood
@@ -297,6 +327,13 @@ All 36 episodes completed without collisions. Under the work ceiling, two-route 
 [Configuration](results/variants/V02_dial/config.yaml) · [Per-seed records](results/variants/V02_dial/per_seed.csv) · [Summary](results/variants/V02_dial/summary.csv) · [Command diagnostics](results/variants/V02_dial/diagnostics_summary.csv) · [Audit](results/variants/V02_dial/audit.json) · [Fidelity and limitations](results/variants/V02_dial/findings.json)
 
 ### V03 · Tracking architecture
+
+[Watch the targeted tracking experiment](media/experiments/V03_tube.mp4): **seed 51000**,
+positive impulse after command **8**, first visible at **1.35 s**. Reset thresholds
+0 and 450 share the targeted mechanism setup. The clip shows observed poses,
+selected nominal origins, position error, applied steering/throttle corrections, and
+reset events. Threshold 0 applies feedback on **8/32 commands**; threshold 450 is
+inactive. This finite 32-command observation is not a task-completion comparison.
 
 **Mathematical question.** When does the nominal reset retain a discrepancy that produces a nonzero $K_t(x_t-\bar x_t)$ correction? Similar completion rates are informative about tracking only when that correction is actually used.
 
@@ -337,6 +374,17 @@ All 24 episodes completed without collisions. The actual-state plan was selected
 [Configuration](results/variants/V03_tube/config.yaml) · [Per-seed records](results/variants/V03_tube/per_seed.csv) · [Summary](results/variants/V03_tube/summary.csv) · [Command diagnostics](results/variants/V03_tube/diagnostics_summary.csv) · [Audit](results/variants/V03_tube/audit.json) · [Fidelity and limitations](results/variants/V03_tube/findings.json)
 
 ### V04 · Feedback-aware robustness
+
+[Watch the robustness experiment](media/experiments/V04_robust.mp4): the original
+**seed 48000** disturbance episode, with the impulse first visible at **3.15 s**,
+followed by the separately labeled **seed 51000**, positive-offset frozen decision
+at threshold **100**. Execution, nominal predictions, candidate origins, and augmented
+rollouts have distinct styles. Default feedback stays inactive. All candidates in the
+frozen example are infeasible; candidate 0 is a fallback, not evidence of successful
+robust optimization. One exact episode replay supplied missing passive diagnostics;
+its states and controls match the original with **zero numerical difference**.
+The original completion criterion accepts this episode despite a **6.90 m terminal
+goal-distance error**; the overshoot is retained and annotated.
 
 **Mathematical question.** What changes when the optimizer rolls out coupled nominal/actual trajectories and includes feedback in the sampling correction? Inspect sampled feedback and candidate selection before attributing outcomes to robustness.
 
@@ -383,6 +431,16 @@ All work-budget episodes completed. In serial timing runs, Robust-MPPI completed
 [Configuration](results/variants/V04_robust/config.yaml) · [Per-seed records](results/variants/V04_robust/per_seed.csv) · [Summary](results/variants/V04_robust/summary.csv) · [Command diagnostics](results/variants/V04_robust/diagnostics_summary.csv) · [Audit](results/variants/V04_robust/audit.json) · [Fidelity and limitations](results/variants/V04_robust/findings.json)
 
 ### V05 · State uncertainty
+
+[Watch the covariance experiment](media/experiments/V05_covariance.mp4): narrow passage,
+fixed planner seed **55000**, all **256 execution seeds 56000–56255**, full $C_0$
+actuator noise. All 256 current positions and their empirical covariance are shown;
+the first 32 paths and first 16 oriented vehicles provide detail without selecting
+outcomes. The predicted linearized ellipse and empirical nonlinear ellipse share the
+same simulation-time index. **64/256 executions contact obstacles** under the recorded
+disk-proxy check; these executions remain in the covariance estimate. Ellipses are
+95% Gaussian-scaled covariance contours, not confidence intervals for the mean or a
+verified 95% coverage claim. No contact-impact dynamics are modeled.
 
 **Mathematical question.** Does the feedback-shaped sample population satisfy $F_TF_T^\top\preceq\Sigma_f$, and how closely does nonlinear empirical covariance match that prediction? Completion and cost are complementary outcomes, not covariance measurements.
 
@@ -439,55 +497,6 @@ receding-horizon controller's executed uncertainty distribution.
 All 24 episodes completed without collisions. The constrained linearized solutions passed their PSD bounds; no empirical controlled-population terminal covariance violations were observed. The nonlinear empirical covariance still differed from the prediction (mean Frobenius discrepancy roughly 0.27–0.29 in mixed state units). This does not certify executed trajectory safety.
 
 [Configuration](results/variants/V05_covariance_steering/config.yaml) · [Per-seed records](results/variants/V05_covariance_steering/per_seed.csv) · [Summary](results/variants/V05_covariance_steering/summary.csv) · [Command diagnostics](results/variants/V05_covariance_steering/diagnostics_summary.csv) · [Audit](results/variants/V05_covariance_steering/audit.json) · [Fidelity and limitations](results/variants/V05_covariance_steering/findings.json)
-
-### V06 · Unified seven-state benchmark
-
-**Mathematical question.** Which interventions become active across all six scenes, and how do their consequences change with the computational protocol? Read the scene-specific records rather than a pooled ranking.
-
-![V06 unified results](results/variants/V06_unified/primary.png)
-
-Completion counts below are out of three seeds per scene. Entries show **work-budget /
-wall-clock** results. The two values are distinct protocols, not pooled trials.
-
-| Method | Open | Narrow | Two-route | Disturbance | Mismatch | S-turn |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| IT-MPPI | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 |
-| Tsallis-VI | 3 / 3 | 3 / 3 | 0 / 0 | 3 / 3 | 3 / 3 | 0 / 0 |
-| DIAL-MPC | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 |
-| Tube-MPPI | 3 / 3 | 3 / 3 | 2 / 3 | 3 / 3 | 3 / 3 | 3 / 2 |
-| Robust-MPPI | 3 / 3 | 3 / 1 | 3 / 1 | 3 / 2 | 3 / 3 | 2 / 2 |
-| CC-MPPI | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 |
-
-V06 recorded **195/216 completions**, **1 disk-proxy collision**,
-and **20 timeouts** across its distinct conditions.
-These totals describe execution coverage, not a pooled algorithm comparison. The audit
-replayed all 216 episodes and checked 251 selected populations.
-
-IT-MPPI, DIAL-MPC and CC-MPPI completed all 18 episodes in each protocol. This
-Tsallis setting failed all two-route and S-turn episodes, including the single
-collision. Costs include failures and timeouts and must be read with completion;
-they are accumulated over episodes of different lengths.
-
-The S-turn activated Tube tracking corrections and Robust sampled feedback under
-both protocols. Tube corrections also appeared in serial narrow-passage runs.
-Thus V03/V04's inactive tracking does not describe every V06 condition, but these
-runs still do not isolate a causal tracking benefit. All CC local PSD bounds passed,
-with no observed empirical controlled-population terminal covariance violations.
-
-Serial command deadline misses were IT-MPPI **0/863**, Tsallis **0/1,463**, DIAL
-**21/644 (3.26%)**, Tube **3/928 (0.32%)**, Robust **398/1,726 (23.06%)**, and CC
-**5/855 (0.58%)**. These command-weighted fractions differ from averaging per-episode
-fractions. The minimum calibration setting already exceeded the 120 ms target for
-Robust in mismatch and S-turn, and DIAL in S-turn. Equal calibrated deadlines do
-not imply equal delivered computation or that the deadline is achievable.
-
-[Configuration](results/variants/V06_unified/config.yaml) ·
-[Per-seed results](results/variants/V06_unified/per_seed.csv) ·
-[Summary and intervals](results/variants/V06_unified/summary.csv) ·
-[Command diagnostics](results/variants/V06_unified/diagnostics_summary.csv) ·
-[Calibration](results/variants/V06_unified/calibration.csv) ·
-[Audit](results/variants/V06_unified/audit.json) ·
-[Findings and limitations](results/variants/V06_unified/findings.json)
 
 ## 4. Detailed formulations and paper map
 
@@ -817,6 +826,37 @@ registry does not relabel covariance settings as published algorithms.
 
 ## 8. Reproduction instructions
 
+### Experiment videos (no simulation required)
+
+Install `ffmpeg`/`ffprobe` on the host and the existing Python dependencies. A fresh
+clone includes the compact, lossless render records, so this command needs no raw
+benchmark runs, optimization, sampling, or network access:
+
+```bash
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLBACKEND=Agg MPLCONFIGDIR=.mpl-cache \
+  uv run python experiments/render_experiment_video.py --video all
+# Or render just one: --video V03_tube
+uv run pytest -q tests/test_experiment_video.py
+```
+
+To rebuild the compact records from the original local raw runs, use:
+
+```bash
+uv run python experiments/render_experiment_video.py --prepare-records --prepare-only
+# Only when the V04 diagnostic replay is missing; replays one original episode:
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 \
+  uv run python experiments/render_experiment_video.py --prepare-records --replay-missing
+```
+
+The optional replay keeps the original configuration and seed, enabling only passive
+snapshots. Preparation verifies states and controls against the original to absolute
+tolerance $10^{-12}$; the measured difference here is zero. Full original runs and
+snapshot arrays stay under ignored `runs/variants/`; only the small extracted render
+records and one encoding per video are committed. Rendered first/main/last-frame
+previews stay under ignored `runs/variants/videos/previews/`. Rendering checks codecs,
+frame counts, dimensions, durations, and successful first/last-frame decoding.
+
+
 Linux, Python 3.11+, `uv`; CPU NumPy/SciPy and CVXPY/Clarabel. No GPU is required.
 
 ```bash
@@ -913,6 +953,7 @@ src/costs/              Existing common external task objectives
 src/analysis/           Shared runner, artifacts, figures and variant audit
 configs/variants/       Frozen staged experiment settings
 results/variants/       Compact V01–V06 evidence and one primary image per study
+media/experiments/      Six MP4s, compact render records, provenance and video validation
 runs/variants/          Ignored executed trajectories and selected populations
 tests/                  Mathematical references, invariants and baseline regression
 ```
@@ -940,3 +981,58 @@ tests/                  Mathematical references, invariants and baseline regress
   reproductions remain unimplemented. The formulations and paper map are embedded
   in this README; superseded source notes are available through the
   [historical recovery index](results/archive/legacy_index.md).
+
+<details>
+<summary>Supplementary V06 benchmark: preserved original comparison</summary>
+
+### Supplementary V06 comparison
+
+**Mathematical question.** Which interventions become active across all six scenes, and how do their consequences change with the computational protocol? Read the scene-specific records rather than a pooled ranking.
+
+![V06 unified results](results/variants/V06_unified/primary.png)
+
+Completion counts below are out of three seeds per scene. Entries show **work-budget /
+wall-clock** results. The two values are distinct protocols, not pooled trials.
+
+| Method | Open | Narrow | Two-route | Disturbance | Mismatch | S-turn |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| IT-MPPI | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 |
+| Tsallis-VI | 3 / 3 | 3 / 3 | 0 / 0 | 3 / 3 | 3 / 3 | 0 / 0 |
+| DIAL-MPC | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 |
+| Tube-MPPI | 3 / 3 | 3 / 3 | 2 / 3 | 3 / 3 | 3 / 3 | 3 / 2 |
+| Robust-MPPI | 3 / 3 | 3 / 1 | 3 / 1 | 3 / 2 | 3 / 3 | 2 / 2 |
+| CC-MPPI | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 | 3 / 3 |
+
+V06 recorded **195/216 completions**, **1 disk-proxy collision**,
+and **20 timeouts** across its distinct conditions.
+These totals describe execution coverage, not a pooled algorithm comparison. The audit
+replayed all 216 episodes and checked 251 selected populations.
+
+IT-MPPI, DIAL-MPC and CC-MPPI completed all 18 episodes in each protocol. This
+Tsallis setting failed all two-route and S-turn episodes, including the single
+collision. Costs include failures and timeouts and must be read with completion;
+they are accumulated over episodes of different lengths.
+
+The S-turn activated Tube tracking corrections and Robust sampled feedback under
+both protocols. Tube corrections also appeared in serial narrow-passage runs.
+Thus V03/V04's inactive tracking does not describe every V06 condition, but these
+runs still do not isolate a causal tracking benefit. All CC local PSD bounds passed,
+with no observed empirical controlled-population terminal covariance violations.
+
+Serial command deadline misses were IT-MPPI **0/863**, Tsallis **0/1,463**, DIAL
+**21/644 (3.26%)**, Tube **3/928 (0.32%)**, Robust **398/1,726 (23.06%)**, and CC
+**5/855 (0.58%)**. These command-weighted fractions differ from averaging per-episode
+fractions. The minimum calibration setting already exceeded the 120 ms target for
+Robust in mismatch and S-turn, and DIAL in S-turn. Equal calibrated deadlines do
+not imply equal delivered computation or that the deadline is achievable.
+
+[Configuration](results/variants/V06_unified/config.yaml) ·
+[Per-seed results](results/variants/V06_unified/per_seed.csv) ·
+[Summary and intervals](results/variants/V06_unified/summary.csv) ·
+[Command diagnostics](results/variants/V06_unified/diagnostics_summary.csv) ·
+[Calibration](results/variants/V06_unified/calibration.csv) ·
+[Audit](results/variants/V06_unified/audit.json) ·
+[Findings and limitations](results/variants/V06_unified/findings.json)
+
+
+</details>

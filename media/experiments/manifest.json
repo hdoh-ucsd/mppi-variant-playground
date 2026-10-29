@@ -1,0 +1,5008 @@
+{
+  "rendering_version": "1.0",
+  "preparation_git_commit": "0060cb40c9c7deadbee1781c7867d214d42263d9",
+  "selection_rule": "Fixed before rendering: dynamics-budget protocol, first declared seed 48000; two-route for V01/V02; positive targeted impulse and first seed 51000 for V03; original disturbance seed 48000 plus positive-offset threshold-100 frozen seed 51000 for V04; narrow-passage, full C0 noise, all 256 seeds 56000..56255 for V05. Display first 32 stochastic paths and first 16 oriented vehicles, never rank outcomes.",
+  "clips": {
+    "V01_tsallis": {
+      "source_git": {
+        "commit": "0aab6d6efb8724af3bb535d240cdf4d56bbfbeef",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/ and runs/"
+      },
+      "records": "records/V01_tsallis.npz",
+      "records_sha256": "8be9a4cdcec3f515dcab7cf3c2ffad36017c47f4fd673e7f3d1a7f40f414952f",
+      "sources": [
+        {
+          "path": "runs/variants/V01_tsallis/dynamics_budget/two_route_obstacle/it_mppi/seed_48000",
+          "files_sha256": {
+            "trajectory.csv": "5b40f300570592f6f7d202ec8b4b175c8b42c7a077c04cf39bc4cb7ef571d512",
+            "controls.csv": "d23062529eb65e5a4aa873a1f8cbcfa7360e8154623c6a742998a0811f347d9d",
+            "diagnostics.csv": "68cdad2295cd8241408c63bade3984cb23ec424011043ad78a66234974f0d039",
+            "config.yaml": "14e7561abd58897876102571b1fa8e4dc9498ad5e6d0c4d15969d230ff1f045e",
+            "result.json": "2d6d38fa312a3e3813f3cd809a26fd0f65edcf5df4ef559200a405d222234bc9"
+          },
+          "config": {
+            "phase": "evaluation",
+            "model_kind": "dynamic7",
+            "workers": 12,
+            "controller": {
+              "horizon": 20,
+              "samples": 384,
+              "temperature": 8.0,
+              "base_covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "algorithm": "it_mppi",
+              "kind": "standard",
+              "covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "saved_rollouts": 0,
+              "snapshot_steps": []
+            },
+            "proposals": {
+              "standard": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "isotropic": [
+                [
+                  0.2,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.2
+                ]
+              ],
+              "diagonal": [
+                [
+                  0.09,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.31
+                ]
+              ],
+              "full": [
+                [
+                  0.14,
+                  0.07
+                ],
+                [
+                  0.07,
+                  0.26
+                ]
+              ]
+            },
+            "vehicle_radius": 0.22,
+            "speed_target": 1.4,
+            "cost": {
+              "remaining_progress": 1.0,
+              "speed": 2.0,
+              "heading": 1.0,
+              "clearance": 100.0,
+              "safety_margin": 0.15,
+              "collision": 3000.0,
+              "control": 0.05,
+              "variation": 0.1,
+              "lateral_velocity": 1.0,
+              "yaw_rate": 0.2,
+              "roll": 2.0,
+              "terminal_progress": 4.0,
+              "terminal_goal": 8.0,
+              "terminal_heading": 4.0,
+              "terminal_speed": 3.0
+            },
+            "execution": {
+              "max_steps": 160,
+              "position_tolerance": 0.3,
+              "heading_tolerance": 0.35,
+              "speed_tolerance": 0.8,
+              "goal_lateral_tolerance": 0.4,
+              "lateral_velocity_tolerance": 0.35,
+              "yaw_rate_tolerance": 0.35,
+              "roll_tolerance": 0.15,
+              "snapshot_steps": [
+                0,
+                10,
+                21,
+                40,
+                65
+              ],
+              "representative_seed": 42
+            },
+            "compatibility_seeds": {
+              "start": 42,
+              "count": 20
+            },
+            "holdout_seeds": {
+              "start": 31000,
+              "count": 20
+            },
+            "s_turn_seeds": {
+              "start": 32000,
+              "count": 20
+            },
+            "s_turn_max_seeds": 40,
+            "s_turn_precision_width": 0.36,
+            "pilot_seeds": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              42
+            ],
+            "scenarios": [
+              "open_space",
+              "narrow_passage",
+              "two_route_obstacle",
+              "disturbance",
+              "model_mismatch"
+            ],
+            "s_turn": {
+              "turn_radius": 3.0,
+              "turn_separation": 3.0,
+              "entry_length": 2.0,
+              "exit_length": 3.0,
+              "end_extension": 8.0,
+              "clearance_levels": [
+                0.9,
+                0.6,
+                0.35,
+                0.2
+              ],
+              "representative_clearance": 0.35,
+              "steering_profile_rate_limit": 0.8
+            },
+            "budget_counts": [
+              128,
+              384,
+              768,
+              1536
+            ],
+            "budget_q04_scenario": "two_route_obstacle",
+            "budget_q05_clearance": 0.35,
+            "frozen": {
+              "seed": 31415,
+              "samples": 384,
+              "horizon": 20,
+              "seeds": {
+                "start": 33000,
+                "count": 50
+              },
+              "representative_seed": 33000,
+              "sample_counts": [
+                64,
+                128,
+                256,
+                384,
+                512,
+                1024,
+                2048,
+                4096
+              ],
+              "reference_samples": 65536,
+              "reference_repetitions": 8,
+              "reference_min_ess": 100,
+              "reference_max_weight": 0.05,
+              "reference_max_rms_ci_halfwidth": 0.05,
+              "sensitivity_step": 0.001,
+              "orientation_eigenvalues": [
+                0.3,
+                0.1
+              ],
+              "repetition_counts": [
+                10,
+                25,
+                50
+              ],
+              "open_step": 8,
+              "obstacle_min_x": 0.6,
+              "obstacle_max_x": 1.2,
+              "disturbance_step": 21
+            },
+            "vehicle": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "control_fields": [
+              "steering",
+              "throttle"
+            ],
+            "scenario": {
+              "name": "two_route_obstacle",
+              "initial_state": [
+                0.0,
+                -0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "goal_state": [
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                1.4,
+                0.0,
+                0.0
+              ],
+              "obstacles": [
+                [
+                  4.0,
+                  0.0,
+                  0.75
+                ]
+              ],
+              "vehicle_radius": 0.22
+            },
+            "planning_deadline_s": 0.15
+          },
+          "result": {
+            "station_crossing_y_m": 1.0519834105469397,
+            "route_class": "upper",
+            "success": true,
+            "collision": false,
+            "termination": "completed",
+            "steps": 43,
+            "max_progress_fraction": 1.0,
+            "cross_track_rmse_m": 1.0218747167937594,
+            "goal_position_error_m": 2.3379254518994173,
+            "goal_heading_error_rad": 0.15835823224851842,
+            "goal_speed_m_s": 1.9485665082209422,
+            "minimum_clearance_m": 0.05080412021401878,
+            "time_to_goal_s": 6.45,
+            "executed_duration_s": 6.45,
+            "cumulative_evaluation_cost": 271.836541974086,
+            "mean_ess": 107.70623092413088,
+            "mean_weight_entropy": 3.3217367176267176,
+            "mean_feasible_rollout_fraction": 0.866703003875969,
+            "steering_saturation_fraction": 0.023255813953488372,
+            "throttle_saturation_fraction": 0.11627906976744186,
+            "control_effort": 2.1533098616665574,
+            "max_command_slew": 5.060480767321252,
+            "rate_saturation_fraction": null,
+            "max_abs_vy": 0.1888531916497016,
+            "max_abs_yaw_rate": 0.6748750483376545,
+            "max_abs_roll": 0.054884946570951415,
+            "mean_planning_latency_s": 0.038091316789410315,
+            "model_transitions": 331100,
+            "rhs_evaluations": 1986600,
+            "execution_transitions": 43,
+            "tracking_check_transitions": 43,
+            "prediction_error_rmse": 0.0,
+            "optimizer_entropy": [
+              4400,
+              48000
+            ],
+            "disturbance_entropy": [
+              4401,
+              48000
+            ],
+            "disturbance_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "planning_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "execution_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            }
+          }
+        },
+        {
+          "path": "runs/variants/V01_tsallis/dynamics_budget/two_route_obstacle/tsallis_vi/seed_48000",
+          "files_sha256": {
+            "trajectory.csv": "ffb533afdbeb9f22ea592d0960c0f3d8fb35c2dd10334b4f1d7e3971ce1172f8",
+            "controls.csv": "ff603982af4d71adf95435f48f4a47088d8314d82888b507fd038a8a77c009e9",
+            "diagnostics.csv": "c5681e1bbda449d13f3f60de6f966779bf4bbace3b88fbe2862de0089f5fff08",
+            "config.yaml": "bbbf23db9f8593177a7ee67aa6f248fa0f8a85e45df296923172eba4e0aed39d",
+            "result.json": "48866102c630286e3808110f8f1367951c18434f7c259fe84ee4f99b574658ea"
+          },
+          "config": {
+            "phase": "evaluation",
+            "model_kind": "dynamic7",
+            "workers": 12,
+            "controller": {
+              "horizon": 20,
+              "samples": 384,
+              "temperature": 8.0,
+              "base_covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "algorithm": "tsallis_vi",
+              "kind": "standard",
+              "covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "saved_rollouts": 0,
+              "tsallis_r": 1.5,
+              "elite_fraction": 0.8,
+              "snapshot_steps": []
+            },
+            "proposals": {
+              "standard": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "isotropic": [
+                [
+                  0.2,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.2
+                ]
+              ],
+              "diagonal": [
+                [
+                  0.09,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.31
+                ]
+              ],
+              "full": [
+                [
+                  0.14,
+                  0.07
+                ],
+                [
+                  0.07,
+                  0.26
+                ]
+              ]
+            },
+            "vehicle_radius": 0.22,
+            "speed_target": 1.4,
+            "cost": {
+              "remaining_progress": 1.0,
+              "speed": 2.0,
+              "heading": 1.0,
+              "clearance": 100.0,
+              "safety_margin": 0.15,
+              "collision": 3000.0,
+              "control": 0.05,
+              "variation": 0.1,
+              "lateral_velocity": 1.0,
+              "yaw_rate": 0.2,
+              "roll": 2.0,
+              "terminal_progress": 4.0,
+              "terminal_goal": 8.0,
+              "terminal_heading": 4.0,
+              "terminal_speed": 3.0
+            },
+            "execution": {
+              "max_steps": 160,
+              "position_tolerance": 0.3,
+              "heading_tolerance": 0.35,
+              "speed_tolerance": 0.8,
+              "goal_lateral_tolerance": 0.4,
+              "lateral_velocity_tolerance": 0.35,
+              "yaw_rate_tolerance": 0.35,
+              "roll_tolerance": 0.15,
+              "snapshot_steps": [
+                0,
+                10,
+                21,
+                40,
+                65
+              ],
+              "representative_seed": 42
+            },
+            "compatibility_seeds": {
+              "start": 42,
+              "count": 20
+            },
+            "holdout_seeds": {
+              "start": 31000,
+              "count": 20
+            },
+            "s_turn_seeds": {
+              "start": 32000,
+              "count": 20
+            },
+            "s_turn_max_seeds": 40,
+            "s_turn_precision_width": 0.36,
+            "pilot_seeds": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              42
+            ],
+            "scenarios": [
+              "open_space",
+              "narrow_passage",
+              "two_route_obstacle",
+              "disturbance",
+              "model_mismatch"
+            ],
+            "s_turn": {
+              "turn_radius": 3.0,
+              "turn_separation": 3.0,
+              "entry_length": 2.0,
+              "exit_length": 3.0,
+              "end_extension": 8.0,
+              "clearance_levels": [
+                0.9,
+                0.6,
+                0.35,
+                0.2
+              ],
+              "representative_clearance": 0.35,
+              "steering_profile_rate_limit": 0.8
+            },
+            "budget_counts": [
+              128,
+              384,
+              768,
+              1536
+            ],
+            "budget_q04_scenario": "two_route_obstacle",
+            "budget_q05_clearance": 0.35,
+            "frozen": {
+              "seed": 31415,
+              "samples": 384,
+              "horizon": 20,
+              "seeds": {
+                "start": 33000,
+                "count": 50
+              },
+              "representative_seed": 33000,
+              "sample_counts": [
+                64,
+                128,
+                256,
+                384,
+                512,
+                1024,
+                2048,
+                4096
+              ],
+              "reference_samples": 65536,
+              "reference_repetitions": 8,
+              "reference_min_ess": 100,
+              "reference_max_weight": 0.05,
+              "reference_max_rms_ci_halfwidth": 0.05,
+              "sensitivity_step": 0.001,
+              "orientation_eigenvalues": [
+                0.3,
+                0.1
+              ],
+              "repetition_counts": [
+                10,
+                25,
+                50
+              ],
+              "open_step": 8,
+              "obstacle_min_x": 0.6,
+              "obstacle_max_x": 1.2,
+              "disturbance_step": 21
+            },
+            "vehicle": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "control_fields": [
+              "steering",
+              "throttle"
+            ],
+            "scenario": {
+              "name": "two_route_obstacle",
+              "initial_state": [
+                0.0,
+                -0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "goal_state": [
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                1.4,
+                0.0,
+                0.0
+              ],
+              "obstacles": [
+                [
+                  4.0,
+                  0.0,
+                  0.75
+                ]
+              ],
+              "vehicle_radius": 0.22
+            },
+            "planning_deadline_s": 0.15
+          },
+          "result": {
+            "station_crossing_y_m": null,
+            "route_class": "not_reached",
+            "success": false,
+            "collision": false,
+            "termination": "censored_timeout",
+            "steps": 160,
+            "max_progress_fraction": 0.25439454995825933,
+            "cross_track_rmse_m": 0.09238339201783534,
+            "goal_position_error_m": 7.458223174829682,
+            "goal_heading_error_rad": 0.02515918121724514,
+            "goal_speed_m_s": 0.0,
+            "minimum_clearance_m": 0.5053176810765667,
+            "time_to_goal_s": null,
+            "executed_duration_s": 24.0,
+            "cumulative_evaluation_cost": 2212.589805239711,
+            "mean_ess": 197.5587106782118,
+            "mean_weight_entropy": 5.459425814381727,
+            "mean_feasible_rollout_fraction": 0.763427734375,
+            "steering_saturation_fraction": 0.0,
+            "throttle_saturation_fraction": 0.0,
+            "control_effort": 0.1797254517090964,
+            "max_command_slew": 0.35023269256971973,
+            "rate_saturation_fraction": null,
+            "max_abs_vy": 0.011214209109157961,
+            "max_abs_yaw_rate": 0.028927023491384957,
+            "max_abs_roll": 0.0013373837943024523,
+            "mean_planning_latency_s": 0.03494134420070623,
+            "model_transitions": 1232000,
+            "rhs_evaluations": 7392000,
+            "execution_transitions": 160,
+            "tracking_check_transitions": 160,
+            "prediction_error_rmse": 0.0,
+            "optimizer_entropy": [
+              4400,
+              48000
+            ],
+            "disturbance_entropy": [
+              4401,
+              48000
+            ],
+            "disturbance_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "planning_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "execution_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            }
+          }
+        }
+      ],
+      "seeds": [
+        48000
+      ],
+      "scenario": "two_route_obstacle",
+      "mode": "replayed",
+      "representative_paths_schema": {
+        "columns": [
+          "time_s",
+          "px",
+          "py",
+          "heading",
+          "roll",
+          "vx",
+          "vy",
+          "yaw_rate",
+          "progress_m",
+          "cross_track_m"
+        ],
+        "verified_complete_against_raw": true,
+        "sha256": "4e744dbe49d867e8084b20d1a2e3a5cac7ac78909f7c1ce9f3e648d0a60cbe58"
+      },
+      "missing_diagnostics": "No synchronized weights or nominal plans in original episodes."
+    },
+    "V02_dial": {
+      "source_git": {
+        "commit": "c11b8388b523c86da4a225f0d2580ce6c78c1d5f",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/ and runs/"
+      },
+      "records": "records/V02_dial.npz",
+      "records_sha256": "fd64cad94b5115e291382f6a48d2d1d61efead7c9aa066bea4950458eef38f90",
+      "sources": [
+        {
+          "path": "runs/variants/V02_dial/dynamics_budget/two_route_obstacle/it_mppi/seed_48000",
+          "files_sha256": {
+            "trajectory.csv": "5b40f300570592f6f7d202ec8b4b175c8b42c7a077c04cf39bc4cb7ef571d512",
+            "controls.csv": "d23062529eb65e5a4aa873a1f8cbcfa7360e8154623c6a742998a0811f347d9d",
+            "diagnostics.csv": "9d09514369483f4fc03927651157d8959acb2b70e1fd3a15a312e9971e5923a8",
+            "config.yaml": "14e7561abd58897876102571b1fa8e4dc9498ad5e6d0c4d15969d230ff1f045e",
+            "result.json": "4d62a2ec30629d5f553cbbc0f111179181c4b2cd3a15c2659cb2d7b489f81776"
+          },
+          "config": {
+            "phase": "evaluation",
+            "model_kind": "dynamic7",
+            "workers": 12,
+            "controller": {
+              "horizon": 20,
+              "samples": 384,
+              "temperature": 8.0,
+              "base_covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "algorithm": "it_mppi",
+              "kind": "standard",
+              "covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "saved_rollouts": 0,
+              "snapshot_steps": []
+            },
+            "proposals": {
+              "standard": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "isotropic": [
+                [
+                  0.2,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.2
+                ]
+              ],
+              "diagonal": [
+                [
+                  0.09,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.31
+                ]
+              ],
+              "full": [
+                [
+                  0.14,
+                  0.07
+                ],
+                [
+                  0.07,
+                  0.26
+                ]
+              ]
+            },
+            "vehicle_radius": 0.22,
+            "speed_target": 1.4,
+            "cost": {
+              "remaining_progress": 1.0,
+              "speed": 2.0,
+              "heading": 1.0,
+              "clearance": 100.0,
+              "safety_margin": 0.15,
+              "collision": 3000.0,
+              "control": 0.05,
+              "variation": 0.1,
+              "lateral_velocity": 1.0,
+              "yaw_rate": 0.2,
+              "roll": 2.0,
+              "terminal_progress": 4.0,
+              "terminal_goal": 8.0,
+              "terminal_heading": 4.0,
+              "terminal_speed": 3.0
+            },
+            "execution": {
+              "max_steps": 160,
+              "position_tolerance": 0.3,
+              "heading_tolerance": 0.35,
+              "speed_tolerance": 0.8,
+              "goal_lateral_tolerance": 0.4,
+              "lateral_velocity_tolerance": 0.35,
+              "yaw_rate_tolerance": 0.35,
+              "roll_tolerance": 0.15,
+              "snapshot_steps": [
+                0,
+                10,
+                21,
+                40,
+                65
+              ],
+              "representative_seed": 42
+            },
+            "compatibility_seeds": {
+              "start": 42,
+              "count": 20
+            },
+            "holdout_seeds": {
+              "start": 31000,
+              "count": 20
+            },
+            "s_turn_seeds": {
+              "start": 32000,
+              "count": 20
+            },
+            "s_turn_max_seeds": 40,
+            "s_turn_precision_width": 0.36,
+            "pilot_seeds": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              42
+            ],
+            "scenarios": [
+              "open_space",
+              "narrow_passage",
+              "two_route_obstacle",
+              "disturbance",
+              "model_mismatch"
+            ],
+            "s_turn": {
+              "turn_radius": 3.0,
+              "turn_separation": 3.0,
+              "entry_length": 2.0,
+              "exit_length": 3.0,
+              "end_extension": 8.0,
+              "clearance_levels": [
+                0.9,
+                0.6,
+                0.35,
+                0.2
+              ],
+              "representative_clearance": 0.35,
+              "steering_profile_rate_limit": 0.8
+            },
+            "budget_counts": [
+              128,
+              384,
+              768,
+              1536
+            ],
+            "budget_q04_scenario": "two_route_obstacle",
+            "budget_q05_clearance": 0.35,
+            "frozen": {
+              "seed": 31415,
+              "samples": 384,
+              "horizon": 20,
+              "seeds": {
+                "start": 33000,
+                "count": 50
+              },
+              "representative_seed": 33000,
+              "sample_counts": [
+                64,
+                128,
+                256,
+                384,
+                512,
+                1024,
+                2048,
+                4096
+              ],
+              "reference_samples": 65536,
+              "reference_repetitions": 8,
+              "reference_min_ess": 100,
+              "reference_max_weight": 0.05,
+              "reference_max_rms_ci_halfwidth": 0.05,
+              "sensitivity_step": 0.001,
+              "orientation_eigenvalues": [
+                0.3,
+                0.1
+              ],
+              "repetition_counts": [
+                10,
+                25,
+                50
+              ],
+              "open_step": 8,
+              "obstacle_min_x": 0.6,
+              "obstacle_max_x": 1.2,
+              "disturbance_step": 21
+            },
+            "vehicle": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "control_fields": [
+              "steering",
+              "throttle"
+            ],
+            "scenario": {
+              "name": "two_route_obstacle",
+              "initial_state": [
+                0.0,
+                -0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "goal_state": [
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                1.4,
+                0.0,
+                0.0
+              ],
+              "obstacles": [
+                [
+                  4.0,
+                  0.0,
+                  0.75
+                ]
+              ],
+              "vehicle_radius": 0.22
+            },
+            "planning_deadline_s": 0.15
+          },
+          "result": {
+            "station_crossing_y_m": 1.0519834105469397,
+            "route_class": "upper",
+            "success": true,
+            "collision": false,
+            "termination": "completed",
+            "steps": 43,
+            "max_progress_fraction": 1.0,
+            "cross_track_rmse_m": 1.0218747167937594,
+            "goal_position_error_m": 2.3379254518994173,
+            "goal_heading_error_rad": 0.15835823224851842,
+            "goal_speed_m_s": 1.9485665082209422,
+            "minimum_clearance_m": 0.05080412021401878,
+            "time_to_goal_s": 6.45,
+            "executed_duration_s": 6.45,
+            "cumulative_evaluation_cost": 271.836541974086,
+            "mean_ess": 107.70623092413088,
+            "mean_weight_entropy": 3.3217367176267176,
+            "mean_feasible_rollout_fraction": 0.866703003875969,
+            "steering_saturation_fraction": 0.023255813953488372,
+            "throttle_saturation_fraction": 0.11627906976744186,
+            "control_effort": 2.1533098616665574,
+            "max_command_slew": 5.060480767321252,
+            "rate_saturation_fraction": null,
+            "max_abs_vy": 0.1888531916497016,
+            "max_abs_yaw_rate": 0.6748750483376545,
+            "max_abs_roll": 0.054884946570951415,
+            "mean_planning_latency_s": 0.04010670781094949,
+            "model_transitions": 331100,
+            "rhs_evaluations": 1986600,
+            "execution_transitions": 43,
+            "tracking_check_transitions": 43,
+            "prediction_error_rmse": 0.0,
+            "optimizer_entropy": [
+              4400,
+              48000
+            ],
+            "disturbance_entropy": [
+              4401,
+              48000
+            ],
+            "disturbance_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "planning_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "execution_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            }
+          }
+        },
+        {
+          "path": "runs/variants/V02_dial/dynamics_budget/two_route_obstacle/dial_mpc/seed_48000",
+          "files_sha256": {
+            "trajectory.csv": "6c268c758619740b592c42ea08291b5c32413a5c122a4ff3d56541b26e3d3342",
+            "controls.csv": "bc30a04ff60405ca9ad68542565c084aadd272d4822af11eabaa20a42564cd95",
+            "diagnostics.csv": "53f53082921baf345c3cabf4983140adc1e2f135a286d41a279045cb5b60907b",
+            "config.yaml": "433c1c4eb1ad1a856bf905546d3cba70e9b32dc7e2f6e435f293a88a2f0db606",
+            "result.json": "ba1f6da5b5e880dcc948c92218c95df2d526d66a7837cee69b53ea47a57a4917"
+          },
+          "config": {
+            "phase": "evaluation",
+            "model_kind": "dynamic7",
+            "workers": 12,
+            "controller": {
+              "horizon": 20,
+              "samples": 95,
+              "temperature": 8.0,
+              "base_covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "algorithm": "dial_mpc",
+              "kind": "standard",
+              "covariance": [
+                [
+                  0.2,
+                  0
+                ],
+                [
+                  0,
+                  0.2
+                ]
+              ],
+              "saved_rollouts": 0,
+              "iterations": 4,
+              "beta_trajectory": 1.0,
+              "beta_horizon": 1.0,
+              "anneal": true,
+              "snapshot_steps": []
+            },
+            "proposals": {
+              "standard": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "isotropic": [
+                [
+                  0.2,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.2
+                ]
+              ],
+              "diagonal": [
+                [
+                  0.09,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.31
+                ]
+              ],
+              "full": [
+                [
+                  0.14,
+                  0.07
+                ],
+                [
+                  0.07,
+                  0.26
+                ]
+              ]
+            },
+            "vehicle_radius": 0.22,
+            "speed_target": 1.4,
+            "cost": {
+              "remaining_progress": 1.0,
+              "speed": 2.0,
+              "heading": 1.0,
+              "clearance": 100.0,
+              "safety_margin": 0.15,
+              "collision": 3000.0,
+              "control": 0.05,
+              "variation": 0.1,
+              "lateral_velocity": 1.0,
+              "yaw_rate": 0.2,
+              "roll": 2.0,
+              "terminal_progress": 4.0,
+              "terminal_goal": 8.0,
+              "terminal_heading": 4.0,
+              "terminal_speed": 3.0
+            },
+            "execution": {
+              "max_steps": 160,
+              "position_tolerance": 0.3,
+              "heading_tolerance": 0.35,
+              "speed_tolerance": 0.8,
+              "goal_lateral_tolerance": 0.4,
+              "lateral_velocity_tolerance": 0.35,
+              "yaw_rate_tolerance": 0.35,
+              "roll_tolerance": 0.15,
+              "snapshot_steps": [
+                0,
+                10,
+                21,
+                40,
+                65
+              ],
+              "representative_seed": 42
+            },
+            "compatibility_seeds": {
+              "start": 42,
+              "count": 20
+            },
+            "holdout_seeds": {
+              "start": 31000,
+              "count": 20
+            },
+            "s_turn_seeds": {
+              "start": 32000,
+              "count": 20
+            },
+            "s_turn_max_seeds": 40,
+            "s_turn_precision_width": 0.36,
+            "pilot_seeds": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              42
+            ],
+            "scenarios": [
+              "open_space",
+              "narrow_passage",
+              "two_route_obstacle",
+              "disturbance",
+              "model_mismatch"
+            ],
+            "s_turn": {
+              "turn_radius": 3.0,
+              "turn_separation": 3.0,
+              "entry_length": 2.0,
+              "exit_length": 3.0,
+              "end_extension": 8.0,
+              "clearance_levels": [
+                0.9,
+                0.6,
+                0.35,
+                0.2
+              ],
+              "representative_clearance": 0.35,
+              "steering_profile_rate_limit": 0.8
+            },
+            "budget_counts": [
+              128,
+              384,
+              768,
+              1536
+            ],
+            "budget_q04_scenario": "two_route_obstacle",
+            "budget_q05_clearance": 0.35,
+            "frozen": {
+              "seed": 31415,
+              "samples": 384,
+              "horizon": 20,
+              "seeds": {
+                "start": 33000,
+                "count": 50
+              },
+              "representative_seed": 33000,
+              "sample_counts": [
+                64,
+                128,
+                256,
+                384,
+                512,
+                1024,
+                2048,
+                4096
+              ],
+              "reference_samples": 65536,
+              "reference_repetitions": 8,
+              "reference_min_ess": 100,
+              "reference_max_weight": 0.05,
+              "reference_max_rms_ci_halfwidth": 0.05,
+              "sensitivity_step": 0.001,
+              "orientation_eigenvalues": [
+                0.3,
+                0.1
+              ],
+              "repetition_counts": [
+                10,
+                25,
+                50
+              ],
+              "open_step": 8,
+              "obstacle_min_x": 0.6,
+              "obstacle_max_x": 1.2,
+              "disturbance_step": 21
+            },
+            "vehicle": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "control_fields": [
+              "steering",
+              "throttle"
+            ],
+            "scenario": {
+              "name": "two_route_obstacle",
+              "initial_state": [
+                0.0,
+                -0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "goal_state": [
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                1.4,
+                0.0,
+                0.0
+              ],
+              "obstacles": [
+                [
+                  4.0,
+                  0.0,
+                  0.75
+                ]
+              ],
+              "vehicle_radius": 0.22
+            },
+            "planning_deadline_s": 0.15
+          },
+          "result": {
+            "station_crossing_y_m": -1.2081808652736423,
+            "route_class": "lower",
+            "success": true,
+            "collision": false,
+            "termination": "completed",
+            "steps": 29,
+            "max_progress_fraction": 0.9726392707619809,
+            "cross_track_rmse_m": 0.5953808932802315,
+            "goal_position_error_m": 0.3610746376290995,
+            "goal_heading_error_rad": 0.10657144036140354,
+            "goal_speed_m_s": 1.3718017900210753,
+            "minimum_clearance_m": 0.22565380283563538,
+            "time_to_goal_s": 4.35,
+            "executed_duration_s": 4.35,
+            "cumulative_evaluation_cost": 233.58636283547625,
+            "mean_ess": 67.10106448053969,
+            "mean_weight_entropy": 4.016471710850674,
+            "mean_feasible_rollout_fraction": 0.9139745916515427,
+            "steering_saturation_fraction": 0.13793103448275862,
+            "throttle_saturation_fraction": 0.5172413793103449,
+            "control_effort": 3.9041610360479875,
+            "max_command_slew": 6.666666666666667,
+            "rate_saturation_fraction": null,
+            "max_abs_vy": 0.5393111601564395,
+            "max_abs_yaw_rate": 1.3622320145975342,
+            "max_abs_roll": 0.1542370912630046,
+            "mean_planning_latency_s": 0.08614560531187353,
+            "model_transitions": 222720,
+            "rhs_evaluations": 1336320,
+            "execution_transitions": 29,
+            "tracking_check_transitions": 29,
+            "prediction_error_rmse": 0.0,
+            "optimizer_entropy": [
+              4400,
+              48000
+            ],
+            "disturbance_entropy": [
+              4401,
+              48000
+            ],
+            "disturbance_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "planning_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "execution_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            }
+          }
+        }
+      ],
+      "seeds": [
+        48000
+      ],
+      "scenario": "two_route_obstacle",
+      "mode": "replayed",
+      "representative_paths_schema": {
+        "columns": [
+          "time_s",
+          "px",
+          "py",
+          "heading",
+          "roll",
+          "vx",
+          "vy",
+          "yaw_rate",
+          "progress_m",
+          "cross_track_m"
+        ],
+        "verified_complete_against_raw": true,
+        "sha256": "a140a020c85819c4536e72f77ec4d4521c28a435a92d5f55914096e0ec84d1b3"
+      },
+      "missing_diagnostics": "No synchronized weights or nominal plans in original episodes."
+    },
+    "V02_dial_decision": {
+      "source_git": {
+        "commit": "bcfb9981d229818e890d5d542267d094da102a23",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/ and runs/"
+      },
+      "records": "records/V02_dial_decision.npz",
+      "records_sha256": "ab15070021da26c85efa4316355af9ad2962d84fe1451c25d75acd6fd891779e",
+      "sources": [
+        {
+          "path": "runs/variants/mechanisms/V02/51000_dial_mpc.npz",
+          "sha256": "3b46e94a978d25351714a4ad64fd0ac468d7a407596c26118ad2d7786462da9e",
+          "config": {
+            "phase": "evaluation",
+            "model_kind": "dynamic7",
+            "workers": 12,
+            "controller": {
+              "horizon": 20,
+              "samples": 95,
+              "temperature": 8.0,
+              "base_covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "algorithm": "dial_mpc",
+              "kind": "standard",
+              "covariance": [
+                [
+                  0.2,
+                  0
+                ],
+                [
+                  0,
+                  0.2
+                ]
+              ],
+              "saved_rollouts": 0,
+              "snapshot_steps": [
+                0
+              ],
+              "iterations": 4,
+              "beta_trajectory": 1.0,
+              "beta_horizon": 1.0,
+              "anneal": true
+            },
+            "proposals": {
+              "standard": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "isotropic": [
+                [
+                  0.2,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.2
+                ]
+              ],
+              "diagonal": [
+                [
+                  0.09,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.31
+                ]
+              ],
+              "full": [
+                [
+                  0.14,
+                  0.07
+                ],
+                [
+                  0.07,
+                  0.26
+                ]
+              ]
+            },
+            "vehicle_radius": 0.22,
+            "speed_target": 1.4,
+            "cost": {
+              "remaining_progress": 1.0,
+              "speed": 2.0,
+              "heading": 1.0,
+              "clearance": 100.0,
+              "safety_margin": 0.15,
+              "collision": 3000.0,
+              "control": 0.05,
+              "variation": 0.1,
+              "lateral_velocity": 1.0,
+              "yaw_rate": 0.2,
+              "roll": 2.0,
+              "terminal_progress": 4.0,
+              "terminal_goal": 8.0,
+              "terminal_heading": 4.0,
+              "terminal_speed": 3.0
+            },
+            "execution": {
+              "max_steps": 160,
+              "position_tolerance": 0.3,
+              "heading_tolerance": 0.35,
+              "speed_tolerance": 0.8,
+              "goal_lateral_tolerance": 0.4,
+              "lateral_velocity_tolerance": 0.35,
+              "yaw_rate_tolerance": 0.35,
+              "roll_tolerance": 0.15,
+              "snapshot_steps": [
+                0,
+                10,
+                21,
+                40,
+                65
+              ],
+              "representative_seed": 42,
+              "extra_snapshot_seeds": [
+                48000
+              ]
+            },
+            "compatibility_seeds": {
+              "start": 42,
+              "count": 20
+            },
+            "holdout_seeds": {
+              "start": 31000,
+              "count": 20
+            },
+            "s_turn_seeds": {
+              "start": 32000,
+              "count": 20
+            },
+            "s_turn_max_seeds": 40,
+            "s_turn_precision_width": 0.36,
+            "pilot_seeds": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              42
+            ],
+            "scenarios": [
+              "open_space",
+              "narrow_passage",
+              "two_route_obstacle",
+              "disturbance",
+              "model_mismatch"
+            ],
+            "s_turn": {
+              "turn_radius": 3.0,
+              "turn_separation": 3.0,
+              "entry_length": 2.0,
+              "exit_length": 3.0,
+              "end_extension": 8.0,
+              "clearance_levels": [
+                0.9,
+                0.6,
+                0.35,
+                0.2
+              ],
+              "representative_clearance": 0.35,
+              "steering_profile_rate_limit": 0.8
+            },
+            "budget_counts": [
+              128,
+              384,
+              768,
+              1536
+            ],
+            "budget_q04_scenario": "two_route_obstacle",
+            "budget_q05_clearance": 0.35,
+            "frozen": {
+              "seed": 31415,
+              "samples": 384,
+              "horizon": 20,
+              "seeds": {
+                "start": 33000,
+                "count": 50
+              },
+              "representative_seed": 33000,
+              "sample_counts": [
+                64,
+                128,
+                256,
+                384,
+                512,
+                1024,
+                2048,
+                4096
+              ],
+              "reference_samples": 65536,
+              "reference_repetitions": 8,
+              "reference_min_ess": 100,
+              "reference_max_weight": 0.05,
+              "reference_max_rms_ci_halfwidth": 0.05,
+              "sensitivity_step": 0.001,
+              "orientation_eigenvalues": [
+                0.3,
+                0.1
+              ],
+              "repetition_counts": [
+                10,
+                25,
+                50
+              ],
+              "open_step": 8,
+              "obstacle_min_x": 0.6,
+              "obstacle_max_x": 1.2,
+              "disturbance_step": 21
+            },
+            "vehicle": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "control_fields": [
+              "steering",
+              "throttle"
+            ],
+            "scenario": {
+              "name": "two_route_obstacle",
+              "initial_state": [
+                0.0,
+                -0.2,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "goal_state": [
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                1.4,
+                0.0,
+                0.0
+              ],
+              "obstacles": [
+                [
+                  4.0,
+                  0.0,
+                  0.75
+                ]
+              ],
+              "vehicle_radius": 0.22
+            },
+            "planning_deadline_s": 0.15
+          }
+        }
+      ],
+      "seeds": [
+        51000
+      ],
+      "source_seed": 49000,
+      "frozen_step": 8,
+      "scenario": "two_route_obstacle",
+      "mode": "replayed",
+      "mechanism_config": {
+        "phase": "evaluation",
+        "source_seed": 49000,
+        "frozen_step": 8,
+        "seeds": [
+          51000,
+          51001,
+          51002
+        ],
+        "scenes": [
+          "open_space",
+          "two_route_obstacle",
+          "narrow_passage"
+        ],
+        "benchmark_config": "configs/variants/benchmark.yaml",
+        "selection_rule": "Fixed step 8 of IT-MPPI in each named scene; no selection using outcomes.",
+        "V01": {
+          "scenes": [
+            "open_space",
+            "two_route_obstacle"
+          ],
+          "samples": 384,
+          "reference_cost_center": 1.0,
+          "reference_scale": 0.8,
+          "reference_r": 1.5,
+          "reference_sample_counts": [
+            128,
+            1024,
+            8192
+          ],
+          "reference_seeds": [
+            52000,
+            52001,
+            52002
+          ]
+        },
+        "V02": {
+          "scene": "two_route_obstacle",
+          "iterations": 4,
+          "samples_per_iteration": 95,
+          "it_samples": 383,
+          "transitions_per_decision": 7680
+        },
+        "V03": {
+          "scene": "open_space",
+          "samples": 64,
+          "steps": 32,
+          "disturbance_step": 8,
+          "disturbance_delta": [
+            0,
+            0.7,
+            0.1,
+            0.01,
+            -0.2,
+            0.3,
+            0.12
+          ],
+          "disturbance_multipliers": [
+            0,
+            1,
+            -1
+          ],
+          "reset_thresholds": [
+            450.0,
+            0.0
+          ],
+          "representative_rule": "First evaluation seed, positive disturbance; show both thresholds and all signed/control cases in summaries."
+        },
+        "V04": {
+          "scene": "open_space",
+          "samples": 128,
+          "disturbance_delta": [
+            0,
+            0.7,
+            0.1,
+            0.01,
+            -0.2,
+            0.3,
+            0.12
+          ],
+          "disturbance_multipliers": [
+            0,
+            1,
+            -1
+          ],
+          "free_energy_thresholds": [
+            5000.0,
+            100.0
+          ],
+          "history_rule": "Previous and propagated nominal states equal the frozen reference; previous and current plans equal its warm start.",
+          "representative_rule": "First evaluation seed, positive disturbance, threshold 100; not selected by performance or feasibility."
+        },
+        "V05": {
+          "scenes": [
+            "open_space",
+            "narrow_passage"
+          ],
+          "planner_seed": 55000,
+          "planner_samples": 384,
+          "execution_seed_start": 56000,
+          "execution_replicates": 256,
+          "noise_fractions": [
+            1.0,
+            0.01
+          ],
+          "feedback_modes": [
+            "steered",
+            "zero_gain"
+          ],
+          "execution_rule": "Fixed warm-start mean and precomputed gains; independent Gaussian noise drives auxiliary state and actual nonlinear plant. No replanning or optimization weights. Paired noise across feedback modes.",
+          "contact_policy": "Propagate the full fixed horizon even after proxy contact; record contacts, do not condition covariance on survival. The plant has no impact dynamics.",
+          "normalization": "Per-state square roots of the declared terminal covariance diagonal; positions also displayed in meters."
+        }
+      },
+      "missing_diagnostics": null
+    },
+    "V03_tube": {
+      "source_git": {
+        "commit": "bcfb9981d229818e890d5d542267d094da102a23",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/ and runs/"
+      },
+      "records": "records/V03_tube.npz",
+      "records_sha256": "807926e8259b6be855237bb8177903a96cd4e8c54664a0b450dca419ce8c55cf",
+      "sources": [
+        {
+          "path": "runs/variants/mechanisms/V03/impulse_1/tube_0/51000",
+          "files_sha256": {
+            "trajectory.csv": "9e38ac2116fc04bde94ec3fa3e97af7f68609f778264158902ab00f72c162e45",
+            "controls.csv": "53d6041499d4972981a3b4c61ed2bb34b123533914a88a83c7782dda888cfec8",
+            "diagnostics.csv": "7a0ed45592fb60124d5b1dd7e4a3c1d459d6e4fe2f5703083d61b3d2e3e47965",
+            "config.yaml": "0717e52d46a189348af621571611bdc89e25a35d512b4eea4b8a92970109b2b4",
+            "result.json": "8781c98bc00d3b2d912e112c8660492861528bad067e120b68972477c019153d"
+          },
+          "config": {
+            "phase": "evaluation",
+            "model_kind": "dynamic7",
+            "workers": 12,
+            "controller": {
+              "horizon": 20,
+              "samples": 64,
+              "temperature": 8.0,
+              "base_covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "algorithm": "tube_mppi",
+              "kind": "standard",
+              "covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "saved_rollouts": 0,
+              "reset_threshold": 0.0,
+              "tracking_q": [
+                4,
+                8,
+                6,
+                2,
+                2,
+                1,
+                1
+              ],
+              "tracking_r": [
+                1,
+                1
+              ],
+              "tracking_terminal_multiplier": 5.0,
+              "snapshot_steps": [
+                9
+              ]
+            },
+            "proposals": {
+              "standard": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "isotropic": [
+                [
+                  0.2,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.2
+                ]
+              ],
+              "diagonal": [
+                [
+                  0.09,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.31
+                ]
+              ],
+              "full": [
+                [
+                  0.14,
+                  0.07
+                ],
+                [
+                  0.07,
+                  0.26
+                ]
+              ]
+            },
+            "vehicle_radius": 0.22,
+            "speed_target": 1.4,
+            "cost": {
+              "remaining_progress": 1.0,
+              "speed": 2.0,
+              "heading": 1.0,
+              "clearance": 100.0,
+              "safety_margin": 0.15,
+              "collision": 3000.0,
+              "control": 0.05,
+              "variation": 0.1,
+              "lateral_velocity": 1.0,
+              "yaw_rate": 0.2,
+              "roll": 2.0,
+              "terminal_progress": 4.0,
+              "terminal_goal": 8.0,
+              "terminal_heading": 4.0,
+              "terminal_speed": 3.0
+            },
+            "execution": {
+              "max_steps": 32,
+              "position_tolerance": 0.3,
+              "heading_tolerance": 0.35,
+              "speed_tolerance": 0.8,
+              "goal_lateral_tolerance": 0.4,
+              "lateral_velocity_tolerance": 0.35,
+              "yaw_rate_tolerance": 0.35,
+              "roll_tolerance": 0.15,
+              "snapshot_steps": [
+                0,
+                10,
+                21,
+                40,
+                65
+              ],
+              "representative_seed": 42,
+              "extra_snapshot_seeds": [
+                51000,
+                51001,
+                51002
+              ]
+            },
+            "compatibility_seeds": {
+              "start": 42,
+              "count": 20
+            },
+            "holdout_seeds": {
+              "start": 31000,
+              "count": 20
+            },
+            "s_turn_seeds": {
+              "start": 32000,
+              "count": 20
+            },
+            "s_turn_max_seeds": 40,
+            "s_turn_precision_width": 0.36,
+            "pilot_seeds": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              42
+            ],
+            "scenarios": [
+              "open_space",
+              "narrow_passage",
+              "two_route_obstacle",
+              "disturbance",
+              "model_mismatch"
+            ],
+            "s_turn": {
+              "turn_radius": 3.0,
+              "turn_separation": 3.0,
+              "entry_length": 2.0,
+              "exit_length": 3.0,
+              "end_extension": 8.0,
+              "clearance_levels": [
+                0.9,
+                0.6,
+                0.35,
+                0.2
+              ],
+              "representative_clearance": 0.35,
+              "steering_profile_rate_limit": 0.8
+            },
+            "budget_counts": [
+              128,
+              384,
+              768,
+              1536
+            ],
+            "budget_q04_scenario": "two_route_obstacle",
+            "budget_q05_clearance": 0.35,
+            "frozen": {
+              "seed": 31415,
+              "samples": 384,
+              "horizon": 20,
+              "seeds": {
+                "start": 33000,
+                "count": 50
+              },
+              "representative_seed": 33000,
+              "sample_counts": [
+                64,
+                128,
+                256,
+                384,
+                512,
+                1024,
+                2048,
+                4096
+              ],
+              "reference_samples": 65536,
+              "reference_repetitions": 8,
+              "reference_min_ess": 100,
+              "reference_max_weight": 0.05,
+              "reference_max_rms_ci_halfwidth": 0.05,
+              "sensitivity_step": 0.001,
+              "orientation_eigenvalues": [
+                0.3,
+                0.1
+              ],
+              "repetition_counts": [
+                10,
+                25,
+                50
+              ],
+              "open_step": 8,
+              "obstacle_min_x": 0.6,
+              "obstacle_max_x": 1.2,
+              "disturbance_step": 21
+            },
+            "vehicle": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "control_fields": [
+              "steering",
+              "throttle"
+            ],
+            "scenario": {
+              "name": "open_space",
+              "initial_state": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "goal_state": [
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                1.4,
+                0.0,
+                0.0
+              ],
+              "obstacles": [],
+              "vehicle_radius": 0.22,
+              "disturbance": {
+                "step": 8,
+                "delta": [
+                  0.0,
+                  0.7,
+                  0.1,
+                  0.01,
+                  -0.2,
+                  0.3,
+                  0.12
+                ]
+              }
+            },
+            "planning_deadline_s": 0.15
+          },
+          "result": {
+            "station_crossing_y_m": null,
+            "route_class": "not_assessed",
+            "success": false,
+            "collision": false,
+            "termination": "censored_timeout",
+            "steps": 32,
+            "max_progress_fraction": 0.8661816011873323,
+            "cross_track_rmse_m": 0.4323959158893628,
+            "goal_position_error_m": 1.4074670559503473,
+            "goal_heading_error_rad": 0.00841640484785433,
+            "goal_speed_m_s": 1.5366456025951323,
+            "minimum_clearance_m": null,
+            "time_to_goal_s": null,
+            "executed_duration_s": 4.8,
+            "cumulative_evaluation_cost": 282.62031027654166,
+            "mean_ess": 1.3688794141840908,
+            "mean_weight_entropy": 0.42128893056509836,
+            "mean_feasible_rollout_fraction": 1.0,
+            "steering_saturation_fraction": 0.09375,
+            "throttle_saturation_fraction": 0.1875,
+            "control_effort": 3.431084158610656,
+            "max_command_slew": 3.94286601491855,
+            "rate_saturation_fraction": null,
+            "max_abs_vy": 0.30024208889591186,
+            "max_abs_yaw_rate": 0.9665875265007715,
+            "max_abs_roll": 0.07753903792868681,
+            "mean_planning_latency_s": 0.04094647365673154,
+            "model_transitions": 94720,
+            "rhs_evaluations": 568320,
+            "execution_transitions": 32,
+            "tracking_check_transitions": 32,
+            "prediction_error_rmse": 0.15552252167983446,
+            "optimizer_entropy": [
+              4400,
+              51000
+            ],
+            "disturbance_entropy": [
+              4401,
+              51000
+            ],
+            "disturbance_delta": [
+              0.0,
+              0.7671050781291432,
+              0.10958643973273474,
+              0.010958643973273475,
+              -0.21917287946546948,
+              0.3287593191982042,
+              0.13150372767928167
+            ],
+            "planning_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "execution_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            }
+          }
+        },
+        {
+          "path": "runs/variants/mechanisms/V03/impulse_1/tube_450/51000",
+          "files_sha256": {
+            "trajectory.csv": "206ec6d1f4cf5a724713c92376987149236ffb14d8d996af63877612827ff0c4",
+            "controls.csv": "acb0082246cafffe88cc35072b0cac62d394dbca94dd2c8e03e1aa43ef2242ca",
+            "diagnostics.csv": "5bf228312132e6d34570140e4b340407f7a4e1bb91d0e3025f46b01af2ee734c",
+            "config.yaml": "45a86fe2a9739edede54b91fd9131ad8579a7f2192ba80d788b6c562816a62cc",
+            "result.json": "5f9305679526f55188a757a56c95572f6fc6f4d7d684246f2fab11aaa68cdf6f"
+          },
+          "config": {
+            "phase": "evaluation",
+            "model_kind": "dynamic7",
+            "workers": 12,
+            "controller": {
+              "horizon": 20,
+              "samples": 64,
+              "temperature": 8.0,
+              "base_covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "algorithm": "tube_mppi",
+              "kind": "standard",
+              "covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "saved_rollouts": 0,
+              "reset_threshold": 450.0,
+              "tracking_q": [
+                4,
+                8,
+                6,
+                2,
+                2,
+                1,
+                1
+              ],
+              "tracking_r": [
+                1,
+                1
+              ],
+              "tracking_terminal_multiplier": 5.0,
+              "snapshot_steps": [
+                9
+              ]
+            },
+            "proposals": {
+              "standard": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "isotropic": [
+                [
+                  0.2,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.2
+                ]
+              ],
+              "diagonal": [
+                [
+                  0.09,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.31
+                ]
+              ],
+              "full": [
+                [
+                  0.14,
+                  0.07
+                ],
+                [
+                  0.07,
+                  0.26
+                ]
+              ]
+            },
+            "vehicle_radius": 0.22,
+            "speed_target": 1.4,
+            "cost": {
+              "remaining_progress": 1.0,
+              "speed": 2.0,
+              "heading": 1.0,
+              "clearance": 100.0,
+              "safety_margin": 0.15,
+              "collision": 3000.0,
+              "control": 0.05,
+              "variation": 0.1,
+              "lateral_velocity": 1.0,
+              "yaw_rate": 0.2,
+              "roll": 2.0,
+              "terminal_progress": 4.0,
+              "terminal_goal": 8.0,
+              "terminal_heading": 4.0,
+              "terminal_speed": 3.0
+            },
+            "execution": {
+              "max_steps": 32,
+              "position_tolerance": 0.3,
+              "heading_tolerance": 0.35,
+              "speed_tolerance": 0.8,
+              "goal_lateral_tolerance": 0.4,
+              "lateral_velocity_tolerance": 0.35,
+              "yaw_rate_tolerance": 0.35,
+              "roll_tolerance": 0.15,
+              "snapshot_steps": [
+                0,
+                10,
+                21,
+                40,
+                65
+              ],
+              "representative_seed": 42,
+              "extra_snapshot_seeds": [
+                51000,
+                51001,
+                51002
+              ]
+            },
+            "compatibility_seeds": {
+              "start": 42,
+              "count": 20
+            },
+            "holdout_seeds": {
+              "start": 31000,
+              "count": 20
+            },
+            "s_turn_seeds": {
+              "start": 32000,
+              "count": 20
+            },
+            "s_turn_max_seeds": 40,
+            "s_turn_precision_width": 0.36,
+            "pilot_seeds": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              42
+            ],
+            "scenarios": [
+              "open_space",
+              "narrow_passage",
+              "two_route_obstacle",
+              "disturbance",
+              "model_mismatch"
+            ],
+            "s_turn": {
+              "turn_radius": 3.0,
+              "turn_separation": 3.0,
+              "entry_length": 2.0,
+              "exit_length": 3.0,
+              "end_extension": 8.0,
+              "clearance_levels": [
+                0.9,
+                0.6,
+                0.35,
+                0.2
+              ],
+              "representative_clearance": 0.35,
+              "steering_profile_rate_limit": 0.8
+            },
+            "budget_counts": [
+              128,
+              384,
+              768,
+              1536
+            ],
+            "budget_q04_scenario": "two_route_obstacle",
+            "budget_q05_clearance": 0.35,
+            "frozen": {
+              "seed": 31415,
+              "samples": 384,
+              "horizon": 20,
+              "seeds": {
+                "start": 33000,
+                "count": 50
+              },
+              "representative_seed": 33000,
+              "sample_counts": [
+                64,
+                128,
+                256,
+                384,
+                512,
+                1024,
+                2048,
+                4096
+              ],
+              "reference_samples": 65536,
+              "reference_repetitions": 8,
+              "reference_min_ess": 100,
+              "reference_max_weight": 0.05,
+              "reference_max_rms_ci_halfwidth": 0.05,
+              "sensitivity_step": 0.001,
+              "orientation_eigenvalues": [
+                0.3,
+                0.1
+              ],
+              "repetition_counts": [
+                10,
+                25,
+                50
+              ],
+              "open_step": 8,
+              "obstacle_min_x": 0.6,
+              "obstacle_max_x": 1.2,
+              "disturbance_step": 21
+            },
+            "vehicle": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "control_fields": [
+              "steering",
+              "throttle"
+            ],
+            "scenario": {
+              "name": "open_space",
+              "initial_state": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "goal_state": [
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                1.4,
+                0.0,
+                0.0
+              ],
+              "obstacles": [],
+              "vehicle_radius": 0.22,
+              "disturbance": {
+                "step": 8,
+                "delta": [
+                  0.0,
+                  0.7,
+                  0.1,
+                  0.01,
+                  -0.2,
+                  0.3,
+                  0.12
+                ]
+              }
+            },
+            "planning_deadline_s": 0.15
+          },
+          "result": {
+            "station_crossing_y_m": null,
+            "route_class": "not_assessed",
+            "success": false,
+            "collision": false,
+            "termination": "censored_timeout",
+            "steps": 32,
+            "max_progress_fraction": 0.8569048965318687,
+            "cross_track_rmse_m": 0.6084561174363078,
+            "goal_position_error_m": 1.4574207563889658,
+            "goal_heading_error_rad": 0.09461736273761101,
+            "goal_speed_m_s": 2.3040266077042095,
+            "minimum_clearance_m": null,
+            "time_to_goal_s": null,
+            "executed_duration_s": 4.8,
+            "cumulative_evaluation_cost": 290.2018417979152,
+            "mean_ess": 1.6736492080431713,
+            "mean_weight_entropy": 0.5718833743602005,
+            "mean_feasible_rollout_fraction": 1.0,
+            "steering_saturation_fraction": 0.0,
+            "throttle_saturation_fraction": 0.0625,
+            "control_effort": 2.6128930522347322,
+            "max_command_slew": 4.880609927562438,
+            "rate_saturation_fraction": null,
+            "max_abs_vy": 0.26110942748485827,
+            "max_abs_yaw_rate": 0.8036181778006379,
+            "max_abs_roll": 0.04383075162939532,
+            "mean_planning_latency_s": 0.04004307312789024,
+            "model_transitions": 94720,
+            "rhs_evaluations": 568320,
+            "execution_transitions": 32,
+            "tracking_check_transitions": 32,
+            "prediction_error_rmse": 0.15552252167983446,
+            "optimizer_entropy": [
+              4400,
+              51000
+            ],
+            "disturbance_entropy": [
+              4401,
+              51000
+            ],
+            "disturbance_delta": [
+              0.0,
+              0.7671050781291432,
+              0.10958643973273474,
+              0.010958643973273475,
+              -0.21917287946546948,
+              0.3287593191982042,
+              0.13150372767928167
+            ],
+            "planning_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "execution_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            }
+          }
+        }
+      ],
+      "seeds": [
+        51000
+      ],
+      "scenario": "positive_impulse_step_8",
+      "mode": "replayed",
+      "missing_diagnostics": null
+    },
+    "V04_robust": {
+      "source_git": {
+        "commit": "bcfb9981d229818e890d5d542267d094da102a23",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/ and runs/"
+      },
+      "records": "records/V04_robust.npz",
+      "records_sha256": "742021639d184f6e282d13840fb83bb217f5ccfd683484e83196ff83650d3d1d",
+      "sources": [
+        {
+          "path": "runs/variants/videos/V04_robust_seed_48000",
+          "files_sha256": {
+            "trajectory.csv": "89a362fcc109757842ac7c6d72893a63563fd9cdfab90b10168167d2572e795f",
+            "controls.csv": "7463097fe9a069e1939a02859a3b439c227ba704eae17bd98e129a3c4b8d6095",
+            "diagnostics.csv": "9194daef2d565cb499c9d181c0556028dd2045bcd2a00dd18287cf08a45ed579",
+            "config.yaml": "a7bdd96303bc4c2d253cca62a547c6070051d38b0d604f64b20ac62e9f66a55e",
+            "result.json": "67ec1b095e1d43f116d1854e8bc9e65419545fa466c4bdd379186d5863bf5651"
+          },
+          "config": {
+            "phase": "evaluation",
+            "model_kind": "dynamic7",
+            "workers": 12,
+            "controller": {
+              "horizon": 20,
+              "samples": 159,
+              "temperature": 8.0,
+              "base_covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "algorithm": "robust_mppi",
+              "kind": "standard",
+              "covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "saved_rollouts": 0,
+              "candidate_samples": 8,
+              "free_energy_threshold": 5000.0,
+              "tracking_q": [
+                4,
+                8,
+                6,
+                2,
+                2,
+                1,
+                1
+              ],
+              "tracking_r": [
+                1,
+                1
+              ],
+              "tracking_terminal_multiplier": 5.0,
+              "snapshot_steps": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                46,
+                47,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                58,
+                59,
+                60,
+                61,
+                62,
+                63,
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                78,
+                79,
+                80,
+                81,
+                82,
+                83,
+                84,
+                85,
+                86,
+                87,
+                88,
+                89,
+                90,
+                91,
+                92,
+                93,
+                94,
+                95,
+                96,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                108,
+                109,
+                110,
+                111,
+                112,
+                113,
+                114,
+                115,
+                116,
+                117,
+                118,
+                119,
+                120,
+                121,
+                122,
+                123,
+                124,
+                125,
+                126,
+                127,
+                128,
+                129,
+                130,
+                131,
+                132,
+                133,
+                134,
+                135,
+                136,
+                137,
+                138,
+                139,
+                140,
+                141,
+                142,
+                143,
+                144,
+                145,
+                146,
+                147,
+                148,
+                149,
+                150,
+                151,
+                152,
+                153,
+                154,
+                155,
+                156,
+                157,
+                158,
+                159
+              ]
+            },
+            "proposals": {
+              "standard": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "isotropic": [
+                [
+                  0.2,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.2
+                ]
+              ],
+              "diagonal": [
+                [
+                  0.09,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.31
+                ]
+              ],
+              "full": [
+                [
+                  0.14,
+                  0.07
+                ],
+                [
+                  0.07,
+                  0.26
+                ]
+              ]
+            },
+            "vehicle_radius": 0.22,
+            "speed_target": 1.4,
+            "cost": {
+              "remaining_progress": 1.0,
+              "speed": 2.0,
+              "heading": 1.0,
+              "clearance": 100.0,
+              "safety_margin": 0.15,
+              "collision": 3000.0,
+              "control": 0.05,
+              "variation": 0.1,
+              "lateral_velocity": 1.0,
+              "yaw_rate": 0.2,
+              "roll": 2.0,
+              "terminal_progress": 4.0,
+              "terminal_goal": 8.0,
+              "terminal_heading": 4.0,
+              "terminal_speed": 3.0
+            },
+            "execution": {
+              "max_steps": 160,
+              "position_tolerance": 0.3,
+              "heading_tolerance": 0.35,
+              "speed_tolerance": 0.8,
+              "goal_lateral_tolerance": 0.4,
+              "lateral_velocity_tolerance": 0.35,
+              "yaw_rate_tolerance": 0.35,
+              "roll_tolerance": 0.15,
+              "snapshot_steps": [
+                0,
+                10,
+                21,
+                40,
+                65
+              ],
+              "representative_seed": 42,
+              "extra_snapshot_seeds": [
+                48000
+              ]
+            },
+            "compatibility_seeds": {
+              "start": 42,
+              "count": 20
+            },
+            "holdout_seeds": {
+              "start": 31000,
+              "count": 20
+            },
+            "s_turn_seeds": {
+              "start": 32000,
+              "count": 20
+            },
+            "s_turn_max_seeds": 40,
+            "s_turn_precision_width": 0.36,
+            "pilot_seeds": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              42
+            ],
+            "scenarios": [
+              "open_space",
+              "narrow_passage",
+              "two_route_obstacle",
+              "disturbance",
+              "model_mismatch"
+            ],
+            "s_turn": {
+              "turn_radius": 3.0,
+              "turn_separation": 3.0,
+              "entry_length": 2.0,
+              "exit_length": 3.0,
+              "end_extension": 8.0,
+              "clearance_levels": [
+                0.9,
+                0.6,
+                0.35,
+                0.2
+              ],
+              "representative_clearance": 0.35,
+              "steering_profile_rate_limit": 0.8
+            },
+            "budget_counts": [
+              128,
+              384,
+              768,
+              1536
+            ],
+            "budget_q04_scenario": "two_route_obstacle",
+            "budget_q05_clearance": 0.35,
+            "frozen": {
+              "seed": 31415,
+              "samples": 384,
+              "horizon": 20,
+              "seeds": {
+                "start": 33000,
+                "count": 50
+              },
+              "representative_seed": 33000,
+              "sample_counts": [
+                64,
+                128,
+                256,
+                384,
+                512,
+                1024,
+                2048,
+                4096
+              ],
+              "reference_samples": 65536,
+              "reference_repetitions": 8,
+              "reference_min_ess": 100,
+              "reference_max_weight": 0.05,
+              "reference_max_rms_ci_halfwidth": 0.05,
+              "sensitivity_step": 0.001,
+              "orientation_eigenvalues": [
+                0.3,
+                0.1
+              ],
+              "repetition_counts": [
+                10,
+                25,
+                50
+              ],
+              "open_step": 8,
+              "obstacle_min_x": 0.6,
+              "obstacle_max_x": 1.2,
+              "disturbance_step": 21
+            },
+            "vehicle": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "control_fields": [
+              "steering",
+              "throttle"
+            ],
+            "scenario": {
+              "name": "disturbance",
+              "initial_state": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "goal_state": [
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                1.4,
+                0.0,
+                0.0
+              ],
+              "obstacles": [],
+              "vehicle_radius": 0.22,
+              "disturbance": {
+                "step": 20,
+                "delta": [
+                  0,
+                  0.7,
+                  0.1,
+                  0.01,
+                  -0.2,
+                  0.3,
+                  0.12
+                ]
+              }
+            },
+            "planning_deadline_s": 0.15
+          },
+          "result": {
+            "station_crossing_y_m": null,
+            "route_class": "not_assessed",
+            "success": true,
+            "collision": false,
+            "termination": "completed",
+            "steps": 68,
+            "max_progress_fraction": 1.0,
+            "cross_track_rmse_m": 2.7018085765402358,
+            "goal_position_error_m": 6.902126364369822,
+            "goal_heading_error_rad": 0.11385152270532606,
+            "goal_speed_m_s": 1.5234962853946619,
+            "minimum_clearance_m": null,
+            "time_to_goal_s": 10.2,
+            "executed_duration_s": 10.2,
+            "cumulative_evaluation_cost": 257.73720633257227,
+            "mean_ess": 22.529054038898185,
+            "mean_weight_entropy": 2.118534144369828,
+            "mean_feasible_rollout_fraction": 1.0,
+            "steering_saturation_fraction": 0.0,
+            "throttle_saturation_fraction": 0.11764705882352941,
+            "control_effort": 3.2164490000854014,
+            "max_command_slew": 3.9915872810650943,
+            "rate_saturation_fraction": null,
+            "max_abs_vy": 0.3494867238553745,
+            "max_abs_yaw_rate": 0.6964451865646416,
+            "max_abs_roll": 0.046306241033432054,
+            "mean_planning_latency_s": 0.11678856375082806,
+            "model_transitions": 523600,
+            "rhs_evaluations": 3141600,
+            "execution_transitions": 68,
+            "tracking_check_transitions": 68,
+            "prediction_error_rmse": 0.09947868300942106,
+            "optimizer_entropy": [
+              4400,
+              48000
+            ],
+            "disturbance_entropy": [
+              4401,
+              48000
+            ],
+            "disturbance_delta": [
+              0.0,
+              0.7152717332878666,
+              0.10218167618398095,
+              0.010218167618398095,
+              -0.2043633523679619,
+              0.3065450285519428,
+              0.12261801142077713
+            ],
+            "planning_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "execution_parameters": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            }
+          }
+        },
+        {
+          "path": "runs/variants/mechanisms/V04/1_100_51000.npz",
+          "sha256": "b0e35c4a3932396ea078362ad83a10feb8d0614d216ae8865ca8a87c8d1267eb",
+          "config": {
+            "phase": "evaluation",
+            "model_kind": "dynamic7",
+            "workers": 12,
+            "controller": {
+              "horizon": 20,
+              "samples": 128,
+              "temperature": 8.0,
+              "base_covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "algorithm": "robust_mppi",
+              "kind": "standard",
+              "covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "saved_rollouts": 0,
+              "snapshot_steps": [
+                0
+              ],
+              "candidate_samples": 8,
+              "free_energy_threshold": 100,
+              "tracking_q": [
+                4,
+                8,
+                6,
+                2,
+                2,
+                1,
+                1
+              ],
+              "tracking_r": [
+                1,
+                1
+              ],
+              "tracking_terminal_multiplier": 5.0
+            },
+            "proposals": {
+              "standard": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "isotropic": [
+                [
+                  0.2,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.2
+                ]
+              ],
+              "diagonal": [
+                [
+                  0.09,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.31
+                ]
+              ],
+              "full": [
+                [
+                  0.14,
+                  0.07
+                ],
+                [
+                  0.07,
+                  0.26
+                ]
+              ]
+            },
+            "vehicle_radius": 0.22,
+            "speed_target": 1.4,
+            "cost": {
+              "remaining_progress": 1.0,
+              "speed": 2.0,
+              "heading": 1.0,
+              "clearance": 100.0,
+              "safety_margin": 0.15,
+              "collision": 3000.0,
+              "control": 0.05,
+              "variation": 0.1,
+              "lateral_velocity": 1.0,
+              "yaw_rate": 0.2,
+              "roll": 2.0,
+              "terminal_progress": 4.0,
+              "terminal_goal": 8.0,
+              "terminal_heading": 4.0,
+              "terminal_speed": 3.0
+            },
+            "execution": {
+              "max_steps": 160,
+              "position_tolerance": 0.3,
+              "heading_tolerance": 0.35,
+              "speed_tolerance": 0.8,
+              "goal_lateral_tolerance": 0.4,
+              "lateral_velocity_tolerance": 0.35,
+              "yaw_rate_tolerance": 0.35,
+              "roll_tolerance": 0.15,
+              "snapshot_steps": [
+                0,
+                10,
+                21,
+                40,
+                65
+              ],
+              "representative_seed": 42,
+              "extra_snapshot_seeds": [
+                48000
+              ]
+            },
+            "compatibility_seeds": {
+              "start": 42,
+              "count": 20
+            },
+            "holdout_seeds": {
+              "start": 31000,
+              "count": 20
+            },
+            "s_turn_seeds": {
+              "start": 32000,
+              "count": 20
+            },
+            "s_turn_max_seeds": 40,
+            "s_turn_precision_width": 0.36,
+            "pilot_seeds": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              42
+            ],
+            "scenarios": [
+              "open_space",
+              "narrow_passage",
+              "two_route_obstacle",
+              "disturbance",
+              "model_mismatch"
+            ],
+            "s_turn": {
+              "turn_radius": 3.0,
+              "turn_separation": 3.0,
+              "entry_length": 2.0,
+              "exit_length": 3.0,
+              "end_extension": 8.0,
+              "clearance_levels": [
+                0.9,
+                0.6,
+                0.35,
+                0.2
+              ],
+              "representative_clearance": 0.35,
+              "steering_profile_rate_limit": 0.8
+            },
+            "budget_counts": [
+              128,
+              384,
+              768,
+              1536
+            ],
+            "budget_q04_scenario": "two_route_obstacle",
+            "budget_q05_clearance": 0.35,
+            "frozen": {
+              "seed": 31415,
+              "samples": 384,
+              "horizon": 20,
+              "seeds": {
+                "start": 33000,
+                "count": 50
+              },
+              "representative_seed": 33000,
+              "sample_counts": [
+                64,
+                128,
+                256,
+                384,
+                512,
+                1024,
+                2048,
+                4096
+              ],
+              "reference_samples": 65536,
+              "reference_repetitions": 8,
+              "reference_min_ess": 100,
+              "reference_max_weight": 0.05,
+              "reference_max_rms_ci_halfwidth": 0.05,
+              "sensitivity_step": 0.001,
+              "orientation_eigenvalues": [
+                0.3,
+                0.1
+              ],
+              "repetition_counts": [
+                10,
+                25,
+                50
+              ],
+              "open_step": 8,
+              "obstacle_min_x": 0.6,
+              "obstacle_max_x": 1.2,
+              "disturbance_step": 21
+            },
+            "vehicle": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "control_fields": [
+              "steering",
+              "throttle"
+            ],
+            "scenario": {
+              "name": "open_space",
+              "initial_state": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "goal_state": [
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                1.4,
+                0.0,
+                0.0
+              ],
+              "obstacles": [],
+              "vehicle_radius": 0.22
+            },
+            "planning_deadline_s": 0.15
+          }
+        }
+      ],
+      "seeds": [
+        48000,
+        51000
+      ],
+      "scenario": "disturbance + frozen offset",
+      "mode": "one exact episode regenerated for passive diagnostics; frozen records replayed",
+      "replay_original": "runs/variants/V04_robust/dynamics_budget/disturbance/robust_mppi/seed_48000",
+      "replay_validation": {
+        "trajectory_max_abs_error": 0.0,
+        "controls_max_abs_error": 0.0
+      },
+      "original_config": {
+        "phase": "evaluation",
+        "model_kind": "dynamic7",
+        "workers": 12,
+        "controller": {
+          "horizon": 20,
+          "samples": 159,
+          "temperature": 8.0,
+          "base_covariance": [
+            [
+              0.14,
+              0.0
+            ],
+            [
+              0.0,
+              0.26
+            ]
+          ],
+          "algorithm": "robust_mppi",
+          "kind": "standard",
+          "covariance": [
+            [
+              0.14,
+              0.0
+            ],
+            [
+              0.0,
+              0.26
+            ]
+          ],
+          "saved_rollouts": 0,
+          "candidate_samples": 8,
+          "free_energy_threshold": 5000.0,
+          "tracking_q": [
+            4,
+            8,
+            6,
+            2,
+            2,
+            1,
+            1
+          ],
+          "tracking_r": [
+            1,
+            1
+          ],
+          "tracking_terminal_multiplier": 5.0,
+          "snapshot_steps": []
+        },
+        "proposals": {
+          "standard": [
+            [
+              0.14,
+              0.0
+            ],
+            [
+              0.0,
+              0.26
+            ]
+          ],
+          "isotropic": [
+            [
+              0.2,
+              0.0
+            ],
+            [
+              0.0,
+              0.2
+            ]
+          ],
+          "diagonal": [
+            [
+              0.09,
+              0.0
+            ],
+            [
+              0.0,
+              0.31
+            ]
+          ],
+          "full": [
+            [
+              0.14,
+              0.07
+            ],
+            [
+              0.07,
+              0.26
+            ]
+          ]
+        },
+        "vehicle_radius": 0.22,
+        "speed_target": 1.4,
+        "cost": {
+          "remaining_progress": 1.0,
+          "speed": 2.0,
+          "heading": 1.0,
+          "clearance": 100.0,
+          "safety_margin": 0.15,
+          "collision": 3000.0,
+          "control": 0.05,
+          "variation": 0.1,
+          "lateral_velocity": 1.0,
+          "yaw_rate": 0.2,
+          "roll": 2.0,
+          "terminal_progress": 4.0,
+          "terminal_goal": 8.0,
+          "terminal_heading": 4.0,
+          "terminal_speed": 3.0
+        },
+        "execution": {
+          "max_steps": 160,
+          "position_tolerance": 0.3,
+          "heading_tolerance": 0.35,
+          "speed_tolerance": 0.8,
+          "goal_lateral_tolerance": 0.4,
+          "lateral_velocity_tolerance": 0.35,
+          "yaw_rate_tolerance": 0.35,
+          "roll_tolerance": 0.15,
+          "snapshot_steps": [
+            0,
+            10,
+            21,
+            40,
+            65
+          ],
+          "representative_seed": 42
+        },
+        "compatibility_seeds": {
+          "start": 42,
+          "count": 20
+        },
+        "holdout_seeds": {
+          "start": 31000,
+          "count": 20
+        },
+        "s_turn_seeds": {
+          "start": 32000,
+          "count": 20
+        },
+        "s_turn_max_seeds": 40,
+        "s_turn_precision_width": 0.36,
+        "pilot_seeds": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          42
+        ],
+        "scenarios": [
+          "open_space",
+          "narrow_passage",
+          "two_route_obstacle",
+          "disturbance",
+          "model_mismatch"
+        ],
+        "s_turn": {
+          "turn_radius": 3.0,
+          "turn_separation": 3.0,
+          "entry_length": 2.0,
+          "exit_length": 3.0,
+          "end_extension": 8.0,
+          "clearance_levels": [
+            0.9,
+            0.6,
+            0.35,
+            0.2
+          ],
+          "representative_clearance": 0.35,
+          "steering_profile_rate_limit": 0.8
+        },
+        "budget_counts": [
+          128,
+          384,
+          768,
+          1536
+        ],
+        "budget_q04_scenario": "two_route_obstacle",
+        "budget_q05_clearance": 0.35,
+        "frozen": {
+          "seed": 31415,
+          "samples": 384,
+          "horizon": 20,
+          "seeds": {
+            "start": 33000,
+            "count": 50
+          },
+          "representative_seed": 33000,
+          "sample_counts": [
+            64,
+            128,
+            256,
+            384,
+            512,
+            1024,
+            2048,
+            4096
+          ],
+          "reference_samples": 65536,
+          "reference_repetitions": 8,
+          "reference_min_ess": 100,
+          "reference_max_weight": 0.05,
+          "reference_max_rms_ci_halfwidth": 0.05,
+          "sensitivity_step": 0.001,
+          "orientation_eigenvalues": [
+            0.3,
+            0.1
+          ],
+          "repetition_counts": [
+            10,
+            25,
+            50
+          ],
+          "open_step": 8,
+          "obstacle_min_x": 0.6,
+          "obstacle_max_x": 1.2,
+          "disturbance_step": 21
+        },
+        "vehicle": {
+          "dt": 0.15,
+          "substeps": 3,
+          "mass": 35.0,
+          "yaw_inertia": 8.0,
+          "front_distance": 0.4,
+          "rear_distance": 0.4,
+          "cornering_front": 450.0,
+          "cornering_rear": 450.0,
+          "friction": 0.9,
+          "gravity": 9.81,
+          "engine_force": 70.0,
+          "brake_force": 105.0,
+          "drag_linear": 0.4,
+          "drag_quadratic": 0.5,
+          "steering_limit": 0.5,
+          "throttle_limit": 1.0,
+          "velocity_max": 4.0,
+          "low_speed": 0.5,
+          "low_speed_damping_time": 0.15,
+          "cg_height": 0.2,
+          "roll_stiffness": 120.0,
+          "roll_damping": 48.0
+        },
+        "control_fields": [
+          "steering",
+          "throttle"
+        ],
+        "scenario": {
+          "name": "disturbance",
+          "initial_state": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "goal_state": [
+            10.0,
+            0.0,
+            0.0,
+            0.0,
+            1.4,
+            0.0,
+            0.0
+          ],
+          "obstacles": [],
+          "vehicle_radius": 0.22,
+          "disturbance": {
+            "step": 20,
+            "delta": [
+              0,
+              0.7,
+              0.1,
+              0.01,
+              -0.2,
+              0.3,
+              0.12
+            ]
+          }
+        },
+        "planning_deadline_s": 0.15
+      },
+      "fallback_record": {
+        "impulse": 1,
+        "threshold": 100.0,
+        "seed": 51000,
+        "selected_candidate": 0,
+        "infeasible": true,
+        "feedback_rms": 0.34819636290964545,
+        "planner_steering": 0.2926940702973538,
+        "requested_tracking_steering": -0.7129419699355503,
+        "applied_tracking_steering": -0.7129419699355503,
+        "command_steering": -0.4202478996381965,
+        "it_command_steering": -0.10394262937712412,
+        "plan_difference_rms": 0.5781546559712212,
+        "model_transitions": 6460
+      },
+      "mechanism_config": {
+        "phase": "evaluation",
+        "source_seed": 49000,
+        "frozen_step": 8,
+        "seeds": [
+          51000,
+          51001,
+          51002
+        ],
+        "scenes": [
+          "open_space",
+          "two_route_obstacle",
+          "narrow_passage"
+        ],
+        "benchmark_config": "configs/variants/benchmark.yaml",
+        "selection_rule": "Fixed step 8 of IT-MPPI in each named scene; no selection using outcomes.",
+        "V01": {
+          "scenes": [
+            "open_space",
+            "two_route_obstacle"
+          ],
+          "samples": 384,
+          "reference_cost_center": 1.0,
+          "reference_scale": 0.8,
+          "reference_r": 1.5,
+          "reference_sample_counts": [
+            128,
+            1024,
+            8192
+          ],
+          "reference_seeds": [
+            52000,
+            52001,
+            52002
+          ]
+        },
+        "V02": {
+          "scene": "two_route_obstacle",
+          "iterations": 4,
+          "samples_per_iteration": 95,
+          "it_samples": 383,
+          "transitions_per_decision": 7680
+        },
+        "V03": {
+          "scene": "open_space",
+          "samples": 64,
+          "steps": 32,
+          "disturbance_step": 8,
+          "disturbance_delta": [
+            0,
+            0.7,
+            0.1,
+            0.01,
+            -0.2,
+            0.3,
+            0.12
+          ],
+          "disturbance_multipliers": [
+            0,
+            1,
+            -1
+          ],
+          "reset_thresholds": [
+            450.0,
+            0.0
+          ],
+          "representative_rule": "First evaluation seed, positive disturbance; show both thresholds and all signed/control cases in summaries."
+        },
+        "V04": {
+          "scene": "open_space",
+          "samples": 128,
+          "disturbance_delta": [
+            0,
+            0.7,
+            0.1,
+            0.01,
+            -0.2,
+            0.3,
+            0.12
+          ],
+          "disturbance_multipliers": [
+            0,
+            1,
+            -1
+          ],
+          "free_energy_thresholds": [
+            5000.0,
+            100.0
+          ],
+          "history_rule": "Previous and propagated nominal states equal the frozen reference; previous and current plans equal its warm start.",
+          "representative_rule": "First evaluation seed, positive disturbance, threshold 100; not selected by performance or feasibility."
+        },
+        "V05": {
+          "scenes": [
+            "open_space",
+            "narrow_passage"
+          ],
+          "planner_seed": 55000,
+          "planner_samples": 384,
+          "execution_seed_start": 56000,
+          "execution_replicates": 256,
+          "noise_fractions": [
+            1.0,
+            0.01
+          ],
+          "feedback_modes": [
+            "steered",
+            "zero_gain"
+          ],
+          "execution_rule": "Fixed warm-start mean and precomputed gains; independent Gaussian noise drives auxiliary state and actual nonlinear plant. No replanning or optimization weights. Paired noise across feedback modes.",
+          "contact_policy": "Propagate the full fixed horizon even after proxy contact; record contacts, do not condition covariance on survival. The plant has no impact dynamics.",
+          "normalization": "Per-state square roots of the declared terminal covariance diagonal; positions also displayed in meters."
+        }
+      },
+      "snapshot_files_sha256": {
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0000.npz": "2707db1390c8d6d690381a12c32241928beda7f8acac198d3ac7c0c422be2cdc",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0001.npz": "39853cf9f59ef9bec37caca9d261b74e6c5a7b106b4742886a31f23f43e2fc84",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0002.npz": "80668f39cae74a4210c186a7c69447bcfd663ae34f4851119519fc77c01a0b01",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0003.npz": "cfce7e6756a37365e5211c249c184544dd7755fea5c9c9122acfbdbabe4165e2",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0004.npz": "ec40e7164732bcc09d6eb920889ed79dc66076d562f6279190b52c1fb2341c12",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0005.npz": "d67c6fd7bf20225e320e284e296c61e071e87dab8e59f4b8b30d9e5e741621de",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0006.npz": "6a9d7ce8fa1bdba23c726922e47ecdb2f1ff15cb2abdb4118044c6147d3dbb92",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0007.npz": "2027d135b3320100cd892f65403543b2d2d04c41f814978fa3f54dc716dcd1ba",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0008.npz": "af29458530e9982430b763e0e2645c9d83ca6b7ec361200d1c1cdcc7dcc23d36",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0009.npz": "f174594753f586645d7626d72f9667f5176174aa7a4cbe4b643bdf218db394a7",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0010.npz": "db97a06adb573f800dc19b50e6cf57875f39cab184de15f75b37f4ec4a0e4c51",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0011.npz": "0f0001a1c5d1f4586015c8df8ff32776e4d7af105dfc5bb9f9bc66611c91b711",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0012.npz": "76167d0c02936f44d88b8455222df443188bdffd82c4b323f2aceb3ca70280cc",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0013.npz": "c7b75ac7974ca954674e44c88f8c103b2700956db277f267091bfd5535dac886",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0014.npz": "03c821bc9cc006c589e5392f0df4d9c73f4d00fc65b717a9ea14542b94644192",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0015.npz": "641182a8aa2af7a2e433149e914d5da48e0520b9840752918bf4b7de34707237",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0016.npz": "3b4986c5b54ab7ad43d1f0e887af19452a5d0c160a0ca8302e5f9d0fd1418e62",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0017.npz": "a786f42076916898aa0e15d9d5d6b7ed1d062d4c8eadf1d81aeac30b9e0ccfb3",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0018.npz": "7af8a925229ca1b0a8039bdcb0ababa8d7c430ad8ea3e971995daf5634ba9a8f",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0019.npz": "fbc8bed092f342381567099c27a53beb7229abc284245e69e73a1c70ecf9baa7",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0020.npz": "1f3299ca4914aba2f64b4cb25cff2917b7fdd113e2d6252c095bbf04b534bb04",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0021.npz": "be116d99cc7dcc11b8fefdbcc64a82f19fe3137cd45970f2c85364ebcb6ca506",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0022.npz": "4e7355de34c6182a8b009776cbca25b8e4ca86661a75caa884da60bb2ae49cc6",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0023.npz": "e42acb6ff01bd46ba55af512784487758124de0019fd8c1b1293e7839d2df37f",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0024.npz": "5b96b87881b7beca1a3dcc7fefffdbbf9f51a3abdff6f0a979a32ee24a984758",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0025.npz": "4e194d4dd78289b0fb3c8058a80527b941d930ff8addcfcce9df6221dcbc2fc8",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0026.npz": "3838d4a160fc9ceb12e53ec96c22406af3e8b504e6eca4ec86341463b3b5412d",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0027.npz": "70ddfd9fd9e7766f18b9bf55b2e0af6e53b4b5a89bd6af809dff15941807fcf0",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0028.npz": "32b194e2d7f710aa4aac2d9762004b304ffb6090ed2532aa53e2a8f999e38f9c",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0029.npz": "158509a6b892afaf650095b01bcf47d129f7aee4a9b1854b2c0112a13ba8bfc3",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0030.npz": "e0b9e2fea3a75bdd2f1255242bfa66cda888fcde3ce0a4d52820ed0fec92131a",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0031.npz": "dd7376e32b8fdee6f62c53522900a98fc0a5d25257704cca44d79d9b906a824c",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0032.npz": "5f424556bdced30ded02c1ef6c85e704bec054ef01b41fdd329e70a25a429c9a",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0033.npz": "56d15f00917300bce6c24c965d970896a7b3b28a4423cc992cc0041a522176c0",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0034.npz": "8864805193eaef0dd2bed31e588f72861dfe65ec8601f6b980b9fa1d8b1dd4ae",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0035.npz": "2cd30e1d4d443fa9a1d40f6d94bbb27b9b914f1229982799d09809fb0af4ceb1",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0036.npz": "6cdf09910a80f0716b2633f8d2c538f8cf792a7f4d7a9e272911027ef2679166",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0037.npz": "ec5a0746c9f937852cfa4877a4080eda1e65e2002c21c148fef9071ba8cd8bf0",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0038.npz": "faed3771051db945e28ad9005682b15037590b188fad76fc25ed38692d9cb8ea",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0039.npz": "2163e02d4bc18473179efa02bd9acd74bb48c9e3a8a79b0afeabed3f4196e6ec",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0040.npz": "520b25c2babdd6d80d04f42c4db0b6b6af43efc7780a77aaa0302c0215c54931",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0041.npz": "a8aaf2303dd07a6fd6802d81e6debfca78f99f54165342b8b3b74e0a4b395202",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0042.npz": "83a8224ebe29345846280ceb16eb10bb79780d45e5f228cd827f583f358e51e7",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0043.npz": "8947c43db81bfb48819e16ece7c0139a29338b98aa154f6bacb5e3767206d602",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0044.npz": "27af35860a103c2cb8743d0fd70d751f9702597c7998521f5cd6db3c5c4454c2",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0045.npz": "236a0c347c813a559fe0b7d492d868a59a238ea0a083fea6e1e0098ecd18f6e5",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0046.npz": "c61c952afaeffe42e2b12bf0abc95c87171328fb2d02da19d909bd95b3686bcd",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0047.npz": "0c97832379c393003bbcbbb91734ec4c399ceec5d456eae91073c4faaa03676b",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0048.npz": "4629ca8c2c8d872b9925fd69733ef0b31c2102e4983fb1a486de16f1beac6acc",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0049.npz": "9c33e1271b386ad8257c334cbf6cc0495048d98c428449e152d80d011d666c9b",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0050.npz": "7cf870d5b91f5f105964f7bf5ad429b0bed3034b7c02fa94580bd4e5ed4f289d",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0051.npz": "cb63a45958d17f4a76308175c78499c39a98c4f3722623948850192f0d691d32",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0052.npz": "a16c8d995d94376fc2fa5563920da3c1b0e507b02c359e32a0f4f7b221c8499c",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0053.npz": "234c959b4f1930d9b69aae88dc19de9c53e1784e824cdfc01f9f6f203d0ba5e1",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0054.npz": "44d7da8c1e9bf47d2984659e9efa84e038e70dc95d321e8e4679310a40c908c4",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0055.npz": "7c81f931c638c8eabf3c91236c4e55f3fd9e59046bf11f031d71e150b846ddce",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0056.npz": "ff1f6243f4d1328184291b4ed649c7f094f0a451901b1664009bb8dcfec747e6",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0057.npz": "8da3ff0e83446317c6555949d4830e78076da83b37626d3bd74716b96067c8e1",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0058.npz": "ba97c198efbd36ee76b4154bbe6b0992ddead67077ca71a9faf1070afe020515",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0059.npz": "a4f21e659c59353b5789651729c24cb58939baa320ce665fef2596e448a20806",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0060.npz": "8b86b910cf290ae5e4b63017be67c4260cf539076c604e79796f02061a6566ff",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0061.npz": "ea1aff12ec6fa14dc78dc3f415cb06085e304945f650a250a1d8a4a7050fb08a",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0062.npz": "b9bb12a907b8401eeddcde6f0b80f43e40a548be86caa39dc80b8397a0bba937",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0063.npz": "01ad1c5c7b1571f5b635f5e5a8d379cede7547a22ea3d380b640eb627fad4e6d",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0064.npz": "37d6393df359a9c47d403509201533dcadf4d4fbe262cc8f2a40a12dd9437a93",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0065.npz": "5bb97ed277284ff834cda795c90c6fb917f4d8646ea75eca47d9db4c9cdd53af",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0066.npz": "807169c987a7265c60d9bed4d979e61a1cc08e5a6fd6893d82b13dac42a5b5ce",
+        "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0067.npz": "4e0c65bbf216e5777a515e9b260d08979a2542d0181825d86c3e1d26b14fe07f"
+      },
+      "missing_diagnostics": "Original candidate arrays absent; obtained by exact replay."
+    },
+    "V05_covariance": {
+      "source_git": {
+        "commit": "bcfb9981d229818e890d5d542267d094da102a23",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/ and runs/"
+      },
+      "records": "records/V05_covariance.npz",
+      "records_sha256": "c467a1ff9b189ebe8a067652e21a8824a1f98c9071e7ad29b1b20727ccaa229f",
+      "sources": [
+        {
+          "path": "runs/variants/mechanisms/V05/narrow_passage/1_steered.npz",
+          "sha256": "5fb9a83740b083dad47a6d9d9a9fdecf19b218e3345b16400532cf23a3d8cdec",
+          "config": {
+            "phase": "evaluation",
+            "model_kind": "dynamic7",
+            "workers": 12,
+            "controller": {
+              "horizon": 20,
+              "samples": 384,
+              "temperature": 8.0,
+              "base_covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "algorithm": "it_mppi",
+              "kind": "standard",
+              "covariance": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "saved_rollouts": 0,
+              "snapshot_steps": []
+            },
+            "proposals": {
+              "standard": [
+                [
+                  0.14,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.26
+                ]
+              ],
+              "isotropic": [
+                [
+                  0.2,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.2
+                ]
+              ],
+              "diagonal": [
+                [
+                  0.09,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.31
+                ]
+              ],
+              "full": [
+                [
+                  0.14,
+                  0.07
+                ],
+                [
+                  0.07,
+                  0.26
+                ]
+              ]
+            },
+            "vehicle_radius": 0.22,
+            "speed_target": 1.4,
+            "cost": {
+              "remaining_progress": 1.0,
+              "speed": 2.0,
+              "heading": 1.0,
+              "clearance": 100.0,
+              "safety_margin": 0.15,
+              "collision": 3000.0,
+              "control": 0.05,
+              "variation": 0.1,
+              "lateral_velocity": 1.0,
+              "yaw_rate": 0.2,
+              "roll": 2.0,
+              "terminal_progress": 4.0,
+              "terminal_goal": 8.0,
+              "terminal_heading": 4.0,
+              "terminal_speed": 3.0
+            },
+            "execution": {
+              "max_steps": 20,
+              "position_tolerance": 0.3,
+              "heading_tolerance": 0.35,
+              "speed_tolerance": 0.8,
+              "goal_lateral_tolerance": 0.4,
+              "lateral_velocity_tolerance": 0.35,
+              "yaw_rate_tolerance": 0.35,
+              "roll_tolerance": 0.15,
+              "snapshot_steps": [
+                0,
+                10,
+                21,
+                40,
+                65
+              ],
+              "representative_seed": 42,
+              "extra_snapshot_seeds": [
+                48000
+              ],
+              "stop_on_terminal": false
+            },
+            "compatibility_seeds": {
+              "start": 42,
+              "count": 20
+            },
+            "holdout_seeds": {
+              "start": 31000,
+              "count": 20
+            },
+            "s_turn_seeds": {
+              "start": 32000,
+              "count": 20
+            },
+            "s_turn_max_seeds": 40,
+            "s_turn_precision_width": 0.36,
+            "pilot_seeds": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              42
+            ],
+            "scenarios": [
+              "open_space",
+              "narrow_passage",
+              "two_route_obstacle",
+              "disturbance",
+              "model_mismatch"
+            ],
+            "s_turn": {
+              "turn_radius": 3.0,
+              "turn_separation": 3.0,
+              "entry_length": 2.0,
+              "exit_length": 3.0,
+              "end_extension": 8.0,
+              "clearance_levels": [
+                0.9,
+                0.6,
+                0.35,
+                0.2
+              ],
+              "representative_clearance": 0.35,
+              "steering_profile_rate_limit": 0.8
+            },
+            "budget_counts": [
+              128,
+              384,
+              768,
+              1536
+            ],
+            "budget_q04_scenario": "two_route_obstacle",
+            "budget_q05_clearance": 0.35,
+            "frozen": {
+              "seed": 31415,
+              "samples": 384,
+              "horizon": 20,
+              "seeds": {
+                "start": 33000,
+                "count": 50
+              },
+              "representative_seed": 33000,
+              "sample_counts": [
+                64,
+                128,
+                256,
+                384,
+                512,
+                1024,
+                2048,
+                4096
+              ],
+              "reference_samples": 65536,
+              "reference_repetitions": 8,
+              "reference_min_ess": 100,
+              "reference_max_weight": 0.05,
+              "reference_max_rms_ci_halfwidth": 0.05,
+              "sensitivity_step": 0.001,
+              "orientation_eigenvalues": [
+                0.3,
+                0.1
+              ],
+              "repetition_counts": [
+                10,
+                25,
+                50
+              ],
+              "open_step": 8,
+              "obstacle_min_x": 0.6,
+              "obstacle_max_x": 1.2,
+              "disturbance_step": 21
+            },
+            "vehicle": {
+              "dt": 0.15,
+              "substeps": 3,
+              "mass": 35.0,
+              "yaw_inertia": 8.0,
+              "front_distance": 0.4,
+              "rear_distance": 0.4,
+              "cornering_front": 450.0,
+              "cornering_rear": 450.0,
+              "friction": 0.9,
+              "gravity": 9.81,
+              "engine_force": 70.0,
+              "brake_force": 105.0,
+              "drag_linear": 0.4,
+              "drag_quadratic": 0.5,
+              "steering_limit": 0.5,
+              "throttle_limit": 1.0,
+              "velocity_max": 4.0,
+              "low_speed": 0.5,
+              "low_speed_damping_time": 0.15,
+              "cg_height": 0.2,
+              "roll_stiffness": 120.0,
+              "roll_damping": 48.0
+            },
+            "control_fields": [
+              "steering",
+              "throttle"
+            ],
+            "scenario": {
+              "name": "narrow_passage",
+              "initial_state": [
+                1.0452180854185367,
+                -0.021651805757578937,
+                0.0016013720345062765,
+                -0.0038786993756005986,
+                1.6098966330868043,
+                -0.04718390762988539,
+                -0.08859927316697841
+              ],
+              "goal_state": [
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                1.4,
+                0.0,
+                0.0
+              ],
+              "obstacles": [
+                [
+                  5.0,
+                  1.0,
+                  0.55
+                ],
+                [
+                  5.0,
+                  -1.0,
+                  0.55
+                ]
+              ],
+              "vehicle_radius": 0.22
+            },
+            "planning_deadline_s": 0.15
+          }
+        },
+        {
+          "path": "runs/variants/mechanisms/V05/narrow_passage/planner.npz",
+          "sha256": "2e31755c77817eb1c0666ded8b5c8c28d75b7c5eb1ec2ca024eaec21ef612994"
+        }
+      ],
+      "seeds": [
+        56000,
+        56001,
+        56002,
+        56003,
+        56004,
+        56005,
+        56006,
+        56007,
+        56008,
+        56009,
+        56010,
+        56011,
+        56012,
+        56013,
+        56014,
+        56015,
+        56016,
+        56017,
+        56018,
+        56019,
+        56020,
+        56021,
+        56022,
+        56023,
+        56024,
+        56025,
+        56026,
+        56027,
+        56028,
+        56029,
+        56030,
+        56031,
+        56032,
+        56033,
+        56034,
+        56035,
+        56036,
+        56037,
+        56038,
+        56039,
+        56040,
+        56041,
+        56042,
+        56043,
+        56044,
+        56045,
+        56046,
+        56047,
+        56048,
+        56049,
+        56050,
+        56051,
+        56052,
+        56053,
+        56054,
+        56055,
+        56056,
+        56057,
+        56058,
+        56059,
+        56060,
+        56061,
+        56062,
+        56063,
+        56064,
+        56065,
+        56066,
+        56067,
+        56068,
+        56069,
+        56070,
+        56071,
+        56072,
+        56073,
+        56074,
+        56075,
+        56076,
+        56077,
+        56078,
+        56079,
+        56080,
+        56081,
+        56082,
+        56083,
+        56084,
+        56085,
+        56086,
+        56087,
+        56088,
+        56089,
+        56090,
+        56091,
+        56092,
+        56093,
+        56094,
+        56095,
+        56096,
+        56097,
+        56098,
+        56099,
+        56100,
+        56101,
+        56102,
+        56103,
+        56104,
+        56105,
+        56106,
+        56107,
+        56108,
+        56109,
+        56110,
+        56111,
+        56112,
+        56113,
+        56114,
+        56115,
+        56116,
+        56117,
+        56118,
+        56119,
+        56120,
+        56121,
+        56122,
+        56123,
+        56124,
+        56125,
+        56126,
+        56127,
+        56128,
+        56129,
+        56130,
+        56131,
+        56132,
+        56133,
+        56134,
+        56135,
+        56136,
+        56137,
+        56138,
+        56139,
+        56140,
+        56141,
+        56142,
+        56143,
+        56144,
+        56145,
+        56146,
+        56147,
+        56148,
+        56149,
+        56150,
+        56151,
+        56152,
+        56153,
+        56154,
+        56155,
+        56156,
+        56157,
+        56158,
+        56159,
+        56160,
+        56161,
+        56162,
+        56163,
+        56164,
+        56165,
+        56166,
+        56167,
+        56168,
+        56169,
+        56170,
+        56171,
+        56172,
+        56173,
+        56174,
+        56175,
+        56176,
+        56177,
+        56178,
+        56179,
+        56180,
+        56181,
+        56182,
+        56183,
+        56184,
+        56185,
+        56186,
+        56187,
+        56188,
+        56189,
+        56190,
+        56191,
+        56192,
+        56193,
+        56194,
+        56195,
+        56196,
+        56197,
+        56198,
+        56199,
+        56200,
+        56201,
+        56202,
+        56203,
+        56204,
+        56205,
+        56206,
+        56207,
+        56208,
+        56209,
+        56210,
+        56211,
+        56212,
+        56213,
+        56214,
+        56215,
+        56216,
+        56217,
+        56218,
+        56219,
+        56220,
+        56221,
+        56222,
+        56223,
+        56224,
+        56225,
+        56226,
+        56227,
+        56228,
+        56229,
+        56230,
+        56231,
+        56232,
+        56233,
+        56234,
+        56235,
+        56236,
+        56237,
+        56238,
+        56239,
+        56240,
+        56241,
+        56242,
+        56243,
+        56244,
+        56245,
+        56246,
+        56247,
+        56248,
+        56249,
+        56250,
+        56251,
+        56252,
+        56253,
+        56254,
+        56255
+      ],
+      "planner_seed": 55000,
+      "scenario": "narrow_passage",
+      "mode": "replayed",
+      "noise_fraction": 1.0,
+      "displayed_paths": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "contact_sources_sha256": {
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/0/diagnostics.csv": "4372aff15fd988c347a6d3284c47c25a10058bbc32660369c33ead7e6eec2acf",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/1/diagnostics.csv": "93511b6ae21418c67ed74b35a65e5a16f6c3a86c78d7f81c70478a969c71ef5b",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/2/diagnostics.csv": "3e75799e434fa780cf843bd8ab48fb1a897c84f7162a4bda8b2a9f4011a14ce9",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/3/diagnostics.csv": "43953114c91cc895e019cdde5c354a3d6b808933b1a59bae40eb5ec623e36336",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/4/diagnostics.csv": "c776ab1e2d4a883f4599dc9b59c9fa647ec9f329e28663c12c696e1d22268ffb",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/5/diagnostics.csv": "a07db383de705f8642783a06d04837abada1db313e8344864f62789b1a7c2abb",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/6/diagnostics.csv": "4738b895abcc732f5ad27979c5f7edee73bcfeb71978ad997dbae0c2a6b107b2",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/7/diagnostics.csv": "15e1a6784a4ddacbef328840ebff55c029ae6d97c4a4aadc9065749b4d2b3a49",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/8/diagnostics.csv": "afc7df5f21eec9750421cfb4ec900357a06ce345a82db56c311748f8ec298882",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/9/diagnostics.csv": "a5709e3f5dc48dc2496931aaf4f8217771db48d5e8dbe38e70ba4013e9a1d4bd",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/10/diagnostics.csv": "54c38c842653cd5f0f15a16dcaf001df2d29bef4de434481e60f071b35b3da1d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/11/diagnostics.csv": "7dab0cd104bcfc4ad70c18187c0ca9b8f74adc893dbca0789ed9d0f69ea4240e",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/12/diagnostics.csv": "a16a2426387013222e9bbbc372430882182fef7a7ef9e509241a802706fdd2c2",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/13/diagnostics.csv": "075326e4470f3ce91d4036c8ce7031a0ec152cde3eece6ef354af19c0f4bb92a",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/14/diagnostics.csv": "b2a3abccf6c0100a1492054bc0adc2b90c921e768cf69c007931f31dc2d0d972",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/15/diagnostics.csv": "aa31e3b6a09511f633305823f6e1e8b956990668336a819a1611621da4c2afbf",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/16/diagnostics.csv": "d15d70c13f5a428b991f2ccc81215fbf1903f44d866cfa217a9ed35817ae8bdb",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/17/diagnostics.csv": "c10566be3061a0c3e340241327e43243cf1a1c1c13d45205ed44eac246ac7d45",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/18/diagnostics.csv": "ccfbfa9cb18728fff0ef2fae9902f770eeb7bd38036fd35cb70f167e2109f7c3",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/19/diagnostics.csv": "175d113aadd678b4695acb6b479747caf02a75d7f47214f06d53c89c3c76e33d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/20/diagnostics.csv": "cb6b2962b7b0d1b2dfc99510487b8e14d13fe865447173b16f348496963638be",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/21/diagnostics.csv": "3f867018ca0b5b9c05d9a9484275afe9d38b387ea8b5e5ca9162a286b0e01412",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/22/diagnostics.csv": "df63b3185bafbfad90184b5d67587c48649cf03967b4f2b3e81166688f62cd46",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/23/diagnostics.csv": "c1fcef58b4f57d468e31e28bd04ba33bff93bd44fc7f8ccff62f19bcd69213e9",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/24/diagnostics.csv": "4814fba00a1a97255413d3dca0e81643eb8136c099f4e0c47525bbb88b59fc44",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/25/diagnostics.csv": "2af618e9d0f53d5b7a684cd2e965519aeb902c79a682d3b378a29da9704d9280",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/26/diagnostics.csv": "145f7d9b88b92d7643dfcd0a3cc0a6aa7197bc193a7ad7b56845ddff667de87d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/27/diagnostics.csv": "47e1e73e9448a43cf5964ac6b2462f1cd73530a94ae1428105d1b7aa1fa3f8ac",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/28/diagnostics.csv": "c4ceca05d95b8f5dd0cb83b2b8379be9ba338f3a5e0e799ccd62a50c5ab2f3a5",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/29/diagnostics.csv": "363a0782ef0b610461fea5d26e9b131db851dd69bb5e73a55386f796400b7236",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/30/diagnostics.csv": "d780b992c55726b2310878b1444f962c8f5545b2a2f96080ce73d895a78efc7b",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/31/diagnostics.csv": "66110f069e99a1d2ed0e4701619675139035402e390e76cc1ddf731e4b0d47f9",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/32/diagnostics.csv": "d7b27d4f3c06ab48a5a4322de55220fc3454892195245d4d34c717f2caea4f3c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/33/diagnostics.csv": "d7b291714494ed4f07b7a8649c3bbadd3232e167168d00b9adf4db9f713cdcbf",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/34/diagnostics.csv": "8ee375114a277930cd24f3f2d0fd58ac439179e812d9f680433db94560fe2284",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/35/diagnostics.csv": "155607fa265c45c93c3e7fa1b7d198291593848396bc11b2ab57e7cd0e508cfb",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/36/diagnostics.csv": "b48094b924a5c1227635b64571f49d8b9ac035e500bd3e89dfe9fa6c95cb275d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/37/diagnostics.csv": "cf067fb529667a9bba7982b659b283559f58ab2eaa046fa9d5f4c76868574292",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/38/diagnostics.csv": "203abed7e9dc0015ed90d5fe94dc5493dd7b134bfeb7c5c323e482d9ccca6366",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/39/diagnostics.csv": "0a9f65c500b57eef9126958d4ec48dd53847b60922d864a7b56ffb3719639136",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/40/diagnostics.csv": "7be96b0e7f50a952590bebae28fd9c374c5ab1d8112160867027cf4247cbe6ce",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/41/diagnostics.csv": "8719493604bdf746e85f8c5cc576a5e539be6c07e5f29fbfed038d9d9987245e",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/42/diagnostics.csv": "88c6f9c69d5c4ca18c887efc5e51ea576b4fe0575d3e7df2d7b9a428fb66dfcc",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/43/diagnostics.csv": "6d16eba750959feea8e62bc90e61cb3fb8d6fec57ecb8661f258b7ccefd58fb7",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/44/diagnostics.csv": "5b5cb6b2db127c6bd311d0c2cc6ed84d7f7ddbf3861d886909caa657e601481d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/45/diagnostics.csv": "4300a08e9e969ef7b138800ac6785f8b62e2c2cf220475aa81b5f0f9d79eef05",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/46/diagnostics.csv": "f210b07473775c54720eb3fff456f9af262c3651510b29d5587ed357df446db0",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/47/diagnostics.csv": "7eab831ae4405476479ee83c7035bae2dd7cd83b42c29f79862913b0eb4ea992",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/48/diagnostics.csv": "6abc894620645cc53980184b06692dbef75c64d2e20d6bc4386e2ab78a0786fe",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/49/diagnostics.csv": "5b0b0b63aa2a3d52a69fd1196adc2f7b151ca89e38d8be618a6fea1b246c25ef",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/50/diagnostics.csv": "dd74321c8f5b6366623de3144b5945a8a7b4e6260f32e2866cda747a12d6af7c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/51/diagnostics.csv": "c530976ccbb34237db29421b3e5427db9ea2a5c34bb241b9514c82f666a51738",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/52/diagnostics.csv": "11cbbaaa85c2ba7e65cdb2881e2c9c409b6e3c50782b96b8ff3cf4db96a9d527",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/53/diagnostics.csv": "85cfec92593c4f7ff4950abb373efc599075dc1184afafabc789b9fbba4d5009",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/54/diagnostics.csv": "8381357b0303ea6e06d47e3add4cbba0405c5be3c74dc923900e7fbd5a6fb6b0",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/55/diagnostics.csv": "351114ee951d591bfae6ef2aea43371f4a351342a4523c201495f885dceec5c1",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/56/diagnostics.csv": "b6404aafccea01726f60896bda76a0d07ffd16077d287b400dd97013dc88362a",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/57/diagnostics.csv": "4a41c0f986314d08604b68de6092f830cbadb84004238ee4a8b56bf91db50703",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/58/diagnostics.csv": "fd340ce951b79c100ea768f7091953893e15c38cb1ced409b408f640bde7c4fb",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/59/diagnostics.csv": "154161afc1e6e316dd0ebbeda27c5b2bff6c52438d729c668d5139f025ff604e",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/60/diagnostics.csv": "9b2546892462ffaf6014768879d61c5e4a6b4a1e8b8c07469ac51f59628c8102",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/61/diagnostics.csv": "c1245e8b02baebc23801dc5ea43f2d57303b613278eda7fa6877c7ac4d6dad8c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/62/diagnostics.csv": "5b83a63c157fad612e5bc7c1589d42b979f4c2688bfc909df6e04844ed183d40",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/63/diagnostics.csv": "ea017fdf29bbdcf1b8fb893c4363f6291e149d4a3899afcc1694cfdb9e28ac70",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/64/diagnostics.csv": "5b29a34d7955be9655f20ed2f6a2b8d2d234d2e58bb1238c246813bd9bd4f29b",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/65/diagnostics.csv": "44699ba05ae35414eb0db7fcd15adb6056773bff26f19b062c267fd70b4f5ad8",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/66/diagnostics.csv": "1feadf24434bfc3004438a9e445e0d7f1b1a015846dffb57fb5d658f8f3d47d8",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/67/diagnostics.csv": "1cff4bfd41e51c2f04a7d0fc791a27585527ee0809cceb927dd5313b4a2ee672",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/68/diagnostics.csv": "84bdf11a5392e3fc514d50db8d9970ab055993a6fecebfd875dab297a27dfa69",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/69/diagnostics.csv": "83db1de85babbc0e8f20f487077cfef7cac744d4d3538be8976c209b9fe82c0f",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/70/diagnostics.csv": "3040ad159ce5619e5e07654497841f8f1661a7e755c06a06db1e679072d29f54",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/71/diagnostics.csv": "dda8107671a0cd93b9f76086808b50b0c1ec12ed898fe85876c0b61c5129a11c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/72/diagnostics.csv": "346973411643231dcdb164ec583e50d49571d4cf359553082a47e353df62f38c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/73/diagnostics.csv": "453804bb11e72c2aa6ecae039a6e0275fc4e29417a75dd6c94917dbc8ba37b29",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/74/diagnostics.csv": "072ce55310d0e96291e545e200984811c5cbbd8d3b1404fbb89201ba149acdf5",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/75/diagnostics.csv": "8e71bc22f904e9cd4fd1de7b6b5f988c01610c3df1a4b252783859d1297c3774",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/76/diagnostics.csv": "d5f5e3af204079238e0b8ef0d5c446960f29213031ca7036a92ae0d8923a215c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/77/diagnostics.csv": "5f1674d1e50e4dc3aa03a12cb2d3910616eb875aaed774a3cc4a9a3989fedb40",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/78/diagnostics.csv": "2042b22a13b30420cb889b62f2b05f6e1c97f018dc77092a0c32bbd3355f5752",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/79/diagnostics.csv": "b15d17a165a3e89647299874b29bb6f5e38aa74e85daa93e9797475cad485f43",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/80/diagnostics.csv": "c4387ced461202e80efbd2b8db6bfbd438245c7b7eae226d2e1c19efb0dc9abe",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/81/diagnostics.csv": "9e0e11c1e82afc3a53a02596bf8d111d61de25ca43d069b76c24ec3f0984012c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/82/diagnostics.csv": "595048e558c5dcae1bd86dcb968b667686eb6471bd6640ac574427c50d257255",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/83/diagnostics.csv": "cad1f95a2bdb03bb332985ff99a092aff4a4ea5b2a16b5e1f6406e7f559f6c99",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/84/diagnostics.csv": "e8f6509d206cd667aa36f6341418735248d34bc56a15e173239cec7880440123",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/85/diagnostics.csv": "0432c3e7db2fbd7a2a24d25ea03bb591d6d2737796d0a6e19a081d16f0402007",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/86/diagnostics.csv": "6845ce7fd99d977568c8c837ef62d8f9f9c895e51bbc49bb9ec28f8c719b882f",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/87/diagnostics.csv": "d7b4766721430ff6f4fa4c0018456b5a17e57d9858106ec9f8aeda8994fceea5",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/88/diagnostics.csv": "129ae9105eb03b95a4ca61ce249b8d897cbd2e64177fddd0a6a010bb602d4376",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/89/diagnostics.csv": "33b3fb7a2deee9abceeb1934ae544594900f09dd7c2f88b4111036f9f3212380",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/90/diagnostics.csv": "0c3274d9f1779d37240e118e34df7ed273382de61640545ed4030d588f09b26b",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/91/diagnostics.csv": "98790bd23682d095ef0a8975927e86489f38fbe09f8781d02877cae819cbe1b9",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/92/diagnostics.csv": "ec48725925235619576d8f426b774af726c6b8f1f74c4f77742a8bceec2722a1",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/93/diagnostics.csv": "f816461f7a4d243f742ce7aafd67bae3be5ee8b62bd701dcee17a2e426a16a1d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/94/diagnostics.csv": "a357e4d5bad8bd7561f54d51b25914c99eb6d3002173407ed496782849e9a9d0",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/95/diagnostics.csv": "20a5967767ac00717452d0cfbe325e5e39134e82f8c2bf345b2c40093ccee9b9",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/96/diagnostics.csv": "09343f01d2af7c9f587abe4291895f3d2ef2cbe0ac3a85179f17b619ac008f74",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/97/diagnostics.csv": "b6860884ee8f66054f7246686f836e9b83ab7dbe403d6474eb923b5faa971afe",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/98/diagnostics.csv": "20933d0efaa400963c646d980e3a0ee33091a024da9c7d46e6dc56828befbd4c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/99/diagnostics.csv": "a4ed3ad215189969b7a68162a106154562ec7fbcbb4467873dafa8bbf24124ca",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/100/diagnostics.csv": "3ab73374cb3be49304e30d3f6f8d5633d9cdb9cc44d805b8c55ca6be935501a9",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/101/diagnostics.csv": "c536f71e6f6edb8d40a9b56cb61e99cc8fee3b7966116e20907ed175fbb0e0a3",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/102/diagnostics.csv": "1551d50341868be2015fbd910f7ef7a1370f8c241ca9fb50c4863002cc3c2567",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/103/diagnostics.csv": "68ea0b9d0a5615e76a6ea15ddd7823ba219d0aa8f992809c89fb6b699a925cd0",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/104/diagnostics.csv": "6b7c97aa629fe6f1efc4069094ff10adc4826fcc5fbd47fadb802399ef088f76",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/105/diagnostics.csv": "4a110e07f45c1efcb572a703612912125f9b0bd2621e7c012456053f11d74fe8",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/106/diagnostics.csv": "968d76fc3f0b5cbe4b6042f4c99db942e96a90bd8bdb65f8da1ef39d29892265",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/107/diagnostics.csv": "f1e292efc95f34b3151b71dcbd71b1d7668ddc2baa49f8c7649f9d7a67c268e8",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/108/diagnostics.csv": "37b9fb548c99c8baa1638db2bfe6a103486c54dc8901908df12615960678d926",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/109/diagnostics.csv": "adce1b1baafe6e5de751ac4d9ad475aee593f8bcd5c1a4eda5f844ba65762466",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/110/diagnostics.csv": "0becdbcc5599b1c027e8273aad55f21e21cb9063bdad6e1c59494e146eff9c24",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/111/diagnostics.csv": "0574cd0247ae0bc23be569a4118a25ab9c69d661a6e5ac3707b69d4401dfce4f",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/112/diagnostics.csv": "009932ddbf49ce947635ab74f098e418ff94ca5977b0dbbfe20ba6dea4250f1e",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/113/diagnostics.csv": "9b192bcb802671c2421e0c1f76cc89c7b0a44db09581e3a6e78e74d1f3fd8b56",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/114/diagnostics.csv": "835bdf515a5aab439f5bf39bd6d560a0cee887693603a8087b4f5b34cebd8ba7",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/115/diagnostics.csv": "abd37c6a9a45ddb74f07f51b65ad16e83737b460a3e02ceb88683c3fd7a385ca",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/116/diagnostics.csv": "abac7e2497efb6707a830b5781beb3c351f7c7b02fda2b88e4b0cf3c4b8c9f51",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/117/diagnostics.csv": "6cd92be9c99e91f53e20d9e62de10202b0c17c04375778f61e917f125f257eb6",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/118/diagnostics.csv": "9e514690259f3955505b001768141be2de13dae04df2d37fcaf0f199caae0250",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/119/diagnostics.csv": "cbeed917dd2a167fac3e8f6f28b08112353887e1224b16713cd1823135c29001",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/120/diagnostics.csv": "437bb5ac1e27e4526a85fa04969f6e76b418d7759c42a4977e670503a34f29b7",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/121/diagnostics.csv": "810e6ed94b7dc2d7a1752a7eabc597b852e4743b9661396260b96c8e7f9193e8",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/122/diagnostics.csv": "821ea077b20da5a222fcd9d86c56fe355b1ff4a10dc9b10631c1cc7dd5878bd6",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/123/diagnostics.csv": "908b96e7a9d8c64a62532002a913ca1e0a0a58bd329179eb893038202f69a499",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/124/diagnostics.csv": "673fc24dde1a7e0e0737f4bd3c8a09e1decaee0decd3b71277849a23d93503a0",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/125/diagnostics.csv": "60d4390733854acbdf1b18c2505340ebbd7b864e4dfe314e3a5c5d5e08c769f7",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/126/diagnostics.csv": "da871091dd078071dbf75da5ec51ec13dcc768c514e90fef0777ca91a0b13e8e",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/127/diagnostics.csv": "3b25e84972c071aca572829539911b4271255019a18d914a108de9d5ed6f8c47",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/128/diagnostics.csv": "284698dfec978c8db63111296ddc7cbda24f3af5387f8db56bc3312913e1813a",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/129/diagnostics.csv": "a8aecc9da202ad9733b39940d6c8de5c23cc97d35b8fbfb1b188bdc2af9afe71",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/130/diagnostics.csv": "9d0d0bd8be25723b01241cd7f14c2c976db12e5a3aa0311e1595e058cbf4b6fb",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/131/diagnostics.csv": "11b42eb2c37226619602ce0b46862b9134d33dd8e0cc5206af187e23bef5d0dc",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/132/diagnostics.csv": "6600bb66bbc09fab911967cdcefea595fbc0ab415dd740dcd231daeda057478d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/133/diagnostics.csv": "3841638c4dd98c699db8204100f4a21a89122eb1dc3b79cd61851427e5c2cfde",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/134/diagnostics.csv": "13ca3fbe55589dac7664e5a509527486e30f2050ce4c87870e232d73b386cd8f",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/135/diagnostics.csv": "bc8a51b2df8a5024c6d57ca6357c82dce0a5650d5deb010dc59947a58f8c23d9",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/136/diagnostics.csv": "cc36ee731c3b6353d15e60344327a951d61936c1511f6e703eebc985f7778f6c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/137/diagnostics.csv": "bfd45c91716ad232b51b3c64723827f075e5ada062d0071f682c81576237cd4c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/138/diagnostics.csv": "9a202c951d9a66de6fd79766aba2c3924e1d389dccfa7515e55648ab1c6a1456",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/139/diagnostics.csv": "f9eb3379198ba081a5bbcee94fe10e8afba51e2e0dda0eeee6d1e9bcbaefcf89",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/140/diagnostics.csv": "c5f95df118bd95287ff17adeca783dd0335772294a9e10c65042217f5fcc300f",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/141/diagnostics.csv": "8bce5b4031819fccc9d475090ed1ee9703c7ef70b566cce5586845115dd4187c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/142/diagnostics.csv": "d7d7c03f0f01308eef80fcefd3bb3a1d32a0485c7ae31f488927be3aa60e07ee",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/143/diagnostics.csv": "8e48664d921b52ea57ebd75d5f91c7b4b23b15c6f2ccd67f373febf8a9928d92",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/144/diagnostics.csv": "66e13f5df3230c7e48d8ad33dad73a00d0f410b3be64c5a479a346a81f1e8271",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/145/diagnostics.csv": "416283009e279abe9aade0f8730bca6e677846af7c3b4de9b058695ee50b5b74",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/146/diagnostics.csv": "cc5a660101ba7665249a6bdb9792362e3831f2af6140815d22f1e8369d842753",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/147/diagnostics.csv": "3f73036de92a2b70df89975afe53ae6af0b7a14457a5c05fd02e97fc817419ab",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/148/diagnostics.csv": "64eaee0876abf6119921bc2ebb60b75322c2c96fbbd76606dbabf85f06b95663",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/149/diagnostics.csv": "bdb8b29bfa38f42ff7c7113b2c129fba87568a0b582a57e96805695d0060164a",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/150/diagnostics.csv": "c8ffd9f2ad3478882ee10b5d8298ae4649fd0e2593dfc751103416a2284af055",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/151/diagnostics.csv": "9ea244bb40a1e9096d451f43d5547069681e2f83ae2362929ae4fa5ff86b256e",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/152/diagnostics.csv": "bbed84e1bcdbb55c4b29d98277915bba374ec42e8a6cc5d1ad378c7aa5c52f9c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/153/diagnostics.csv": "1ac5eb5795b8ae0e10bc77db25269c9a1412bfdfb627d3e600a64ada7261f8d4",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/154/diagnostics.csv": "1bc7413a1b0df434468f73fbc58bf537a4ffcc107148e4d353f1be4b66c9cc2d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/155/diagnostics.csv": "c367b3b6b1a4546416f2ab0d802e26663fa19af21fe6371d20731662441d1a2f",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/156/diagnostics.csv": "48fdc064ec12d72fb12acbb2ee580d9bd8a380b6c821a9780752e98dcbf78871",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/157/diagnostics.csv": "56dad5a095aadcfa84e8c7d8ada53ab61d8168a360dac0c49dc4bba70a4f9dbf",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/158/diagnostics.csv": "f2d71f363b3fa971178370bdc733f85acce7d1eabe79fd279ca93bc3c5fe6f7b",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/159/diagnostics.csv": "fea280149b8b12a2a1a9932d106e5d9bac21e3d189368060864a237c9d7d2cb8",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/160/diagnostics.csv": "e690c947bd414980e2d2388e5e610c13a5cc5a8fa078bbd45e275ed1bc7d6d60",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/161/diagnostics.csv": "ca0424eed71a6691e443f50a990dbc77fc01c085942b0125b7478c12a17108ee",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/162/diagnostics.csv": "9a0e190ca68835862136dfd16c298ad29bd8ab8a0a2b98a6a9d50814ec0eccda",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/163/diagnostics.csv": "e30779413d4b231f1f85fef56b4d4179792929d95b9b4bf64fa503ded937b8ae",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/164/diagnostics.csv": "93be4a447b7cc43dc0afabf9eba4e75aea45866d9fd453339638ef53440fed35",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/165/diagnostics.csv": "21f2be81bd4f5255c515fed0702e5b69be7fd3cdba2b6b8691f004a234e1fbdd",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/166/diagnostics.csv": "f423325caa8956ca96cb89744fd3734f910d6d0de6a0dffe0a4aa767e6ddb000",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/167/diagnostics.csv": "31f9805648edf9151a25da6ad02926ceedf21dd3138f46cecd4ad89a49e96ab4",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/168/diagnostics.csv": "f17a76d2ccd4a490388630a457edc234dfaff2d2f172e60f9af445afd646d00d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/169/diagnostics.csv": "ada7775b33e27a3550311a43b5e922f4fd2c324a93d756f91939897257830b1c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/170/diagnostics.csv": "1bc57c4ce7e40b881f95c9a57bc35e9bb07dfacc27fd6889999eeff2ff12c87e",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/171/diagnostics.csv": "17401ce170f959f8267eb9ebc809fbc97c05423493f4858be212d1192bdad464",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/172/diagnostics.csv": "03c40b7d6b3000d0e7abf3b5591aeb3dc9e6658c8ff222cd72bed016382c806b",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/173/diagnostics.csv": "97cbfbedb844d6cc34ccc90e9ec3349e0575e640f28626aed3921067524bf15d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/174/diagnostics.csv": "c4ed87a026dcdf6168d036df666beea24f754460704a405d88b10596eabb5df0",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/175/diagnostics.csv": "1fbe4ef0c1b32e152ea6e41a3b6a5c55041dad811ca8b07bfe660f59a026f753",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/176/diagnostics.csv": "671347a157245ce29c07e418e203f0c74682d0f5a61c3e247fabff1953f43890",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/177/diagnostics.csv": "de93aae91a3ec24e3c25a58e12ab8b0711401b55af3d40e30e4ef56e65e31cfa",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/178/diagnostics.csv": "4450cf3546300298dad35a760d57349a801143ce09532fe080ed3d87b99e1b7a",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/179/diagnostics.csv": "7102f91343c5c6546d2f9d8d7e7d994b81c52c64a9f7ea44ba7ea884e13a9f2a",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/180/diagnostics.csv": "b9f105492bc6d7a66ef827b02d954be9856f34aad16673988c2e26ad8dfd02ce",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/181/diagnostics.csv": "f14e01958eff883dca7e93ed6f6c53092e5ae2ccaa434be18f5a6083cd8dadc2",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/182/diagnostics.csv": "b9c37ec5caa490dfaf866469d261e7194b28b594a52a125b5418e3fa5dfe84ce",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/183/diagnostics.csv": "18bcf9bb868d339f6a64e7b5f728f4cac7b160cb3d5317f5603818180e7af08d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/184/diagnostics.csv": "087923503ba6cb2323f8f796c231a3505bcfc669c4f550fdc8bc58797f0b2d0d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/185/diagnostics.csv": "3ff3664db26b11089397ecb8c3b59e98ca880f537143c4bd78b4e12cb70e26c8",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/186/diagnostics.csv": "e2b58477ca62d48e2492986d99c6ba8eceb99393b29ba5f9f5731a034c12220a",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/187/diagnostics.csv": "9c5727d5cb5a8a7d116dd4d5458b8df75dc92a6eaf7d8aeea92ba75e19c9a7a3",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/188/diagnostics.csv": "f7b9c8b2799fda14dfe02f2d1946f97d6fee454898cb380c95b68b098ce9cdfd",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/189/diagnostics.csv": "b938af4bc22c5ef7a0858d9c954f3345c60e74bf2cfb9339465cb60bc207b35b",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/190/diagnostics.csv": "89524347aebdf6b757121eb644cd2a729f5ad8f5dfb3aae03b3975a4ad08378b",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/191/diagnostics.csv": "b665fde20edb87e0d8b5bf231b67edf6d25b93b58f58e85656d19769d5b77049",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/192/diagnostics.csv": "ae951815d562d82d87ea3426bc5ffd7728f69f11d296e6ec67d7cf5f2eb59d71",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/193/diagnostics.csv": "fb4c58d610fbe07e9726328edf35864c5e12bdb97f04a2efccc618b0f2ff9d56",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/194/diagnostics.csv": "6818a5b15e06b1e2a133dfce8ba28cb0bde447121eed1f245ba1cd57fe832381",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/195/diagnostics.csv": "a9c1a68b505d728e52fa21cab2b3c6d595be7b387bef50e940072b6ff2f25c54",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/196/diagnostics.csv": "19de7b47fb06b4a0c4f2a621401245fe9a9bfcb34ff648fa92bebf40af09ae74",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/197/diagnostics.csv": "ba0fa08ac9e6d826a5131455ec0a48be1df938ccb4570b4e132c44ffee04d5f0",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/198/diagnostics.csv": "86df1a389f5b978ad528b6a45e7298f21301d43e388707bf781d120bc5615e47",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/199/diagnostics.csv": "1b6c6982c09f3e53725756688684978ce5f96a0b15eaaaf75c1270e6f8d83f78",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/200/diagnostics.csv": "b4849113ed6328867ccd0cdf1c30b8af79ced1d8e0063ce697b7f872ceb603ed",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/201/diagnostics.csv": "b29e1ba76f33bf931cb7501f7f9a6a835d83f855072ea050f6936c6ea17bc05b",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/202/diagnostics.csv": "d2344e274568f1c3520132521d5a14120ea0d5362afac21bbcbf53062344350a",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/203/diagnostics.csv": "1a188164de46c18e10ee0e66dfe1329bee8fdc4e1f5a7ee3b42486aef0675987",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/204/diagnostics.csv": "bd75a9eb517045993f9ce28fd00c8a3ac7dab3459ef02844147ea0f6b34347e4",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/205/diagnostics.csv": "e55f0791a4d33fbba1fa8d69ef93f95e82cdb0dd06b4e82ca705cae87f7a74fc",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/206/diagnostics.csv": "b9ecb6a6088c13c461d88a5dc26b637ada797da9ec75271162ec34acc9d63c35",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/207/diagnostics.csv": "2a92772083ae6262173ae52ace6ecff01ecc3ca350e0ca17ebaf105d09c3436f",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/208/diagnostics.csv": "be2cbdbf991746fc6f29c3ff828e6e416e10be77447d1f366c0c58ab21d8d3df",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/209/diagnostics.csv": "0230a08412d3ca6730cf1800475a464fa313d8c59dad6398c45b4ab6151d349e",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/210/diagnostics.csv": "c2e4cde886c3d019d043dcbd6c127d0d87b164b79c0ec916c0816898177c5442",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/211/diagnostics.csv": "30a7ae20ca7758e4e5fcbc933a1ec5773c1b6decdbad3f1695fe77fa23b9107d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/212/diagnostics.csv": "db0deba4cfeb0fd56a855654e36471b1b6bcda3df4a5563d3bcfae7935abcc32",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/213/diagnostics.csv": "2ae5e623847a512a1f222446f7642559ce7c9e98eeeb3f71818687dfebf1b22c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/214/diagnostics.csv": "a45b8b8e5e9c98a12a2a9820f900b9c024dc72061447d15d618c6c887476d620",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/215/diagnostics.csv": "b5dbaf3948a409a6f169394462079b83dfa9e687d2e573fd74ffe076080f5d18",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/216/diagnostics.csv": "cc3bcc2b83cc57d43a11768dca3de5e75e6288112b1931db06dbb447ebe15586",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/217/diagnostics.csv": "954a2ddff0a4bd8c535b2062a10a794c3b2ccc2bfa3433354a71af0321dde22c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/218/diagnostics.csv": "a4d81a24618754d2083a4ee0d620427a4d7f6a9c9ea8d9d1fc02010bc226f758",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/219/diagnostics.csv": "6cacdabda8baa93b7c96878a3fa8907affd5ce77446da851431e9503471b0070",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/220/diagnostics.csv": "a9da42088ff226eba8add4d7c16bee41ab48ca6ced19f76911ca9171cfe5cbe2",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/221/diagnostics.csv": "d6efdb69eedf967ce790293eed3c299958c1765053aff13368d4a5175d23584a",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/222/diagnostics.csv": "25fe2d045fe9459c7e9059849929260256f8603e661602de0b2570a09939b64c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/223/diagnostics.csv": "a02baf6465e9f5bbaae4a64837fbc9b95c897287d19c545b1c75c18c20156658",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/224/diagnostics.csv": "eb260575059cc53c376fb1c1130ecaccab93228a71c97b1b343e50ca33c5922f",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/225/diagnostics.csv": "ac6b4c11ff89866404a60a697c1a98fff6b89d46ebdd9357a12b41a0bda45343",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/226/diagnostics.csv": "cd5a3729edc54491f892420e66adff9f1b84a834e29f6f1ef108e36105c70f0a",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/227/diagnostics.csv": "9a1f152fd9e350a255895387b6f7843883dc18f9c51bc0328dc135a344834dd2",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/228/diagnostics.csv": "e93aca5e78f926149344219dbe6eb99ac7bb4a88d23f1949566662d6a92f52ac",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/229/diagnostics.csv": "a49c2c458763b5fca4e2d1cfd9fe1e4fafe80921fb2c6b2853f78525250f7d49",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/230/diagnostics.csv": "9c4c50c0f1637c6095f52c82c2408b8bbb27d799aefcb0a7bef3324694025e4b",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/231/diagnostics.csv": "47bfc3ce027edbfc2af2109102fc85a349c2e4d463b115ccdc8aa0913190374e",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/232/diagnostics.csv": "353dfd11a13311c33cf8f73f53a9ee48e656363c190d41645b8257d14fed028c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/233/diagnostics.csv": "8bf1741aacfeb3833b65d5b357a0baed075bfc8d1d824725d70357a7aa584cc0",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/234/diagnostics.csv": "9149c6042068f171028c26dde757aadbb77e92b32003d5394651fbe4851b5a6d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/235/diagnostics.csv": "4c6946b86f2b945d4f4040c5e84932d0a0f8c74815446e4e0c6bc24747e93258",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/236/diagnostics.csv": "fc5c127211b58bfcd7ddf629fbcbf56dff20828433993d5d12c0afdce77691d5",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/237/diagnostics.csv": "c579792514854e9a144e794ffbfc06663e67c6c79b2640f4edaad8c0be491c5d",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/238/diagnostics.csv": "d72185e6a1fe4845b24b092794813d57b0fcd1c0a2c49cada09d05e42284248b",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/239/diagnostics.csv": "a12f321634ac70a389f1153c33e180030af16cffc97e4af04537b0903d908058",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/240/diagnostics.csv": "c5850e298a8cd64bdabb93326ee035845efaf2fb1ea479488aa8c84255267108",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/241/diagnostics.csv": "69727dd92c0290acb00de58d9a945c3dd07bf433503944f601e9345f7a1b003a",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/242/diagnostics.csv": "64b88a5764841034f659008d15cca8566c7a9defaf67d79bb7a9490021e97bd5",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/243/diagnostics.csv": "9a661c268c875f0d9af6de72a7645ad1fb8d99d5e03897dd4db2209d08e0deca",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/244/diagnostics.csv": "eba3eedad2eee73fbb1ece88531304ae0d1f5a61fda76efc3835797a6ee39d0c",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/245/diagnostics.csv": "8b9fbd9884962a6fadcfaef35e21d542786e52f009f55bd5e8e389aa39f8d9c4",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/246/diagnostics.csv": "a53759c1ca2d0c3adfbdbf42f61ae55244ca22a6cda04fae8a8b669816c9d35f",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/247/diagnostics.csv": "29d1bdc24d9f1e7b873575023b451f99096f9dc14b82f8c5a4e78a6b287431e2",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/248/diagnostics.csv": "05ddd34f400437b27531089e917b0a683f17b233d4fd11a62b01a6cbd7ff6878",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/249/diagnostics.csv": "e031214a251047bd66bb17af5e80c17789fcfb8055fa567d8a213692ac91dcce",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/250/diagnostics.csv": "f1c7b30a277c1e7ef7d5ed0d702cbd89d1c459fe45f8f068cc6a55a197d156e2",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/251/diagnostics.csv": "5a2b31dfda449ce675cb082ddd7a1920d75bb9a4e5b4649445f7e80f56518b17",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/252/diagnostics.csv": "0a6ba4b48ef87f95072f1b51480eac04088df55059c4cfbc5f770f9b378b2561",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/253/diagnostics.csv": "0e573dbe1b278297e0152a582b96ac43b9a3e1f0d0f7b3ab64ba6a0b58569022",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/254/diagnostics.csv": "7ddad8dad9867252d83d6952e32a7e808d8c8b327b28b5f0bdc2cc51efeb93fc",
+        "runs/variants/mechanisms/V05/narrow_passage/1_steered/255/diagnostics.csv": "89ff985b9852bc95691e34ef94fdc3ab36076922ae37dc7200df2d1e11672350"
+      },
+      "missing_diagnostics": null
+    }
+  }
+}
