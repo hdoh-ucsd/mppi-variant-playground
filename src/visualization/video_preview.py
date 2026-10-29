@@ -17,7 +17,8 @@ def export_preview(name, root="media/experiments"):
         raise ValueError(f"MP4 differs from recorded provenance: {source}")
     folder = root / "previews"
     folder.mkdir(exist_ok=True)
-    target = folder / f"{name}.gif"
+    # A distinct URL avoids reusing the original title-card GIF's cached image.
+    target = folder / f"{name}_loop.gif"
     start = clip["render"]["opening_s"]
     duration_expected = clip["render"]["main_s"]
     interval = clip["render"]["frame_interval_s"]

@@ -227,3 +227,26 @@ def test_main_axis_labels_do_not_overlap_scientific_annotation(name):
         video.update_main(fraction)
         video.fig.canvas.draw()
         assert not video.ax.xaxis.label.get_window_extent().overlaps(video.note.get_window_extent())
+
+
+@pytest.mark.parametrize("name", NAMES)
+def test_readme_gifs_have_no_title_cards_and_do_not_redirect_to_mp4(name):
+    from PIL import Image, ImageSequence
+
+    metadata = read_json(MEDIA / "manifest.json")["clips"][name]
+    preview = metadata["gif_preview"]
+    path = MEDIA / preview["file"]
+    assert path.name == f"{name}_loop.gif"
+    assert digest(path) == preview["sha256"]
+    readme = (ROOT / "README.md").read_text()
+    image_lines = [line for line in readme.splitlines() if str(path.relative_to(ROOT)) in line]
+    assert len(image_lines) == 1
+    assert image_lines[0].startswith("![")  # Ordinary image; no surrounding MP4 link.
+    with Image.open(path) as gif:
+        assert gif.info["loop"] == 0
+        duration = 0
+        for frame in ImageSequence.Iterator(gif):
+            # Experiment frames have a white canvas; the removed title cards are navy.
+            assert min(frame.convert("RGB").getpixel((0, 0))) > 240
+            duration += frame.info["duration"]
+    assert duration / 1000 == pytest.approx(metadata["render"]["main_s"], abs=0.15)

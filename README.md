@@ -188,7 +188,7 @@ and completed episodes have different durations. The cost axis is logarithmic.
 
 ### Reading the experiment videos
 
-Click any animated preview below to open its full-resolution MP4. The GIFs loop the
+The images below open as GIFs; the separate video links open the full MP4s. The GIFs loop the
 experiment continuously at its original playback speed, reduced to **960×540 and 8 FPS**.
 Opening and ending slides are omitted; failure cases remain in the animation.
 The full MP4s and accompanying text retain the explanations and limitations.
@@ -240,7 +240,7 @@ decisions and their predictions.
 
 ### V01 · Divergence and weighting
 
-[![Tsallis and IT-MPPI two-route execution — click for full MP4](media/experiments/previews/V01_tsallis.gif)](media/experiments/V01_tsallis.mp4)
+![Tsallis and IT-MPPI two-route execution](media/experiments/previews/V01_tsallis_loop.gif)
 
 [Watch the two-route experiment](media/experiments/V01_tsallis.mp4): paired
 **seed 48000**, dynamics-work protocol. Executed IT-MPPI and Tsallis poses, progress,
@@ -289,7 +289,7 @@ Both methods completed open space. In the two-route task, IT-MPPI completed 3/3 
 
 ### V02 · Refinement and annealing
 
-[![DIAL and IT-MPPI two-route execution — click for full MP4](media/experiments/previews/V02_dial.gif)](media/experiments/V02_dial.mp4)
+![DIAL and IT-MPPI two-route execution](media/experiments/previews/V02_dial_loop.gif)
 
 [Watch the two-route execution](media/experiments/V02_dial.mp4): paired **seed 48000**,
 dynamics-work protocol. The vehicles execute their recorded trajectories; the original
@@ -301,7 +301,7 @@ fixed; prediction clouds are not physical state uncertainty.
 
 **Saved inner optimization passes (frozen state):**
 
-[![Four recorded DIAL optimization passes — click for full MP4](media/experiments/previews/V02_dial_decision.gif)](media/experiments/V02_dial_decision.mp4)
+![Four recorded DIAL optimization passes](media/experiments/previews/V02_dial_decision_loop.gif)
 
 **Mathematical question.** How does repeated refinement with $C_{j,t}$ change the plan when every pass is counted against the same total work allowance? Compare DIAL with both IT-MPPI and the fixed-noise DIAL ablation.
 
@@ -341,7 +341,7 @@ All 36 episodes completed without collisions. Under the work ceiling, two-route 
 
 ### V03 · Tracking architecture
 
-[![Tube-MPPI tracking and applied feedback — click for full MP4](media/experiments/previews/V03_tube.gif)](media/experiments/V03_tube.mp4)
+![Tube-MPPI tracking and applied feedback](media/experiments/previews/V03_tube_loop.gif)
 
 [Watch the targeted tracking experiment](media/experiments/V03_tube.mp4): **seed 51000**,
 positive impulse after command **8**, first visible at **1.35 s**. Reset thresholds
@@ -390,7 +390,7 @@ All 24 episodes completed without collisions. The actual-state plan was selected
 
 ### V04 · Feedback-aware robustness
 
-[![Robust-MPPI execution and frozen fallback — click for full MP4](media/experiments/previews/V04_robust.gif)](media/experiments/V04_robust.mp4)
+![Robust-MPPI execution and frozen fallback](media/experiments/previews/V04_robust_loop.gif)
 
 [Watch the robustness experiment](media/experiments/V04_robust.mp4): the original
 **seed 48000** disturbance episode, with the impulse first visible at **3.15 s**,
@@ -449,7 +449,7 @@ All work-budget episodes completed. In serial timing runs, Robust-MPPI completed
 
 ### V05 · State uncertainty
 
-[![Independent stochastic executions and state covariance — click for full MP4](media/experiments/previews/V05_covariance.gif)](media/experiments/V05_covariance.mp4)
+![Independent stochastic executions and state covariance](media/experiments/previews/V05_covariance_loop.gif)
 
 [Watch the covariance experiment](media/experiments/V05_covariance.mp4): narrow passage,
 fixed planner seed **55000**, all **256 execution seeds 56000–56255**, full $C_0$

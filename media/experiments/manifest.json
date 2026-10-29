@@ -821,7 +821,7 @@
         "limitation": "One paired seed and fixed settings; no universal method ranking."
       },
       "gif_preview": {
-        "file": "previews/V01_tsallis.gif",
+        "file": "previews/V01_tsallis_loop.gif",
         "sha256": "655209ee92f4866cd7cc43db448da7cfa072fed642a62822540aa7ec33d42f84",
         "source_mp4_sha256": "1164741f5daba372ecbdf81a210a3b2c420202b5e3d30102ffc06ae9a63a5e26",
         "bytes": 546757,
@@ -835,8 +835,8 @@
         "source_start_s": 2.5,
         "source_end_s": 27.5,
         "timing": "Experiment only, original playback speed; no title cards or interpolated frames",
-        "git_commit": "335ba477e65cab90cbaf59098f0f5d1ed56a1a2e",
-        "exporter_sha256": "768b60f6eec1762f12b1b48883d90b83e0078c5f98956454d975d5a03cddd119",
+        "git_commit": "c5cca2a9a063ddcf449e659005da0aa89a25d8da",
+        "exporter_sha256": "845191ec39a059e971a6125606434634de36dabdfe8e0e1ffaa9ca5670431658",
         "ffmpeg_filter": "[0:v]trim=start_frame=75:end_frame=825,setpts=PTS-STARTPTS,fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     },
@@ -1660,7 +1660,7 @@
         "limitation": "One paired seed and fixed settings; no universal method ranking."
       },
       "gif_preview": {
-        "file": "previews/V02_dial.gif",
+        "file": "previews/V02_dial_loop.gif",
         "sha256": "1567bd06b1ecdec344d265d98ec1b01acc5d8eca37fbfa86d94bc0b7d49f14a9",
         "source_mp4_sha256": "bf93cf98e854431e6f83ac14cacff0de352880347d43bb6f0d3e49c397feac9d",
         "bytes": 354794,
@@ -1674,8 +1674,8 @@
         "source_start_s": 2.5,
         "source_end_s": 15.5,
         "timing": "Experiment only, original playback speed; no title cards or interpolated frames",
-        "git_commit": "335ba477e65cab90cbaf59098f0f5d1ed56a1a2e",
-        "exporter_sha256": "768b60f6eec1762f12b1b48883d90b83e0078c5f98956454d975d5a03cddd119",
+        "git_commit": "c5cca2a9a063ddcf449e659005da0aa89a25d8da",
+        "exporter_sha256": "845191ec39a059e971a6125606434634de36dabdfe8e0e1ffaa9ca5670431658",
         "ffmpeg_filter": "[0:v]trim=start_frame=75:end_frame=465,setpts=PTS-STARTPTS,fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     },
@@ -2120,7 +2120,7 @@
         "limitation": "Predictions at one frozen state; clouds are not physical uncertainty."
       },
       "gif_preview": {
-        "file": "previews/V02_dial_decision.gif",
+        "file": "previews/V02_dial_decision_loop.gif",
         "sha256": "675b2b496c85f55319d8c665be7b49722439e09af1a780a07adc1b7c00ecd240",
         "source_mp4_sha256": "0a7f4e66460e43f2ad7efdadd97146322e1c75e3f56fbba47a5ae98f0d0ab79b",
         "bytes": 192645,
@@ -2134,8 +2134,8 @@
         "source_start_s": 2.5,
         "source_end_s": 14.5,
         "timing": "Experiment only, original playback speed; no title cards or interpolated frames",
-        "git_commit": "335ba477e65cab90cbaf59098f0f5d1ed56a1a2e",
-        "exporter_sha256": "768b60f6eec1762f12b1b48883d90b83e0078c5f98956454d975d5a03cddd119",
+        "git_commit": "c5cca2a9a063ddcf449e659005da0aa89a25d8da",
+        "exporter_sha256": "845191ec39a059e971a6125606434634de36dabdfe8e0e1ffaa9ca5670431658",
         "ffmpeg_filter": "[0:v]trim=start_frame=75:end_frame=435,setpts=PTS-STARTPTS,fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     },
@@ -2995,7 +2995,7 @@
         "limitation": "One positive impulse and seed; this is not a general tracking benefit."
       },
       "gif_preview": {
-        "file": "previews/V03_tube.gif",
+        "file": "previews/V03_tube_loop.gif",
         "sha256": "25a820fe12704e3cc87c8eeb8a17756f600437685aa8c437459c53601730fc48",
         "source_mp4_sha256": "975af459c65ee0e9bc13ab5c47dde4c8c36d4c37e5a9b1d5b131da39d5d6a3cf",
         "bytes": 394285,
@@ -3009,8 +3009,8 @@
         "source_start_s": 2.5,
         "source_end_s": 15.5,
         "timing": "Experiment only, original playback speed; no title cards or interpolated frames",
-        "git_commit": "335ba477e65cab90cbaf59098f0f5d1ed56a1a2e",
-        "exporter_sha256": "768b60f6eec1762f12b1b48883d90b83e0078c5f98956454d975d5a03cddd119",
+        "git_commit": "c5cca2a9a063ddcf449e659005da0aa89a25d8da",
+        "exporter_sha256": "845191ec39a059e971a6125606434634de36dabdfe8e0e1ffaa9ca5670431658",
         "ffmpeg_filter": "[0:v]trim=start_frame=75:end_frame=465,setpts=PTS-STARTPTS,fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     },
@@ -4406,7 +4406,7 @@
         "status_scope": "repository excluding generated results/ and runs/"
       },
       "gif_preview": {
-        "file": "previews/V04_robust.gif",
+        "file": "previews/V04_robust_loop.gif",
         "sha256": "cc5cea45c3564944f2d4cdd06ef5e4b3a1df18c8717885e577663a03883d2395",
         "source_mp4_sha256": "8e43d3f32afaba83f4b1e51e349d2797e1c26bacf05eed9bdd37b07bd41c1268",
         "bytes": 572968,
@@ -4420,8 +4420,8 @@
         "source_start_s": 2.5,
         "source_end_s": 23.5,
         "timing": "Experiment only, original playback speed; no title cards or interpolated frames",
-        "git_commit": "335ba477e65cab90cbaf59098f0f5d1ed56a1a2e",
-        "exporter_sha256": "768b60f6eec1762f12b1b48883d90b83e0078c5f98956454d975d5a03cddd119",
+        "git_commit": "c5cca2a9a063ddcf449e659005da0aa89a25d8da",
+        "exporter_sha256": "845191ec39a059e971a6125606434634de36dabdfe8e0e1ffaa9ca5670431658",
         "ffmpeg_filter": "[0:v]trim=start_frame=75:end_frame=705,setpts=PTS-STARTPTS,fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     },
@@ -5308,7 +5308,7 @@
         "limitation": "Local covariance bounds do not guarantee collision safety. No impact dynamics."
       },
       "gif_preview": {
-        "file": "previews/V05_covariance.gif",
+        "file": "previews/V05_covariance_loop.gif",
         "sha256": "d64936166b6b0fbdcd1773d61a8dfce6985657797c355f7306202de4f6eaf343",
         "source_mp4_sha256": "c81a5c54df547c1397d25a55a9549a822cf5ed080b5021220b68385a855bf18e",
         "bytes": 291123,
@@ -5322,8 +5322,8 @@
         "source_start_s": 2.5,
         "source_end_s": 15.5,
         "timing": "Experiment only, original playback speed; no title cards or interpolated frames",
-        "git_commit": "335ba477e65cab90cbaf59098f0f5d1ed56a1a2e",
-        "exporter_sha256": "768b60f6eec1762f12b1b48883d90b83e0078c5f98956454d975d5a03cddd119",
+        "git_commit": "c5cca2a9a063ddcf449e659005da0aa89a25d8da",
+        "exporter_sha256": "845191ec39a059e971a6125606434634de36dabdfe8e0e1ffaa9ca5670431658",
         "ffmpeg_filter": "[0:v]trim=start_frame=75:end_frame=465,setpts=PTS-STARTPTS,fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     }
