@@ -60,11 +60,22 @@ class MPPI(Controller):
         self.planning_step = 0
         self._rollout_snapshot = None
 
-    def command(self, observed_state):
+    def plan(self, observed_state, *, standard_normals=None):
+        """One optimization decision without shifting the warm start or executing a step.
+
+        Optional common random numbers are standard normals, before the covariance
+        transformation. The ordinary command path retains its existing RNG sequence.
+        """
         started = perf_counter()
         if np.shape(observed_state) != (4,) or not np.isfinite(observed_state).all():
             raise ValueError("Expected finite four-dimensional observation")
-        eps = sample_gaussian(self.rng, (self.samples, self.horizon), self.covariance)
+        if standard_normals is None:
+            eps = sample_gaussian(self.rng, (self.samples, self.horizon), self.covariance)
+        else:
+            z = np.asarray(standard_normals, dtype=float)
+            if z.shape != (self.samples, self.horizon, 2) or not np.isfinite(z).all():
+                raise ValueError("Expected finite standard normals [samples, horizon, 2]")
+            eps = z @ np.linalg.cholesky(self.covariance).T
         latent = self.mean[None] + eps
         applied = self.model.clip_control(latent * self.model.control_scale)
         states = np.broadcast_to(observed_state, (self.samples, 4)).copy()
@@ -130,10 +141,16 @@ class MPPI(Controller):
                 "current_state": np.asarray(observed_state).copy(),
                 "nominal_states": planned,
                 "nominal_role": "updated_mean_plan",
+                "latent_controls": latent,
+                "updated_mean": updated,
             }
             if capture
             else None
         )
+        return command, updated
+
+    def command(self, observed_state):
+        command, updated = self.plan(observed_state)
         self.planning_step += 1
         self.mean[:-1] = updated[1:]
         self.mean[-1] = 0  # common zero tail warm start

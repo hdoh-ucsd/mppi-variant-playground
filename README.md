@@ -157,3 +157,7 @@ results/                       Experiment records and generated figures
 ```
 
 [Hydrax](https://github.com/vincekurtz/hydrax) and [MPPI-Generic](https://github.com/ACDSLab/MPPI-Generic) are reference implementations reviewed for design context. Their reviewed revisions and differences from this code are recorded in the [paper map](docs/paper_map.md#reference-implementation-review).
+
+## Frozen-state decision microscope
+
+To isolate proposal effects from different closed-loop states and warm starts, see the [frozen-state decision analysis](docs/frozen_decision_analysis.md). It compares six trace-matched Gaussian proposals at identical inputs, with shared random draws, 50 paired seeds, eight rollout budgets and independent high-sample reference diagnostics. This studies finite-sample decisions and predicted consequences; it does not add a new MPPI variant.
