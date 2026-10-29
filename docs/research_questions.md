@@ -42,7 +42,7 @@ All four chosen matrices have trace 0.44, fixing $\mathbb E\|\epsilon_t\|^2$. Th
 
 ## Proposed numerical probes for the implemented baseline
 
-These are investigation designs. Existing unit checks cover some identities; full sweeps and research figures have not been executed.
+These designs are now implemented for the fixed-proposal baseline in the [covariance mechanism study](covariance_mechanisms.md). Its [findings](experimental_findings.md) report executed sweeps and figures. The broader algorithm-family experiments in the following section remain proposed.
 
 | Probe | Controlled setup | Quantity to explain |
 |---|---|---|

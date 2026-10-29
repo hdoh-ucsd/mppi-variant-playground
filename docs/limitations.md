@@ -1,5 +1,7 @@
 # Technical and research limitations
 
+The list below describes the original vehicle milestone. The subsequent [covariance mechanism study](covariance_mechanisms.md) adds isolated estimation and parameter sweeps; its [findings](experimental_findings.md) state their additional evidence and limitations.
+
 - This milestone studies finite-budget covariance choices in a single small deterministic prediction model. It does not establish a universal algorithm ranking.
 - The 56-dimensional control sequence, single update, zero base mean, fixed covariance and finite sampling budget can produce strongly concentrated importance weights. ESS and saturation must be read alongside task success. A Gaussian density correction can be mathematically correct while still being a poor finite-sample estimator.
 - Forward-only speed and a local finite horizon make final pose correction difficult after stopping at the wrong lateral offset. Replanning does not imply reliable parking or disturbance rejection. Default heading and terminal costs are task design choices.

@@ -46,6 +46,7 @@ uv run python experiments/actuator_saturation.py --output results/investigations
 uv run python experiments/nonconvex_optimization.py --output results/investigations/nonconvex_v1
 uv run python experiments/covariance_closed_loop.py --output results/investigations/closed_loop_v1
 uv run python experiments/mechanism_summary.py --input results/investigations --output results/investigations/summary
+uv run python experiments/verify_investigations.py --input results/investigations
 # Independently execute just the alignment experiments if needed:
 uv run python experiments/covariance_alignment.py --output results/investigations/alignment_reproduction
 # Reconstruct a completed study without executing trials:

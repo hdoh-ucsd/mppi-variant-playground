@@ -186,6 +186,16 @@ All figures are exported as PNG and SVG, with source numerical records and per-f
 | [8b · Control scale](../results/investigations/closed_loop_v1/figures/08b_closed_loop_scale.png) | Latent scale affects exploration and clipping | Task/base/K → scale and orientation. | Eight-seed success fractions are descriptive; complete costs and failures remain in the CSVs. |
 | [9 · Evidence map](../results/investigations/summary/figures/09_mechanism_evidence.png) | Geometry → overlap → weights → update; control is a separate transfer test | Juxtapose declared analytic and control slices. | The static links have equations and experiments; the dashed boundary marks the unestablished causal bridge to control performance. |
 
+## Validation executed
+
+- Frozen dependency sync succeeded without dependency or lockfile changes.
+- **85 pytest tests passed**, including all 49 baseline tests, independent quadrature, SciPy log-density oracles, covariance geometry, repeated-batch convergence, clipped moments, artifact schemas, plotting and control-runner integration.
+- Ruff lint and formatting checks passed; the wheel built successfully and includes the analysis modules.
+- Numerical replay reproduced 20 saved analytic/temperature/dimension estimates and ESS values, ten adaptive nonconvex trials, and three complete bicycle trajectories and command sequences exactly. Deterministic control metrics also matched; timing was excluded.
+- All 14 figures were rebuilt from saved data. A test deletes per-episode rollout archives and verifies that the retained plotted rollout subset still reconstructs exactly.
+- All 720 control episodes have clean provenance at the same source commit. Original controller, sampler, dynamics, scenario/cost/configuration files, lockfile and reference results were checked unchanged against `main`.
+- Documentation links, anchors, PNG/SVG pairs and figure-data archives were checked. Machine timing and SVG metadata are not claimed byte-reproducible.
+
 ## Reproduction, files and unresolved questions
 
 Exact commands are in [mathematical_investigations.md](mathematical_investigations.md). `--plots-only` reconstructs the existing studies. Fresh runs must use new output directories. Numerical replay checks compare stored trials with regenerated fixed-seed calculations; elapsed time and figure file metadata may differ.

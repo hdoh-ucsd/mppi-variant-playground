@@ -1,5 +1,7 @@
 # Executed milestone results
 
+This report preserves the original four-proposal vehicle milestone. Later covariance parameter sweeps and isolated mathematical experiments are reported separately in [covariance mechanism findings](experimental_findings.md).
+
 ## What the existing results establish
 
 The research goal is to understand the mathematical characteristics of MPPI variants. This report records **closed-loop observations for four fixed Gaussian proposals within one IT-MPPI implementation**. It is an initial source of behavioral examples and diagnostics. The other algorithm families have no executed results here.
