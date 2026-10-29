@@ -21,7 +21,7 @@ Stable IDs connect each question to hypotheses, controls, evidence and limitatio
 - [Legacy index](../results/archive/legacy_index.md) preserves original paths and
   provenance. Historical experiments were not rerun for this reorganization.
 
-Validate or rebuild the audience documents:
+Validate or rebuild the research index and question documents (the README is maintained separately):
 
 ```bash
 uv run python experiments/research_index.py --render

@@ -1,4 +1,4 @@
-"""Validate scientific evidence and render question-indexed audience documents."""
+"""Validate evidence and render question documents; preserve the curated README."""
 
 import hashlib
 import json
@@ -134,72 +134,6 @@ def render(registry, root=ROOT):
     root = Path(root)
     backtick = chr(96)
     fence = backtick * 3
-    intro = r"""# MPPI Variant Playground
-
-## Project objective
-
-A research companion for understanding MPPI formulations through their mathematics,
-finite-sample decisions and control behavior. Follow a scientific question from hypothesis
-to reproducible evidence, including negative results and unresolved estimates.
-
-## The MPPI formulation
-
-MPPI samples control sequences, predicts trajectories, scores them, updates a nominal
-sequence and executes its first command. The implemented Gaussian IT-MPPI uses
-
-$$p(Z)=\prod_t\mathcal N(z_t;0,C_0),\quad q_U(Z)=\prod_t\mathcal N(z_t;U_t,C),$$
-$$\pi(Z)\propto e^{-J(Z)/\lambda}p(Z),\qquad w_k\propto
-e^{-J(Z_k)/\lambda}p(Z_k)/q_U(Z_k),\qquad U^+=\sum_k w_kZ_k.$$
-
-The base stays fixed when proposal covariance changes. Densities use normalized latent
-controls, weights are normalized in log space, and physical limits apply inside
-prediction. Finite self-normalized estimates can be weight-degenerate. See the
-[derivation](docs/formulations.md).
-
-## Paper formulation map
-
-§§§mermaid
-flowchart LR
-  A["Original MPPI · Williams 2016"] --> B["IT-MPPI · Williams 2017<br/>Implemented formulation"]
-  Z["Zero-order tutorial · Jordana 2025"] -.-> B
-  B --> C["Tsallis-VI · Wang 2021<br/>Weighting law · planned"]
-  B --> D["DIAL-MPC · Xue 2024<br/>Annealing · planned"]
-  B --> E["Tube-MPPI · Williams 2018<br/>Tracking architecture · planned"]
-  E --> F["Robust-MPPI · Gandhi 2021<br/>Tracking-aware planning · planned"]
-  B --> G["CC-MPPI · Yin 2022<br/>State covariance / feedback · planned"]
-§§§
-
-Arrows are conceptual reading connections. [Eight papers, equation locations and source
-versions](docs/paper_map.md) separate paper-level claims from the implementation and
-experimentally verified claims.
-
-## Implemented models
-
-| Model | State dimension | Controls | Evidence |
-| --- | --- | --- | --- |
-| Kinematic bicycle | 4: x, y, yaw, speed | acceleration, steering | Historical baseline, retained |
-| Steering-rate bicycle | 5 | acceleration, steering rate | Historical S-turn |
-| Dynamic single-track | 7 | steering, signed throttle | Primary Q03–Q05 campaign |
-
-The seven-state state is `[px,py,heading,roll,vx,vy,yaw_rate]` in SI units.
-It uses saturating tire forces, body lateral/yaw dynamics and an explicit
-first-order roll equation. It is a documented physics approximation, not the paper's learned
-AutoRally model.
-[Equations, validation and scientific report](docs/seven_state_benchmark_report.md).
-
-## Research questions
-
-Q01 and analytic Q02 are independent of vehicle dynamics. Q03–Q05 below use the seven-state
-vehicle. Historical four/five-state evidence remains separately labeled in each question.
-Q06 is a paper/formulation investigation with no implemented alternative algorithms.
-
-## Key results
-
-[Research index](docs/research_index.md) · [Registry](results/registry.yaml) · [Historical
-evidence](results/archive/legacy_index.md)
-
-""".replace("§", backtick)
-    readme = [intro]
     index = [
         "# Research index",
         "",
@@ -257,7 +191,6 @@ evidence](results/archive/legacy_index.md)
                         "",
                     ]
                 )
-        readme.extend([f"### {q['id']} — {q['title']}", ""])
         if q["key_figure"]:
             document.extend(
                 [
@@ -269,21 +202,6 @@ evidence](results/archive/legacy_index.md)
                     "",
                 ]
             )
-            readme.extend([f"![{q['title']}]({q['key_figure']})", ""])
-        else:
-            readme.extend(["**PLANNED — no executed result or figure.**", ""])
-        for field in ("main_finding", "interpretation", "limitations"):
-            label = "Finding" if field == "main_finding" else field.capitalize()
-            readme.extend([f"**{label}:** {q[field]}", ""])
-        readme.extend(
-            [
-                f"- [Detailed experiment]({q['document']})",
-                f"- [Original configuration]({q['configuration']})",
-            ]
-        )
-        if q["summary"]:
-            readme.append(f"- [Data summary]({q['summary']})")
-        readme.extend([f"- [Reproduction commands]({q['document']}#reproduce-and-regenerate)", ""])
         document.extend(
             [
                 "## Reproduce and regenerate",
@@ -359,7 +277,7 @@ evidence](results/archive/legacy_index.md)
 - [Legacy index](../results/archive/legacy_index.md) preserves original paths and
   provenance. Historical experiments were not rerun for this reorganization.
 
-Validate or rebuild the audience documents:
+Validate or rebuild the research index and question documents (the README is maintained separately):
 
 §§§bash
 uv run python experiments/research_index.py --render
@@ -367,54 +285,3 @@ uv run python experiments/research_index.py
 §§§
 """.replace("§", backtick)
     (root / "docs/research_index.md").write_text("\n".join(index) + storage)
-    outro = """
-## Reproduction
-
-Linux, Python 3.11+ and uv; CPU NumPy, no GPU required.
-
-§§§bash
-uv sync --frozen
-export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLBACKEND=Agg
-uv run ruff check .
-uv run ruff format --check .
-uv run pytest
-uv run python experiments/research_index.py
-§§§
-
-Use fresh run IDs for simulation; immutable completed directories are never overwritten.
-Exact commands are in each question and the [report](docs/seven_state_benchmark_report.md).
-The following rebuilds a figure from committed compact data without simulation:
-
-§§§bash
-uv run python experiments/plot_seven_state.py --stage Q03 \
-  --input runs/seven_state/Q03/seven_state_q03_v1
-§§§
-
-Full raw episodes and rollout NPZs are ignored local evidence. **Cloning does not contain
-those raw records.** No LFS/external store is configured; rerun recorded commands to
-recreate them. Small summaries, inputs, configs, manifests and selected figures are tracked.
-Historical §results/investigations/§ evidence is preserved.
-
-§§§text
-configs/       Declared models, costs, controllers and experiment designs
-src/           Shared MPPI, sampling, dynamics, geometry and analysis
-experiments/   Execution, reconstruction and registry validation CLIs
-docs/          Question documents, derivations, paper map and findings
-results/       Registry, curated showcase and preserved historical evidence
-runs/seven_state/  Question-based new campaign records (bulk raw ignored)
-tests/         Numerical, physical and evidence-consistency checks
-§§§
-
-## Limitations
-
-These are covariance settings of one Gaussian IT-MPPI, not different published algorithms.
-Specific matrices, one calibration, one S-turn handedness, one horizon and broad binomial
-intervals limit generalization. ESS is not estimator accuracy. Two Q03 reference means
-remain unresolved. The finish region allows runout recovery, not stopped-point parking.
-The model omits load transfer, roll inertia/feedback and an actuator-rate state; it has
-no reverse drive. Equal-K sweeps are not equal-wall-clock experiments or real-time guarantees.
-See the [scientific report](docs/seven_state_benchmark_report.md) for failures, uncertainty
-and the discrete command-slew study.
-
-""".replace("§", backtick)
-    (root / "README.md").write_text("\n".join(readme) + outro)
