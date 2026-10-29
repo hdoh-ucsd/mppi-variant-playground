@@ -1,5 +1,7 @@
 # MPPI Variant Playground
 
+**[Formulations](docs/formulations.md) · [Paper Map](docs/paper_map.md)**
+
 **A reproducible research playground for understanding *why* Model Predictive Path Integral (MPPI) controllers behave differently.**
 
 MPPI plans by sampling control sequences, predicting their trajectories, and updating a nominal plan using cost-dependent weights. This repository studies how changes to the **sampling proposal** affect finite-sample estimates, selected controls, and closed-loop behavior. It connects mathematical derivations to controlled toy problems and a seven-state vehicle benchmark.
