@@ -28,7 +28,7 @@ Success/collision, censored progress, cross-track error, clearance, completion t
 
 ## Main finding
 
-PLANNED — implementation and mechanical feasibility are validated; the final finish-gate seed-42 pilot and multi-seed evaluation are pending.
+PLANNED — the feasible reference and final seed-42 pilot pass at all four clearance levels; multi-seed evaluation is pending.
 
 ## Interpretation
 

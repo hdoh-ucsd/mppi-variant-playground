@@ -51,3 +51,5 @@ uv run python experiments/research_index.py
 ```
 
 Completed-run metadata and actual findings are linked from the [Q05 question document](questions/Q05_s_turn_difficulty.md). Earlier historical studies have not been rerun or relocated for this organization work.
+
+The executed final [seed-42 pilot manifest](../runs/Q05/s_turn_finish_gate_pilot_42/manifest.json) records 16/16 finish-gate completions and no collisions. Its [raw-record audit](../runs/Q05/s_turn_finish_gate_pilot_42/audit.json) verifies all 16 episodes. Pilot data are separate from the paired evaluation seeds.

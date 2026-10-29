@@ -131,8 +131,8 @@ questions:
   key_figure: null
   source_figure: null
   summary: null
-  main_finding: PLANNED — implementation and mechanical feasibility are validated; the final finish-gate
-    seed-42 pilot and multi-seed evaluation are pending.
+  main_finding: PLANNED — the feasible reference and final seed-42 pilot pass at all four clearance levels;
+    multi-seed evaluation is pending.
   interpretation: The study separates physical feasibility from finite-horizon, finite-sampling and objective
     limitations.
   limitations: Do not attribute failure to covariance before geometry and reference feasibility are validated.

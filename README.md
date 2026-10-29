@@ -105,7 +105,7 @@ evidence](results/archive/legacy_index.md)
 
 **PLANNED — no executed result or figure.**
 
-**Finding:** PLANNED — implementation and mechanical feasibility are validated; the final finish-gate seed-42 pilot and multi-seed evaluation are pending.
+**Finding:** PLANNED — the feasible reference and final seed-42 pilot pass at all four clearance levels; multi-seed evaluation is pending.
 
 **Interpretation:** The study separates physical feasibility from finite-horizon, finite-sampling and objective limitations.
 

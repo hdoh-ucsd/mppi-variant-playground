@@ -1,0 +1,3 @@
+# Exploratory stopped-goal pilot
+
+These seed-42 records use the stopped point-goal prototype, not the final finish-gate criterion. They motivated a common termination/cost correction applied to all proposals before evaluation; no covariance or clearance was selected from their rankings. The prototype source was uncommitted; its source hash and dirty flag remain in the manifest, so this is design evidence with limited source reproducibility. Raw episodes remain local. The validated final pilot is [s_turn_finish_gate_pilot_42](../s_turn_finish_gate_pilot_42/). This run is not a canonical evaluation result.

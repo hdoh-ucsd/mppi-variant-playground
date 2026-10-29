@@ -75,7 +75,7 @@ def generate(root, showcase=None):
         ax.fill_between(x, g.success_ci95_low, g.success_ci95_high, color=color, alpha=0.10)
     ax.set(
         xlabel="Nominal corridor clearance [m] → easier",
-        ylabel="Goal-pose completion fraction",
+        ylabel="Finish-gate completion fraction",
         ylim=(-0.04, 1.04),
         xticks=sorted(primary.clearance.unique()),
     )
