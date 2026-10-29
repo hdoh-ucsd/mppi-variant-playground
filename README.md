@@ -267,3 +267,24 @@ For equations, seed protocols, detailed failure cases, uncertainty, and limitati
 ## Reading and attribution
 
 The starting point is Williams et al., [*Information Theoretic Model Predictive Control: Theory and Applications to Autonomous Driving*](https://arxiv.org/abs/1707.02342). The [paper map](docs/paper_map.md) records the other MPPI families and how their formulations differ. This repository is an independent educational/research implementation, not an official implementation of those papers.
+
+## Published-formulation implementation audit
+
+Work proceeds on `mppi-formulation-comparison`; the Q01–Q05 evidence above remains
+unchanged. The following audit fixes the defining mechanisms before new implementation.
+All methods retain the existing seven-state plant, normalization, geometry and finish rules.
+
+| Controller / source | Objective and sampling | Weights and update | Feedback, model information, assumptions | Equation anchors |
+| --- | --- | --- | --- | --- |
+| IT-MPPI | Fixed-base KL-regularized expected cost; independent Gaussian latent proposals. | Exponential cost likelihood times full base/proposal ratio; weighted mean. | Deterministic nonlinear model; positive-definite covariance and finite moments. No ancillary tracker. | Williams 2017 (14), (20)–(22). |
+| Tsallis-VI | Expected cost plus Tsallis divergence; Gaussian policy projection. | Paper-convention deformed likelihood with support cutoff; importance-corrected mean fit with fixed covariance (Table II). | Same model; declare transformed scale separately from objective multiplier. Covariance fitting is a distinct optional policy class. | Wang 2021 (6), (8)–(11), (14), (28), Table II. |
+| DIAL-MPC | Cost-based smoothed optimization; repeated Gaussian perturbations with iteration and horizon annealing. | Cost-only exponential weights; weighted perturbation update at every inner pass. | Nonlinear model; shifted warm start. Its changing smoothing objective differs from the baseline fixed-base target. | Xue 2024 (1)–(7), Algorithm 1. |
+| Tube-MPPI | Nominal and observed-state MPPI optimizations with a separate trajectory tracker. | MPPI updates and free-energy-based nominal reset selection. | Nominal/actual separation; local tracking design needs linearization and explicit operating limits. | Williams 2018 (9)–(10), tube-control architecture; Gandhi 2021 §III Tube-MPPI description. |
+| Robust-MPPI | Coupled nominal/actual rollouts; mixed nominal cost and feedback-aware actual cost. | Separate real and nominal exponential updates; feasible nominal-state candidate selection. | Feedback enters prediction and likelihood correction. Contraction and free-energy guarantees require assumptions beyond local tracking. | Gandhi 2021 (7)–(11), Algorithms 1–3. |
+| CC-MPPI | Linearized covariance-steering subproblem; Gaussian disturbances plus auxiliary-noise feedback. | Constrained quadratic gain design, feedback-shaped nonlinear samples, weighted control fit. | Dynamics Jacobians, declared input-noise covariance, PSD terminal state bound; linear feasibility does not certify nonlinear clipped covariance. | Yin 2022 (7)–(21), Algorithm 1. |
+
+The source links and reviewed versions are in the paper table above. New variants
+remain **PLANNED** until mathematical tests and seven-state execution pass. No V01–V06
+benchmark is yet claimed executed. The baseline oracle in
+`tests/fixtures/it_mppi_before_variants.json` records three sequential decisions in
+open space, disturbance and S-turn scenes from commit `c7bbf86` before controller changes.
