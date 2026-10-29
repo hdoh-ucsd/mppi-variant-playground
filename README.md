@@ -188,6 +188,10 @@ and completed episodes have different durations. The cost axis is logarithmic.
 
 ### Reading the experiment videos
 
+Click any animated preview below to open its full-resolution MP4. The GIFs use the
+complete videos at their original playback speed, reduced to **960×540 and 8 FPS**
+for inline viewing. Opening explanations, failure cases, and ending limitations remain.
+
 The six linked MP4s replay saved numerical evidence at **1280×720, H.264, 30 FPS**.
 The [video manifest](media/experiments/manifest.json) records selection rules, exact
 configurations and seeds, source and rendering commits, file hashes, and validation.
@@ -234,6 +238,8 @@ mechanism interventions through the nonlinear plant; V01, V02 and V04 measure fr
 decisions and their predictions.
 
 ### V01 · Divergence and weighting
+
+[![Tsallis and IT-MPPI two-route execution — click for full MP4](media/experiments/previews/V01_tsallis.gif)](media/experiments/V01_tsallis.mp4)
 
 [Watch the two-route experiment](media/experiments/V01_tsallis.mp4): paired
 **seed 48000**, dynamics-work protocol. Executed IT-MPPI and Tsallis poses, progress,
@@ -282,6 +288,8 @@ Both methods completed open space. In the two-route task, IT-MPPI completed 3/3 
 
 ### V02 · Refinement and annealing
 
+[![DIAL and IT-MPPI two-route execution — click for full MP4](media/experiments/previews/V02_dial.gif)](media/experiments/V02_dial.mp4)
+
 [Watch the two-route execution](media/experiments/V02_dial.mp4): paired **seed 48000**,
 dynamics-work protocol. The vehicles execute their recorded trajectories; the original
 episodes did not save synchronized nominal plans. The separate
@@ -289,6 +297,10 @@ episodes did not save synchronized nominal plans. The separate
 frozen source seed **49000**, step **8** (1.20 s): all 95 saved rollouts in each of
 four internal passes, with cumulative work and updated-plan cost. Its vehicle stays
 fixed; prediction clouds are not physical state uncertainty.
+
+**Saved inner optimization passes (frozen state):**
+
+[![Four recorded DIAL optimization passes — click for full MP4](media/experiments/previews/V02_dial_decision.gif)](media/experiments/V02_dial_decision.mp4)
 
 **Mathematical question.** How does repeated refinement with $C_{j,t}$ change the plan when every pass is counted against the same total work allowance? Compare DIAL with both IT-MPPI and the fixed-noise DIAL ablation.
 
@@ -327,6 +339,8 @@ All 36 episodes completed without collisions. Under the work ceiling, two-route 
 [Configuration](results/variants/V02_dial/config.yaml) · [Per-seed records](results/variants/V02_dial/per_seed.csv) · [Summary](results/variants/V02_dial/summary.csv) · [Command diagnostics](results/variants/V02_dial/diagnostics_summary.csv) · [Audit](results/variants/V02_dial/audit.json) · [Fidelity and limitations](results/variants/V02_dial/findings.json)
 
 ### V03 · Tracking architecture
+
+[![Tube-MPPI tracking and applied feedback — click for full MP4](media/experiments/previews/V03_tube.gif)](media/experiments/V03_tube.mp4)
 
 [Watch the targeted tracking experiment](media/experiments/V03_tube.mp4): **seed 51000**,
 positive impulse after command **8**, first visible at **1.35 s**. Reset thresholds
@@ -374,6 +388,8 @@ All 24 episodes completed without collisions. The actual-state plan was selected
 [Configuration](results/variants/V03_tube/config.yaml) · [Per-seed records](results/variants/V03_tube/per_seed.csv) · [Summary](results/variants/V03_tube/summary.csv) · [Command diagnostics](results/variants/V03_tube/diagnostics_summary.csv) · [Audit](results/variants/V03_tube/audit.json) · [Fidelity and limitations](results/variants/V03_tube/findings.json)
 
 ### V04 · Feedback-aware robustness
+
+[![Robust-MPPI execution and frozen fallback — click for full MP4](media/experiments/previews/V04_robust.gif)](media/experiments/V04_robust.mp4)
 
 [Watch the robustness experiment](media/experiments/V04_robust.mp4): the original
 **seed 48000** disturbance episode, with the impulse first visible at **3.15 s**,
@@ -431,6 +447,8 @@ All work-budget episodes completed. In serial timing runs, Robust-MPPI completed
 [Configuration](results/variants/V04_robust/config.yaml) · [Per-seed records](results/variants/V04_robust/per_seed.csv) · [Summary](results/variants/V04_robust/summary.csv) · [Command diagnostics](results/variants/V04_robust/diagnostics_summary.csv) · [Audit](results/variants/V04_robust/audit.json) · [Fidelity and limitations](results/variants/V04_robust/findings.json)
 
 ### V05 · State uncertainty
+
+[![Independent stochastic executions and state covariance — click for full MP4](media/experiments/previews/V05_covariance.gif)](media/experiments/V05_covariance.mp4)
 
 [Watch the covariance experiment](media/experiments/V05_covariance.mp4): narrow passage,
 fixed planner seed **55000**, all **256 execution seeds 56000–56255**, full $C_0$
@@ -836,6 +854,8 @@ benchmark runs, optimization, sampling, or network access:
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLBACKEND=Agg MPLCONFIGDIR=.mpl-cache \
   uv run python experiments/render_experiment_video.py --video all
 # Or render just one: --video V03_tube
+# Generate the README previews from existing MP4s (no simulation):
+uv run python experiments/render_experiment_video.py --gif-previews --video all
 uv run pytest -q tests/test_experiment_video.py
 ```
 
@@ -852,8 +872,10 @@ The optional replay keeps the original configuration and seed, enabling only pas
 snapshots. Preparation verifies states and controls against the original to absolute
 tolerance $10^{-12}$; the measured difference here is zero. Full original runs and
 snapshot arrays stay under ignored `runs/variants/`; only the small extracted render
-records and one encoding per video are committed. Rendered first/main/last-frame
-previews stay under ignored `runs/variants/videos/previews/`. Rendering checks codecs,
+records, one full-resolution MP4, and one compact GIF preview per clip are committed.
+GIFs live in `media/experiments/previews/`; their source hashes, dimensions, timing,
+and conversion settings are recorded in the same manifest. Rendered first/main/last-frame
+inspection images stay under ignored `runs/variants/videos/previews/`. Rendering checks codecs,
 frame counts, dimensions, durations, and successful first/last-frame decoding.
 
 
@@ -953,7 +975,7 @@ src/costs/              Existing common external task objectives
 src/analysis/           Shared runner, artifacts, figures and variant audit
 configs/variants/       Frozen staged experiment settings
 results/variants/       Compact V01–V06 evidence and one primary image per study
-media/experiments/      Six MP4s, compact render records, provenance and video validation
+media/experiments/      Six MP4s with GIF previews, compact records, provenance and validation
 runs/variants/          Ignored executed trajectories and selected populations
 tests/                  Mathematical references, invariants and baseline regression
 ```

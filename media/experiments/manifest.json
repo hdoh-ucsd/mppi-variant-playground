@@ -819,6 +819,23 @@
         "first_last_frames_decoded": true,
         "observation": "IT-MPPI completes; Tsallis times out at 24.00 s.",
         "limitation": "One paired seed and fixed settings; no universal method ranking."
+      },
+      "gif_preview": {
+        "file": "previews/V01_tsallis.gif",
+        "sha256": "88e8f55dca7f41cea3bc79ad050c259aa0e5a82a40501db74c9fa5ab2255e7ef",
+        "source_mp4_sha256": "1164741f5daba372ecbdf81a210a3b2c420202b5e3d30102ffc06ae9a63a5e26",
+        "bytes": 593228,
+        "width": 960,
+        "height": 540,
+        "target_fps": 8,
+        "palette_colors": 128,
+        "duration_s": 30.51,
+        "decoded_frames": 244,
+        "loop": "infinite",
+        "timing": "Complete source video at original playback speed; no interpolated frames",
+        "git_commit": "320e47b191fde53957ddff082817884c548363df",
+        "exporter_sha256": "b38c82e862e90805067e6516fb755a5f75f8cd60da8b6ad7e3acca30e13b9980",
+        "ffmpeg_filter": "[0:v]fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     },
     "V02_dial": {
@@ -1639,6 +1656,23 @@
         "first_last_frames_decoded": true,
         "observation": "Both complete: IT 6.45 s; DIAL 4.35 s.",
         "limitation": "One paired seed and fixed settings; no universal method ranking."
+      },
+      "gif_preview": {
+        "file": "previews/V02_dial.gif",
+        "sha256": "e6d20b02ef8d7860d53b93c16bf323f1a99d6e9e6ad2517391dc0d3915cb8aee",
+        "source_mp4_sha256": "bf93cf98e854431e6f83ac14cacff0de352880347d43bb6f0d3e49c397feac9d",
+        "bytes": 410803,
+        "width": 960,
+        "height": 540,
+        "target_fps": 8,
+        "palette_colors": 128,
+        "duration_s": 18.51,
+        "decoded_frames": 148,
+        "loop": "infinite",
+        "timing": "Complete source video at original playback speed; no interpolated frames",
+        "git_commit": "320e47b191fde53957ddff082817884c548363df",
+        "exporter_sha256": "b38c82e862e90805067e6516fb755a5f75f8cd60da8b6ad7e3acca30e13b9980",
+        "ffmpeg_filter": "[0:v]fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     },
     "V02_dial_decision": {
@@ -2080,6 +2114,23 @@
         "first_last_frames_decoded": true,
         "observation": "Saved nominal-plan cost: 164.28 \u2192 154.34.",
         "limitation": "Predictions at one frozen state; clouds are not physical uncertainty."
+      },
+      "gif_preview": {
+        "file": "previews/V02_dial_decision.gif",
+        "sha256": "db4c38ff7e1faba497786c62f9b78146d9cb665a45663a32c633c49868fa980f",
+        "source_mp4_sha256": "0a7f4e66460e43f2ad7efdadd97146322e1c75e3f56fbba47a5ae98f0d0ab79b",
+        "bytes": 249311,
+        "width": 960,
+        "height": 540,
+        "target_fps": 8,
+        "palette_colors": 128,
+        "duration_s": 17.51,
+        "decoded_frames": 140,
+        "loop": "infinite",
+        "timing": "Complete source video at original playback speed; no interpolated frames",
+        "git_commit": "320e47b191fde53957ddff082817884c548363df",
+        "exporter_sha256": "b38c82e862e90805067e6516fb755a5f75f8cd60da8b6ad7e3acca30e13b9980",
+        "ffmpeg_filter": "[0:v]fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     },
     "V03_tube": {
@@ -2936,6 +2987,23 @@
         "first_last_frames_decoded": true,
         "observation": "Threshold 0: 8/32 commands apply feedback.\nThreshold 450: ancillary feedback remains inactive.",
         "limitation": "One positive impulse and seed; this is not a general tracking benefit."
+      },
+      "gif_preview": {
+        "file": "previews/V03_tube.gif",
+        "sha256": "c042153a5d5b14d148ad498e3be6a3ea24c5ff9db2f33bc0b22159aa26fff938",
+        "source_mp4_sha256": "975af459c65ee0e9bc13ab5c47dde4c8c36d4c37e5a9b1d5b131da39d5d6a3cf",
+        "bytes": 436131,
+        "width": 960,
+        "height": 540,
+        "target_fps": 8,
+        "palette_colors": 128,
+        "duration_s": 18.51,
+        "decoded_frames": 148,
+        "loop": "infinite",
+        "timing": "Complete source video at original playback speed; no interpolated frames",
+        "git_commit": "320e47b191fde53957ddff082817884c548363df",
+        "exporter_sha256": "b38c82e862e90805067e6516fb755a5f75f8cd60da8b6ad7e3acca30e13b9980",
+        "ffmpeg_filter": "[0:v]fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     },
     "V04_robust": {
@@ -4328,6 +4396,23 @@
         "commit": "62de189a1eac3458842407ac4a069644350dcaac",
         "dirty": false,
         "status_scope": "repository excluding generated results/ and runs/"
+      },
+      "gif_preview": {
+        "file": "previews/V04_robust.gif",
+        "sha256": "82a544b65793bb174fbafd3f0b2420b4a77f461f3ca4be685da27a2e7c8b4e0a",
+        "source_mp4_sha256": "8e43d3f32afaba83f4b1e51e349d2797e1c26bacf05eed9bdd37b07bd41c1268",
+        "bytes": 614210,
+        "width": 960,
+        "height": 540,
+        "target_fps": 8,
+        "palette_colors": 128,
+        "duration_s": 26.51,
+        "decoded_frames": 212,
+        "loop": "infinite",
+        "timing": "Complete source video at original playback speed; no interpolated frames",
+        "git_commit": "320e47b191fde53957ddff082817884c548363df",
+        "exporter_sha256": "b38c82e862e90805067e6516fb755a5f75f8cd60da8b6ad7e3acca30e13b9980",
+        "ffmpeg_filter": "[0:v]fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     },
     "V05_covariance": {
@@ -5211,6 +5296,23 @@
         "first_last_frames_decoded": true,
         "observation": "64/256 independent executions contact a disk-proxy obstacle.",
         "limitation": "Local covariance bounds do not guarantee collision safety. No impact dynamics."
+      },
+      "gif_preview": {
+        "file": "previews/V05_covariance.gif",
+        "sha256": "667da6250681e5c37edb77b8276bc045c6a4463e23efaa35977e6693fa330e92",
+        "source_mp4_sha256": "c81a5c54df547c1397d25a55a9549a822cf5ed080b5021220b68385a855bf18e",
+        "bytes": 339480,
+        "width": 960,
+        "height": 540,
+        "target_fps": 8,
+        "palette_colors": 128,
+        "duration_s": 18.51,
+        "decoded_frames": 148,
+        "loop": "infinite",
+        "timing": "Complete source video at original playback speed; no interpolated frames",
+        "git_commit": "320e47b191fde53957ddff082817884c548363df",
+        "exporter_sha256": "b38c82e862e90805067e6516fb755a5f75f8cd60da8b6ad7e3acca30e13b9980",
+        "ffmpeg_filter": "[0:v]fps=8,scale=960:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle"
       }
     }
   },
