@@ -62,6 +62,8 @@ Desktop.ini
 /results_*/
 *.csv
 !/runs/Q*/*/*.csv
+!/runs/seven_state/*/*/*.csv
+!/runs/seven_state/Q03/*/reference_estimates/*/*.csv
 /runs/**/episodes/
 /runs/**/snapshots/
 /runs/**/figures/
@@ -82,3 +84,5 @@ core.*
 .clwb/
 .ijwb
 /runs/Q05/s_turn_pilot_42/
+
+/runs/seven_state/validation/dynamics_pilot_v1/

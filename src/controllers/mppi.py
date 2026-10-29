@@ -96,9 +96,15 @@ class MPPI(Controller):
         for t in range(self.horizon):
             control = applied[:, t]
             costs += self.cost.running(states, control, previous)
-            next_states = self.model.step(states, control)
+            detailed_sweep = getattr(self.cost, "substep_sweep", False)
+            if detailed_sweep:
+                next_states, path = self.model.step(states, control, return_path=True)
+            else:
+                next_states = self.model.step(states, control)
             # Swept collision penalty includes collisions between discrete states.
-            if hasattr(self.cost, "transition_clearance"):
+            if detailed_sweep:
+                gap = self.cost.path_clearance(path)
+            elif hasattr(self.cost, "transition_clearance"):
                 gap = self.cost.transition_clearance(states, next_states)
             else:
                 gap = swept_clearance(
@@ -117,8 +123,18 @@ class MPPI(Controller):
         command = self.model.clip_control(updated[0] * self.model.control_scale)
         planned = np.empty((self.horizon + 1, self.state_dimension))
         planned[0] = observed_state
+        planned_substeps = (
+            np.empty((self.horizon, self.model.substeps + 1, self.state_dimension))
+            if getattr(self.cost, "substep_sweep", False)
+            else None
+        )
         for t in range(self.horizon):
-            planned[t + 1] = self.model.step(planned[t], updated[t] * self.model.control_scale)
+            if planned_substeps is None:
+                planned[t + 1] = self.model.step(planned[t], updated[t] * self.model.control_scale)
+            else:
+                planned[t + 1], planned_substeps[t] = self.model.step(
+                    planned[t], updated[t] * self.model.control_scale, return_path=True
+                )
         positive = weights > 0
         ess = float(1 / np.sum(weights**2))
         self.diagnostics = {
@@ -161,6 +177,11 @@ class MPPI(Controller):
             if capture
             else None
         )
+        if planned_substeps is not None:
+            self.diagnostics["planned_substeps"] = planned_substeps
+            self.diagnostics["rhs_evaluations"] = (
+                (self.samples + 1) * self.horizon * self.model.substeps * 2
+            )
         return command, updated
 
     def command(self, observed_state):

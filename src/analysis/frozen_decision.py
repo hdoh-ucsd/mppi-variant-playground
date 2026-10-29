@@ -52,9 +52,14 @@ def plan_objective(controller, states, latent, previous):
     value = 0.0
     for i, control in enumerate(controls):
         value += controller.cost.running(states[i], control, previous)
-        gap = swept_clearance(
-            states[i], states[i + 1], controller.cost.obstacles, controller.cost.vehicle_radius
-        )
+        if getattr(controller.cost, "substep_sweep", False):
+            gap = controller.cost.path_clearance(controller.diagnostics["planned_substeps"][i])
+        elif hasattr(controller.cost, "transition_clearance"):
+            gap = controller.cost.transition_clearance(states[i], states[i + 1])
+        else:
+            gap = swept_clearance(
+                states[i], states[i + 1], controller.cost.obstacles, controller.cost.vehicle_radius
+            )
         value += controller.cost.dt * controller.cost.weights["collision"] * (gap <= 0)
         previous = control
     return float(value + controller.cost.terminal(states[-1]))
@@ -63,10 +68,22 @@ def plan_objective(controller, states, latent, previous):
 def predict(frozen, latent):
     """Existing vehicle and cost; used only for sensitivity and route feasibility checks."""
     controller = controller_at(frozen, frozen["config"]["controller"]["covariance"], 2, False)
-    states = np.empty((len(latent) + 1, 4))
+    states = np.empty((len(latent) + 1, controller.state_dimension))
     states[0] = frozen["state"]
+    detailed = getattr(controller.cost, "substep_sweep", False)
+    paths = []
     for i, control in enumerate(latent):
-        states[i + 1] = controller.model.step(states[i], control * controller.model.control_scale)
+        if detailed:
+            states[i + 1], path = controller.model.step(
+                states[i], control * controller.model.control_scale, return_path=True
+            )
+            paths.append(path)
+        else:
+            states[i + 1] = controller.model.step(
+                states[i], control * controller.model.control_scale
+            )
+    if detailed:
+        controller.diagnostics["planned_substeps"] = np.array(paths)
     return states, plan_objective(controller, states, latent, frozen["previous_control"])
 
 
@@ -78,8 +95,12 @@ def decision(frozen, covariance, z, capture=True):
     diagnostics = controller.diagnostics
     nominal = diagnostics["planned_trajectory"]
     objective = plan_objective(controller, nominal, updated, frozen["previous_control"])
-    gap = swept_clearance(
-        nominal[:-1], nominal[1:], controller.cost.obstacles, controller.cost.vehicle_radius
+    gap = (
+        controller.cost.path_clearance(diagnostics["planned_substeps"])
+        if getattr(controller.cost, "substep_sweep", False)
+        else swept_clearance(
+            nominal[:-1], nominal[1:], controller.cost.obstacles, controller.cost.vehicle_radius
+        )
     )
     mean = np.array(frozen["warm_start"])
     stats = {
@@ -105,7 +126,7 @@ def decision(frozen, covariance, z, capture=True):
         first_normalized_steering=float(command[1] / controller.model.control_scale[1]),
         latent_first_acceleration=float(updated[0, 0]),
         latent_first_steering=float(updated[0, 1]),
-        min_predicted_clearance=float(np.min(gap)) if controller.cost.obstacles else None,
+        min_predicted_clearance=float(np.min(gap)) if np.isfinite(gap).any() else None,
         perturbation_mean_acceleration=float(diagnostics["perturbation_mean"][0]),
         perturbation_mean_steering=float(diagnostics["perturbation_mean"][1]),
         perturbation_variance_acceleration=float(diagnostics["perturbation_covariance"][0, 0]),
@@ -113,6 +134,21 @@ def decision(frozen, covariance, z, capture=True):
         perturbation_cross_covariance=float(diagnostics["perturbation_covariance"][0, 1]),
         decision_and_scoring_latency_s=perf_counter() - started,
     )
+    if frozen["config"].get("model_kind") == "dynamic7":
+        for key in list(stats):
+            if "acceleration" in key or "steering" in key:
+                stats.pop(key)
+        for i, name in enumerate(("steering", "throttle")):
+            stats[f"first_{name}"] = float(command[i])
+            stats[f"first_normalized_{name}"] = float(
+                command[i] / controller.model.control_scale[i]
+            )
+            stats[f"latent_first_{name}"] = float(updated[0, i])
+            stats[f"perturbation_mean_{name}"] = float(diagnostics["perturbation_mean"][i])
+            stats[f"perturbation_variance_{name}"] = float(
+                diagnostics["perturbation_covariance"][i, i]
+            )
+        stats["rhs_evaluations"] = diagnostics["rhs_evaluations"]
     snapshot = controller.get_rollout_snapshot() if capture else None
     if snapshot is not None:
         stats["best_is_highest_weight"] = (
@@ -257,14 +293,24 @@ def proposals(frozen, config):
     orthogonal = np.array([-useful[1], useful[0]])
     rotation = np.column_stack([useful, orthogonal])
     eigenvalues = np.array(config["orientation_eigenvalues"])
-    matrices = {name: load_experiment(name)["controller"]["covariance"] for name in PROPOSALS[:4]}
+    matrices = deepcopy(
+        config.get(
+            "proposal_matrices",
+            {name: load_experiment(name)["controller"]["covariance"] for name in PROPOSALS[:4]},
+        )
+    )
+    required_trace = (
+        float(np.trace(frozen["config"]["controller"]["base_covariance"]))
+        if frozen["config"].get("model_kind") == "dynamic7"
+        else 0.44
+    )
     matrices["aligned"] = rotation @ np.diag(eigenvalues) @ rotation.T
     matrices["misaligned"] = rotation @ np.diag(eigenvalues[::-1]) @ rotation.T
     result = {}
     for name, matrix in matrices.items():
         cov = validate_covariance(matrix)
-        if not np.isclose(np.trace(cov), 0.44):
-            raise ValueError("Primary covariance trace must remain 0.44")
+        if not np.isclose(np.trace(cov), required_trace):
+            raise ValueError("Primary covariance trace must match declared intervention")
         values, vectors = np.linalg.eigh(cov)
         result[name] = dict(
             covariance=cov.tolist(),
