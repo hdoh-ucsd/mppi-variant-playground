@@ -1,0 +1,9 @@
+protocol,scenario,algorithm,commands,missed_deadlines,deadline_violation_fraction,planning_ms_mean,planning_ms_p95,model_transitions_per_command,ess_mean,ess_max,tracking_error_mean,tracking_error_max,tracking_control_norm_mean,tracking_control_norm_max,sampled_feedback_rms_mean,sampled_feedback_rms_max,nominal_selection_infeasible_mean,nominal_selection_infeasible_max,tracking_control_norm_active_fraction,sampled_feedback_rms_active_fraction,actual_candidate_fraction
+dynamics_budget,disturbance,it_mppi,120,0,0.0,36.63794713162739,44.79573624848854,7700,109.62446546841733,304.2313659365958,,,,,,,,,,,
+dynamics_budget,disturbance,robust_mppi,167,45,0.2694610778443114,140.27293458560754,179.51564470131416,7700,23.365433372415588,120.11827696652642,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.017964071856287425
+dynamics_budget,model_mismatch,it_mppi,109,0,0.0,36.68225015547776,45.629536791238934,7700,96.83002703593179,299.2484096638739,,,,,,,,,,,
+dynamics_budget,model_mismatch,robust_mppi,116,18,0.15517241379310345,136.465858490957,166.35557100380538,7700,19.985180408798296,100.32242880707544,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.9741379310344828
+wall_clock,disturbance,it_mppi,124,0,0.0,78.45324032185148,88.0007029074477,30740,677.3193990151019,1254.7625174309385,,,,,,,,,,,
+wall_clock,disturbance,robust_mppi,480,2,0.004166666666666667,104.79920635219362,122.51210295216879,2620,1.5219169316532029,5.576254160776228,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.00625
+wall_clock,model_mismatch,it_mppi,103,0,0.0,77.61238199021234,84.2368235986214,30740,585.2572751117036,1208.0912663110892,,,,,,,,,,,
+wall_clock,model_mismatch,robust_mppi,242,1,0.004132231404958678,104.01258917733708,115.39692020887742,1980,1.3447696347018765,4.2096201726107765,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.9173553719008265

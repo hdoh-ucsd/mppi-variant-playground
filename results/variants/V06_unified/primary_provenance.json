@@ -1,0 +1,12 @@
+{
+  "figure": "results/variants/V06_unified/primary.png",
+  "inputs_sha256": {
+    "results/variants/V06_unified/summary.csv": "2ea9bf0dbcd020fe7eefe5f54940acb8d9751e87d3deac5ea39a8362866734ec",
+    "results/variants/V06_unified/per_seed.csv": "d6eb81a5b52411f89ac33c9c37f28cec9d42cec92e5e8cd34b91e63f5bc183ff"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "47a2e8a8463c6a2f65df648c75696d20b82c36351a0c955638e3e660f9bddf08",
+  "summary_sha256": "2ea9bf0dbcd020fe7eefe5f54940acb8d9751e87d3deac5ea39a8362866734ec",
+  "variant_plot_source_sha256": "a12055ed7f83a3a2bfbc0c9b701f91133c53814927e6569d834318ac0febe02b"
+}

@@ -1,0 +1,29 @@
+{
+  "inputs_sha256": {
+    "runs/variants/V04_robust/dynamics_budget/disturbance/it_mppi/seed_48000/diagnostics.csv": "045c80a0a9bb9813222843b6a7706fc8691346cd2463cb64985a3a8900f7d152",
+    "runs/variants/V04_robust/dynamics_budget/disturbance/it_mppi/seed_48001/diagnostics.csv": "960014d34407a3c8debe6aa6bfff68d32e4ecbee9954698bb6b303fbbcb14003",
+    "runs/variants/V04_robust/dynamics_budget/disturbance/it_mppi/seed_48002/diagnostics.csv": "7735ebc4c16d380f470ff3b631a3978aae13f246c05f636ffb678bcd437ca219",
+    "runs/variants/V04_robust/dynamics_budget/disturbance/robust_mppi/seed_48000/diagnostics.csv": "f574a8697d5c0641741e2bf2840eb373a7201838d4f791f51922d48661bb21be",
+    "runs/variants/V04_robust/dynamics_budget/disturbance/robust_mppi/seed_48001/diagnostics.csv": "4d7d7bdb04a53a1a1c1ab27bf33c157a61203ede84ebdb2973270a9ed1aa1ff3",
+    "runs/variants/V04_robust/dynamics_budget/disturbance/robust_mppi/seed_48002/diagnostics.csv": "4173e6f547881f9b9888a00ad64412683a9fdf306b092d0e0c666e1a3a78bb88",
+    "runs/variants/V04_robust/dynamics_budget/model_mismatch/it_mppi/seed_48000/diagnostics.csv": "7d41c72f7d8d9f9dbed180cb73ecaa4ab712784279d30cdb1c03143935eb49a9",
+    "runs/variants/V04_robust/dynamics_budget/model_mismatch/it_mppi/seed_48001/diagnostics.csv": "99edf78c8e3f63d467b99510c9e5e501c737267fb14a88160ed2efb6e9ad633a",
+    "runs/variants/V04_robust/dynamics_budget/model_mismatch/it_mppi/seed_48002/diagnostics.csv": "b225d4bf5f323b221af62339322aecbadebb66b824a1f0751b68c559b578e4f0",
+    "runs/variants/V04_robust/dynamics_budget/model_mismatch/robust_mppi/seed_48000/diagnostics.csv": "0cf00909dfcafe161739a24b6df87f1c493dafe80c2b900e85f29625258253f1",
+    "runs/variants/V04_robust/dynamics_budget/model_mismatch/robust_mppi/seed_48001/diagnostics.csv": "d9d404c9703553c6d4fd2ce92bbb2a8688337fb45781255204ace57aa38d0509",
+    "runs/variants/V04_robust/dynamics_budget/model_mismatch/robust_mppi/seed_48002/diagnostics.csv": "7a46746e689a7c12cd59dbaae445d11c4b15b69156973de959d20e849bb25a01",
+    "runs/variants/V04_robust/wall_clock/disturbance/it_mppi/seed_48000/diagnostics.csv": "720098b878b16f607002ad55c135c3d12df503138913ace8b4998c1fd04b7f61",
+    "runs/variants/V04_robust/wall_clock/disturbance/it_mppi/seed_48001/diagnostics.csv": "8afa1ecfcb2ff31b920f6e9c2292031b1085dc34eae9af837ff0cc81bb551b61",
+    "runs/variants/V04_robust/wall_clock/disturbance/it_mppi/seed_48002/diagnostics.csv": "2e173e7e96ed8e1250c48076b615934cc1cfbfb174139d00b7073c8529d477fd",
+    "runs/variants/V04_robust/wall_clock/disturbance/robust_mppi/seed_48000/diagnostics.csv": "aa55868f95f24baca32530fb360a235e180ef908410b271a22503f2b3af69e3d",
+    "runs/variants/V04_robust/wall_clock/disturbance/robust_mppi/seed_48001/diagnostics.csv": "27d4f59bb9681fd6bcd31a3c4b6e06267dd2d8de1968e44d9219369798bcdc88",
+    "runs/variants/V04_robust/wall_clock/disturbance/robust_mppi/seed_48002/diagnostics.csv": "4f1efe899741939c51029081f824715f4d0cc0c755c8b2e1f04972066b6de7ae",
+    "runs/variants/V04_robust/wall_clock/model_mismatch/it_mppi/seed_48000/diagnostics.csv": "5b14656e416c03b7e423a9ecfe2655f00f73d498a0deeebe57f1b126231105c2",
+    "runs/variants/V04_robust/wall_clock/model_mismatch/it_mppi/seed_48001/diagnostics.csv": "14e1b0dd1b42566d19ad3ea7465e215ffbb54f4fd3fa150f34620cca489b4eaa",
+    "runs/variants/V04_robust/wall_clock/model_mismatch/it_mppi/seed_48002/diagnostics.csv": "9796d68edf298d5a9aa01f87d5de1a106f80f20564e5fa905c5d393a9cb962a5",
+    "runs/variants/V04_robust/wall_clock/model_mismatch/robust_mppi/seed_48000/diagnostics.csv": "8dd52c50f2b6dbb964b15bb75b43aa4361954d4ac68a34284dfaa118f52d5239",
+    "runs/variants/V04_robust/wall_clock/model_mismatch/robust_mppi/seed_48001/diagnostics.csv": "13a861630b6ddcb87bdf25a0ffe7b650a5f1bd725f7621419427f7ba80f46c51",
+    "runs/variants/V04_robust/wall_clock/model_mismatch/robust_mppi/seed_48002/diagnostics.csv": "a85e10209373246c9242297949582331a946e500b365b75d19aad37b04f6154f"
+  },
+  "method": "Saved scalar diagnostics only; no simulation."
+}

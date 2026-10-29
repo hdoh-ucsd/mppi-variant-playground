@@ -1,0 +1,29 @@
+{
+  "inputs_sha256": {
+    "runs/variants/V01_tsallis/dynamics_budget/open_space/it_mppi/seed_48000/diagnostics.csv": "f7911497a39de0686d9927ef04524de510f5d313a852dd47cb2f14beb2c3beb6",
+    "runs/variants/V01_tsallis/dynamics_budget/open_space/it_mppi/seed_48001/diagnostics.csv": "051ba7309f445ac417d6861f0670e35cefea25bab46746fbe7c79d487b71e594",
+    "runs/variants/V01_tsallis/dynamics_budget/open_space/it_mppi/seed_48002/diagnostics.csv": "18bff341e2a296a7f94f3ec4b5ff45bb0b42cb27080805a881640f8450b2ce2f",
+    "runs/variants/V01_tsallis/dynamics_budget/open_space/tsallis_vi/seed_48000/diagnostics.csv": "60599e16922bdffac586bcb24c715a917599a51cd2424aa459825e280ebe9b6f",
+    "runs/variants/V01_tsallis/dynamics_budget/open_space/tsallis_vi/seed_48001/diagnostics.csv": "0b13488b679469adc2649ed29b6c7e9b9729c29cc6ccf75c857b134c0856a3fa",
+    "runs/variants/V01_tsallis/dynamics_budget/open_space/tsallis_vi/seed_48002/diagnostics.csv": "19f1f7d46ad150a609be99adec32cd4ffebb24b0736cff93f54be10c4c4cfd73",
+    "runs/variants/V01_tsallis/dynamics_budget/two_route_obstacle/it_mppi/seed_48000/diagnostics.csv": "68cdad2295cd8241408c63bade3984cb23ec424011043ad78a66234974f0d039",
+    "runs/variants/V01_tsallis/dynamics_budget/two_route_obstacle/it_mppi/seed_48001/diagnostics.csv": "702570ab73d8ea644755a194063f20c0327c30f5eaa224b9b5814d4396e2d403",
+    "runs/variants/V01_tsallis/dynamics_budget/two_route_obstacle/it_mppi/seed_48002/diagnostics.csv": "1eb9c1dc4718eea3074034391774fdbc7a3ceee41e757407221558a9c3a58663",
+    "runs/variants/V01_tsallis/dynamics_budget/two_route_obstacle/tsallis_vi/seed_48000/diagnostics.csv": "c5681e1bbda449d13f3f60de6f966779bf4bbace3b88fbe2862de0089f5fff08",
+    "runs/variants/V01_tsallis/dynamics_budget/two_route_obstacle/tsallis_vi/seed_48001/diagnostics.csv": "8fb95493efd88aecc9e319dbed32cb320ae2f0e5048c703b134457fd890758fa",
+    "runs/variants/V01_tsallis/dynamics_budget/two_route_obstacle/tsallis_vi/seed_48002/diagnostics.csv": "f142973a93ad021b78251fb54b958eebbc1d2ab910ffcaebfd5b870c019c60a5",
+    "runs/variants/V01_tsallis/wall_clock/open_space/it_mppi/seed_48000/diagnostics.csv": "f5d50ad6b0d8a22bdb3847c8124ac1322d5a698cf158c87d96e643cbf3873b59",
+    "runs/variants/V01_tsallis/wall_clock/open_space/it_mppi/seed_48001/diagnostics.csv": "4ea2152e98e21a832a0614567426c39a1e5e5f17f2867320ddf87fad22b01299",
+    "runs/variants/V01_tsallis/wall_clock/open_space/it_mppi/seed_48002/diagnostics.csv": "2bb748b6512819811a21b57cd284ca1f8b323daf8995764febb6dfa87c5b9497",
+    "runs/variants/V01_tsallis/wall_clock/open_space/tsallis_vi/seed_48000/diagnostics.csv": "05b3724c9705c098f883cfeb6b593b5b6088ee6077019887774a20b2d3fd2cd2",
+    "runs/variants/V01_tsallis/wall_clock/open_space/tsallis_vi/seed_48001/diagnostics.csv": "165864b6b896af81c503a03341f7b339a453476b8a98f40a102f3a1cfd46748c",
+    "runs/variants/V01_tsallis/wall_clock/open_space/tsallis_vi/seed_48002/diagnostics.csv": "2cacf3291808edb8c086e6bc1d527c96d3198151443211ebf91233610689aad6",
+    "runs/variants/V01_tsallis/wall_clock/two_route_obstacle/it_mppi/seed_48000/diagnostics.csv": "04e48e29c93a366a2e6cbdf528efe4b51b704d5f8974e3d2e7a9622754bf23a5",
+    "runs/variants/V01_tsallis/wall_clock/two_route_obstacle/it_mppi/seed_48001/diagnostics.csv": "356aacf8712cbca3a8306754445ea446c14fcfc6411d231f2e419681833f0f19",
+    "runs/variants/V01_tsallis/wall_clock/two_route_obstacle/it_mppi/seed_48002/diagnostics.csv": "d08d1cfe242c0f3dfebc7bc8b138722221d383b0254dfa5bb059d369cad2def1",
+    "runs/variants/V01_tsallis/wall_clock/two_route_obstacle/tsallis_vi/seed_48000/diagnostics.csv": "4cc00725402a4f70f9805b5c3fa6b61f59d1f1ddf1092f519e3fd5f768f5489d",
+    "runs/variants/V01_tsallis/wall_clock/two_route_obstacle/tsallis_vi/seed_48001/diagnostics.csv": "58d42d233177eba0202a8dd686b4a64dd951a1c73bc36dbb22df721d055098d7",
+    "runs/variants/V01_tsallis/wall_clock/two_route_obstacle/tsallis_vi/seed_48002/diagnostics.csv": "aa2fcc6826c7ca3bfe307d607c7769f2c38232a87e6b7da671cf6da178437277"
+  },
+  "method": "Saved scalar diagnostics only; no simulation."
+}

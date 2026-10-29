@@ -1,0 +1,29 @@
+{
+  "inputs_sha256": {
+    "runs/variants/V05_covariance_steering/dynamics_budget/open_space/it_mppi/seed_48000/diagnostics.csv": "cf4eb117d25ad0eb40efee5a2944c264004de24f6b077464c069a280e4880876",
+    "runs/variants/V05_covariance_steering/dynamics_budget/open_space/it_mppi/seed_48001/diagnostics.csv": "7b7fe7fa83a53ba89ecc4b026ddcf9fad4eddaf9d9d2bae98282aae20af8aeb6",
+    "runs/variants/V05_covariance_steering/dynamics_budget/open_space/it_mppi/seed_48002/diagnostics.csv": "285e7e0992ecf7e53af11cfaab1a9fe60edf0325b39040117667eb553c9f31a8",
+    "runs/variants/V05_covariance_steering/dynamics_budget/open_space/cc_mppi/seed_48000/diagnostics.csv": "4061f1bad6a317b4a7bad29d77f5b4fc434e6a41011ce44bf6e41ec6b22e7fb1",
+    "runs/variants/V05_covariance_steering/dynamics_budget/open_space/cc_mppi/seed_48001/diagnostics.csv": "5c0a4aa5021c93dfee484c63ca46cf84951b667cc5ab2f43f2b0b34922317487",
+    "runs/variants/V05_covariance_steering/dynamics_budget/open_space/cc_mppi/seed_48002/diagnostics.csv": "f7ba9978234c07d15cba65f82a76660d71a366f3b9d3d81cf04c0e4541faf5ad",
+    "runs/variants/V05_covariance_steering/dynamics_budget/narrow_passage/it_mppi/seed_48000/diagnostics.csv": "1b0beeea915316b93f8fe0ada9d5a9d12ae12a58caacbc926d0ff44349d0c626",
+    "runs/variants/V05_covariance_steering/dynamics_budget/narrow_passage/it_mppi/seed_48001/diagnostics.csv": "c7c526ab39dc4c31948f1191d86d67c493a150eda5011144d373e3cfcd552de9",
+    "runs/variants/V05_covariance_steering/dynamics_budget/narrow_passage/it_mppi/seed_48002/diagnostics.csv": "4f2f07150c5935e3705f52b5cac5ec54f24682eb20ca85bac4ddf328f9a8e1f2",
+    "runs/variants/V05_covariance_steering/dynamics_budget/narrow_passage/cc_mppi/seed_48000/diagnostics.csv": "3090dbaeb6c7d455d5d23d724d3c9cabc3734930e2e0890d40efff122a1d689a",
+    "runs/variants/V05_covariance_steering/dynamics_budget/narrow_passage/cc_mppi/seed_48001/diagnostics.csv": "46aff0c88b4e0d9085d1cdc18480f06eddf9e571ed2f2c98626adb987e2bd149",
+    "runs/variants/V05_covariance_steering/dynamics_budget/narrow_passage/cc_mppi/seed_48002/diagnostics.csv": "2f65abf02ff1ec53f2465943efc335567cb532ec16f11b8b941fe88cb4425a5d",
+    "runs/variants/V05_covariance_steering/wall_clock/open_space/it_mppi/seed_48000/diagnostics.csv": "d59a9b1c680e02cab01dc8ce008dc5394179e8985b5e180d9f40d0edb57ae5be",
+    "runs/variants/V05_covariance_steering/wall_clock/open_space/it_mppi/seed_48001/diagnostics.csv": "fbb09820f2745a1df7655ab66e8b5d571efdea13d7cc14baf7270c3aecfe998c",
+    "runs/variants/V05_covariance_steering/wall_clock/open_space/it_mppi/seed_48002/diagnostics.csv": "64c748524bd5c9cfe81c3b0de37d11c46c35b47177303fcb43ec3eb87e308df6",
+    "runs/variants/V05_covariance_steering/wall_clock/open_space/cc_mppi/seed_48000/diagnostics.csv": "7d7944f609e63382bce9585439816c7d669dabc83b7cd689f850b1437173354e",
+    "runs/variants/V05_covariance_steering/wall_clock/open_space/cc_mppi/seed_48001/diagnostics.csv": "98d0c95f6867b49d296f01675b5de202d22f7cf9c44884d806ed7f84fcbeda4a",
+    "runs/variants/V05_covariance_steering/wall_clock/open_space/cc_mppi/seed_48002/diagnostics.csv": "4b597ae5c4dcb8e974abf98f274316bc013189011b3c560b508bb88b19f7e516",
+    "runs/variants/V05_covariance_steering/wall_clock/narrow_passage/it_mppi/seed_48000/diagnostics.csv": "d4cd89ae5afb89757bd25a44d76b4326d8b5cfeb98a9176eec3a7b784752a21b",
+    "runs/variants/V05_covariance_steering/wall_clock/narrow_passage/it_mppi/seed_48001/diagnostics.csv": "e4de4547884a95521112aeb99117841e617ed0c0c7cd857389edb37513da0c91",
+    "runs/variants/V05_covariance_steering/wall_clock/narrow_passage/it_mppi/seed_48002/diagnostics.csv": "df5f6e65372f7a80d655d58f909a899d9d42d3618f8eb9162e93695607d011d1",
+    "runs/variants/V05_covariance_steering/wall_clock/narrow_passage/cc_mppi/seed_48000/diagnostics.csv": "1381217a5a5d739a2a53a48c03a6925097e0a609e1cf09e39da4d22a78f681d7",
+    "runs/variants/V05_covariance_steering/wall_clock/narrow_passage/cc_mppi/seed_48001/diagnostics.csv": "81b3c31a520a649f3191af1342c7bb58bd5f531bb681902ce0abc3917bd5df9b",
+    "runs/variants/V05_covariance_steering/wall_clock/narrow_passage/cc_mppi/seed_48002/diagnostics.csv": "107ad6329b375ed6116566c818404e29dd81663eb7640913249d65fceff46c02"
+  },
+  "method": "Saved scalar diagnostics only; no simulation."
+}

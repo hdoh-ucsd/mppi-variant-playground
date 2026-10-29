@@ -1,11 +1,12 @@
 {
-  "figure": "results/variants/V04_robust/figures/primary.png",
+  "figure": "results/variants/V04_robust/primary.png",
   "inputs_sha256": {
     "results/variants/V04_robust/summary.csv": "507abae4c7b866f1c8caa43cc62b37f0cadd95246fff4d94bfe8523efe1a42aa",
     "results/variants/V04_robust/per_seed.csv": "dbb20a0c1212c4b01ec5ed7514f86224969abb8bf8905c289aed898e1982634f"
   },
   "reconstruction": "Saved compact records only; no simulation or sampling",
   "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
-  "figure_sha256": "156625b10b1f5a41f799de7f31a8300a414f4a255e135816eaa5ec5b2ca7cf1b",
-  "summary_sha256": "507abae4c7b866f1c8caa43cc62b37f0cadd95246fff4d94bfe8523efe1a42aa"
+  "figure_sha256": "dd00bcb58f114df2358997ca94dbb38e74bf74e7279181a7cd4e9977e5058d20",
+  "summary_sha256": "507abae4c7b866f1c8caa43cc62b37f0cadd95246fff4d94bfe8523efe1a42aa",
+  "variant_plot_source_sha256": "a12055ed7f83a3a2bfbc0c9b701f91133c53814927e6569d834318ac0febe02b"
 }

@@ -1,11 +1,12 @@
 {
-  "figure": "results/variants/V02_dial/figures/primary.png",
+  "figure": "results/variants/V02_dial/primary.png",
   "inputs_sha256": {
     "results/variants/V02_dial/summary.csv": "8418fb3437acc3da38b5cc9a8a5fdf7c8b433e869684e7ee9b1dd3ce94870402",
     "results/variants/V02_dial/per_seed.csv": "21abaec80f4a3acf1abd37959851f3abee7ed59b052ed4b777c827b2294e59c4"
   },
   "reconstruction": "Saved compact records only; no simulation or sampling",
   "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
-  "figure_sha256": "9bfb55fbd779e70eecf76e162cac5b1366ed9aae6ceb14002c129e726f59f42d",
-  "summary_sha256": "8418fb3437acc3da38b5cc9a8a5fdf7c8b433e869684e7ee9b1dd3ce94870402"
+  "figure_sha256": "321ef58138ef662b81b8f79128e694c89a3bfdb2934bad5df262a857882adfe3",
+  "summary_sha256": "8418fb3437acc3da38b5cc9a8a5fdf7c8b433e869684e7ee9b1dd3ce94870402",
+  "variant_plot_source_sha256": "a12055ed7f83a3a2bfbc0c9b701f91133c53814927e6569d834318ac0febe02b"
 }
