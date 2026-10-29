@@ -2,6 +2,8 @@
 
 This milestone studies Gaussian proposal geometry within the existing IT-MPPI formulation. The mathematical target, sampling proposal and physically applied control distribution are separate objects. The baseline derivation and reference notes remain in [formulations.md](formulations.md) and [paper_map.md](paper_map.md).
 
+The control target and mean projection follow [Williams et al., sections III-A–III-C](https://arxiv.org/html/1707.02342v1). For the statistical distinction between self-normalized estimators, integrand-dependent asymptotic variance and weight diagnostics, see [Owen, *Monte Carlo theory, methods and examples*, sections 9.2–9.3](https://artowen.su.domains/mc/Ch-var-is.pdf). The quadratic-target and Gaussian-overlap formulas below are derived for this study and checked numerically; paper guarantees are not transferred to the vehicle implementation.
+
 ## Exact Gaussian target
 
 Let $p(z)=\mathcal N(0,P)$, $P\succ0$, and $J(z)=\frac12(z-b)^TH(z-b)$, $H\succeq0$. For $\lambda>0$, the target is $\pi(z)=\eta^{-1}\exp(-J(z)/\lambda)p(z)$. Expanding its exponent gives

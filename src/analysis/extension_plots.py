@@ -97,13 +97,21 @@ def nonconvex_figures(root, config, cases, trials):
                 color=color,
                 label=case["proposal_name"],
             )
-            # Marker per iteration, plus labels every fifth update to show direction.
-            for row in path.itertuples():
-                if row.iteration % 5 == 0:
-                    axes[i, 0].annotate(str(row.iteration), (row.mean_0, row.mean_1), fontsize=7)
+            # Every update has a marker; a square identifies the final fitted mean.
+            axes[i, 0].scatter(
+                path.mean_0.iloc[-1], path.mean_1.iloc[-1], marker="s", s=45, color=color, zorder=5
+            )
             part = iterations[iterations.case_id == case["case_id"]]
             stat = part.groupby("iteration").best_cost.agg(["mean", "std"])
             axes[i, 1].plot(stat.index, stat["mean"], color=color, label=case["proposal_name"])
+            quantiles = part.groupby("iteration").best_cost.quantile([0.05, 0.95]).unstack()
+            axes[i, 1].fill_between(
+                quantiles.index,
+                np.maximum(quantiles[0.05], 1e-12),
+                np.maximum(quantiles[0.95], 1e-12),
+                color=color,
+                alpha=0.08,
+            )
         ref = selected[0]
         axes[i, 0].scatter(
             *ref["global_minimizer"], marker="*", s=140, color="black", label="Cost minimizer"
@@ -118,9 +126,10 @@ def nonconvex_figures(root, config, cases, trials):
         axes[i, 1].set(
             xlabel="Optimization iteration",
             ylabel="Mean best visited cost",
-            title="All seeds, same initialization",
+            title="All seeds, same initialization; 5–95% trial range",
+            yscale="log",
         )
-    fig.suptitle("6 · Adaptive proposal means: a Gibbs mean can differ from the cost minimizer")
+    fig.suptitle("6 · Adaptive means: circles mark updates, squares the final mean")
     publish(
         fig,
         root,
@@ -162,6 +171,12 @@ def closed_loop_figures(root, config, cases, trials):
         2, len(config["scenarios"]), figsize=(5 * len(config["scenarios"]), 8), squeeze=False
     )
     plotted = {}
+    previous = root / "figures/08_closed_loop_trajectories_data.npz"
+    if previous.exists():
+        with np.load(previous) as stored:
+            retained = {key: stored[key] for key in stored if key.endswith("_unweighted_rollouts")}
+    else:
+        retained = {}
     for j, scenario in enumerate(config["scenarios"]):
         selected = [
             c
@@ -193,17 +208,18 @@ def closed_loop_figures(root, config, cases, trials):
                 draw_scene(axes[0, j], episode["scenario"])
                 # Retained rollouts are unweighted coverage examples, not a posterior cloud.
                 archive = root / case_trials.episode_path.iloc[0] / "rollouts.npz"
+                subset = retained.get(f"{scenario}_unweighted_rollouts")
                 if archive.exists():
                     with np.load(archive) as data:
                         index = min(10, len(data["rollouts"]) - 1)
                         subset = data["rollouts"][index, :8, :, :2]
-                        for line in subset:
-                            axes[0, j].plot(
-                                line[:, 0], line[:, 1], color="#64748b", alpha=0.15, lw=0.6
-                            )
-                        plotted[f"{scenario}_unweighted_rollouts"] = subset
+                if subset is not None:
+                    for line in subset:
+                        axes[0, j].plot(line[:, 0], line[:, 1], color="#64748b", alpha=0.15, lw=0.6)
+                    plotted[f"{scenario}_unweighted_rollouts"] = subset
             sample_trial = case_trials.iloc[0]
             diagnostics = pd.read_csv(root / sample_trial.episode_path / "diagnostics.csv")
+            plotted[f"case_{case['case_id']}_ess"] = diagnostics[["time_s", "ess"]].to_numpy()
             axes[1, j].plot(
                 diagnostics.time_s, diagnostics.ess, color=color, label=case["proposal_name"]
             )

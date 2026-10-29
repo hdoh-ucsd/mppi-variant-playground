@@ -1,5 +1,6 @@
 """Seminar figures reconstructed from saved numerical records and declared models."""
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -308,6 +309,14 @@ def generate(input_path):
             "source_sha256": manifest["source_sha256"],
             "inputs": ["config.yaml", "cases.json", "trials.csv", "summary.csv"],
             "plot_source_files": ["src/analysis/plots.py", "src/analysis/extension_plots.py"],
+            "plot_source_sha256": hashlib.sha256(
+                Path(__file__).read_bytes()
+                + (
+                    Path(__file__).with_name("extension_plots.py").read_bytes()
+                    if Path(__file__).with_name("extension_plots.py").exists()
+                    else b""
+                )
+            ).hexdigest(),
             "figures": sorted(path.name for path in (root / "figures").glob("*.svg")),
         },
     )

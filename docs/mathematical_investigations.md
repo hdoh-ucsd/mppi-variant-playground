@@ -45,6 +45,7 @@ uv run python experiments/temperature_sweep.py --output results/investigations/t
 uv run python experiments/actuator_saturation.py --output results/investigations/saturation_v1
 uv run python experiments/nonconvex_optimization.py --output results/investigations/nonconvex_v1
 uv run python experiments/covariance_closed_loop.py --output results/investigations/closed_loop_v1
+uv run python experiments/mechanism_summary.py --input results/investigations --output results/investigations/summary
 # Independently execute just the alignment experiments if needed:
 uv run python experiments/covariance_alignment.py --output results/investigations/alignment_reproduction
 # Reconstruct a completed study without executing trials:
@@ -52,3 +53,5 @@ uv run python experiments/analytic_gaussian.py --output results/investigations/g
 ```
 
 Source commit hashes and actual numerical interpretations are recorded in [experimental_findings.md](experimental_findings.md). Machine-dependent timings are not expected to reproduce exactly.
+
+Each level's command accepts `--plots-only` to reuse its saved records. The summary command does too. The control figure stores its displayed rollout subset in the tracked figure-data archive, so reconstruction can also work without the larger ignored per-episode rollout archives. All executed trajectories, diagnostics and controls are saved in CSV.

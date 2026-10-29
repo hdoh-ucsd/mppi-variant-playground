@@ -2,6 +2,8 @@
 
 The purpose is to explain the characteristics of each variant through its equations and suitable experiments. Every study should connect **mathematical change → predicted effect → isolated numerical observation → control behavior**, including assumptions and cases where that prediction ceases to apply.
 
+The baseline covariance probes below are now implemented in the [covariance mechanism study](covariance_mechanisms.md), with [execution details](mathematical_investigations.md) and [observed findings](experimental_findings.md). The broader algorithm-family studies remain planned.
+
 ## Questions to answer for each family
 
 1. What objective or target distribution is defined, and under which assumptions?

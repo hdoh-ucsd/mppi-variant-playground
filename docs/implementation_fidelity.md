@@ -15,4 +15,6 @@
 
 The six additional algorithms (CEM, Tsallis-VI, DIAL, Tube, Robust and CC-MPPI) are planned. Unsupported controller kinds raise an error. None is implemented by relabeling standard MPPI. The [mathematical comparison](formulations.md) and [paper map](paper_map.md) document their mechanisms and required next work.
 
+The [covariance mechanism study](covariance_mechanisms.md) adds isolated Gaussian estimation, nonconvex adaptive-mean updates, saturation analysis and parameter sweeps through the unchanged bicycle runner. These investigate the implemented baseline; they do not implement any of the six planned algorithms. Analytic targets have independent quadrature checks; nonconvex target means use finite-box grid references; bicycle mean updates have no exact oracle.
+
 Independent numerical checks cover the Gaussian density ratio (SciPy oracle), equal-covariance cross-term reduction, cost-only difference, shifted exponentials, exact weighted mean examples, Cholesky validity, Gaussian moments, actuator saturation, swept collisions, dynamics, configuration, metrics and deterministic replay. Passing them establishes consistency of this implementation, not formal equivalence to continuous-time stochastic optimal control or a published robustness proof.

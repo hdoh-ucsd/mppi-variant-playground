@@ -1,5 +1,6 @@
 import json
 
+import numpy as np
 import pandas as pd
 
 from analysis.closed_loop_study import run_closed_loop
@@ -35,3 +36,11 @@ def test_sweep_reuses_episode_api_and_preserves_base_target(tmp_path):
     assert {c["family"] for c in cases} == {"isotropic", "diagonal", "full"}
     generate(tmp_path / "run")
     assert (tmp_path / "run/figures/08_closed_loop_trajectories.svg").exists()
+    figure_data = tmp_path / "run/figures/08_closed_loop_trajectories_data.npz"
+    with np.load(figure_data) as data:
+        retained = data["open_space_unweighted_rollouts"].copy()
+    for archive in (tmp_path / "run/episodes").rglob("rollouts.npz"):
+        archive.unlink()
+    generate(tmp_path / "run")
+    with np.load(figure_data) as data:
+        np.testing.assert_array_equal(data["open_space_unweighted_rollouts"], retained)
