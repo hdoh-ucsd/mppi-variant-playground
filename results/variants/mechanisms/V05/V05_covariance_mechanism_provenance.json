@@ -1,0 +1,13 @@
+{
+  "figure": "results/variants/mechanisms/V05/V05_covariance_mechanism.png",
+  "inputs_sha256": {
+    "results/variants/mechanisms/V05/plot_data.json": "f48e77377d278877ed7f9963243489bcffa25d2754253d6225d1ebeb666180c0",
+    "results/variants/mechanisms/V05/summary.csv": "e3e992a328af8332985a197e3ae309ba2895145a9784841beaa5a26ca50eae44",
+    "results/variants/mechanisms/V05/frozen_inputs.json": "30f385b9c1fffe1867101c4797f0ffeeaa5c894273024204068d3c173cee8164"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "45a814e1d398327f4b0cf0b7c2b545308eaf01f13c88cba8a528d73e2dfc4587",
+  "summary_sha256": "e3e992a328af8332985a197e3ae309ba2895145a9784841beaa5a26ca50eae44",
+  "mechanism_plot_source_sha256": "d395f7bc7f111391a7c5a6b7fc20daaefc5f821bc2495970f5812fd4600593ef"
+}

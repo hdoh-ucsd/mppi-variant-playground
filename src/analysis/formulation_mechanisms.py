@@ -219,6 +219,21 @@ def weighting(root, raw, spec, options, frozen, manifest):
     )
 
 
+def occupancy(clouds, plans):
+    """Full observed extent, shared across passes; no sample/time points discarded."""
+    points = np.concatenate([np.asarray(x).reshape(-1, 2) for x in [*clouds, *plans]])
+    lo, hi = points.min(axis=0), points.max(axis=0)
+    pad = np.maximum(0.05 * (hi - lo), 0.01)
+    edges = (
+        np.linspace(lo[0] - pad[0], hi[0] + pad[0], 81),
+        np.linspace(lo[1] - pad[1], hi[1] + pad[1], 65),
+    )
+    hist = [np.histogram2d(x[..., 0].ravel(), x[..., 1].ravel(), bins=edges)[0] for x in clouds]
+    for count, cloud in zip(hist, clouds, strict=True):
+        assert int(count.sum()) == np.prod(cloud.shape[:2])
+    return hist, edges
+
+
 def annealing(root, raw, spec, options, frozen, manifest):
     cfg = spec["V02"]
     f = frozen[cfg["scene"]]
@@ -260,11 +275,7 @@ def annealing(root, raw, spec, options, frozen, manifest):
                     scales.append(snap["inner_variance_scales"][i])
             if seed == spec["seeds"][0]:
                 # Histogram occupancy over all unweighted sample/time points.
-                edges = (np.linspace(-1, 8, 73), np.linspace(-4, 4, 65))
-                hist = [
-                    np.histogram2d(x[..., 0].ravel(), x[..., 1].ravel(), bins=edges)[0]
-                    for x in clouds
-                ]
+                hist, edges = occupancy(clouds, plans)
                 pictures[alg] = dict(
                     plans=plans,
                     histograms=hist,
@@ -719,3 +730,173 @@ def run(output, raw, config_path="configs/variants/mechanisms.yaml"):
         else:
             function(*args, frozen, manifest)
         print(f"{study} complete", flush=True)
+
+
+def audit(output):
+    """Audit hashes and numerical identities in recorded populations/executions."""
+    import json
+
+    from controllers.feedback import tracking_design
+
+    results = {}
+    for study in ["V01", "V02", "V03", "V04", "V05"]:
+        root = Path(output) / study
+        manifest = json.loads((root / "manifest.json").read_text())
+        raw = Path(manifest["raw_storage"])
+        index = raw / "sha256.json"
+        assert hashlib.sha256(index.read_bytes()).hexdigest() == manifest["raw_index_sha256"]
+        for relative, expected in json.loads(index.read_text()).items():
+            assert hashlib.sha256((raw / relative).read_bytes()).hexdigest() == expected
+        assert (
+            hashlib.sha256((root / "frozen_inputs.json").read_bytes()).hexdigest()
+            == manifest["frozen_inputs_sha256"]
+        )
+        summary = pd.read_csv(root / "summary.csv")
+        checked = 0
+        if study == "V01":
+            for row in summary.itertuples():
+                with np.load(raw / row.scene / f"{row.seed}_{row.algorithm}.npz") as z:
+                    ratio = z["log_base_density"] - z["log_proposal_density"]
+                    np.testing.assert_allclose(ratio, z["log_base_over_proposal"], atol=1e-12)
+                    if row.algorithm == "it_mppi":
+                        logits = -z["costs"] / 8 + ratio
+                    else:
+                        normalized = (z["costs"] - row.cost_offset) / row.cost_span
+                        support = 1 - (row.tsallis_r - 1) * normalized / row.transform_scale
+                        logits = np.full(len(support), -np.inf)
+                        valid = support > 0
+                        logits[valid] = np.log(support[valid]) / (row.tsallis_r - 1) + ratio[valid]
+                    weights = np.exp(logits - logits.max())
+                    weights /= weights.sum()
+                    np.testing.assert_allclose(weights, z["weights"], atol=1e-12)
+                    np.testing.assert_allclose(
+                        np.einsum("k,kti->ti", weights, z["latent_controls"]),
+                        z["updated_mean"],
+                        atol=1e-12,
+                    )
+                    checked += 1
+        elif study == "V02":
+            for path in raw.glob("*.npz"):
+                with np.load(path) as z:
+                    if "inner_weights" in z:
+                        np.testing.assert_allclose(z["inner_weights"].sum(axis=1), 1)
+                        np.testing.assert_allclose(
+                            np.einsum(
+                                "ik,iktd->itd", z["inner_weights"], z["inner_latent_controls"]
+                            ),
+                            z["inner_updated_mean"],
+                            atol=1e-12,
+                        )
+                        for costs, weights in zip(
+                            z["inner_costs"], z["inner_weights"], strict=True
+                        ):
+                            np.testing.assert_allclose(importance_weights(costs, 8), weights)
+                        assert z["inner_weights"].shape == (4, 95)
+                    else:
+                        assert len(z["weights"]) == 383
+                    checked += 1
+            assert (summary.groupby(["seed", "algorithm"]).transitions.max() == 7680).all()
+        elif study == "V03":
+            for folder in sorted(raw.glob("impulse_*/*/*")):
+                diag = pd.read_csv(folder / "diagnostics.csv")
+                trajectory = pd.read_csv(folder / "trajectory.csv")
+                if "tracking_correction_0" not in diag:
+                    continue
+                correction = diag[["tracking_correction_0", "tracking_correction_1"]].to_numpy()
+                np.testing.assert_allclose(
+                    np.linalg.norm(correction, axis=1), diag.tracking_control_norm, atol=1e-12
+                )
+                planner = diag[["planner_control_0", "planner_control_1"]].to_numpy()
+                command = diag[["commanded_steering", "commanded_throttle"]].to_numpy()
+                np.testing.assert_allclose(
+                    command - planner,
+                    diag[["applied_correction_0", "applied_correction_1"]],
+                    atol=1e-12,
+                )
+                with np.load(folder / "snapshots/step_0009.npz") as z:
+                    config = read_yaml(folder / "config.yaml")
+                    controller = make_controller(config)
+                    gains, _, _ = tracking_design(
+                        controller.model,
+                        z["nominal_states"],
+                        controller.project_controls(z["updated_mean"]),
+                        config["controller"],
+                    )
+                    observed = trajectory.loc[9, STATE_FIELDS].to_numpy(dtype=float)
+                    nominal = diag.loc[9, [f"nominal_state_{j}" for j in range(7)]].to_numpy(
+                        dtype=float
+                    )
+                    np.testing.assert_allclose(
+                        gains[0] @ state_error(observed, nominal), correction[9], atol=1e-10
+                    )
+                    checked += 1
+        elif study == "V04":
+            for path in raw.glob("*.npz"):
+                with np.load(path) as z:
+                    for key, costs in [
+                        ("nominal_weights", "nominal_augmented_costs"),
+                        ("real_weights", "real_augmented_costs"),
+                    ]:
+                        np.testing.assert_allclose(
+                            importance_weights(z[costs], 8), z[key], atol=1e-12
+                        )
+                    np.testing.assert_allclose(
+                        np.einsum("k,kti->ti", z["real_weights"], z["latent_controls"]),
+                        z["real_updated_mean"],
+                        atol=1e-12,
+                    )
+                    command = np.clip(
+                        (z["real_updated_mean"][0] + z["feedback"][0, 0]) * [0.5, 1],
+                        [-0.5, -1],
+                        [0.5, 1],
+                    )
+                    np.testing.assert_allclose(command, z["command"], atol=1e-12)
+                    checked += 1
+        else:
+            for row in summary.itertuples():
+                with (
+                    np.load(raw / row.scene / "planner.npz") as plan,
+                    np.load(raw / row.scene / f"{row.noise_fraction:g}_{row.mode}.npz") as z,
+                ):
+                    covariance = z["predicted_covariances"]
+                    np.testing.assert_allclose(
+                        covariance, covariance.transpose(0, 2, 1), atol=1e-12
+                    )
+                    assert np.linalg.eigvalsh(covariance).min() >= -1e-10
+                    errors = state_error(z["executed_states"], plan["reference_states"][None])
+                    empirical = np.array([np.cov(errors[:, t], rowvar=False) for t in range(21)])
+                    np.testing.assert_allclose(empirical, z["empirical_covariances"], atol=1e-12)
+                    # Independently excite each whitened noise basis of the LTV policy.
+                    noise = (
+                        np.eye(40).reshape(40, 20, 2)
+                        @ np.linalg.cholesky(row.noise_fraction * np.diag([0.14, 0.26])).T
+                    )
+                    state, auxiliary = np.zeros((40, 7)), np.zeros((40, 7))
+                    for t in range(20):
+                        a, b, gain = plan["linearized_a"][t], plan["linearized_b"][t], z["gains"][t]
+                        state = state @ a.T + (auxiliary @ gain.T + noise[:, t]) @ b.T
+                        auxiliary = auxiliary @ a.T + noise[:, t] @ b.T
+                        np.testing.assert_allclose(state.T @ state, covariance[t + 1], atol=1e-10)
+                    scale = np.sqrt(np.diag(z["terminal_bound"]))
+                    normalized = empirical[-1] / scale[:, None] / scale[None, :]
+                    np.testing.assert_allclose(
+                        np.trace(normalized), row.empirical_normalized_terminal_trace
+                    )
+                    np.testing.assert_allclose(
+                        np.linalg.eigvalsh(normalized - np.eye(7)).max(),
+                        row.empirical_normalized_psd_residual,
+                    )
+                    assert z["executed_states"].shape == (256, 21, 7)
+                    checked += 1
+        result = dict(
+            passed=True,
+            checked_populations_or_conditions=checked,
+            raw_files=manifest["raw_file_count"],
+            method=(
+                "Recorded-data identities, raw hashes, independent covariance impulse response; "
+                "no optimization rerun."
+            ),
+        )
+        write_json(root / "audit.json", result)
+        results[study] = result
+    return results

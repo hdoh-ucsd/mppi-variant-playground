@@ -1,0 +1,14 @@
+{
+  "figure": "results/variants/mechanisms/V03/V03_tracking_mechanism.png",
+  "inputs_sha256": {
+    "results/variants/mechanisms/V03/plot_data.json": "86e68920b5e0f0564bedcf75852abc752ea261c9b993b9a49407b1b27a8d94cc",
+    "results/variants/mechanisms/V03/summary.csv": "772db7969845e35e1886e05060f410aade20d8f28a6874ed06e2bc67ed71d214",
+    "results/variants/mechanisms/V03/steps.csv": "348cb54be19930f0ffe79cded1d04b56ffd063b80204be45c42f718683550883",
+    "results/variants/mechanisms/V03/frozen_inputs.json": "30f385b9c1fffe1867101c4797f0ffeeaa5c894273024204068d3c173cee8164"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "3ec218d7230b0f14d5f2c273d91a440c729900b4c40230eaf8c59f24c215cd18",
+  "summary_sha256": "772db7969845e35e1886e05060f410aade20d8f28a6874ed06e2bc67ed71d214",
+  "mechanism_plot_source_sha256": "d395f7bc7f111391a7c5a6b7fc20daaefc5f821bc2495970f5812fd4600593ef"
+}

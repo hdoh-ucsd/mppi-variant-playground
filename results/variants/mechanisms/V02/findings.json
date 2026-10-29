@@ -1,0 +1,63 @@
+{
+  "fixed": "Frozen state, initial nominal sequence, task/model and 7680 transitions per decision.",
+  "pairing": "DIAL annealed/fixed use identical standard normals before their different scales; IT uses one larger population with its own fixed-base target.",
+  "density": "Unweighted occupancy pooled over prediction time, not a physical state probability distribution.",
+  "inference": "Refinement costs need not decrease monotonically. No closed-loop behavior is inferred.",
+  "observed": [
+    {
+      "algorithm": "dial_mpc",
+      "iteration": 1,
+      "planned_cost": 164.33552416202815,
+      "transitions": 1920.0
+    },
+    {
+      "algorithm": "dial_mpc",
+      "iteration": 2,
+      "planned_cost": 155.12662260126876,
+      "transitions": 3840.0
+    },
+    {
+      "algorithm": "dial_mpc",
+      "iteration": 3,
+      "planned_cost": 155.08525723079396,
+      "transitions": 5760.0
+    },
+    {
+      "algorithm": "dial_mpc",
+      "iteration": 4,
+      "planned_cost": 154.18637187195122,
+      "transitions": 7680.0
+    },
+    {
+      "algorithm": "dial_no_anneal",
+      "iteration": 1,
+      "planned_cost": 171.50691122145236,
+      "transitions": 1920.0
+    },
+    {
+      "algorithm": "dial_no_anneal",
+      "iteration": 2,
+      "planned_cost": 171.34268941486053,
+      "transitions": 3840.0
+    },
+    {
+      "algorithm": "dial_no_anneal",
+      "iteration": 3,
+      "planned_cost": 162.89790405277236,
+      "transitions": 5760.0
+    },
+    {
+      "algorithm": "dial_no_anneal",
+      "iteration": 4,
+      "planned_cost": 157.8823372657089,
+      "transitions": 7680.0
+    },
+    {
+      "algorithm": "it_mppi",
+      "iteration": 1,
+      "planned_cost": 221.68013613367862,
+      "transitions": 7680.0
+    }
+  ],
+  "density_extent": "Full extent of saved sample/time points and plans across all passes; shared bins per algorithm; no points discarded."
+}

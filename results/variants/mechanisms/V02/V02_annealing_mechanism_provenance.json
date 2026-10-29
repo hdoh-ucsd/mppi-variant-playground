@@ -1,0 +1,13 @@
+{
+  "figure": "results/variants/mechanisms/V02/V02_annealing_mechanism.png",
+  "inputs_sha256": {
+    "results/variants/mechanisms/V02/plot_data.json": "c04aa7a4b5b6e3d526dc65d72684c16f492a51814e33bd587e52ef7d62f3c794",
+    "results/variants/mechanisms/V02/summary.csv": "7078be81c0b3ee45daf32d558a35e72f639a71626a633e4f388b3e557f8a14d9",
+    "results/variants/mechanisms/V02/frozen_inputs.json": "30f385b9c1fffe1867101c4797f0ffeeaa5c894273024204068d3c173cee8164"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "aa31de05a01558e08185662a2f56f41f5768485bfd3ed00bae6cd0e89604130f",
+  "summary_sha256": "7078be81c0b3ee45daf32d558a35e72f639a71626a633e4f388b3e557f8a14d9",
+  "mechanism_plot_source_sha256": "d395f7bc7f111391a7c5a6b7fc20daaefc5f821bc2495970f5812fd4600593ef"
+}

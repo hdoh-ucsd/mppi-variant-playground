@@ -1,0 +1,51 @@
+{
+  "fixed": "Same frozen nominal/history, warm start, cost and paired perturbations for Robust and plain IT; actual observed state differs only by declared signed impulse.",
+  "thresholds": "Original alpha=5000 and alpha=100 sensitivity; alpha changes nominal feasibility AND the mixed objective. Infeasible searches retain candidate zero and are explicitly reported.",
+  "pairing": "IT counterfactual reuses Robust's selected candidate mean and exact perturbations, so initial feedback-induced rollout differences can be isolated; this is not an equal-work comparison.",
+  "inference": "Only frozen decisions and sampled predictions. Planner command, requested tracker and clipped applied correction are separate; no executed robustness guarantee.",
+  "observed": [
+    {
+      "impulse": -1,
+      "threshold": 100.0,
+      "infeasible": 1.0,
+      "feedback_rms": 0.34070171823445367,
+      "plan_difference_rms": 0.4743241897717981
+    },
+    {
+      "impulse": -1,
+      "threshold": 5000.0,
+      "infeasible": 0.0,
+      "feedback_rms": 0.0,
+      "plan_difference_rms": 6.615667876294723e-16
+    },
+    {
+      "impulse": 0,
+      "threshold": 100.0,
+      "infeasible": 1.0,
+      "feedback_rms": 0.0,
+      "plan_difference_rms": 1.1179696293024018e-15
+    },
+    {
+      "impulse": 0,
+      "threshold": 5000.0,
+      "infeasible": 0.0,
+      "feedback_rms": 0.0,
+      "plan_difference_rms": 1.1179696293024018e-15
+    },
+    {
+      "impulse": 1,
+      "threshold": 100.0,
+      "infeasible": 1.0,
+      "feedback_rms": 0.35403898665706146,
+      "plan_difference_rms": 0.5279771607451206
+    },
+    {
+      "impulse": 1,
+      "threshold": 5000.0,
+      "infeasible": 0.0,
+      "feedback_rms": 0.0,
+      "plan_difference_rms": 8.257138037366644e-17
+    }
+  ],
+  "negative_finding": "All 9 alpha=100 candidate searches infeasible. Nonzero feedback only occurs under this fallback for nonzero impulses. Original alpha=5000 has zero feedback."
+}

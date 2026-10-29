@@ -1,0 +1,13 @@
+{
+  "figure": "results/variants/mechanisms/V04/V04_robust_mechanism.png",
+  "inputs_sha256": {
+    "results/variants/mechanisms/V04/plot_data.json": "b3586b50fb32b3ca5bfd6c14642a1c07bdcd746c44b436a0e1419b724d9e79ae",
+    "results/variants/mechanisms/V04/summary.csv": "aa69efaa0b032c63f4bc51bdb7d544e676dcf7eb52903a4cba6dfe388781bedb",
+    "results/variants/mechanisms/V04/frozen_inputs.json": "30f385b9c1fffe1867101c4797f0ffeeaa5c894273024204068d3c173cee8164"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "e6ea0cbae189b4542b5b2495cee0693439ffcd86a846d587857042d3fac1327c",
+  "summary_sha256": "aa69efaa0b032c63f4bc51bdb7d544e676dcf7eb52903a4cba6dfe388781bedb",
+  "mechanism_plot_source_sha256": "d395f7bc7f111391a7c5a6b7fc20daaefc5f821bc2495970f5812fd4600593ef"
+}

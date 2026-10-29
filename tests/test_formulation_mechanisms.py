@@ -119,3 +119,57 @@ def test_independent_covariance_execution_uses_the_recorded_auxiliary_policy(tmp
             command, diag.loc[t, ["commanded_steering", "commanded_throttle"]].to_numpy(dtype=float)
         )
         auxiliary = ctrl.a[t] @ auxiliary + ctrl.b[t] @ noise[t]
+
+
+def test_figures_regenerate_from_only_compact_records(tmp_path, monkeypatch):
+    import shutil
+    from pathlib import Path
+
+    from analysis.formulation_mechanism_plots import NAMES, plot_all
+    from dynamics.dynamic_vehicle import DynamicVehicle
+
+    root = Path("results/variants/mechanisms")
+    for study in NAMES:
+        destination = tmp_path / study
+        destination.mkdir()
+        for name in [
+            "summary.csv",
+            "plot_data.json",
+            "frozen_inputs.json",
+            "steps.csv",
+            "reference_trials.csv",
+        ]:
+            source = root / study / name
+            if source.exists():
+                shutil.copy2(source, destination / name)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("Saved-record figure regeneration must not simulate or draw samples")
+
+    monkeypatch.setattr(DynamicVehicle, "step", forbidden)
+    monkeypatch.setattr(np.random, "default_rng", forbidden)
+    plot_all(tmp_path)
+    for study, name in NAMES.items():
+        assert (tmp_path / study / f"{name}.png").stat().st_size > 10000
+        assert (tmp_path / study / f"{name}_provenance.json").exists()
+
+
+def test_mechanism_readme_images_and_math():
+    import re
+    from pathlib import Path
+
+    text = Path("README.md").read_text()
+    images = re.findall(r"!\[[^\]]*\]\(([^)]+)\)", text)
+    mechanisms = [p for p in images if "/mechanisms/" in p]
+    assert len(mechanisms) == 5
+    assert all(Path(path).exists() for path in images)
+    assert r"\operatorname" not in text
+
+
+def test_occupancy_contains_every_recorded_sample_and_timestep():
+    from analysis.formulation_mechanisms import occupancy
+
+    cloud = np.array([[[0, -10], [20, 12]], [[-3, 8], [11, -2]]], dtype=float)
+    histograms, edges = occupancy([cloud, cloud * 2], [cloud[0]])
+    assert [h.sum() for h in histograms] == [4, 4]
+    assert edges[0][0] < -6 and edges[0][-1] > 40

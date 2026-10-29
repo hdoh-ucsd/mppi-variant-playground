@@ -72,7 +72,7 @@ flowchart LR
 | **Robust-MPPI** | Augmented actual/nominal, tracking-aware sampled dynamics | Robustness and optimization overhead |
 | **CC-MPPI** | Feedback-based covariance steering and constraints on state distribution | Predicted/empirical covariance and constraint satisfaction |
 
-Do not conflate the **control proposal covariance** $C$, **predicted state covariance** $\Sigma_t^x=\operatorname{Cov}(X_t)$, and **state covariance bound** $\Sigma_{t,\mathrm{bound}}^x$. Equalizing sampling covariance is not covariance steering. The detailed equations, paper map, and implementation assumptions are included below in this README.
+Do not conflate the **control proposal covariance** $C$, **predicted state covariance** $\Sigma_t^x=\mathrm{Cov}(X_t)$, and **state covariance bound** $\Sigma_{t,\mathrm{bound}}^x$. Equalizing sampling covariance is not covariance steering. The detailed equations, paper map, and implementation assumptions are included below in this README.
 
 In the implementation equations below, $T=H$ and $K=N$ denote horizon and rollout
 count; a subscripted $K_t$ denotes a feedback gain. The scaffold collects possible
@@ -150,15 +150,76 @@ algorithm-specific meanings.
 
 ## 3. Experimental observations: what changes in practice
 
-Each figure uses the same reading order: **top** is completion with Wilson 95%
+The original comparison figures use this reading order: **top** is completion with Wilson 95%
 intervals, **middle** is planning time, and **bottom** is external cost for individual
 seeds and their mean. The left column fixes dynamics work; the right uses serial,
 calibrated wall-clock settings. Read cost together with completion because timeouts
 and completed episodes have different durations. The cost axis is logarithmic.
 
+### Recorded mechanism experiments
+
+The five mechanism figures below add **actual numerical evidence** to the formulation
+comparison; the original V01–V06 comparisons remain alongside them. Experiment rules
+were committed at `bcfb998` before execution in
+[the mechanism configuration](configs/variants/mechanisms.yaml).
+
+Frozen inputs are the **step-8 IT-MPPI observation and warm start** in each named scene,
+using source seed 49000. Evaluation seeds are 51000–51002. Every declared sign, seed,
+and threshold is retained. Representative panels use the first seed, selected before
+seeing outcomes. Shared samples are exact for the KL/Tsallis pair and for Robust's
+plain-IT counterfactual; DIAL's different schedules deliberately transform its noise.
+
+| Study | New numerical experiment | Recorded variables |
+| --- | --- | --- |
+| V01 | Two frozen states × three seeds × two weight laws; independent scalar quadrature and 18 Monte Carlo estimates | Costs, separate base/proposal log densities, normalized weights, ESS, latent updates and first commands |
+| V02 | One frozen state × three seeds × three algorithms, each with 7,680 model transitions | Every DIAL population, pre/post-update mean, horizon noise schedule, predicted trajectory and task cost |
+| V03 | 27 episodes of 32 commands: zero/positive/negative impulses × three seeds × IT/Tube-450/Tube-0 | Executed states, pre-reset and selected nominal states, requested/applied corrections, activation and reset events |
+| V04 | 18 frozen Robust decisions with paired plain-IT counterfactuals | Candidate states/free energies, selection/fallback, nominal/actual sampled states, separate weights, planner and tracker actions |
+| V05 | Two fixed CC designs; 2,048 independent 20-step stochastic executions | Per-timestep predicted/empirical covariance, gains, bounds, independent noise and executed state paths |
+
+Full populations and trajectories remain under ignored `runs/variants/mechanisms/`.
+Each [compact study directory](results/variants/mechanisms) contains its exact
+configuration, frozen inputs, summaries, figure inputs, audit and hashed provenance.
+**Optimizer weights, unweighted planning samples, and independently executed state
+distributions are separate quantities throughout.** Only V03 and V05 execute the
+mechanism interventions through the nonlinear plant; V01, V02 and V04 measure frozen
+decisions and their predictions.
+
 ### V01 · Divergence and weighting
 
 **Mathematical question.** How does replacing exponential weighting with a finite-support deformed likelihood change which samples contribute to the update? Inspect support and ESS alongside progress in the two-route task.
+
+**Weighting mechanism.** The same samples and raw vehicle costs enter two different
+weight laws, followed by the same fixed-covariance mean fit:
+
+$$
+w_k^{\rm KL}\propto e^{-J_k/\lambda}\frac{p(Z_k)}{q(Z_k)},\qquad
+w_k^{\rm Ts}\propto\left[1-(r-1)\frac{\widehat J_k}{\widetilde\lambda}\right]_+^{1/(r-1)}
+\frac{p(Z_k)}{q(Z_k)},\qquad U^+=\sum_k w_k Z_k.
+$$
+
+![V01: identical-sample weighting, commands and independent target references](results/variants/mechanisms/V01/V01_weighting_mechanism.png)
+
+At the frozen two-route state, mean ESS across three seeds was **1.48 for KL and
+1.66 for Tsallis out of 384 samples**. Tsallis retained 307 samples under its explicit
+cutoff, but importance correction still concentrated almost all weight on a few.
+Numerical zero weights in KL can arise from floating-point underflow; KL has no
+finite-support cutoff. In the first seed, steering changed from **0.369 to 0.215 rad**
+and throttle from **0.689 to 0.348**. Mean predicted updated-plan cost was **221.68
+versus 1,075.40**. These are one-step effects, not an executed task comparison.
+
+The lower panels separately solve a scalar objective
+$J(z)=\tfrac12(z-1)^2$, $p=\mathcal N(0,1)$, with fixed transformed scale 0.8 and
+$r=1.5$. Independent quadrature gives target means **0.55556 (KL)** and **0.66508
+(Tsallis)**. Monte Carlo estimates are compared to their own reference, not to a
+shared optimum. Vehicle Tsallis additionally uses batch normalization and an adaptive
+80th-percentile cutoff, so its target changes between decisions.
+
+[Mechanism records](results/variants/mechanisms/V01/summary.csv) ·
+[Scalar reference estimates](results/variants/mechanisms/V01/reference_trials.csv) ·
+[Audit](results/variants/mechanisms/V01/audit.json)
+
+**Original formulation comparison.**
 
 ![V01 · Divergence and weighting](results/variants/V01_tsallis/primary.png)
 
@@ -170,6 +231,34 @@ Both methods completed open space. In the two-route task, IT-MPPI completed 3/3 
 
 **Mathematical question.** How does repeated refinement with $C_{j,t}$ change the plan when every pass is counted against the same total work allowance? Compare DIAL with both IT-MPPI and the fixed-noise DIAL ablation.
 
+**Annealing mechanism.** Each inner pass samples a different Gaussian neighborhood
+and uses cost-only weights:
+
+$$
+C_{j,t}=0.2I_2\exp\!\left[-\frac{j}{\beta_1 I}
+-\frac{T-1-t}{\beta_2(T-1)}\right],\qquad
+U^{j+1}=U^j+\sum_k\mathrm{softmax}_k(-J/\lambda)\epsilon_k^j.
+$$
+
+![V02: recorded per-iteration occupancy, schedules, updates and work](results/variants/mechanisms/V02/V02_annealing_mechanism.png)
+
+With four passes of 95 samples, DIAL and its fixed-noise ablation each use
+$4(95+1)20=7{,}680$ transitions; IT-MPPI uses $(383+1)20=7{,}680$. The nominal-plan
+rollout is included in each pass. Mean DIAL predicted task cost progressed
+**164.34 → 155.13 → 155.09 → 154.19**, versus **157.88** for the fixed-noise final
+plan and **221.68** for IT-MPPI. Individual seeds include nonmonotone changes.
+
+The density panels count **unweighted sample-time points** with a shared full
+spatial extent and color scale across the four passes. The curves show changed
+predicted routes and updates; they do not establish executed behavior. IT-MPPI's
+importance-corrected target also differs from DIAL's cost-only smoothing objective,
+so the DIAL/fixed-noise pair is the cleaner test of the annealing schedule itself.
+
+[Mechanism records](results/variants/mechanisms/V02/summary.csv) ·
+[Audit](results/variants/mechanisms/V02/audit.json)
+
+**Original formulation comparison.**
+
 ![V02 · Refinement and annealing](results/variants/V02_dial/primary.png)
 
 All 36 episodes completed without collisions. Under the work ceiling, two-route mean external cost was 260.31 for IT-MPPI, 223.80 for DIAL, and 230.32 for the fixed-noise ablation. This is a small, specific-setting result; all inner work is included.
@@ -179,6 +268,36 @@ All 36 episodes completed without collisions. Under the work ceiling, two-route 
 ### V03 · Tracking architecture
 
 **Mathematical question.** When does the nominal reset retain a discrepancy that produces a nonzero $K_t(x_t-\bar x_t)$ correction? Similar completion rates are informative about tracking only when that correction is actually used.
+
+**Tracking mechanism.** The reset rule first selects the actual-state plan when
+$S(U_x)\le S(U_{\bar x})+\eta$. The selected origin then determines the correction:
+
+$$
+e_t=x_t-\bar x_t^{\rm selected},\qquad
+u_t=\mathrm{clip}\!\left(u_t^{\rm plan}+D K_t e_t,\,\mathrm{bounds}\right),\qquad
+\Delta u_t^{\rm applied}=u_t-u_t^{\rm plan}.
+$$
+
+![V03: actual disturbance responses, nominal reset and active tracking](results/variants/mechanisms/V03/V03_tracking_mechanism.png)
+
+The original threshold $\eta=450$ leaves the tracker inactive in **all nine**
+Tube episodes. The stricter, predeclared $\eta=0$ activates it for **8 and 9 commands
+in two of the three positive-impulse episodes**. It remains inactive for the third
+positive seed, all negative impulses, and all zero-impulse controls. Requested and
+applied steering corrections differ when the actuator clips.
+
+For the positive impulse, mean integrated absolute lateral position over the window
+falls from about **2.50 to 1.45 m·s** with the stricter setting, while mean total task
+cost changes from **284.07 to 284.43**. The representative path also overshoots to the
+opposite side. This demonstrates an active feedback response and a tradeoff; it does
+not establish a general tracking benefit or stability guarantee. Both thresholds use
+the same reset equation, and this comparison matches population size, not total work.
+
+[Episode records](results/variants/mechanisms/V03/summary.csv) ·
+[State and correction traces](results/variants/mechanisms/V03/steps.csv) ·
+[Audit](results/variants/mechanisms/V03/audit.json)
+
+**Original formulation comparison.**
 
 ![V03 · Tracking architecture](results/variants/V03_tube/primary.png)
 
@@ -190,6 +309,42 @@ All 24 episodes completed without collisions. The actual-state plan was selected
 
 **Mathematical question.** What changes when the optimizer rolls out coupled nominal/actual trajectories and includes feedback in the sampling correction? Inspect sampled feedback and candidate selection before attributing outcomes to robustness.
 
+**Tracking-aware planning mechanism.** Shared perturbations drive coupled nominal
+and actual predictions; the actual rollout includes $k_t=K_t(x_t-\bar x_t)$.
+At the implemented $\beta=0$, their separate fits use
+
+$$
+\widehat J_a=J_a+\frac\lambda2\sum_t k_t^\top C^{-1}k_t,\qquad
+S_n=\tfrac12J_n+\tfrac12\max(\min(\widehat J_a,\alpha),J_n)
++\frac\lambda2\sum_tU_t^\top C^{-1}(U_t+2\epsilon_t),
+$$
+$$
+S_a=J_a+\frac\lambda2\sum_t(U_t+k_t)^\top C^{-1}(U_t+k_t+2\epsilon_t),\qquad
+w_n\propto e^{-S_n/\lambda},\quad w_a\propto e^{-S_a/\lambda}.
+$$
+
+![V04: candidate selection, coupled rollouts, feedback and command decomposition](results/variants/mechanisms/V04/V04_robust_mechanism.png)
+
+At $\alpha=5000$, the signed disturbances select the actual-state candidate and
+feedback stays zero. The actual fit matches the paired plain-IT fit to numerical
+precision. At $\alpha=100$, **all nine candidate searches are infeasible** and retain
+candidate zero. Under the nonzero impulses, that fallback activates sampled feedback:
+mean RMS correction is **0.341** for the negative impulse and **0.354** for the
+positive impulse in normalized control units. The corresponding actual-plan RMS
+differences from same-noise IT are **0.474** and **0.528**.
+
+The figure separates the planner's first action, the clipped tracker increment,
+and the resulting command. This demonstrates how the implemented augmented dynamics
+and two weight laws change a frozen decision. **It is not evidence for feasible
+robust operation:** the active examples are fallback cases, $\alpha$ changes both
+selection and the mixed objective, and no physical step is executed here. The
+zero-disturbance and inactive original-threshold cases remain in the figure and data.
+
+[Mechanism records](results/variants/mechanisms/V04/summary.csv) ·
+[Audit](results/variants/mechanisms/V04/audit.json)
+
+**Original formulation comparison.**
+
 ![V04 · Feedback-aware robustness](results/variants/V04_robust/primary.png)
 
 All work-budget episodes completed. In serial timing runs, Robust-MPPI completed 0/3 disturbance and 2/3 mismatch episodes, versus 3/3 for IT-MPPI in each. Candidate-search overhead left only 32 and 16 augmented samples respectively. The default candidate threshold selected the actual state, so these runs do not establish an active-feedback robustness benefit.
@@ -199,6 +354,54 @@ All work-budget episodes completed. In serial timing runs, Robust-MPPI completed
 ### V05 · State uncertainty
 
 **Mathematical question.** Does the feedback-shaped sample population satisfy $F_TF_T^\top\preceq\Sigma_f$, and how closely does nonlinear empirical covariance match that prediction? Completion and cost are complementary outcomes, not covariance measurements.
+
+**Covariance mechanism.** A fixed gain acts on the auxiliary noise state, changing
+the covariance of the unweighted controlled population:
+
+$$
+y_{t+1}=A_ty_t+B_t\epsilon_t,\qquad
+z_t=U_t+K_ty_t+\epsilon_t,\qquad
+F=(I+\mathcal B K)\mathcal B\bar\Sigma_\epsilon^{1/2},\qquad
+\Sigma_T^x=F_TF_T^\top\preceq\Sigma_f.
+$$
+
+![V05: independent nonlinear covariance executions, ellipses, gains and PSD residuals](results/variants/mechanisms/V05/V05_covariance_mechanism.png)
+
+Independent executions replay the **fixed warm-start mean and designed gains**, with
+paired fresh noise across steered/zero-gain policies. They do not replan, use optimized
+sample weights, or include the controller's 20% uncontrolled mixture. Every condition
+has 256 independent executions, disjoint from the planning population. Predictions
+and empirical covariance use the same noise scale within each comparison.
+
+The normalized terminal trace divides each state by the square root of its declared
+terminal variance bound, avoiding sums of incompatible physical units:
+
+| Scene | Noise covariance | Empirical trace: steered / zero gain | Disk-proxy contacts: steered / zero gain |
+| --- | --- | ---: | ---: |
+| Open | $C_0$ | 0.776 / 3.714 | 0 / 0 |
+| Narrow | $C_0$ | 0.767 / 3.264 | 64 / 183 |
+| Open | $0.01C_0$ | 0.00706 / 0.05859 | 0 / 0 |
+| Narrow | $0.01C_0$ | 0.00768 / 0.05524 | 0 / 22 |
+
+All four steered conditions satisfy the empirical terminal PSD bound; the zero-gain
+conditions at $C_0$ violate it in both scenes. The steered normalized prediction error
+is about **0.35–0.36** at $C_0$ and **0.00069–0.00126** at $0.01C_0$, showing the
+importance of the local-linearization/noise regime. The optimized bound is slack in
+these cases; the gain objective still changes dispersion substantially.
+
+**Covariance control is not collision avoidance.** The passing steered covariance
+bound coexists with 64 narrow-passage contacts at the larger noise scale. Executions
+continue for the full horizon after proxy contact to avoid conditioning covariance on
+survival; the plant has no impact dynamics. Position ellipses are Gaussian covariance
+summaries in meters, not guaranteed probability coverage or safety regions. Bottom
+ellipses are centered to compare shape, while the top panels retain mean displacement.
+These results validate a fixed-policy local covariance mechanism, not the full
+receding-horizon controller's executed uncertainty distribution.
+
+[Independent-execution summaries](results/variants/mechanisms/V05/summary.csv) ·
+[Audit](results/variants/mechanisms/V05/audit.json)
+
+**Original formulation comparison.**
 
 ![V05 · State uncertainty](results/variants/V05_covariance_steering/primary.png)
 
@@ -311,10 +514,10 @@ therefore applies to that equal-covariance case; changing $C$ generally requires
 full ratio. Cost-only weights generally define a different target.
 
 
-The current IT-MPPI reference retains $C_0=C=\operatorname{diag}(0.14,0.26)$,
+The current IT-MPPI reference retains $C_0=C=\mathrm{diag}(0.14,0.26)$,
 $\lambda=8$ and $T=20$. Its latent sequence has dimension $2T=40$.
 Normalized inputs map to physical steering and throttle as
-$u_t=\operatorname{clip}(\operatorname{diag}(0.5,1)z_t,\text{bounds})$.
+$u_t=\mathrm{clip}(\mathrm{diag}(0.5,1)z_t,\text{bounds})$.
 Gaussian likelihoods precede clipping. The baseline applies the first updated command,
 shifts the latent mean, and appends zero. Its behavior is checked against a saved
 pre-implementation oracle from commit `c7bbf86`.
@@ -364,7 +567,7 @@ For inner pass $j=0,\ldots,I-1$ and horizon position $t=0,\ldots,T-1$,
 $$
 C_{j,t}=0.2I_2\exp\!\left[-\frac{j}{\beta_1 I}
 -\frac{T-1-t}{\beta_2(T-1)}\right],\qquad
-U\leftarrow U+\sum_k\operatorname{softmax}_k(-J/\lambda)\epsilon^{(k)}.
+U\leftarrow U+\sum_k\mathrm{softmax}_k(-J/\lambda)\epsilon^{(k)}.
 $$
 
 The implementation uses four passes and $\beta_1=\beta_2=1$, with a separate
@@ -379,12 +582,12 @@ Run MPPI from both the nominal state $\bar x$ and observation $x$. Select the ac
 solution when its planned cost satisfies $S(U_x)\le S(U_{\bar x})+450$; otherwise retain
 the nominal plan. Apply
 
-$$u=\operatorname{clip}\bigl(u_{\rm nominal}+D K_0(x-\bar x),\text{bounds}\bigr).$$
+$$u=\mathrm{clip}\bigl(u_{\rm nominal}+D K_0(x-\bar x),\text{bounds}\bigr).$$
 
 The ancillary controller is a finite-horizon **local LQR adaptation**, rather than the
 paper's iterative iLQG and asynchronous implementation. Central differences linearize
 the same discrete plant in normalized input coordinates. A Riccati recursion uses
-$Q=\operatorname{diag}(4,8,6,2,2,1,1)$, $R=I_2$, $Q_f=5Q$. No global tube bound or
+$Q=\mathrm{diag}(4,8,6,2,2,1,1)$, $R=I_2$, $Q_f=5Q$. No global tube bound or
 stability claim is made across clipping kinks, large errors, or model mismatch.
 
 ### Robust-MPPI: feedback-aware planning
@@ -431,7 +634,7 @@ $$\|\bar Q^{1/2}F\|_F^2+\|\bar R^{1/2}KG\|_F^2,
 The code uses the feasible unconstrained quadratic solution when possible, otherwise
 a Schur-complement SDP through CVXPY/Clarabel. A $10^{-10}$ numerical ridge is declared;
 terminal PSD residual tolerance is $10^{-5}$. Infeasibility raises an explicit error.
-The seven-state variance bound is $\operatorname{diag}(1,1,.25,.04,1,.5,.5)$.
+The seven-state variance bound is $\mathrm{diag}(1,1,.25,.04,1,.5,.5)$.
 Twenty percent of samples use zero nominal input, outside the controlled-population
 bound. The paper's augmented quadratic cost uses $R=.01I_2$, noise ratio 100; the
 weighted update includes feedback-shaped inputs and repeats the final tail input.
@@ -615,6 +818,33 @@ reproduction, pass `--config results/variants/<study>/config.yaml`; the saved co
 contains the original seeds, candidate grid and algorithm settings. Wall-clock calibration
 is machine/load dependent and may select different sample counts on another machine.
 
+Reproduce the mechanism experiments using fresh directories (the official records
+are protected from overwrite):
+
+```bash
+uv run python experiments/formulation_mechanisms.py \
+  --config configs/variants/mechanisms.yaml \
+  --output results/variants/mechanisms_reproduction \
+  --raw runs/variants/mechanisms_reproduction
+uv run python experiments/formulation_mechanisms.py --plot-only \
+  --output results/variants/mechanisms_reproduction
+uv run python experiments/formulation_mechanisms.py --audit-only \
+  --output results/variants/mechanisms_reproduction
+```
+
+Rebuild all five committed mechanism figures **from compact saved records alone**:
+
+```bash
+uv run python experiments/formulation_mechanisms.py --plot-only \
+  --output results/variants/mechanisms
+```
+
+The mechanism audit requires the ignored raw files; plot regeneration does not. It
+checks raw hashes, weight/update identities, all-pass work, recomputed tracker gains,
+and covariance against an independent linear impulse-response construction. Tests
+also compare recording enabled/disabled commands and RNG state, and prohibit sampling
+or dynamics calls during saved-record figure regeneration.
+
 Regenerate a figure from committed compact data, with no controller execution:
 
 ```bash
@@ -649,7 +879,9 @@ tests/                  Mathematical references, invariants and baseline regress
 
 ## 9. Limitations and future work
 
-- Three seeds per condition and one tuning per method cannot establish general rankings.
+- The original comparison has three seeds per condition and one tuning per method.
+  The mechanism extension declares additional threshold sensitivities and fixed-policy
+  covariance trials; neither establishes general rankings.
   Wider cohorts, parameter sensitivity, stronger tracking stress and additional covariance
   constraints are future experiments. Failed runs and inactive mechanisms are retained.
 - Shared external scores do not imply identical distributional objectives. Tsallis changes

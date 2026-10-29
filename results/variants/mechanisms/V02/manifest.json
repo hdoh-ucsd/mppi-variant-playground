@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "level": "formulation_mechanism",
+  "phase": "evaluation",
+  "started_at_utc": "2026-10-29T19:52:42.328603+00:00",
+  "git": {
+    "commit": "bcfb9981d229818e890d5d542267d094da102a23",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "9c539f6be11ed6ee7c8d91eec182535ff9af9c2242bc8b5e10daf62c355df3dc",
+  "configuration_sha256": "18aadc2e6b5fc50affe9a13d209f759fd231b2ec3cfb5e63c7e3adfad09d2058",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "finished_at_utc": "2026-10-29T19:52:43.156209+00:00",
+  "raw_storage": "runs/variants/mechanisms/V02",
+  "records": 27,
+  "raw_file_count": 9,
+  "raw_hash_index": "runs/variants/mechanisms/V02/sha256.json",
+  "raw_index_sha256": "b9555a7c827286092e44d223495accae20d7232b19f47a1ea973721006f618da",
+  "frozen_inputs_sha256": "30f385b9c1fffe1867101c4797f0ffeeaa5c894273024204068d3c173cee8164"
+}

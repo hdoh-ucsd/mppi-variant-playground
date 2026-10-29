@@ -1,0 +1,72 @@
+{
+  "fixed": "Three paired seeds, zero/+/- impulse at step 8; all variants use 64 samples per planning population. This is not an equal-work comparison.",
+  "thresholds": "Original reset threshold 450 and declared stricter threshold 0; both retain the original reset equation. No forced reset rejection.",
+  "impulse": "Existing runner multiplies declared impulse by 1+0.1*N(0,1), paired across controllers; exact deltas are in raw result.json.",
+  "inference": "Short disturbance-response windows, not goal-completion trials; separate pre-reset discrepancy, selected-reference error, requested and applied corrections.",
+  "observed": [
+    {
+      "impulse": -1,
+      "algorithm": "it_mppi",
+      "tracking_active_commands": 0.0,
+      "cost": 266.37628012227697,
+      "resets": 0.0
+    },
+    {
+      "impulse": -1,
+      "algorithm": "tube_0",
+      "tracking_active_commands": 0.0,
+      "cost": 266.37628012227697,
+      "resets": 1.0
+    },
+    {
+      "impulse": -1,
+      "algorithm": "tube_450",
+      "tracking_active_commands": 0.0,
+      "cost": 266.37628012227697,
+      "resets": 1.0
+    },
+    {
+      "impulse": 0,
+      "algorithm": "it_mppi",
+      "tracking_active_commands": 0.0,
+      "cost": 283.4414495110274,
+      "resets": 0.0
+    },
+    {
+      "impulse": 0,
+      "algorithm": "tube_0",
+      "tracking_active_commands": 0.0,
+      "cost": 283.4414495110274,
+      "resets": 0.0
+    },
+    {
+      "impulse": 0,
+      "algorithm": "tube_450",
+      "tracking_active_commands": 0.0,
+      "cost": 283.4414495110274,
+      "resets": 0.0
+    },
+    {
+      "impulse": 1,
+      "algorithm": "it_mppi",
+      "tracking_active_commands": 0.0,
+      "cost": 284.06948093851787,
+      "resets": 0.0
+    },
+    {
+      "impulse": 1,
+      "algorithm": "tube_0",
+      "tracking_active_commands": 5.666666666666667,
+      "cost": 284.4341050691268,
+      "resets": 1.0
+    },
+    {
+      "impulse": 1,
+      "algorithm": "tube_450",
+      "tracking_active_commands": 0.0,
+      "cost": 284.06948093851787,
+      "resets": 1.0
+    }
+  ],
+  "activation": "Only threshold 0, positive impulses, seeds 51000 and 51002 activate (8 and 9 commands). All other cases inactive."
+}

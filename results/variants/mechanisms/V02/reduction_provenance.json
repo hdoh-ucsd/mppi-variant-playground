@@ -1,0 +1,11 @@
+{
+  "inputs_sha256": {
+    "runs/variants/mechanisms/V02/51000_it_mppi.npz": "5e1c16f23816cf90d09e716182614f8d5b013660316b5dae6fd5459f66b3fe20",
+    "runs/variants/mechanisms/V02/51000_dial_mpc.npz": "3b46e94a978d25351714a4ad64fd0ac468d7a407596c26118ad2d7786462da9e",
+    "runs/variants/mechanisms/V02/51000_dial_no_anneal.npz": "f024bf5e43318c0846b6b10fcaf68c8c73557c398cf1e11e14665156cc54680e"
+  },
+  "method": "Rebin saved full populations to a shared full extent across each algorithm passes; every sample-time point included; no simulation rerun.",
+  "source_sha256": "f460379e7765a770654005d7de0635bac0ab6d91b1cd6f5820c58208921336d8",
+  "plot_data_sha256": "c04aa7a4b5b6e3d526dc65d72684c16f492a51814e33bd587e52ef7d62f3c794",
+  "reducer_function_sha256": "9c83a22a26df813361cac8a79ea36f26376222319301732461e408b7bb609201"
+}

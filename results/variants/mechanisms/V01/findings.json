@@ -1,0 +1,36 @@
+{
+  "design": "Identical costs, latent samples, reference/proposal densities and warm start per pair.",
+  "targets": "Vehicle Tsallis uses adaptive normalization/cutoff; KL uses lambda=8. Scalar reference uses fixed transformed scale 0.8 for distinct targets.",
+  "inference": "One-step commands and predicted costs, not executed driving or physical uncertainty.",
+  "observed": [
+    {
+      "scene": "open_space",
+      "algorithm": "it_mppi",
+      "ess": 1.8201150566315192,
+      "support": 384.0,
+      "planned_cost": 126.66010125655073
+    },
+    {
+      "scene": "open_space",
+      "algorithm": "tsallis_vi",
+      "ess": 2.1022396982246985,
+      "support": 307.0,
+      "planned_cost": 131.3670322167793
+    },
+    {
+      "scene": "two_route_obstacle",
+      "algorithm": "it_mppi",
+      "ess": 1.4833725606121277,
+      "support": 376.3333333333333,
+      "planned_cost": 221.68012864534333
+    },
+    {
+      "scene": "two_route_obstacle",
+      "algorithm": "tsallis_vi",
+      "ess": 1.6639144972828068,
+      "support": 307.0,
+      "planned_cost": 1075.3981736578287
+    }
+  ],
+  "support_note": "support counts numerically nonzero weights. KL zeros can be floating-point underflow; only Tsallis has a finite-support cutoff."
+}

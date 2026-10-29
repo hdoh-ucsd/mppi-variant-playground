@@ -1,0 +1,261 @@
+phase: evaluation
+source_seed: 49000
+frozen_step: 8
+seeds:
+- 51000
+- 51001
+- 51002
+scenes:
+- open_space
+- two_route_obstacle
+- narrow_passage
+benchmark_config: configs/variants/benchmark.yaml
+selection_rule: Fixed step 8 of IT-MPPI in each named scene; no selection using outcomes.
+V01:
+  scenes:
+  - open_space
+  - two_route_obstacle
+  samples: 384
+  reference_cost_center: 1.0
+  reference_scale: 0.8
+  reference_r: 1.5
+  reference_sample_counts:
+  - 128
+  - 1024
+  - 8192
+  reference_seeds:
+  - 52000
+  - 52001
+  - 52002
+V02:
+  scene: two_route_obstacle
+  iterations: 4
+  samples_per_iteration: 95
+  it_samples: 383
+  transitions_per_decision: 7680
+V03:
+  scene: open_space
+  samples: 64
+  steps: 32
+  disturbance_step: 8
+  disturbance_delta:
+  - 0
+  - 0.7
+  - 0.1
+  - 0.01
+  - -0.2
+  - 0.3
+  - 0.12
+  disturbance_multipliers:
+  - 0
+  - 1
+  - -1
+  reset_thresholds:
+  - 450.0
+  - 0.0
+  representative_rule: First evaluation seed, positive disturbance; show both thresholds
+    and all signed/control cases in summaries.
+V04:
+  scene: open_space
+  samples: 128
+  disturbance_delta:
+  - 0
+  - 0.7
+  - 0.1
+  - 0.01
+  - -0.2
+  - 0.3
+  - 0.12
+  disturbance_multipliers:
+  - 0
+  - 1
+  - -1
+  free_energy_thresholds:
+  - 5000.0
+  - 100.0
+  history_rule: Previous and propagated nominal states equal the frozen reference;
+    previous and current plans equal its warm start.
+  representative_rule: First evaluation seed, positive disturbance, threshold 100;
+    not selected by performance or feasibility.
+V05:
+  scenes:
+  - open_space
+  - narrow_passage
+  planner_seed: 55000
+  planner_samples: 384
+  execution_seed_start: 56000
+  execution_replicates: 256
+  noise_fractions:
+  - 1.0
+  - 0.01
+  feedback_modes:
+  - steered
+  - zero_gain
+  execution_rule: Fixed warm-start mean and precomputed gains; independent Gaussian
+    noise drives auxiliary state and actual nonlinear plant. No replanning or optimization
+    weights. Paired noise across feedback modes.
+  contact_policy: Propagate the full fixed horizon even after proxy contact; record
+    contacts, do not condition covariance on survival. The plant has no impact dynamics.
+  normalization: Per-state square roots of the declared terminal covariance diagonal;
+    positions also displayed in meters.
+study: V04
+benchmark:
+  phase: evaluation
+  workers: 8
+  seeds:
+  - 48000
+  - 48001
+  - 48002
+  calibration_seeds:
+  - 47900
+  - 47901
+  - 47902
+  calibration_samples:
+  - 16
+  - 32
+  - 64
+  - 128
+  - 256
+  - 384
+  - 768
+  - 1536
+  - 3072
+  planning_deadline_s: 0.15
+  calibration_fraction: 0.8
+  calibration_stop_on_first_overrun: true
+  transition_budget: 7700
+  s_turn_clearance: 0.35
+  algorithms:
+    it_mppi: {}
+    tsallis_vi:
+      tsallis_r: 1.5
+      elite_fraction: 0.8
+    dial_mpc:
+      iterations: 4
+      beta_trajectory: 1.0
+      beta_horizon: 1.0
+      anneal: true
+      covariance:
+      - - 0.2
+        - 0
+      - - 0
+        - 0.2
+    dial_no_anneal:
+      iterations: 4
+      beta_trajectory: 1.0
+      beta_horizon: 1.0
+      anneal: false
+      covariance:
+      - - 0.2
+        - 0
+      - - 0
+        - 0.2
+    tube_mppi:
+      reset_threshold: 450.0
+      tracking_q:
+      - 4
+      - 8
+      - 6
+      - 2
+      - 2
+      - 1
+      - 1
+      tracking_r:
+      - 1
+      - 1
+      tracking_terminal_multiplier: 5.0
+    robust_mppi:
+      candidate_samples: 8
+      free_energy_threshold: 5000.0
+      tracking_q:
+      - 4
+      - 8
+      - 6
+      - 2
+      - 2
+      - 1
+      - 1
+      tracking_r:
+      - 1
+      - 1
+      tracking_terminal_multiplier: 5.0
+    cc_mppi:
+      uncontrolled_fraction: 0.2
+      noise_ratio: 100.0
+      terminal_covariance_bound:
+      - 1.0
+      - 1.0
+      - 0.25
+      - 0.04
+      - 1.0
+      - 0.5
+      - 0.5
+      covariance_q:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      covariance_r:
+      - 1
+      - 1
+      cc_control_r:
+      - 0.01
+      - 0.01
+      covariance_tolerance: 1.0e-05
+  studies:
+    V01_tsallis:
+      algorithms:
+      - it_mppi
+      - tsallis_vi
+      scenarios:
+      - open_space
+      - two_route_obstacle
+    V02_dial:
+      algorithms:
+      - it_mppi
+      - dial_mpc
+      - dial_no_anneal
+      scenarios:
+      - two_route_obstacle
+      - narrow_passage
+    V03_tube:
+      algorithms:
+      - it_mppi
+      - tube_mppi
+      scenarios:
+      - disturbance
+      - model_mismatch
+    V04_robust:
+      algorithms:
+      - it_mppi
+      - robust_mppi
+      scenarios:
+      - disturbance
+      - model_mismatch
+    V05_covariance_steering:
+      algorithms:
+      - it_mppi
+      - cc_mppi
+      scenarios:
+      - open_space
+      - narrow_passage
+      stochastic_input_fraction: 0.01
+    V06_unified:
+      algorithms:
+      - it_mppi
+      - tsallis_vi
+      - dial_mpc
+      - tube_mppi
+      - robust_mppi
+      - cc_mppi
+      scenarios:
+      - open_space
+      - narrow_passage
+      - two_route_obstacle
+      - disturbance
+      - model_mismatch
+      - s_turn
+      stochastic_input_fraction: 0.01

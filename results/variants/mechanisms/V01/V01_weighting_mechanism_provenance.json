@@ -1,0 +1,14 @@
+{
+  "figure": "results/variants/mechanisms/V01/V01_weighting_mechanism.png",
+  "inputs_sha256": {
+    "results/variants/mechanisms/V01/plot_data.json": "8037659ce25dec4321ffdc865b49d1bf6ff7fde18e2947420d238397b381e8a4",
+    "results/variants/mechanisms/V01/summary.csv": "fca212ff054584aa2febe7e44df301c33a4a1c84d66a93eeb2c5b78fbd228a0f",
+    "results/variants/mechanisms/V01/reference_trials.csv": "edb4e1f4fd7c2bdb9f6588e386c2772a068a8dcc1c97a605ddfd192300c9370d",
+    "results/variants/mechanisms/V01/frozen_inputs.json": "30f385b9c1fffe1867101c4797f0ffeeaa5c894273024204068d3c173cee8164"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "e83b121498793d972ea7fb1725a8a05af21a293c553ecb5e3a170345d3dc2026",
+  "summary_sha256": "fca212ff054584aa2febe7e44df301c33a4a1c84d66a93eeb2c5b78fbd228a0f",
+  "mechanism_plot_source_sha256": "d395f7bc7f111391a7c5a6b7fc20daaefc5f821bc2495970f5812fd4600593ef"
+}

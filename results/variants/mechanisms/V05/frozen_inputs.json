@@ -1,0 +1,1162 @@
+{
+  "open_space": {
+    "name": "open_space",
+    "config": {
+      "phase": "evaluation",
+      "model_kind": "dynamic7",
+      "workers": 12,
+      "controller": {
+        "horizon": 20,
+        "samples": 384,
+        "temperature": 8.0,
+        "base_covariance": [
+          [
+            0.14,
+            0.0
+          ],
+          [
+            0.0,
+            0.26
+          ]
+        ],
+        "algorithm": "it_mppi",
+        "kind": "standard",
+        "covariance": [
+          [
+            0.14,
+            0.0
+          ],
+          [
+            0.0,
+            0.26
+          ]
+        ],
+        "saved_rollouts": 0,
+        "snapshot_steps": []
+      },
+      "proposals": {
+        "standard": [
+          [
+            0.14,
+            0.0
+          ],
+          [
+            0.0,
+            0.26
+          ]
+        ],
+        "isotropic": [
+          [
+            0.2,
+            0.0
+          ],
+          [
+            0.0,
+            0.2
+          ]
+        ],
+        "diagonal": [
+          [
+            0.09,
+            0.0
+          ],
+          [
+            0.0,
+            0.31
+          ]
+        ],
+        "full": [
+          [
+            0.14,
+            0.07
+          ],
+          [
+            0.07,
+            0.26
+          ]
+        ]
+      },
+      "vehicle_radius": 0.22,
+      "speed_target": 1.4,
+      "cost": {
+        "remaining_progress": 1.0,
+        "speed": 2.0,
+        "heading": 1.0,
+        "clearance": 100.0,
+        "safety_margin": 0.15,
+        "collision": 3000.0,
+        "control": 0.05,
+        "variation": 0.1,
+        "lateral_velocity": 1.0,
+        "yaw_rate": 0.2,
+        "roll": 2.0,
+        "terminal_progress": 4.0,
+        "terminal_goal": 8.0,
+        "terminal_heading": 4.0,
+        "terminal_speed": 3.0
+      },
+      "execution": {
+        "max_steps": 160,
+        "position_tolerance": 0.3,
+        "heading_tolerance": 0.35,
+        "speed_tolerance": 0.8,
+        "goal_lateral_tolerance": 0.4,
+        "lateral_velocity_tolerance": 0.35,
+        "yaw_rate_tolerance": 0.35,
+        "roll_tolerance": 0.15,
+        "snapshot_steps": [
+          0,
+          10,
+          21,
+          40,
+          65
+        ],
+        "representative_seed": 42,
+        "extra_snapshot_seeds": [
+          48000
+        ]
+      },
+      "compatibility_seeds": {
+        "start": 42,
+        "count": 20
+      },
+      "holdout_seeds": {
+        "start": 31000,
+        "count": 20
+      },
+      "s_turn_seeds": {
+        "start": 32000,
+        "count": 20
+      },
+      "s_turn_max_seeds": 40,
+      "s_turn_precision_width": 0.36,
+      "pilot_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        42
+      ],
+      "scenarios": [
+        "open_space",
+        "narrow_passage",
+        "two_route_obstacle",
+        "disturbance",
+        "model_mismatch"
+      ],
+      "s_turn": {
+        "turn_radius": 3.0,
+        "turn_separation": 3.0,
+        "entry_length": 2.0,
+        "exit_length": 3.0,
+        "end_extension": 8.0,
+        "clearance_levels": [
+          0.9,
+          0.6,
+          0.35,
+          0.2
+        ],
+        "representative_clearance": 0.35,
+        "steering_profile_rate_limit": 0.8
+      },
+      "budget_counts": [
+        128,
+        384,
+        768,
+        1536
+      ],
+      "budget_q04_scenario": "two_route_obstacle",
+      "budget_q05_clearance": 0.35,
+      "frozen": {
+        "seed": 31415,
+        "samples": 384,
+        "horizon": 20,
+        "seeds": {
+          "start": 33000,
+          "count": 50
+        },
+        "representative_seed": 33000,
+        "sample_counts": [
+          64,
+          128,
+          256,
+          384,
+          512,
+          1024,
+          2048,
+          4096
+        ],
+        "reference_samples": 65536,
+        "reference_repetitions": 8,
+        "reference_min_ess": 100,
+        "reference_max_weight": 0.05,
+        "reference_max_rms_ci_halfwidth": 0.05,
+        "sensitivity_step": 0.001,
+        "orientation_eigenvalues": [
+          0.3,
+          0.1
+        ],
+        "repetition_counts": [
+          10,
+          25,
+          50
+        ],
+        "open_step": 8,
+        "obstacle_min_x": 0.6,
+        "obstacle_max_x": 1.2,
+        "disturbance_step": 21
+      },
+      "vehicle": {
+        "dt": 0.15,
+        "substeps": 3,
+        "mass": 35.0,
+        "yaw_inertia": 8.0,
+        "front_distance": 0.4,
+        "rear_distance": 0.4,
+        "cornering_front": 450.0,
+        "cornering_rear": 450.0,
+        "friction": 0.9,
+        "gravity": 9.81,
+        "engine_force": 70.0,
+        "brake_force": 105.0,
+        "drag_linear": 0.4,
+        "drag_quadratic": 0.5,
+        "steering_limit": 0.5,
+        "throttle_limit": 1.0,
+        "velocity_max": 4.0,
+        "low_speed": 0.5,
+        "low_speed_damping_time": 0.15,
+        "cg_height": 0.2,
+        "roll_stiffness": 120.0,
+        "roll_damping": 48.0
+      },
+      "control_fields": [
+        "steering",
+        "throttle"
+      ],
+      "scenario": {
+        "name": "open_space",
+        "initial_state": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "goal_state": [
+          10.0,
+          0.0,
+          0.0,
+          0.0,
+          1.4,
+          0.0,
+          0.0
+        ],
+        "obstacles": [],
+        "vehicle_radius": 0.22
+      },
+      "planning_deadline_s": 0.15
+    },
+    "state": [
+      1.1409756287824981,
+      -0.07103235096973598,
+      -0.06446352316153492,
+      -0.010319576143515679,
+      1.9939605343856794,
+      -0.05881974414220254,
+      -0.15593978954416698
+    ],
+    "warm_start": [
+      [
+        -0.010509560899482101,
+        0.19645949666743134
+      ],
+      [
+        -0.009106087946222419,
+        0.6235525962419324
+      ],
+      [
+        0.3347741888450815,
+        0.392814581190483
+      ],
+      [
+        -0.3224260833966919,
+        0.29861515126790417
+      ],
+      [
+        0.15660961560866601,
+        -0.012912031826416093
+      ],
+      [
+        0.10250052294761816,
+        0.982147259901799
+      ],
+      [
+        0.11333852184016181,
+        0.4468081348066552
+      ],
+      [
+        0.5954441331214326,
+        0.1271307772417431
+      ],
+      [
+        -0.30597526735374747,
+        0.5447960206581839
+      ],
+      [
+        0.2798071826003472,
+        1.179282255501481
+      ],
+      [
+        0.06892138981970491,
+        0.3037357838932814
+      ],
+      [
+        0.3851375783870245,
+        0.4708728935584234
+      ],
+      [
+        0.29744794831233756,
+        0.0400671739389154
+      ],
+      [
+        0.14633652987584578,
+        0.4506069061814618
+      ],
+      [
+        -0.2999313123308801,
+        0.4784242702383722
+      ],
+      [
+        0.3789664734208865,
+        -0.09655502909594915
+      ],
+      [
+        0.01908793899136807,
+        -0.49467412990728016
+      ],
+      [
+        0.1918665200898659,
+        0.594025929084008
+      ],
+      [
+        -0.1885663174533766,
+        0.010973876416474999
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "previous_control": [
+      -0.10200754342299961,
+      1.0
+    ],
+    "step": 8,
+    "source_seed": 49000,
+    "optimizer_entropy": [
+      4400,
+      49000
+    ],
+    "disturbance_entropy": [
+      4401,
+      49000
+    ],
+    "disturbance_delta": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "disturbance_applied": false,
+    "source_episode": "runs/variants/mechanisms/sources/open_space"
+  },
+  "two_route_obstacle": {
+    "name": "two_route_obstacle",
+    "config": {
+      "phase": "evaluation",
+      "model_kind": "dynamic7",
+      "workers": 12,
+      "controller": {
+        "horizon": 20,
+        "samples": 384,
+        "temperature": 8.0,
+        "base_covariance": [
+          [
+            0.14,
+            0.0
+          ],
+          [
+            0.0,
+            0.26
+          ]
+        ],
+        "algorithm": "it_mppi",
+        "kind": "standard",
+        "covariance": [
+          [
+            0.14,
+            0.0
+          ],
+          [
+            0.0,
+            0.26
+          ]
+        ],
+        "saved_rollouts": 0,
+        "snapshot_steps": []
+      },
+      "proposals": {
+        "standard": [
+          [
+            0.14,
+            0.0
+          ],
+          [
+            0.0,
+            0.26
+          ]
+        ],
+        "isotropic": [
+          [
+            0.2,
+            0.0
+          ],
+          [
+            0.0,
+            0.2
+          ]
+        ],
+        "diagonal": [
+          [
+            0.09,
+            0.0
+          ],
+          [
+            0.0,
+            0.31
+          ]
+        ],
+        "full": [
+          [
+            0.14,
+            0.07
+          ],
+          [
+            0.07,
+            0.26
+          ]
+        ]
+      },
+      "vehicle_radius": 0.22,
+      "speed_target": 1.4,
+      "cost": {
+        "remaining_progress": 1.0,
+        "speed": 2.0,
+        "heading": 1.0,
+        "clearance": 100.0,
+        "safety_margin": 0.15,
+        "collision": 3000.0,
+        "control": 0.05,
+        "variation": 0.1,
+        "lateral_velocity": 1.0,
+        "yaw_rate": 0.2,
+        "roll": 2.0,
+        "terminal_progress": 4.0,
+        "terminal_goal": 8.0,
+        "terminal_heading": 4.0,
+        "terminal_speed": 3.0
+      },
+      "execution": {
+        "max_steps": 160,
+        "position_tolerance": 0.3,
+        "heading_tolerance": 0.35,
+        "speed_tolerance": 0.8,
+        "goal_lateral_tolerance": 0.4,
+        "lateral_velocity_tolerance": 0.35,
+        "yaw_rate_tolerance": 0.35,
+        "roll_tolerance": 0.15,
+        "snapshot_steps": [
+          0,
+          10,
+          21,
+          40,
+          65
+        ],
+        "representative_seed": 42,
+        "extra_snapshot_seeds": [
+          48000
+        ]
+      },
+      "compatibility_seeds": {
+        "start": 42,
+        "count": 20
+      },
+      "holdout_seeds": {
+        "start": 31000,
+        "count": 20
+      },
+      "s_turn_seeds": {
+        "start": 32000,
+        "count": 20
+      },
+      "s_turn_max_seeds": 40,
+      "s_turn_precision_width": 0.36,
+      "pilot_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        42
+      ],
+      "scenarios": [
+        "open_space",
+        "narrow_passage",
+        "two_route_obstacle",
+        "disturbance",
+        "model_mismatch"
+      ],
+      "s_turn": {
+        "turn_radius": 3.0,
+        "turn_separation": 3.0,
+        "entry_length": 2.0,
+        "exit_length": 3.0,
+        "end_extension": 8.0,
+        "clearance_levels": [
+          0.9,
+          0.6,
+          0.35,
+          0.2
+        ],
+        "representative_clearance": 0.35,
+        "steering_profile_rate_limit": 0.8
+      },
+      "budget_counts": [
+        128,
+        384,
+        768,
+        1536
+      ],
+      "budget_q04_scenario": "two_route_obstacle",
+      "budget_q05_clearance": 0.35,
+      "frozen": {
+        "seed": 31415,
+        "samples": 384,
+        "horizon": 20,
+        "seeds": {
+          "start": 33000,
+          "count": 50
+        },
+        "representative_seed": 33000,
+        "sample_counts": [
+          64,
+          128,
+          256,
+          384,
+          512,
+          1024,
+          2048,
+          4096
+        ],
+        "reference_samples": 65536,
+        "reference_repetitions": 8,
+        "reference_min_ess": 100,
+        "reference_max_weight": 0.05,
+        "reference_max_rms_ci_halfwidth": 0.05,
+        "sensitivity_step": 0.001,
+        "orientation_eigenvalues": [
+          0.3,
+          0.1
+        ],
+        "repetition_counts": [
+          10,
+          25,
+          50
+        ],
+        "open_step": 8,
+        "obstacle_min_x": 0.6,
+        "obstacle_max_x": 1.2,
+        "disturbance_step": 21
+      },
+      "vehicle": {
+        "dt": 0.15,
+        "substeps": 3,
+        "mass": 35.0,
+        "yaw_inertia": 8.0,
+        "front_distance": 0.4,
+        "rear_distance": 0.4,
+        "cornering_front": 450.0,
+        "cornering_rear": 450.0,
+        "friction": 0.9,
+        "gravity": 9.81,
+        "engine_force": 70.0,
+        "brake_force": 105.0,
+        "drag_linear": 0.4,
+        "drag_quadratic": 0.5,
+        "steering_limit": 0.5,
+        "throttle_limit": 1.0,
+        "velocity_max": 4.0,
+        "low_speed": 0.5,
+        "low_speed_damping_time": 0.15,
+        "cg_height": 0.2,
+        "roll_stiffness": 120.0,
+        "roll_damping": 48.0
+      },
+      "control_fields": [
+        "steering",
+        "throttle"
+      ],
+      "scenario": {
+        "name": "two_route_obstacle",
+        "initial_state": [
+          0.0,
+          -0.2,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "goal_state": [
+          10.0,
+          0.0,
+          0.0,
+          0.0,
+          1.4,
+          0.0,
+          0.0
+        ],
+        "obstacles": [
+          [
+            4.0,
+            0.0,
+            0.75
+          ]
+        ],
+        "vehicle_radius": 0.22
+      },
+      "planning_deadline_s": 0.15
+    },
+    "state": [
+      0.7046198125705627,
+      -0.09936853517881307,
+      0.14704996820357596,
+      0.014355294103340438,
+      1.1642047836107192,
+      0.09191672385459544,
+      0.2648785022723534
+    ],
+    "warm_start": [
+      [
+        0.6140574251915173,
+        1.0793984216503718
+      ],
+      [
+        0.4850437984790272,
+        1.6260471462803026
+      ],
+      [
+        0.2740641336184617,
+        0.7217980268608358
+      ],
+      [
+        0.28694378065845383,
+        0.7205590972572279
+      ],
+      [
+        0.3678042774440326,
+        0.7372430639062314
+      ],
+      [
+        -0.49411918438826946,
+        1.15081633442957
+      ],
+      [
+        -0.09743638719216341,
+        1.0496351801103814
+      ],
+      [
+        -0.29520824753939995,
+        0.5065229503305586
+      ],
+      [
+        -0.5618569502485903,
+        0.7355186596036087
+      ],
+      [
+        -0.3341565798133303,
+        0.2953692274473302
+      ],
+      [
+        -0.11010737197751294,
+        1.0459592598942287
+      ],
+      [
+        -0.2757487717188817,
+        0.6609926949791177
+      ],
+      [
+        -0.18411228175744138,
+        -0.11117973607612025
+      ],
+      [
+        -0.5141882542244589,
+        -0.00157849428828305
+      ],
+      [
+        0.2299593995630898,
+        -0.05632575590223923
+      ],
+      [
+        0.4768776937275496,
+        0.11647749352471856
+      ],
+      [
+        0.5200347988017698,
+        0.5173592041327011
+      ],
+      [
+        -0.19250529166164504,
+        0.2206383626311044
+      ],
+      [
+        -0.04756195537104409,
+        -0.5955697433046241
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "previous_control": [
+      0.18017427968535393,
+      0.04230989676860342
+    ],
+    "step": 8,
+    "source_seed": 49000,
+    "optimizer_entropy": [
+      4400,
+      49000
+    ],
+    "disturbance_entropy": [
+      4401,
+      49000
+    ],
+    "disturbance_delta": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "disturbance_applied": false,
+    "source_episode": "runs/variants/mechanisms/sources/two_route_obstacle"
+  },
+  "narrow_passage": {
+    "name": "narrow_passage",
+    "config": {
+      "phase": "evaluation",
+      "model_kind": "dynamic7",
+      "workers": 12,
+      "controller": {
+        "horizon": 20,
+        "samples": 384,
+        "temperature": 8.0,
+        "base_covariance": [
+          [
+            0.14,
+            0.0
+          ],
+          [
+            0.0,
+            0.26
+          ]
+        ],
+        "algorithm": "it_mppi",
+        "kind": "standard",
+        "covariance": [
+          [
+            0.14,
+            0.0
+          ],
+          [
+            0.0,
+            0.26
+          ]
+        ],
+        "saved_rollouts": 0,
+        "snapshot_steps": []
+      },
+      "proposals": {
+        "standard": [
+          [
+            0.14,
+            0.0
+          ],
+          [
+            0.0,
+            0.26
+          ]
+        ],
+        "isotropic": [
+          [
+            0.2,
+            0.0
+          ],
+          [
+            0.0,
+            0.2
+          ]
+        ],
+        "diagonal": [
+          [
+            0.09,
+            0.0
+          ],
+          [
+            0.0,
+            0.31
+          ]
+        ],
+        "full": [
+          [
+            0.14,
+            0.07
+          ],
+          [
+            0.07,
+            0.26
+          ]
+        ]
+      },
+      "vehicle_radius": 0.22,
+      "speed_target": 1.4,
+      "cost": {
+        "remaining_progress": 1.0,
+        "speed": 2.0,
+        "heading": 1.0,
+        "clearance": 100.0,
+        "safety_margin": 0.15,
+        "collision": 3000.0,
+        "control": 0.05,
+        "variation": 0.1,
+        "lateral_velocity": 1.0,
+        "yaw_rate": 0.2,
+        "roll": 2.0,
+        "terminal_progress": 4.0,
+        "terminal_goal": 8.0,
+        "terminal_heading": 4.0,
+        "terminal_speed": 3.0
+      },
+      "execution": {
+        "max_steps": 160,
+        "position_tolerance": 0.3,
+        "heading_tolerance": 0.35,
+        "speed_tolerance": 0.8,
+        "goal_lateral_tolerance": 0.4,
+        "lateral_velocity_tolerance": 0.35,
+        "yaw_rate_tolerance": 0.35,
+        "roll_tolerance": 0.15,
+        "snapshot_steps": [
+          0,
+          10,
+          21,
+          40,
+          65
+        ],
+        "representative_seed": 42,
+        "extra_snapshot_seeds": [
+          48000
+        ]
+      },
+      "compatibility_seeds": {
+        "start": 42,
+        "count": 20
+      },
+      "holdout_seeds": {
+        "start": 31000,
+        "count": 20
+      },
+      "s_turn_seeds": {
+        "start": 32000,
+        "count": 20
+      },
+      "s_turn_max_seeds": 40,
+      "s_turn_precision_width": 0.36,
+      "pilot_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        42
+      ],
+      "scenarios": [
+        "open_space",
+        "narrow_passage",
+        "two_route_obstacle",
+        "disturbance",
+        "model_mismatch"
+      ],
+      "s_turn": {
+        "turn_radius": 3.0,
+        "turn_separation": 3.0,
+        "entry_length": 2.0,
+        "exit_length": 3.0,
+        "end_extension": 8.0,
+        "clearance_levels": [
+          0.9,
+          0.6,
+          0.35,
+          0.2
+        ],
+        "representative_clearance": 0.35,
+        "steering_profile_rate_limit": 0.8
+      },
+      "budget_counts": [
+        128,
+        384,
+        768,
+        1536
+      ],
+      "budget_q04_scenario": "two_route_obstacle",
+      "budget_q05_clearance": 0.35,
+      "frozen": {
+        "seed": 31415,
+        "samples": 384,
+        "horizon": 20,
+        "seeds": {
+          "start": 33000,
+          "count": 50
+        },
+        "representative_seed": 33000,
+        "sample_counts": [
+          64,
+          128,
+          256,
+          384,
+          512,
+          1024,
+          2048,
+          4096
+        ],
+        "reference_samples": 65536,
+        "reference_repetitions": 8,
+        "reference_min_ess": 100,
+        "reference_max_weight": 0.05,
+        "reference_max_rms_ci_halfwidth": 0.05,
+        "sensitivity_step": 0.001,
+        "orientation_eigenvalues": [
+          0.3,
+          0.1
+        ],
+        "repetition_counts": [
+          10,
+          25,
+          50
+        ],
+        "open_step": 8,
+        "obstacle_min_x": 0.6,
+        "obstacle_max_x": 1.2,
+        "disturbance_step": 21
+      },
+      "vehicle": {
+        "dt": 0.15,
+        "substeps": 3,
+        "mass": 35.0,
+        "yaw_inertia": 8.0,
+        "front_distance": 0.4,
+        "rear_distance": 0.4,
+        "cornering_front": 450.0,
+        "cornering_rear": 450.0,
+        "friction": 0.9,
+        "gravity": 9.81,
+        "engine_force": 70.0,
+        "brake_force": 105.0,
+        "drag_linear": 0.4,
+        "drag_quadratic": 0.5,
+        "steering_limit": 0.5,
+        "throttle_limit": 1.0,
+        "velocity_max": 4.0,
+        "low_speed": 0.5,
+        "low_speed_damping_time": 0.15,
+        "cg_height": 0.2,
+        "roll_stiffness": 120.0,
+        "roll_damping": 48.0
+      },
+      "control_fields": [
+        "steering",
+        "throttle"
+      ],
+      "scenario": {
+        "name": "narrow_passage",
+        "initial_state": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "goal_state": [
+          10.0,
+          0.0,
+          0.0,
+          0.0,
+          1.4,
+          0.0,
+          0.0
+        ],
+        "obstacles": [
+          [
+            5.0,
+            1.0,
+            0.55
+          ],
+          [
+            5.0,
+            -1.0,
+            0.55
+          ]
+        ],
+        "vehicle_radius": 0.22
+      },
+      "planning_deadline_s": 0.15
+    },
+    "state": [
+      1.0452180854185367,
+      -0.021651805757578937,
+      0.0016013720345062765,
+      -0.0038786993756005986,
+      1.6098966330868043,
+      -0.04718390762988539,
+      -0.08859927316697841
+    ],
+    "warm_start": [
+      [
+        -0.06476045749478843,
+        0.6102696278946522
+      ],
+      [
+        0.3826185851707401,
+        1.3208799387450465
+      ],
+      [
+        -0.03230512894238169,
+        1.1971427696221926
+      ],
+      [
+        -0.22315815805864786,
+        -0.6199628408867042
+      ],
+      [
+        -0.12984020765365004,
+        1.3960800269784426
+      ],
+      [
+        -0.37057986812983107,
+        -0.17807479088083106
+      ],
+      [
+        -0.08676064568303271,
+        0.8428292061455191
+      ],
+      [
+        0.28085622328319876,
+        0.9136585954700092
+      ],
+      [
+        -0.031832706179790726,
+        0.33837003404856336
+      ],
+      [
+        0.20092586734682188,
+        -0.15893009123507373
+      ],
+      [
+        -0.016261185717403703,
+        0.8540216902417809
+      ],
+      [
+        0.22802428781882933,
+        0.6629658822639808
+      ],
+      [
+        0.16006523290846622,
+        0.551637241277147
+      ],
+      [
+        0.4992454409717835,
+        0.29697788329058583
+      ],
+      [
+        -0.15855824602479285,
+        0.5169865993226042
+      ],
+      [
+        -0.11331572163299075,
+        0.10526608617777095
+      ],
+      [
+        -0.12493293691079566,
+        0.3117224402040858
+      ],
+      [
+        -0.4828488202180512,
+        0.21009018038417424
+      ],
+      [
+        0.01697841588748033,
+        -0.5806782906642548
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "previous_control": [
+      -0.09142723186092372,
+      0.14479015999933487
+    ],
+    "step": 8,
+    "source_seed": 49000,
+    "optimizer_entropy": [
+      4400,
+      49000
+    ],
+    "disturbance_entropy": [
+      4401,
+      49000
+    ],
+    "disturbance_delta": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "disturbance_applied": false,
+    "source_episode": "runs/variants/mechanisms/sources/narrow_passage"
+  }
+}
