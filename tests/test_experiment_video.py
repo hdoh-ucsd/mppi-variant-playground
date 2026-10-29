@@ -204,3 +204,26 @@ def test_encoded_video_validation(name):
     assert result["duration_s"] == pytest.approx(
         manifest["opening_s"] + manifest["main_s"] + manifest["ending_s"], abs=0.002
     )
+
+
+@pytest.mark.parametrize("name", NAMES)
+def test_frame_is_deterministic_after_seeking(name):
+    video = Video(name, MEDIA)
+    selected = OPENING + video.main_frames // 3
+    video.update(selected)
+    video.fig.canvas.draw()
+    first = np.asarray(video.fig.canvas.buffer_rgba()).copy()
+    video.update(OPENING + video.main_frames - 1)
+    video.update(0)
+    video.update(selected)
+    video.fig.canvas.draw()
+    np.testing.assert_array_equal(first, np.asarray(video.fig.canvas.buffer_rgba()))
+
+
+@pytest.mark.parametrize("name", NAMES)
+def test_main_axis_labels_do_not_overlap_scientific_annotation(name):
+    video = Video(name, MEDIA)
+    for fraction in [0.1, 0.5, 0.9, 1.0]:
+        video.update_main(fraction)
+        video.fig.canvas.draw()
+        assert not video.ax.xaxis.label.get_window_extent().overlaps(video.note.get_window_extent())

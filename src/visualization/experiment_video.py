@@ -243,6 +243,8 @@ class Video:
                 )
                 self.limitation = "One paired seed and fixed settings; no universal method ranking."
         elif name == "V02_dial_decision":
+            # This taller map fills the axes box; reserve space below its x-axis label.
+            self.note.set_y(0.12)
             self.cloud("samples", BLUE, "95 unweighted predicted rollouts / pass")
             self.line("plan", ORANGE, "Updated nominal prediction", lw=2.5)
             self.vehicles["fixed"] = Vehicle(self.ax, self.config, GREEN)
