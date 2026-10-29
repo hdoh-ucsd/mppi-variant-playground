@@ -23,6 +23,7 @@ if __name__ == "__main__":
             "budget_q05",
             "pilot_q04",
             "pilot_q05",
+            "secondary_q05",
         ],
     )
     p.add_argument("--output", required=True)
@@ -31,6 +32,8 @@ if __name__ == "__main__":
     )
     args = p.parse_args()
     config = configuration()
+    if args.stage == "secondary_q05":
+        config.update(read_yaml("configs/seven_state/secondary.yaml"))
     if args.stage in ["q01", "q02"]:
         cfg = read_yaml("configs/investigations/gaussian_target.yaml")
         cfg["evaluation_seeds"] = list(range(34000, 34064))

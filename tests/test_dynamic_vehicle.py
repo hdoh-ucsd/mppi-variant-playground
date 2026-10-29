@@ -175,3 +175,16 @@ def test_no_obstacle_diagnostics_are_json_serializable(tmp_path):
     json.dumps(row, allow_nan=False)
     json.dumps(record, allow_nan=False)
     assert record[1]["clearance"] == [None, None]
+
+
+def test_secondary_speed_changes_objective_without_regenerating_corridor():
+    from analysis.dynamic_campaign import configuration, resolved_case
+    from evaluation.runner import make_controller
+
+    config, geometry, *_ = resolved_case(configuration(), "s_turn", clearance=0.35)
+    baseline = make_controller(config)
+    config["running_speed_target"] = 1.8
+    secondary = make_controller(config)
+    assert baseline.cost.speed == 1.4 and secondary.cost.speed == 1.8
+    np.testing.assert_array_equal(secondary.cost.geometry.center.points, geometry.center.points)
+    np.testing.assert_array_equal(secondary.cost.geometry.goal, baseline.cost.geometry.goal)

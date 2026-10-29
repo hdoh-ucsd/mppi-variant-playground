@@ -1,0 +1,12 @@
+# Declared before secondary evaluations. Independent of both primary seed cohorts.
+secondary:
+  seeds: {start: 35000, count: 20}
+  clearance: 0.35
+  running_speed_targets: [1.0, 1.4, 1.8]
+  lateral_impulse_magnitudes: [0.1, 0.2]
+  impulse_step: 40
+  # Per metre of lateral impulse; coordinates follow the seven-state SI ordering.
+  impulse_shape: [0.0, 1.0, 0.2, 0.02, -0.5, 0.3, 0.1]
+  baseline: speed_1.4
+  terminal_speed: 1.4
+  geometry_reference_speed: 1.4

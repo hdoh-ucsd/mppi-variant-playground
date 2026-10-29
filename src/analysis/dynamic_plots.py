@@ -63,7 +63,9 @@ def analytic(root, question):
     colors = ["#d97706", "#059669", "#64748b", "#9333ea", "#e11d48"]
     if question == "Q01":
         g = d[(d.suite == "geometry") & (d.constraint == "trace") & (d.scale == 1) & (d.ratio == 4)]
-        g = g.sort_values("angle_deg")
+        g = g[g.proposal_mean.map(lambda value: value == [0.0, 0.0])].sort_values("angle_deg")
+        if g.angle_deg.duplicated().any():
+            raise ValueError("Orientation figure mixes distinct conditions")
         axes[0].semilogy(
             g.angle_deg, g.squared_error_mean, "o-", color="#9333ea", label="anisotropy 4:1"
         )
@@ -406,7 +408,7 @@ def budget(root):
         "cumulative_evaluation_cost",
         "mean_ess",
         "mean_planning_latency_s",
-        "predicted_transitions",
+        "model_transitions",
     ]
     # Metric names are recorded in summaries; counters are exact, not wall-clock matching.
     fig, axes = plt.subplots(1, 5, figsize=(17, 3.6), layout="constrained")

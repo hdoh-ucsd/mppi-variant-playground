@@ -46,7 +46,12 @@ def make_controller(config):
         geometry = geometry_for_config(config)
         return MPPI(
             model,
-            VehicleCost(geometry, model, config["cost"], config["speed_target"]),
+            VehicleCost(
+                geometry,
+                model,
+                config["cost"],
+                config.get("running_speed_target", config["speed_target"]),
+            ),
             config["controller"],
         )
     model = Bicycle(**config["dynamics"])

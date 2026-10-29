@@ -376,6 +376,28 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
         for value in config["s_turn"]["clearance_levels"]:
             c, g, states, controls, check = resolved_case(config, "s_turn", clearance=value)
             cases.append((f"clearance_{value:g}", c, g, check))
+    elif stage == "secondary_q05":
+        secondary = config["secondary"]
+        for speed in secondary["running_speed_targets"]:
+            c, g, states, controls, check = resolved_case(
+                config, "s_turn", clearance=secondary["clearance"]
+            )
+            # Preserve geometry, terminal speed, physics and duration; vary running cost only.
+            c["running_speed_target"] = speed
+            cases.append((f"speed_{speed:g}", c, g, check))
+        for magnitude in secondary["lateral_impulse_magnitudes"]:
+            c, g, states, controls, check = resolved_case(
+                config, "s_turn", clearance=secondary["clearance"]
+            )
+            c["running_speed_target"] = secondary["terminal_speed"]
+            c["scenario"]["disturbance"] = dict(
+                step=secondary["impulse_step"],
+                delta=(magnitude * np.array(secondary["impulse_shape"])).tolist(),
+            )
+            # Physical feasibility of the unperturbed corridor does not certify recovery
+            # from this exogenous impulse. Report collisions explicitly, without retuning.
+            check = dict(check, disturbance_recovery_feasibility="unresolved")
+            cases.append((f"impulse_{magnitude:g}", c, g, check))
     elif stage in ["budget_q04", "budget_q05"]:
         for k in config["budget_counts"]:
             name = config["budget_q04_scenario"] if stage == "budget_q04" else "s_turn"
@@ -406,6 +428,8 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
     parent = None
     parent_frame = None
     seed_options = config["holdout_seeds"] if stage == "budget_q04" else config["s_turn_seeds"]
+    if stage == "secondary_q05":
+        seed_options = config["secondary"]["seeds"]
     reuse_case = None
     if stage.startswith("budget_"):
         q = "Q04" if stage == "budget_q04" else "Q05"
