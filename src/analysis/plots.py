@@ -36,6 +36,9 @@ def publish(fig, root, name, **data):
     out = Path(root) / "figures"
     out.mkdir(exist_ok=True)
     save(fig, out, name)
+    svg = out / f"{name}.svg"
+    # Matplotlib emits line-end spaces in path data; newlines already separate tokens.
+    svg.write_text("\n".join(line.rstrip() for line in svg.read_text().splitlines()) + "\n")
     np.savez_compressed(out / f"{name}_data.npz", **data)
 
 
