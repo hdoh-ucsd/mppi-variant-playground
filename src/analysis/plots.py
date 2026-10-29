@@ -19,6 +19,17 @@ from visualization.figures import save, style
 COLORS = ["#2563eb", "#d97706", "#059669", "#9333ea", "#e11d48"]
 
 
+def proposal_color(name):
+    names = ("isotropic", "diagonal_r4", "full_r4_a45", "diagonal_r4_a90", "full_r4_a-45")
+    aliases = {
+        "r4_a0": "diagonal_r4",
+        "r4_a45": "full_r4_a45",
+        "r4_a90": "diagonal_r4_a90",
+        "r4_a-45": "full_r4_a-45",
+    }
+    return dict(zip(names, COLORS, strict=True)).get(aliases.get(name, name), COLORS[0])
+
+
 def publish(fig, root, name, **data):
     fig.tight_layout()
     out = Path(root) / "figures"
@@ -157,6 +168,7 @@ def gaussian_figures(root, config, cases, trials, summary):
         )
         rotated = merged[merged.suite == "cost_rotation"]
         for (name, group), color in zip(rotated.groupby("proposal_name"), COLORS, strict=False):
+            color = proposal_color(name)
             band(axes[1], group.cost_angle_deg, group, "error", name, color)
         axes[1].set(
             xlabel="Cost Hessian rotation [degrees]",
@@ -204,6 +216,7 @@ def gaussian_figures(root, config, cases, trials, summary):
     if not budget.empty:
         fig, axes = plt.subplots(2, 2, figsize=(11, 8))
         for (name, group), color in zip(budget.groupby("proposal_name"), COLORS, strict=False):
+            color = proposal_color(name)
             band(axes[0, 0], group.samples, group, "error", name, color)
             band(axes[0, 1], group.samples, group, "ess", name, color)
             group = group.sort_values("samples")
@@ -233,6 +246,7 @@ def gaussian_figures(root, config, cases, trials, summary):
     if not temp.empty:
         fig, axes = plt.subplots(2, 2, figsize=(11, 7))
         for (name, group), color in zip(temp.groupby("proposal_name"), COLORS, strict=False):
+            color = proposal_color(name)
             for ax, metric in zip(
                 axes.flat, ("ess", "max_weight", "error", "weight_entropy"), strict=True
             ):
@@ -293,6 +307,7 @@ def generate(input_path):
             "git": git_info(),
             "source_sha256": manifest["source_sha256"],
             "inputs": ["config.yaml", "cases.json", "trials.csv", "summary.csv"],
+            "plot_source_files": ["src/analysis/plots.py", "src/analysis/extension_plots.py"],
             "figures": sorted(path.name for path in (root / "figures").glob("*.svg")),
         },
     )

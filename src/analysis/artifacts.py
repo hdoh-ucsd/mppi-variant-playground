@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 import yaml
 
+from evaluation.metrics import binomial_interval
 from evaluation.runner import git_info, write_json
 
 REPO = Path(__file__).resolve().parents[2]
@@ -72,6 +73,8 @@ def finish(output, manifest, cases, trials, interpretation):
             "cumulative_evaluation_cost",
             "success",
             "mean_planning_latency_s",
+            "normalized_applied_covariance_trace",
+            "normalized_applied_second_moment",
         ):
             if metric in group:
                 x = group[metric].to_numpy(dtype=float)
@@ -100,6 +103,11 @@ def finish(output, manifest, cases, trials, interpretation):
             result["estimator_variance_trace"] = float(values.var(axis=0, ddof=1).sum())
             for i, value in enumerate(bias):
                 result[f"bias_{i}"] = float(value)
+        for binary in ("success", "basin_success"):
+            if binary in group:
+                interval = binomial_interval(group[binary].to_numpy(dtype=float))
+                result[f"{binary}_ci95_low"] = interval["ci95_low"]
+                result[f"{binary}_ci95_high"] = interval["ci95_high"]
         summaries.append(result)
     pd.DataFrame(summaries).to_csv(output / "summary.csv", index=False)
     paired = []
@@ -112,9 +120,17 @@ def finish(output, manifest, cases, trials, interpretation):
                 other = other.set_index("seed")
                 if other.proposal_name.iloc[0] == "isotropic":
                     continue
-                for metric in ("squared_error", "ess", "best_cost", "success"):
+                for metric in (
+                    "squared_error",
+                    "ess",
+                    "best_cost",
+                    "success",
+                    "cumulative_evaluation_cost",
+                    "saturation_fraction",
+                    "normalized_applied_covariance_trace",
+                ):
                     if metric in other:
-                        delta = other[metric] - ref[metric]
+                        delta = other[metric].astype(float) - ref[metric].astype(float)
                         if delta.isna().any():
                             raise ValueError("Unpaired seeds in comparison")
                         paired.append(
