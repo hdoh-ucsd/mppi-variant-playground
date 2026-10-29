@@ -1,0 +1,7 @@
+kind: standard
+samples: 384
+horizon: 28
+temperature: 5.0
+covariance: [[0.28, 0.0], [0.0, 0.16]]
+base_covariance: [[0.28, 0.0], [0.0, 0.16]]
+saved_rollouts: 32

@@ -1,0 +1,9 @@
+name: multiple_obstacles
+initial_state: [0.0, -0.4, 0.0, 0.0]
+goal_state: [8.0, 0.0, 0.0, 0.0]
+vehicle_radius: 0.22
+max_steps: 120
+position_tolerance: 0.45
+heading_tolerance: 0.35
+speed_tolerance: 0.45
+obstacles: [[2.8, -0.6, 0.6], [5.0, 1.1, 0.7], [6.4, -1.0, 0.65]]

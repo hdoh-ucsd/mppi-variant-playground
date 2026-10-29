@@ -1,0 +1,8 @@
+dt: 0.15
+wheelbase: 1.0
+velocity_min: 0.0
+velocity_max: 3.0
+acceleration_limit: 2.0
+steering_limit: 0.5
+steering_gain: 1.0
+acceleration_gain: 1.0

@@ -1,0 +1,10 @@
+controllers: [standard, isotropic, diagonal, full]
+scenarios: [open_space, narrow_passage, disturbance]
+seeds: [42, 43, 44, 45, 46]
+mode: dynamics
+samples: 384
+horizon: 28
+sampling_scale_constraint: matched_trace
+normalized_trace: 0.44
+wall_clock_target_s: 0.015
+wall_clock_candidates: [64, 128, 256, 384, 512, 768]

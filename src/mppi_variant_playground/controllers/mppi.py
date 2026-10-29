@@ -1,0 +1,117 @@
+"""One shared IT-MPPI implementation, four explicit covariance configurations."""
+
+from copy import deepcopy
+from time import perf_counter
+
+import numpy as np
+
+from mppi_variant_playground.controllers.base import Controller
+from mppi_variant_playground.sampling.gaussian import (
+    importance_weights,
+    log_base_over_proposal,
+    sample_gaussian,
+    validate_covariance,
+    weighted_update,
+)
+from mppi_variant_playground.scenarios.environment import swept_clearance
+
+
+class MPPI(Controller):
+    def __init__(self, dynamics, cost, config):
+        self.model, self.cost, self.config = dynamics, cost, deepcopy(config)
+        self.horizon, self.samples = config["horizon"], config["samples"]
+        self.temperature = config["temperature"]
+        if (
+            not isinstance(self.horizon, int)
+            or not isinstance(self.samples, int)
+            or min(self.horizon, self.samples) < 1
+            or not np.isfinite(self.temperature)
+            or self.temperature <= 0
+        ):
+            raise ValueError("Positive horizon, sample count and temperature required")
+        self.covariance = validate_covariance(config["covariance"])
+        self.base_covariance = validate_covariance(config["base_covariance"])
+        kind = config["kind"]
+        if kind not in {"standard", "isotropic", "diagonal", "full"}:
+            raise ValueError(f"Controller {kind!r} is not implemented")
+        if kind in {"isotropic", "diagonal"} and not np.allclose(
+            self.covariance, np.diag(np.diag(self.covariance))
+        ):
+            raise ValueError("Diagonal covariance required")
+        if kind == "isotropic" and not np.allclose(
+            self.covariance, np.eye(2) * self.covariance[0, 0]
+        ):
+            raise ValueError("Isotropic covariance required")
+        self.reset(np.zeros(4), 42)
+
+    def reset(self, initial_state, seed):
+        if np.shape(initial_state) != (4,) or not np.isfinite(initial_state).all():
+            raise ValueError("Expected finite four-dimensional initial state")
+        self.rng = np.random.default_rng(seed)
+        self.mean = np.zeros((self.horizon, 2))
+        self.previous_control = np.zeros(2)
+        self.diagnostics = {}
+
+    def command(self, observed_state):
+        started = perf_counter()
+        if np.shape(observed_state) != (4,) or not np.isfinite(observed_state).all():
+            raise ValueError("Expected finite four-dimensional observation")
+        eps = sample_gaussian(self.rng, (self.samples, self.horizon), self.covariance)
+        latent = self.mean[None] + eps
+        applied = self.model.clip_control(latent * self.model.control_scale)
+        states = np.broadcast_to(observed_state, (self.samples, 4)).copy()
+        costs = np.zeros(self.samples)
+        previous = np.broadcast_to(self.previous_control, (self.samples, 2))
+        keep = min(self.config.get("saved_rollouts", 32), self.samples)
+        saved = np.empty((keep, self.horizon + 1, 4))
+        saved[:, 0] = states[:keep]
+        for t in range(self.horizon):
+            control = applied[:, t]
+            costs += self.cost.running(states, control, previous)
+            next_states = self.model.step(states, control)
+            # Swept collision penalty includes collisions between discrete states.
+            gap = swept_clearance(
+                states, next_states, self.cost.obstacles, self.cost.vehicle_radius
+            )
+            costs += self.cost.dt * self.cost.weights["collision"] * (gap <= 0)
+            states = next_states
+            saved[:, t + 1] = states[:keep]
+            previous = control
+        costs += self.cost.terminal(states)
+        ratio = log_base_over_proposal(latent, self.mean, self.base_covariance, self.covariance)
+        weights = importance_weights(costs, self.temperature, ratio)
+        # Latent mean remains unconstrained; saturation is inside dynamics and at actuation.
+        updated = weighted_update(self.mean, eps, weights)
+        command = self.model.clip_control(updated[0] * self.model.control_scale)
+        planned = np.empty((self.horizon + 1, 4))
+        planned[0] = observed_state
+        for t in range(self.horizon):
+            planned[t + 1] = self.model.step(planned[t], updated[t] * self.model.control_scale)
+        positive = weights > 0
+        ess = float(1 / np.sum(weights**2))
+        self.diagnostics = {
+            "ess": ess,
+            "weight_entropy": float(-np.sum(weights[positive] * np.log(weights[positive]))),
+            "max_weight": float(weights.max()),
+            "degenerate": bool(ess < 2),
+            "minimum_sample_cost": float(costs.min()),
+            "weighted_sample_cost": float(weights @ costs),
+            "trajectory_spread": float(np.var(states[:, :2], axis=0).sum()),
+            "perturbation_mean": eps.mean(axis=(0, 1)),
+            "perturbation_covariance": np.cov(eps.reshape(-1, 2), rowvar=False),
+            "saturation_fraction": float(np.mean(np.abs(latent) > 1)),
+            "dynamics_evaluations": (self.samples + 1) * self.horizon,
+            "rollout_evaluations": self.samples,
+            "saved_rollouts": saved,
+            "planned_trajectory": planned,
+            "weights": weights,
+            "extra_optimization_work": 0,
+            "planning_latency_s": perf_counter() - started,
+        }
+        self.mean[:-1] = updated[1:]
+        self.mean[-1] = 0  # common zero tail warm start
+        self.previous_control = command.copy()
+        return command
+
+    def get_diagnostics(self):
+        return deepcopy(self.diagnostics)

@@ -1,0 +1,7 @@
+kind: diagonal
+samples: 384
+horizon: 28
+temperature: 5.0
+covariance: [[0.34, 0.0], [0.0, 0.10]]
+base_covariance: [[0.28, 0.0], [0.0, 0.16]]
+saved_rollouts: 32
