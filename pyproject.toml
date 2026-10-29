@@ -15,6 +15,7 @@ dev = ["pytest>=8", "ruff>=0.9"]
 
 [tool.hatch.build.targets.wheel]
 packages = [
+    "src/analysis",
     "src/controllers",
     "src/costs",
     "src/dynamics",
