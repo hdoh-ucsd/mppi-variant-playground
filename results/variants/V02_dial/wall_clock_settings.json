@@ -1,0 +1,8 @@
+{
+  "two_route_obstacle/it_mppi": 1536,
+  "two_route_obstacle/dial_mpc": 256,
+  "two_route_obstacle/dial_no_anneal": 256,
+  "narrow_passage/it_mppi": 1536,
+  "narrow_passage/dial_mpc": 128,
+  "narrow_passage/dial_no_anneal": 256
+}

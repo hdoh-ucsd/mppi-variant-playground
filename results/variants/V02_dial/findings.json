@@ -1,0 +1,158 @@
+{
+  "status": "EXECUTED",
+  "implementation": "Four refinement passes; Eq (7) variance annealing in normalized coordinates; .2 I reference covariance; separate fixed-noise ablation. Cost-only update, not baseline fixed-target IS.",
+  "validation": "Schedule formula, exact Gaussian tilted mean, sampled weight/update replay, seeded reproducibility, all-pass model-count test; baseline oracle passes.",
+  "records": [
+    {
+      "protocol": "dynamics_budget",
+      "scenario": "narrow_passage",
+      "algorithm": "dial_mpc",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 209.78140819628985,
+      "ms": 89.84651963056555,
+      "work": 7680,
+      "misses": 0.0
+    },
+    {
+      "protocol": "dynamics_budget",
+      "scenario": "narrow_passage",
+      "algorithm": "dial_no_anneal",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 211.6924525789585,
+      "ms": 90.18341151348191,
+      "work": 7680,
+      "misses": 0.0
+    },
+    {
+      "protocol": "dynamics_budget",
+      "scenario": "narrow_passage",
+      "algorithm": "it_mppi",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 231.68410744368285,
+      "ms": 42.6088946831614,
+      "work": 7700,
+      "misses": 0.0
+    },
+    {
+      "protocol": "dynamics_budget",
+      "scenario": "two_route_obstacle",
+      "algorithm": "dial_mpc",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 223.79771490324114,
+      "ms": 89.86456750396333,
+      "work": 7680,
+      "misses": 0.0
+    },
+    {
+      "protocol": "dynamics_budget",
+      "scenario": "two_route_obstacle",
+      "algorithm": "dial_no_anneal",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 230.31528738700217,
+      "ms": 90.4811551548476,
+      "work": 7680,
+      "misses": 0.0
+    },
+    {
+      "protocol": "dynamics_budget",
+      "scenario": "two_route_obstacle",
+      "algorithm": "it_mppi",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 260.30913087814093,
+      "ms": 39.7386457397092,
+      "work": 7700,
+      "misses": 0.0
+    },
+    {
+      "protocol": "wall_clock",
+      "scenario": "narrow_passage",
+      "algorithm": "dial_mpc",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 208.470749379666,
+      "ms": 84.1185393333087,
+      "work": 10320,
+      "misses": 0.0
+    },
+    {
+      "protocol": "wall_clock",
+      "scenario": "narrow_passage",
+      "algorithm": "dial_no_anneal",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 216.68146766470213,
+      "ms": 114.90895531303742,
+      "work": 20560,
+      "misses": 0.0
+    },
+    {
+      "protocol": "wall_clock",
+      "scenario": "narrow_passage",
+      "algorithm": "it_mppi",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 244.5682222239756,
+      "ms": 98.63980079292455,
+      "work": 30740,
+      "misses": 0.0
+    },
+    {
+      "protocol": "wall_clock",
+      "scenario": "two_route_obstacle",
+      "algorithm": "dial_mpc",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 221.85622971498628,
+      "ms": 106.1485422407194,
+      "work": 20560,
+      "misses": 0.0
+    },
+    {
+      "protocol": "wall_clock",
+      "scenario": "two_route_obstacle",
+      "algorithm": "dial_no_anneal",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 222.07871505859507,
+      "ms": 106.33541953059921,
+      "work": 20560,
+      "misses": 0.0
+    },
+    {
+      "protocol": "wall_clock",
+      "scenario": "two_route_obstacle",
+      "algorithm": "it_mppi",
+      "n": 3,
+      "success": 3,
+      "collisions": 0,
+      "cost": 260.61248649473805,
+      "ms": 89.84774056761313,
+      "work": 30740,
+      "misses": 0.0
+    }
+  ],
+  "limitations": [
+    "Three paired seeds per condition.",
+    "Equal work is a 7700-transition ceiling; DIAL uses 7680 including four updated-mean rollouts.",
+    "Wall-clock settings selected independently from calibration seeds using 90th percentile <=120ms; deadline is150ms. Fixed settings do not guarantee future deadlines.",
+    "Work-budget timing uses concurrent workers; wall-clock timing uses serial runs.",
+    "Covariance .2 I is an explicit algorithm setting; no broad algorithm-family ranking."
+  ]
+}
