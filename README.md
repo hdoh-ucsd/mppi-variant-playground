@@ -80,35 +80,53 @@ interventions: an individual method need not optimize every variable or impose e
 constraint. In particular, CC-MPPI uses an auxiliary noise state for its sampling
 feedback, as specified in its equations below.
 
-## 2. From mathematical differences to experiments
+## 2. Experimental Setup
 
-The question is how a change in **objective, sampling, refinement, feedback, or state
-uncertainty** changes a control decision. A covariance setting alone does not constitute
-a new published algorithm. These experiments use distinct mathematical mechanisms,
-common external task metrics, paired seeds, and separately stated internal objectives.
+All vehicle experiments use a shared **seven-state dynamic single-track vehicle** with
+steering and signed throttle inputs. The model includes longitudinal and lateral
+velocity, yaw dynamics, tire-force saturation, and an approximate roll response. The
+vehicle dynamics, environment geometry, and external evaluation metrics are kept
+consistent across controller comparisons. Separate tractable analytic tests provide
+reference distributions for mathematical validation.
 
-The implementations are CPU adaptations to this repository's vehicle, not reproductions
-of the papers' hardware or headline performance. Tests establish specified numerical
-properties; trajectories alone do not establish paper fidelity or theoretical guarantees.
+Rather than relying on a single benchmark, we use several controlled experimental
+settings to investigate the mathematical mechanisms introduced by different MPPI
+formulations.
 
-Read each experiment as a question about one intervention in the pipeline above.
-The common vehicle exposes its consequences in a control task; the mathematical
-tests separately check the defining equations.
+| Experimental setting | Description | Purpose |
+| --- | --- | --- |
+| **Open-space navigation** | Drive toward a target without nearby obstacles. | Establish baseline control behavior without significant geometric constraints. |
+| **Narrow passage** | Navigate through a restricted opening between obstacles. | Examine sampling efficiency, trajectory feasibility, and sensitivity to obstacle clearance. |
+| **Two-route obstacle** | Navigate around an obstacle with two possible routes. | Investigate multimodal trajectory choices, local optimization, and the effect of weighting or sampling strategies. |
+| **S-turn corridor** | Follow a constrained corridor requiring successive steering reversals. | Examine nonlinear vehicle dynamics, sequential control decisions, and finite-horizon optimization. |
+| **Disturbance and model mismatch** | Introduce an external state perturbation or a difference between planning and execution dynamics. | Evaluate tracking feedback, nominal-state selection, and robustness. |
+| **Frozen-state mechanism test** | Hold the vehicle state, nominal control sequence, and relevant sampling inputs fixed while changing a formulation component. | Isolate the numerical effect of weighting, annealing, or feedback without confounding it with accumulated closed-loop differences. |
+| **Stochastic covariance test** | Execute a fixed policy across independent disturbance realizations and estimate the resulting state covariance. | Compare covariance-steering predictions, empirical state dispersion, and constraint satisfaction. |
 
-| Intervention | Experiment and comparison | Observable difference to inspect | What the existing evidence establishes |
-| --- | --- | --- | --- |
-| Divergence and support | **V01:** IT-MPPI / Tsallis-VI | Which samples keep weight, ESS, and the resulting progress/cost | This Tsallis transform spreads weight more broadly yet stalls in the two-route task. Weight concentration alone does not explain control quality. |
-| Sampling and refinement | **V02:** IT-MPPI / DIAL / fixed-noise DIAL | Updated cost after refinement, including the cost of every inner pass | DIAL has lower observed external cost in these scenes at the shared work ceiling; the fixed-noise ablation separates the schedule from iteration. |
-| Nominal planning and tracking | **V03:** IT-MPPI / Tube-MPPI | Nominal–actual error, reset events, and the actual tracking contribution | The tracker is inactive in V03. These runs establish execution of the architecture but do not measure a tracking benefit. |
-| Feedback inside sampled dynamics | **V04:** IT-MPPI / Robust-MPPI | Sampled feedback, nominal selection, corrected weights, and computation | Feedback is inactive in V04; candidate/rollout overhead remains visible. V06 S-turn supplies an active-feedback case. |
-| State uncertainty | **V05:** IT-MPPI / CC-MPPI | Predicted versus empirical state covariance and terminal PSD residual | Local covariance bounds pass in this cohort; nonlinear prediction error remains and executed-state safety is unproven. |
-| Combined consequences | **V06:** all six formulations | Scene-specific completion, external cost, deadline misses, and mechanism activity | Different targets and architectures create different outcomes under each computational protocol; three seeds per condition limit generalization. |
+### Evaluation methodology
 
-The figures below show external outcomes. The adjacent interpretations and saved
-command diagnostics identify the relevant internal mechanism. A completion curve
-alone cannot show whether tracking or a covariance constraint was active.
+The experiments use two complementary forms of evaluation.
 
-### Shared experimental conditions
+**Mechanism-level experiments** examine intermediate computations such as importance
+weights, effective sample size, optimization iterations, nominal-state selection,
+tracking corrections, and covariance propagation. These tests help identify whether
+the mathematical modification is active and what it changes.
+
+**Closed-loop experiments** evaluate the resulting vehicle behavior, including task
+completion, trajectory cost, obstacle clearance, tracking error, and computational
+overhead.
+
+Where applicable, comparisons use paired random seeds and a common model-evaluation
+budget. Since the algorithms have different internal optimization procedures, equal
+sample counts do not necessarily imply equal computational work.
+
+The experiments are intended to identify formulation-dependent behavior, not to
+establish a universal ranking. Each result should be interpreted together with its
+algorithm-specific assumptions and limitations. The implementations are CPU adaptations
+to this repository's vehicle; they do not reproduce the papers' hardware or establish
+their theoretical guarantees.
+
+### Original comparison protocols
 
 | Study | Controlled comparison | Scenes | Executed episodes |
 | --- | --- | --- | ---: |
@@ -148,7 +166,20 @@ not simulated. External metrics include completion, collision, goal error, cost,
 effort, time and work. Internal weights, tracking and covariance metrics retain their
 algorithm-specific meanings.
 
-## 3. Experimental observations: what changes in practice
+## 3. Experimental Results
+
+The following studies examine the defining mathematical interventions of five MPPI
+formulations relative to the information-theoretic baseline:
+
+- **V01 — Tsallis-VI MPC:** Divergence choice and importance weighting.
+- **V02 — DIAL-MPC:** Iterative refinement and noise annealing.
+- **V03 — Tube-MPPI:** Nominal trajectory tracking and disturbance response.
+- **V04 — Robust-MPPI:** Feedback-aware planning and nominal-state selection.
+- **V05 — CC-MPPI:** State covariance steering and uncertainty propagation.
+
+Each study presents its defining formulation, experimental setup, measured numerical
+behavior, and limitations. **V06** then evaluates all six formulations across the
+shared vehicle scenarios under the two computational protocols.
 
 The original comparison figures use this reading order: **top** is completion with Wilson 95%
 intervals, **middle** is planning time, and **bottom** is external cost for individual
