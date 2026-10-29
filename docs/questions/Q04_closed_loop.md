@@ -54,7 +54,7 @@ Twenty seeds per scenario and cohort give wide intervals. Feedback changes state
 
 [Original configuration](../../runs/seven_state/Q04/seven_state_q04_v1/config.yaml)
 
-Source run IDs: seven_state_q04_v1, seven_state_q04_budget_v1, seven_state_q04_pilot_v1, trajectory_behavior_v1
+Source run IDs: seven_state_q04_v1, seven_state_q04_timing_v1, seven_state_q04_budget_v1, seven_state_q04_pilot_v1, trajectory_behavior_v1
 
 - [Run trajectory_behavior_v1](../../results/investigations/trajectory_behavior_v1/): [manifest](../../results/investigations/trajectory_behavior_v1/manifest.json), source `077e7d90eb2f2d3fd302a284daf5d9868bf28135`; model: kinematic_bicycle_4; inputs: acceleration [m/s²], steering [rad].
 
@@ -63,6 +63,8 @@ Source run IDs: seven_state_q04_v1, seven_state_q04_budget_v1, seven_state_q04_p
 - [Run seven_state_q04_pilot_v1](../../runs/seven_state/Q04/seven_state_q04_pilot_v1/): [manifest](../../runs/seven_state/Q04/seven_state_q04_pilot_v1/manifest.json), source `0006f840f99ab6be155b66ea7833e9210fe40367`; model: dynamic_single_track_7; inputs: steering [rad], signed normalized throttle [−1,1].
 
 - [Run seven_state_q04_budget_v1](../../runs/seven_state/Q04/seven_state_q04_budget_v1/): [manifest](../../runs/seven_state/Q04/seven_state_q04_budget_v1/manifest.json), source `3ced0faafe0390e6377dfe85498787a33a5b2d39`; model: dynamic_single_track_7; inputs: steering [rad], signed normalized throttle [−1,1].
+
+- [Run seven_state_q04_timing_v1](../../runs/seven_state/Q04/seven_state_q04_timing_v1/): [manifest](../../runs/seven_state/Q04/seven_state_q04_timing_v1/manifest.json), source `79d626f2ba41e88416a52993d98599e4ce9acae5`; model: dynamic_single_track_7; inputs: steering [rad], signed normalized throttle.
 
 ## Selected figure
 

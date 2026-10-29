@@ -138,6 +138,7 @@ questions:
     dispersion.
   run_ids:
   - seven_state_q04_v1
+  - seven_state_q04_timing_v1
   - seven_state_q04_budget_v1
   - seven_state_q04_pilot_v1
   - trajectory_behavior_v1
@@ -187,7 +188,9 @@ questions:
     cost, ESS, entropy, effort, rate saturation, latency and transitions.
   run_ids:
   - seven_state_q05_v1
+  - seven_state_reference_footprint_v1
   - seven_state_q05_rate_v1
+  - seven_state_q05_timing_v1
   - seven_state_q05_secondary_v1
   - seven_state_q05_budget_v1
   - seven_state_q05_pilot_v1
@@ -478,3 +481,39 @@ runs:
   dynamics_model: dynamic_single_track_7
   control_inputs: steering [rad], signed normalized throttle
   experiment_name: Discrete steering-command slew at fixed S-turn geometry
+- id: seven_state_q04_timing_v1
+  question_ids:
+  - Q04
+  status: EXECUTED
+  path: runs/seven_state/Q04/seven_state_q04_timing_v1
+  manifest: runs/seven_state/Q04/seven_state_q04_timing_v1/manifest.json
+  source_commit: 79d626f2ba41e88416a52993d98599e4ce9acae5
+  configuration: runs/seven_state/Q04/seven_state_q04_timing_v1/config.yaml
+  summary: runs/seven_state/Q04/seven_state_q04_timing_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle
+  experiment_name: Isolated initial-state per-plan latency calibration
+- id: seven_state_q05_timing_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/Q05/seven_state_q05_timing_v1
+  manifest: runs/seven_state/Q05/seven_state_q05_timing_v1/manifest.json
+  source_commit: 79d626f2ba41e88416a52993d98599e4ce9acae5
+  configuration: runs/seven_state/Q05/seven_state_q05_timing_v1/config.yaml
+  summary: runs/seven_state/Q05/seven_state_q05_timing_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle
+  experiment_name: Isolated initial-state per-plan latency calibration
+- id: seven_state_reference_footprint_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/validation/footprint_v1
+  manifest: runs/seven_state/validation/footprint_v1/manifest.json
+  source_commit: 79d626f2ba41e88416a52993d98599e4ce9acae5
+  configuration: runs/seven_state/validation/footprint_v1/config.yaml
+  summary: runs/seven_state/validation/footprint_v1/validation.json
+  dynamics_model: dynamic_single_track_7
+  control_inputs: Recorded steering/throttle reference
+  experiment_name: Axle-enclosing reference capsule and interpolation clearance

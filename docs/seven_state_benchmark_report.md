@@ -224,7 +224,18 @@ The rate and primary cohorts are different. Comparing .4 against 1.6 uses paired
 
 ### Isolated planning-time measurements
 
-TIMING_OUTCOMES_PENDING
+After all driving stages finished, each scenario was timed sequentially in one process on an AMD Ryzen 7 7800X3D, with one BLAS/OMP thread, one warmup and ten measured plans per K/proposal (160 measured plans per scenario). Each plan resets to the same initial state, zero warm start and previous command; paired optimizer seeds are 36000–36009 in namespace 5500. The existing per-plan timer includes Gaussian generation, prediction, scoring, density correction and nominal update. Controller/geometry construction, reset and recording are outside the timer; rollout recording is disabled.
+
+Range of per-proposal mean planning latency [ms], not confidence bounds:
+
+| K | Q04 two-route initial state | Q05 S-turn initial state |
+| --- | ---: | ---: |
+| 128 | 17.85–18.89 | 79.43–82.93 |
+| 384 | 29.98–31.71 | 191.00–198.25 |
+| 768 | 46.27–47.55 | 397.76–403.86 |
+| 1536 | 80.72–85.25 | 775.85–794.97 |
+
+[Q04 timing summary](../runs/seven_state/Q04/seven_state_q04_timing_v1/summary.csv) and [Q05 timing summary](../runs/seven_state/Q05/seven_state_q05_timing_v1/summary.csv) retain raw repetitions, pointwise mean intervals and exact work counts. S-turn K=384 exceeds the 150 ms control interval even in this isolated initial-state probe. These are per-plan measurements at one input, not end-to-end latency distributions, hard deadlines or equal-wall-clock controller comparisons.
 
 ## Uncertainty, failure interpretation and scientific scope
 
@@ -246,7 +257,7 @@ An additional post-campaign check thickens the axle-to-axle segment by .22 m, gi
 
 ## Source provenance
 
-Manifests preserve the source commit, full source/configuration hashes and original dirty flag. Some later records have `dirty: true` while presentation/analysis edits were underway; they must not be presented as clean-checkout provenance. Primary and K stages retain their common recorded engine fingerprint. The later command-slew study records the new optional projection implementation separately; the plant equations are unchanged and unconstrained equivalence is tested. Raw replay verifies saved dynamics, weights and decisions. Exact executed configurations and all original provenance flags remain intact. The Q04 pilot finalization repair is explicitly recorded in its manifest and did not rerun optimization.
+Manifests preserve the source commit, full source/configuration hashes and original dirty flag. Some later records have `dirty: true` while presentation/analysis edits were underway; they must not be presented as clean-checkout provenance. Primary and K stages retain their common recorded engine fingerprint. The later command-slew study records the new optional projection implementation separately; the plant equations are unchanged and unconstrained equivalence is tested. Raw replay verifies saved dynamics, weights and decisions. A final Git-object check recomputed each five-file numerical-engine fingerprint at its recorded source commit and matched all eight driving-stage manifests, including dirty-marked runs. Exact executed configurations and all original provenance flags remain intact. The Q04 pilot finalization repair is explicitly recorded in its manifest and did not rerun optimization.
 
 ## Storage and reproduction
 
@@ -292,7 +303,7 @@ uv run python experiments/research_index.py --render
 uv run python experiments/research_index.py
 ```
 
-The loop uses Bash lowercase expansion. Raw audits require the locally regenerated raw records; cloning supplies compact reconstruction inputs and the original audit reports:
+The loop uses Bash lowercase expansion. Raw audits require the locally regenerated raw records; cloning supplies compact reconstruction inputs and the original audit reports. Substitute the fresh reproduction ID when auditing a newly executed replica:
 
 ```bash
 uv run python experiments/verify_seven_state.py --frozen --input runs/seven_state/Q03/seven_state_q03_v1
@@ -307,3 +318,12 @@ uv run python experiments/summarize_seven_state.py --input runs/seven_state/Q05/
 ```
 
 Use fresh suffixed IDs for reproductions; completed run directories are never overwritten. The five primary figures are curated under `results/showcase`; supporting figures are committed under `docs/figures`. The registry links exact source commits/config hashes, primary and historical runs, and reconstruction commands. The previous five-state primary figure is preserved at `results/archive/five_state_Q05_key.png`; previous four-state figure/data paths remain intact.
+
+
+## Final execution and review ledger
+
+The campaign records 33,152 analytic trials, 7,200 frozen evaluation decisions, 24 independent high-sample reference batches, and 2,276 unique seven-state driving episodes. Driving summary tables contain 160 additional K=384 references to original episodes; those are reused records, not additional executions or copied raw arrays. Another 320 plans are isolated timing measurements, not driving episodes. These totals account for work across conditions and are not a pooled performance ranking.
+
+All 146 tests pass, including physical signs, independent dynamic-turn references, refinement convergence, latent Gaussian ratios/weighted updates, frozen input isolation, default equivalence and active command-slew projection, geometric feasibility, saved-data-only figure reconstruction and registry provenance. Raw audits verify all driving stages and 1,026 frozen populations; the rate audit additionally reconstructs constrained sample trajectories/costs and all executed slew bounds. Registry validation resolves 20 immutable runs, five executed questions and Q06 planned. Original `results/investigations/` data and original bicycle model files are unchanged.
+
+The remaining limitations are substantive: no original AutoRally identification data, two unresolved Q03 target means, a center-disk scoring proxy, no full-body collision-avoidance evaluation, no continuous actuator/servo dynamics, a permissive finish/runout criterion, selected calibration/matrices and broad pointwise uncertainty. Future experiments should address these explicitly with new frozen protocols and run IDs, rather than reinterpret the present evidence as a universal algorithm ranking.

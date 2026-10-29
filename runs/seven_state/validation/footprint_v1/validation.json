@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "centered_proxy_encloses_axles": false,
+  "executed_controller_capsule_safety": "not evaluated or claimed",
+  "checks": [
+    {
+      "clearance": 0.9,
+      "reference_steps": 105,
+      "minimum_sampled_capsule_clearance_m": 0.8307356167521778,
+      "conservative_interpolated_capsule_clearance_m": 0.7919592363090633,
+      "reference_feasible_for_capsule_interpolation": true,
+      "original_proxy_feasibility": true
+    },
+    {
+      "clearance": 0.6,
+      "reference_steps": 105,
+      "minimum_sampled_capsule_clearance_m": 0.5309534032514945,
+      "conservative_interpolated_capsule_clearance_m": 0.49217702280838005,
+      "reference_feasible_for_capsule_interpolation": true,
+      "original_proxy_feasibility": true
+    },
+    {
+      "clearance": 0.35,
+      "reference_steps": 105,
+      "minimum_sampled_capsule_clearance_m": 0.2811522806126989,
+      "conservative_interpolated_capsule_clearance_m": 0.24237590016958444,
+      "reference_feasible_for_capsule_interpolation": true,
+      "original_proxy_feasibility": true
+    },
+    {
+      "clearance": 0.2,
+      "reference_steps": 105,
+      "minimum_sampled_capsule_clearance_m": 0.13128142455229772,
+      "conservative_interpolated_capsule_clearance_m": 0.09250504410918324,
+      "reference_feasible_for_capsule_interpolation": true,
+      "original_proxy_feasibility": true
+    }
+  ]
+}

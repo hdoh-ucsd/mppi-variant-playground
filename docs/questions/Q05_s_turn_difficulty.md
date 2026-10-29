@@ -54,7 +54,7 @@ One handedness, one horizon and specific matrices limit generalization. Completi
 
 [Original configuration](../../runs/seven_state/Q05/seven_state_q05_v1/config.yaml)
 
-Source run IDs: seven_state_q05_v1, seven_state_q05_rate_v1, seven_state_q05_secondary_v1, seven_state_q05_budget_v1, seven_state_q05_pilot_v1, s_turn_clearance_v1
+Source run IDs: seven_state_q05_v1, seven_state_reference_footprint_v1, seven_state_q05_rate_v1, seven_state_q05_timing_v1, seven_state_q05_secondary_v1, seven_state_q05_budget_v1, seven_state_q05_pilot_v1, s_turn_clearance_v1
 
 - [Run s_turn_clearance_v1](../../runs/Q05/s_turn_clearance_v1/): [manifest](../../runs/Q05/s_turn_clearance_v1/manifest.json), source `ff3df5824856e8252a221bc6a4fdce8105ec298c`; model: steering_rate_bicycle_5; inputs: acceleration [m/s²], steering rate [rad/s].
 
@@ -67,6 +67,10 @@ Source run IDs: seven_state_q05_v1, seven_state_q05_rate_v1, seven_state_q05_sec
 - [Run seven_state_q05_secondary_v1](../../runs/seven_state/Q05/seven_state_q05_secondary_v1/): [manifest](../../runs/seven_state/Q05/seven_state_q05_secondary_v1/manifest.json), source `3ced0faafe0390e6377dfe85498787a33a5b2d39`; model: dynamic_single_track_7; inputs: steering [rad], signed normalized throttle.
 
 - [Run seven_state_q05_rate_v1](../../runs/seven_state/Q05/seven_state_q05_rate_v1/): [manifest](../../runs/seven_state/Q05/seven_state_q05_rate_v1/manifest.json), source `afc63ebc9495cff3c4469b80a86e170684af2996`; model: dynamic_single_track_7; inputs: steering [rad], signed normalized throttle.
+
+- [Run seven_state_q05_timing_v1](../../runs/seven_state/Q05/seven_state_q05_timing_v1/): [manifest](../../runs/seven_state/Q05/seven_state_q05_timing_v1/manifest.json), source `79d626f2ba41e88416a52993d98599e4ce9acae5`; model: dynamic_single_track_7; inputs: steering [rad], signed normalized throttle.
+
+- [Run seven_state_reference_footprint_v1](../../runs/seven_state/validation/footprint_v1/): [manifest](../../runs/seven_state/validation/footprint_v1/manifest.json), source `79d626f2ba41e88416a52993d98599e4ce9acae5`; model: dynamic_single_track_7; inputs: Recorded steering/throttle reference.
 
 ## Selected figure
 
