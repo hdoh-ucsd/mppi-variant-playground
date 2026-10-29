@@ -384,6 +384,11 @@
               "roll_stiffness": 120.0,
               "roll_damping": 48.0
             }
+          },
+          "source_git": {
+            "commit": "0aab6d6efb8724af3bb535d240cdf4d56bbfbeef",
+            "dirty": false,
+            "status_scope": "repository excluding generated results/ and runs/"
           }
         },
         {
@@ -760,6 +765,11 @@
               "roll_stiffness": 120.0,
               "roll_damping": 48.0
             }
+          },
+          "source_git": {
+            "commit": "0aab6d6efb8724af3bb535d240cdf4d56bbfbeef",
+            "dirty": false,
+            "status_scope": "repository excluding generated results/ and runs/"
           }
         }
       ],
@@ -784,7 +794,32 @@
         "verified_complete_against_raw": true,
         "sha256": "4e744dbe49d867e8084b20d1a2e3a5cac7ac78909f7c1ce9f3e648d0a60cbe58"
       },
-      "missing_diagnostics": "No synchronized weights or nominal plans in original episodes."
+      "missing_diagnostics": "No synchronized weights or nominal plans in original episodes.",
+      "render": {
+        "file": "V01_tsallis.mp4",
+        "sha256": "1164741f5daba372ecbdf81a210a3b2c420202b5e3d30102ffc06ae9a63a5e26",
+        "bytes": 326307,
+        "git_commit": "4b81e69f9a2e5dfdba8421b78802ffc52e0454a2",
+        "rendering_version": "1.0",
+        "renderer_sha256": "12616ae3a56a602f986faeeabec26de19f9edc4c35d0844b6af1a816a9f0927d",
+        "frame_interval_s": 0.03333333333333333,
+        "state_mapping": "Zero-order hold of saved poses; final states held; no interpolation.",
+        "opening_s": 2.5,
+        "main_s": 25.0,
+        "ending_s": 3.0,
+        "validation": {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "pix_fmt": "yuv420p",
+          "r_frame_rate": "30/1",
+          "nb_frames": "915",
+          "duration_s": 30.5
+        },
+        "first_last_frames_decoded": true,
+        "observation": "IT-MPPI completes; Tsallis times out at 24.00 s.",
+        "limitation": "One paired seed and fixed settings; no universal method ranking."
+      }
     },
     "V02_dial": {
       "source_git": {
@@ -1167,6 +1202,11 @@
               "roll_stiffness": 120.0,
               "roll_damping": 48.0
             }
+          },
+          "source_git": {
+            "commit": "c11b8388b523c86da4a225f0d2580ce6c78c1d5f",
+            "dirty": false,
+            "status_scope": "repository excluding generated results/ and runs/"
           }
         },
         {
@@ -1545,6 +1585,11 @@
               "roll_stiffness": 120.0,
               "roll_damping": 48.0
             }
+          },
+          "source_git": {
+            "commit": "c11b8388b523c86da4a225f0d2580ce6c78c1d5f",
+            "dirty": false,
+            "status_scope": "repository excluding generated results/ and runs/"
           }
         }
       ],
@@ -1569,7 +1614,32 @@
         "verified_complete_against_raw": true,
         "sha256": "a140a020c85819c4536e72f77ec4d4521c28a435a92d5f55914096e0ec84d1b3"
       },
-      "missing_diagnostics": "No synchronized weights or nominal plans in original episodes."
+      "missing_diagnostics": "No synchronized weights or nominal plans in original episodes.",
+      "render": {
+        "file": "V02_dial.mp4",
+        "sha256": "bf93cf98e854431e6f83ac14cacff0de352880347d43bb6f0d3e49c397feac9d",
+        "bytes": 240564,
+        "git_commit": "4b81e69f9a2e5dfdba8421b78802ffc52e0454a2",
+        "rendering_version": "1.0",
+        "renderer_sha256": "12616ae3a56a602f986faeeabec26de19f9edc4c35d0844b6af1a816a9f0927d",
+        "frame_interval_s": 0.03333333333333333,
+        "state_mapping": "Zero-order hold of saved poses; final states held; no interpolation.",
+        "opening_s": 2.5,
+        "main_s": 13.0,
+        "ending_s": 3.0,
+        "validation": {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "pix_fmt": "yuv420p",
+          "r_frame_rate": "30/1",
+          "nb_frames": "555",
+          "duration_s": 18.5
+        },
+        "first_last_frames_decoded": true,
+        "observation": "Both complete: IT 6.45 s; DIAL 4.35 s.",
+        "limitation": "One paired seed and fixed settings; no universal method ranking."
+      }
     },
     "V02_dial_decision": {
       "source_git": {
@@ -1856,6 +1926,11 @@
               "vehicle_radius": 0.22
             },
             "planning_deadline_s": 0.15
+          },
+          "source_git": {
+            "commit": "bcfb9981d229818e890d5d542267d094da102a23",
+            "dirty": false,
+            "status_scope": "repository excluding generated results/ and runs/"
           }
         }
       ],
@@ -1980,7 +2055,32 @@
           "normalization": "Per-state square roots of the declared terminal covariance diagonal; positions also displayed in meters."
         }
       },
-      "missing_diagnostics": null
+      "missing_diagnostics": null,
+      "render": {
+        "file": "V02_dial_decision.mp4",
+        "sha256": "0a7f4e66460e43f2ad7efdadd97146322e1c75e3f56fbba47a5ae98f0d0ab79b",
+        "bytes": 226633,
+        "git_commit": "42834ca18ce346c081cb14310e65b90df5b5791b",
+        "rendering_version": "1.0",
+        "renderer_sha256": "6675e33a116b3b1df4dbbfaf7c95ed27d9edc99133d007f2cde6358175023b96",
+        "frame_interval_s": 0.03333333333333333,
+        "state_mapping": "Zero-order hold of saved poses; final states held; no interpolation.",
+        "opening_s": 2.5,
+        "main_s": 12.0,
+        "ending_s": 3.0,
+        "validation": {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "pix_fmt": "yuv420p",
+          "r_frame_rate": "30/1",
+          "nb_frames": "525",
+          "duration_s": 17.5
+        },
+        "first_last_frames_decoded": true,
+        "observation": "Saved nominal-plan cost: 164.28 \u2192 154.34.",
+        "limitation": "Predictions at one frozen state; clouds are not physical uncertainty."
+      }
     },
     "V03_tube": {
       "source_git": {
@@ -2391,6 +2491,11 @@
               "roll_stiffness": 120.0,
               "roll_damping": 48.0
             }
+          },
+          "source_git": {
+            "commit": "bcfb9981d229818e890d5d542267d094da102a23",
+            "dirty": false,
+            "status_scope": "repository excluding generated results/ and runs/"
           }
         },
         {
@@ -2793,6 +2898,11 @@
               "roll_stiffness": 120.0,
               "roll_damping": 48.0
             }
+          },
+          "source_git": {
+            "commit": "bcfb9981d229818e890d5d542267d094da102a23",
+            "dirty": false,
+            "status_scope": "repository excluding generated results/ and runs/"
           }
         }
       ],
@@ -2801,7 +2911,32 @@
       ],
       "scenario": "positive_impulse_step_8",
       "mode": "replayed",
-      "missing_diagnostics": null
+      "missing_diagnostics": null,
+      "render": {
+        "file": "V03_tube.mp4",
+        "sha256": "975af459c65ee0e9bc13ab5c47dde4c8c36d4c37e5a9b1d5b131da39d5d6a3cf",
+        "bytes": 275413,
+        "git_commit": "4b81e69f9a2e5dfdba8421b78802ffc52e0454a2",
+        "rendering_version": "1.0",
+        "renderer_sha256": "12616ae3a56a602f986faeeabec26de19f9edc4c35d0844b6af1a816a9f0927d",
+        "frame_interval_s": 0.03333333333333333,
+        "state_mapping": "Zero-order hold of saved poses; final states held; no interpolation.",
+        "opening_s": 2.5,
+        "main_s": 13.0,
+        "ending_s": 3.0,
+        "validation": {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "pix_fmt": "yuv420p",
+          "r_frame_rate": "30/1",
+          "nb_frames": "555",
+          "duration_s": 18.5
+        },
+        "first_last_frames_decoded": true,
+        "observation": "Threshold 0: 8/32 commands apply feedback.\nThreshold 450: ancillary feedback remains inactive.",
+        "limitation": "One positive impulse and seed; this is not a general tracking benefit."
+      }
     },
     "V04_robust": {
       "source_git": {
@@ -3370,6 +3505,10 @@
               "roll_stiffness": 120.0,
               "roll_damping": 48.0
             }
+          },
+          "source_git": {
+            "commit": "0060cb40c9c7deadbee1781c7867d214d42263d9",
+            "scope": "Existing runner/controllers used for diagnostic replay; extraction code subsequently committed in 4b81e69."
           }
         },
         {
@@ -3654,6 +3793,11 @@
               "vehicle_radius": 0.22
             },
             "planning_deadline_s": 0.15
+          },
+          "source_git": {
+            "commit": "bcfb9981d229818e890d5d542267d094da102a23",
+            "dirty": false,
+            "status_scope": "repository excluding generated results/ and runs/"
           }
         }
       ],
@@ -4154,7 +4298,37 @@
         "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0066.npz": "807169c987a7265c60d9bed4d979e61a1cc08e5a6fd6893d82b13dac42a5b5ce",
         "runs/variants/videos/V04_robust_seed_48000/snapshots/step_0067.npz": "4e0c65bbf216e5777a515e9b260d08979a2542d0181825d86c3e1d26b14fe07f"
       },
-      "missing_diagnostics": "Original candidate arrays absent; obtained by exact replay."
+      "missing_diagnostics": "Original candidate arrays absent; obtained by exact replay.",
+      "render": {
+        "file": "V04_robust.mp4",
+        "sha256": "8e43d3f32afaba83f4b1e51e349d2797e1c26bacf05eed9bdd37b07bd41c1268",
+        "bytes": 396008,
+        "git_commit": "4b81e69f9a2e5dfdba8421b78802ffc52e0454a2",
+        "rendering_version": "1.0",
+        "renderer_sha256": "12616ae3a56a602f986faeeabec26de19f9edc4c35d0844b6af1a816a9f0927d",
+        "frame_interval_s": 0.03333333333333333,
+        "state_mapping": "Zero-order hold of saved poses; final states held; no interpolation.",
+        "opening_s": 2.5,
+        "main_s": 21.0,
+        "ending_s": 3.0,
+        "validation": {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "pix_fmt": "yuv420p",
+          "r_frame_rate": "30/1",
+          "nb_frames": "795",
+          "duration_s": 26.5
+        },
+        "first_last_frames_decoded": true,
+        "observation": "Default run: feedback inactive; terminal position overshoots goal.\nFrozen threshold-100 search: all candidates infeasible; fallback 0.",
+        "limitation": "Fallback is not successful robust optimization; frozen rollouts are not executions."
+      },
+      "original_episode_git": {
+        "commit": "62de189a1eac3458842407ac4a069644350dcaac",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/ and runs/"
+      }
     },
     "V05_covariance": {
       "source_git": {
@@ -4441,11 +4615,21 @@
               "vehicle_radius": 0.22
             },
             "planning_deadline_s": 0.15
+          },
+          "source_git": {
+            "commit": "bcfb9981d229818e890d5d542267d094da102a23",
+            "dirty": false,
+            "status_scope": "repository excluding generated results/ and runs/"
           }
         },
         {
           "path": "runs/variants/mechanisms/V05/narrow_passage/planner.npz",
-          "sha256": "2e31755c77817eb1c0666ded8b5c8c28d75b7c5eb1ec2ca024eaec21ef612994"
+          "sha256": "2e31755c77817eb1c0666ded8b5c8c28d75b7c5eb1ec2ca024eaec21ef612994",
+          "source_git": {
+            "commit": "bcfb9981d229818e890d5d542267d094da102a23",
+            "dirty": false,
+            "status_scope": "repository excluding generated results/ and runs/"
+          }
         }
       ],
       "seeds": [
@@ -5002,7 +5186,55 @@
         "runs/variants/mechanisms/V05/narrow_passage/1_steered/254/diagnostics.csv": "7ddad8dad9867252d83d6952e32a7e808d8c8b327b28b5f0bdc2cc51efeb93fc",
         "runs/variants/mechanisms/V05/narrow_passage/1_steered/255/diagnostics.csv": "89ff985b9852bc95691e34ef94fdc3ab36076922ae37dc7200df2d1e11672350"
       },
-      "missing_diagnostics": null
+      "missing_diagnostics": null,
+      "render": {
+        "file": "V05_covariance.mp4",
+        "sha256": "c81a5c54df547c1397d25a55a9549a822cf5ed080b5021220b68385a855bf18e",
+        "bytes": 288389,
+        "git_commit": "4b81e69f9a2e5dfdba8421b78802ffc52e0454a2",
+        "rendering_version": "1.0",
+        "renderer_sha256": "12616ae3a56a602f986faeeabec26de19f9edc4c35d0844b6af1a816a9f0927d",
+        "frame_interval_s": 0.03333333333333333,
+        "state_mapping": "Zero-order hold of saved poses; final states held; no interpolation.",
+        "opening_s": 2.5,
+        "main_s": 13.0,
+        "ending_s": 3.0,
+        "validation": {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "pix_fmt": "yuv420p",
+          "r_frame_rate": "30/1",
+          "nb_frames": "555",
+          "duration_s": 18.5
+        },
+        "first_last_frames_decoded": true,
+        "observation": "64/256 independent executions contact a disk-proxy obstacle.",
+        "limitation": "Local covariance bounds do not guarantee collision safety. No impact dynamics."
+      }
     }
+  },
+  "software": {
+    "python": "3.12.2",
+    "numpy": "2.5.4",
+    "matplotlib": "3.11.2",
+    "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+  },
+  "validation": {
+    "targeted_video_tests_passed": 33,
+    "existing_mechanism_tests_passed": 11,
+    "post_layout_encoding_checks_passed": 6,
+    "robust_snapshot_observed_state_matches": 68,
+    "independent_covariance_raw_trajectory_matches": 256,
+    "readme_display_equations_preserved": 22,
+    "all_original_readme_figures_preserved": true,
+    "first_main_last_frames_visually_reviewed": [
+      "V01_tsallis",
+      "V02_dial",
+      "V02_dial_decision",
+      "V03_tube",
+      "V04_robust",
+      "V05_covariance"
+    ]
   }
 }
