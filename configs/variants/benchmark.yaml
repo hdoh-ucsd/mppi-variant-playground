@@ -5,6 +5,7 @@ calibration_seeds: [47900, 47901, 47902]
 calibration_samples: [16, 32, 64, 128, 256, 384, 768, 1536, 3072]
 planning_deadline_s: 0.15
 calibration_fraction: 0.8
+calibration_stop_on_first_overrun: true
 transition_budget: 7700
 s_turn_clearance: 0.35
 algorithms:
@@ -38,4 +39,8 @@ studies:
   V05_covariance_steering:
     algorithms: [it_mppi, cc_mppi]
     scenarios: [open_space, narrow_passage]
+    stochastic_input_fraction: 0.01
+  V06_unified:
+    algorithms: [it_mppi, tsallis_vi, dial_mpc, tube_mppi, robust_mppi, cc_mppi]
+    scenarios: [open_space, narrow_passage, two_route_obstacle, disturbance, model_mismatch, s_turn]
     stochastic_input_fraction: 0.01

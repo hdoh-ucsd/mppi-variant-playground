@@ -182,6 +182,9 @@ class RobustMPPI(MPPI):
         if self._rollout_snapshot is not None:
             self._rollout_snapshot.update(
                 nominal_weights=nominal_weights,
+                nominal_costs=self.nominal_costs,
+                nominal_samples=self.nominal_samples,
+                feedback_gains=self.gains,
                 real_weights=real_weights,
                 nominal_augmented_costs=self.nominal_augmented,
                 real_augmented_costs=self.actual_augmented,

@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "episodes": 24,
+  "snapshots": 0,
+  "checks": [
+    "configuration hash",
+    "paired seeds/conditions",
+    "execution dynamics",
+    "actuator noise",
+    "swept collisions",
+    "external costs/finish",
+    "full model counts",
+    "snapshot weights/update"
+  ]
+}

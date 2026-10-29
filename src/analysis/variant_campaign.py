@@ -82,6 +82,13 @@ def calibrate(options, study, root):
                             transitions=controller.model.transitions - count,
                         )
                     )
+                recent = [r["seconds"] for r in records[-len(options["calibration_seeds"]) :]]
+                if (
+                    options.get("calibration_stop_on_first_overrun", False)
+                    and np.quantile(recent, 0.9)
+                    > options["calibration_fraction"] * options["planning_deadline_s"]
+                ):
+                    break
             selected = pd.DataFrame(records)
             selected = selected[(selected.scenario == scenario) & (selected.algorithm == algorithm)]
             times = selected.groupby("samples").seconds.quantile(0.9)
@@ -131,6 +138,11 @@ def execute_job(args):
         "covariance_prediction_error",
         "solver_seconds",
         "solver_infeasible",
+        "sampled_feedback_rms",
+        "nominal_ess",
+        "nominal_selection_infeasible",
+        "covariance_constraint_residual",
+        "empirical_covariance_residual",
     ]:
         if key in diag:
             row[f"mean_{key}"] = float(diag[key].mean())
