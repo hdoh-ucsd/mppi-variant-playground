@@ -112,11 +112,11 @@ evidence](results/archive/legacy_index.md)
 
 ![Closed-loop trajectory differences](results/showcase/Q04_key.png)
 
-**Finding:** Across five seven-state scenes, compatibility completion is 397/400 and independent holdout completion 391/400, with zero collisions. In holdout two-route trials, full takes 17 upper routes out of 20; standard/isotropic take 5 and diagonal 2. Route frequencies characterize these matrices, not published algorithm families.
+**Finding:** Across five seven-state scenes, compatibility completion is 397/400 and independent holdout completion 391/400, with zero disk-proxy collisions. In holdout two-route trials, full takes 17 upper routes out of 20; standard/isotropic take 5 and diagonal 2. Route frequencies characterize these matrices, not published algorithm families.
 
 **Interpretation:** Executed bundles, occupancy, local rollout clouds and inter-seed dispersion describe different distributions. A mean over routes need not be feasible.
 
-**Limitations:** Twenty seeds per scenario and cohort give wide intervals. Feedback changes state and warm start. Failures are terminal-region timeouts; one calibration and selected matrices cannot establish general superiority.
+**Limitations:** Twenty seeds per scenario and cohort give wide intervals. Feedback changes state and warm start. Failures are terminal-region timeouts; one calibration and selected matrices cannot establish general superiority. Collision counts use a centered disk proxy; full-body avoidance is not established.
 
 - [Detailed experiment](docs/questions/Q04_closed_loop.md)
 - [Original configuration](runs/seven_state/Q04/seven_state_q04_v1/config.yaml)
@@ -127,11 +127,11 @@ evidence](results/archive/legacy_index.md)
 
 ![S-turn difficulty and controller limitations](results/showcase/Q05_key.png)
 
-**Finding:** Seven-state S-turn completion: 0.9 m: standard 20/20, isotropic 19/20, diagonal 20/20, full 20/20; 0.6 m: standard 20/20, isotropic 20/20, diagonal 20/20, full 20/20; 0.35 m: standard 20/20, isotropic 19/20, diagonal 20/20, full 20/20; 0.2 m: standard 20/20, isotropic 16/20, diagonal 20/20, full 19/20. Across 320 primary episodes, 0 collisions; all failed trajectories are retained. The separate state-jump checks have 44 collisions, reported separately.
+**Finding:** Seven-state S-turn completion: 0.9 m: standard 20/20, isotropic 19/20, diagonal 20/20, full 20/20; 0.6 m: standard 20/20, isotropic 20/20, diagonal 20/20, full 20/20; 0.35 m: standard 20/20, isotropic 19/20, diagonal 20/20, full 20/20; 0.2 m: standard 20/20, isotropic 16/20, diagonal 20/20, full 19/20. Across 320 primary episodes, 0 disk-proxy collisions; all failed trajectories are retained. The separate state-jump checks have 44 collisions, reported separately.
 
 **Interpretation:** A larger observed completion gap at the tightest clearance coexists with terminal speed/heading failures; this does not isolate covariance-driven route discovery.
 
-**Limitations:** One handedness, one horizon and specific matrices limit generalization. Completion allows straight-runout recovery. Intervals are pointwise. Discrete command slew is studied separately; continuous steering actuator dynamics remain unmodeled.
+**Limitations:** One handedness, one horizon and specific matrices limit generalization. Completion allows straight-runout recovery. Intervals are pointwise. Discrete command slew is separate; continuous actuator dynamics are omitted. Executed collision counts use a centered disk proxy that does not enclose the axles; full-body collision avoidance is not established.
 
 - [Detailed experiment](docs/questions/Q05_s_turn_difficulty.md)
 - [Original configuration](runs/seven_state/Q05/seven_state_q05_v1/config.yaml)

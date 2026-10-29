@@ -244,3 +244,19 @@ def test_unconstrained_pushforward_is_unchanged():
         controller.project_controls(latent),
         controller.model.clip_control(latent * controller.model.control_scale),
     )
+
+
+def test_axle_capsule_is_stricter_than_center_disk_and_reference_fits():
+    from analysis.dynamic_campaign import configuration
+    from analysis.footprint_validation import capsule_clearance, reference_check
+    from scenarios.dynamic_scenes import Circles
+
+    model = DynamicVehicle()
+    state = np.zeros(7)
+    goal = state.copy()
+    goal[0] = 1.0
+    geometry = Circles([[0.7, 0.0, 0.1]], 0.22, state, goal)
+    assert geometry.state_clearance(state) > 0
+    assert capsule_clearance(geometry, model, state) < 0
+    result = reference_check(configuration(), 0.2)
+    assert result["conservative_interpolated_capsule_clearance_m"] > 0.09

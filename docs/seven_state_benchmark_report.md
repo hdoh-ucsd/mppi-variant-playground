@@ -34,7 +34,7 @@ $$\dot\phi=(hF_y-k_\phi\phi)/c_\phi,\quad
 
 Roll is an explicit overdamped torque-balance state, not an algebraic equilibrium substitution. It affects the objective and finish checks but does not feed back into the planar force equations in this approximation. Roll inertia/rate is omitted to retain seven states; its relaxation time is cφ/kφ=.4 s. Tire loads remain static: this model omits load transfer, a friction ellipse, suspension/contact and roll-to-grip feedback. Tire forces saturate smoothly rather than remaining unbounded linear forces. Low-speed blending and viscous lateral/yaw relaxation avoid singular slip divisions and spurious steering forces at rest. These are disclosed regularizations, not an identified low-speed tire law.
 
-Parameters are in [vehicle.yaml](../configs/seven_state/vehicle.yaml): mass 35 kg, yaw inertia 8 kg m², lf=lr=.4 m, Cf=Cr=450 N/rad, μ=.9, Fe=70 N, Fb=105 N, CG height .2 m, net roll restoring stiffness 120 N m/rad and damping 48 N m s/rad. Positive throttle propels; negative throttle brakes. Reverse driving is disabled. A forward-speed governor projects midpoint and accepted speeds to [0,4] m/s; steering is clipped to ±.5 rad and throttle to ±1. The model has no hidden steering servo/rate state or actuator lag.
+Parameters are in [vehicle.yaml](../configs/seven_state/vehicle.yaml): mass 35 kg, yaw inertia 8 kg m², lf=lr=.4 m, Cf=Cr=450 N/rad, μ=.9, Fe=70 N, Fb=105 N, CG height .2 m, net roll restoring stiffness 120 N m/rad and damping 48 N m s/rad. Gravity is 9.81 m/s², drag coefficients c1=.4 N s/m and c2=.5 N s²/m², low-speed ε=.5 m/s and relaxation time t0=.15 s. Positive throttle propels; negative throttle brakes. Reverse driving is disabled. A forward-speed governor projects midpoint and accepted speeds to [0,4] m/s; steering is clipped to ±.5 rad and throttle to ±1. The model has no hidden steering servo/rate state or actuator lag.
 
 Integration is explicit midpoint RK2 with dt=.15 s and three substeps, h=.05 s. Predictions and executions use the same integrator, except for explicitly declared physical parameter mismatch. Collision checks sweep the disk over each integration substep's straight segment; continuous curved motion between these substeps is still an approximation.
 
@@ -61,7 +61,7 @@ The covariance labels describe different geometric interventions. Before clippin
 | Diagonal | .1500 | .5568 | 0 | .0279 |
 | Full | .1871 | .5099 | .3669 | .0315 |
 
-Isotropic reallocates variance toward steering relative to standard; diagonal reallocates it toward throttle. Full preserves both marginal variances and adds positive coupling. For paired standard normals, full has εδ=√.14 z₁ and ετ=(.07/√.14)z₁+√(.26−.07²/.14)z₂. This explicitly changes which steering/throttle combinations are sampled together. Trace matching alone therefore does not make exploration equivalent. The same 2×2 covariance is repeated independently across horizon steps; no temporal covariance is introduced.
+Isotropic reallocates variance toward steering relative to standard; diagonal reallocates it toward throttle. Full preserves both marginal variances and adds positive coupling. For paired standard normals, full has εδ=√.14 z₁ and ετ=(.07/√.14)z₁+√(.26−.07²/.14)z₂. This explicitly changes which steering/throttle combinations are sampled together. Trace matching alone therefore does not make exploration equivalent. The same 2×2 covariance is repeated independently across horizon steps; no temporal covariance is introduced in the latent proposal. The optional command-slew transform can induce temporal dependence in applied controls.
 
 Primary driving uses K=384, T=20, temperature 8 and desired body-forward speed 1.4 m/s. Sampling dimension is **2T=40**, not seven. Optimizer stream entropy is [4400,seed], disturbance entropy [4401,seed], and Q03 paired normals/reference streams use disjoint [101,state_index,seed] / [202,state_index,rep] namespaces. Disturbance impulses are realized once per seed and shared across proposals.
 
@@ -133,7 +133,7 @@ The [microscope](../results/showcase/Q03_key.png) uses one predeclared obstacle 
 
 ## Q04 — closed-loop propagation
 
-The five-scene study executed 800 episodes at K=384: 400 compatibility episodes (seeds 42–61) and 400 holdout episodes (31000–31019). Completion was **397/400 compatibility** and **391/400 holdout**, with **zero collisions** in either cohort. Every episode and 133 saved populations passed the replay/likelihood audit. The mismatch execution really uses Cf=Cr=315 N/rad while planning uses 450; it is not an identically configured plant. The disturbance is a shared seed-dependent step-20 state impulse; there is no robust tracking controller or forecast.
+The five-scene study executed 800 episodes at K=384: 400 compatibility episodes (seeds 42–61) and 400 holdout episodes (31000–31019). Completion was **397/400 compatibility** and **391/400 holdout**, with **zero disk-proxy collisions** in either cohort. Every episode and 133 saved populations passed the replay/likelihood audit. The mismatch execution really uses Cf=Cr=315 N/rad while planning uses 450; it is not an identically configured plant. The disturbance is a shared seed-dependent step-20 state impulse; there is no robust tracking controller or forecast.
 
 Holdout completions (n=20 per cell):
 
@@ -151,7 +151,7 @@ In holdout two-route trials, upper-route counts are 5 standard, 5 isotropic, 2 d
 
 ## Q05 — S-turn outcomes
 
-The seed-42 pilot completed 15/16 conditions, with one full-proposal timeout at .20 m and no collisions. No controller/environment retuning followed. The independent primary sweep used seeds 32000–32019 and completed **313/320 episodes**, with **zero collisions and seven timeouts**.
+The seed-42 pilot completed 15/16 conditions, with one full-proposal timeout at .20 m and no collisions. No controller/environment retuning followed. The independent primary sweep used seeds 32000–32019 and completed **313/320 episodes**, with **zero disk-proxy collisions and seven timeouts**.
 
 | Clearance [m] | Standard | Isotropic | Diagonal | Full |
 | --- | ---: | ---: | ---: | ---: |
@@ -212,11 +212,15 @@ The step-40 impulse is a seven-coordinate state jump: magnitude times `[0,1,.2,.
 
 ### Discrete steering command slew
 
-The controller can constrain the change in commanded steering using its already known previous command while retaining seven plant states. For rate b, each latent sequence is amplitude-clipped and then projected recursively so |δ_t−δ_(t−1)|≤b dt; the updated nominal sequence uses the identical transform anchored at the previous executed command. Both p/q densities and the weighted update remain in unprojected latent coordinates. This is a discrete command slew constraint, not a continuous steering servo/lag model.
+The controller can constrain the change in commanded steering using its already known previous command while retaining seven plant states. For rate b, each latent sequence is amplitude-clipped and then projected recursively so |δ_t−δ_(t−1)|≤b dt; the updated nominal sequence uses the identical transform anchored at the previous executed command. Both p/q densities and the weighted update remain in unprojected latent coordinates. Slew/amplitude clipping is a many-to-one pushforward with boundary mass, so applied controls are not generally Gaussian, their trace/correlation need not match the declared latent covariance, and horizon controls can become temporally dependent. Evaluating a Gaussian ratio on the projected commands would not represent these latent densities. This is a discrete command slew constraint, not a continuous steering servo/lag model.
 
 The declared .4,.8,1.6 rad/s levels all admit the same physical reference (maximum discrete profile rate .3592 rad/s), with fixed geometry, preferred speed, cost and K. Seeds 37000–37019 are independent of prior cohorts. The plant equations and physics validation remain unchanged; constrained sampled and nominal trajectories, pre-projection densities, executed slew bounds and default-unconstrained equivalence are tested before evaluation.
 
-RATE_OUTCOMES_PENDING
+The slew study completed **240/240 episodes** with zero disk-proxy collisions. Every executed command respects its configured bound. At .4 rad/s, mean episode peak |vy| is .156/.144/.140/.146 m/s for standard/isotropic/diagonal/full; at 1.6 rad/s it is .339/.317/.330/.330 m/s. Mean peak |roll| at .4 is .114/.110/.104/.102 rad, versus .160/.159/.151/.154 at 1.6. These are changes in the physical pushforward/constraint, not different latent covariance matrices. Mean ESS at .4 remains 5.44/2.08/2.29/2.02, so similar completion does not imply similar weight concentration. The fraction of executed commands at the slew bound is roughly .83–.87 at .4, .71–.72 at .8 and .42–.50 at 1.6.
+
+At the predeclared initial decision (seed 37000), standard latent steering variance is .1529 in all three conditions, while its applied normalized steering variance is .0120/.0391/.0958 at slew bounds .4/.8/1.6. For the full proposal, sampled latent correlation .3946 becomes applied correlation .3488/.3569/.3712. These finite-population diagnostics directly show the changed pushforward without changing proposal parameters or paired normals.
+
+The rate and primary cohorts are different. Comparing .4 against 1.6 uses paired seeds within this study; comparing it with unconstrained primary runs is a separate unpaired cross-study observation. [Slew summaries](../runs/seven_state/Q05/seven_state_q05_rate_v1/summary.csv) and [initial-decision pushforward covariances](../runs/seven_state/Q05/seven_state_q05_rate_v1/proposal_pushforward.csv) retain the numerical evidence.
 
 ### Isolated planning-time measurements
 
@@ -234,28 +238,72 @@ Supported: covariance orientation can help or harm exact-target estimation; cost
 
 Q06 remains **PLANNED**. Future work should test genuine alternative weighting/feedback architectures, multiple calibrations and corridor handedness, wider horizons, better independent reference proposals, and secondary difficulty axes. The plant retains instantaneous steering input; the optional controller command-slew projection uses explicit previous-command history. A continuous actuator/servo model remains future work. Preferred-cruising-speed and state-jump checks are separate completed studies, not inferred from the clearance/K sweeps. The existing five-state rate study remains historical evidence, not a substitute seven-state result.
 
+## Collision-footprint scope
+
+The executed benchmark scores a **centered .22 m disk proxy**, which does not enclose axles at ±.4 m. Reported collision/completion counts therefore describe that declared proxy, not full-body vehicle collision avoidance. This is a material geometric approximation in addition to the tire/roll approximations. The frozen environment and controller were not retuned after outcomes.
+
+An additional post-campaign check thickens the axle-to-axle segment by .22 m, giving a 1.24 m long, .44 m wide capsule. The same reference remains feasible at every level. Sampled capsule clearances are .8307,.5310,.2812,.1313 m; conservative lower bounds under piecewise linear position/shortest-yaw interpolation between RK2 substeps are .7920,.4922,.2424,.0925 m respectively. The bound subtracts half the maximum translation-plus-axle-rotation travel from the smaller endpoint clearance. This validates an axle-enclosing reference witness, not the full-body safety of the sampled or executed MPPI paths. [Footprint validation](../runs/seven_state/validation/footprint_v1/validation.json) records the exact scope and parameters.
+
 ## Source provenance
 
-Manifests preserve the source commit, full source/configuration hashes and original dirty flag. Some later records have `dirty: true` while presentation/analysis edits were underway; they must not be presented as clean-checkout provenance. The physical model, cost, sampler and shared controller have a common recorded engine fingerprint, and raw replay verifies the saved dynamics, weights and decisions. Exact executed configurations and all original provenance flags remain intact. The Q04 pilot finalization repair is explicitly recorded in its manifest and did not rerun optimization.
+Manifests preserve the source commit, full source/configuration hashes and original dirty flag. Some later records have `dirty: true` while presentation/analysis edits were underway; they must not be presented as clean-checkout provenance. Primary and K stages retain their common recorded engine fingerprint. The later command-slew study records the new optional projection implementation separately; the plant equations are unchanged and unconstrained equivalence is tested. Raw replay verifies saved dynamics, weights and decisions. Exact executed configurations and all original provenance flags remain intact. The Q04 pilot finalization repair is explicitly recorded in its manifest and did not rerun optimization.
 
 ## Storage and reproduction
 
 New immutable run IDs are under `runs/seven_state/Q01`–`Q05`. Exact YAML, small CSV/JSON summaries, selected representative traces/plot inputs and manifests are committed; full episode records and rollout NPZs are ignored local data. Cloning alone does **not** supply those raw arrays. No LFS or external object store is configured, so reproducing raw evidence requires executing the recorded commands. Figures read saved compact inputs or raise if required data is absent; they never launch optimization or resample.
 
+The following are fresh-directory reproduction commands (the recorded `*_v1` run IDs remain immutable). Source/configuration hashes and actual recorded paths are in the registry. Budget replicas explicitly reference their newly generated primary records; using an older engine's parent is rejected.
+
 ```bash
 uv sync --frozen
-export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLBACKEND=Agg
-uv run python experiments/validate_dynamic_vehicle.py --output runs/seven_state/validation/dynamics_v1
-uv run python experiments/seven_state_campaign.py --stage q01 --output runs/seven_state/Q01/seven_state_q01_v1
-uv run python experiments/seven_state_campaign.py --stage q02 --output runs/seven_state/Q02/seven_state_q02_v1
-uv run python experiments/seven_state_campaign.py --stage q03 --output runs/seven_state/Q03/seven_state_q03_v1
-uv run python experiments/seven_state_campaign.py --stage q04 --output runs/seven_state/Q04/seven_state_q04_v1
-uv run python experiments/seven_state_campaign.py --stage q05 --output runs/seven_state/Q05/seven_state_q05_v1
-uv run python experiments/seven_state_campaign.py --stage budget_q04 --output runs/seven_state/Q04/seven_state_q04_budget_v1
-uv run python experiments/seven_state_campaign.py --stage budget_q05 --output runs/seven_state/Q05/seven_state_q05_budget_v1
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLBACKEND=Agg MPLCONFIGDIR=.mpl-cache
+uv run python experiments/validate_dynamic_vehicle.py --output runs/seven_state/validation/dynamics_reproduction_r1
+uv run python experiments/verify_reference_footprint.py --output runs/seven_state/validation/footprint_reproduction_r1
+uv run python experiments/seven_state_campaign.py --stage q01 --output runs/seven_state/Q01/q01_reproduction_r1
+uv run python experiments/seven_state_campaign.py --stage q02 --output runs/seven_state/Q02/q02_reproduction_r1
+uv run python experiments/seven_state_campaign.py --stage q03 --output runs/seven_state/Q03/q03_reproduction_r1
+uv run python experiments/seven_state_campaign.py --stage pilot_q04 --output runs/seven_state/Q04/pilot_reproduction_r1
+uv run python experiments/seven_state_campaign.py --stage q04 --output runs/seven_state/Q04/q04_reproduction_r1
+uv run python experiments/seven_state_campaign.py --stage pilot_q05 --output runs/seven_state/Q05/pilot_reproduction_r1
+uv run python experiments/seven_state_campaign.py --stage q05 --output runs/seven_state/Q05/q05_reproduction_r1
+uv run python experiments/seven_state_campaign.py --stage budget_q04 --parent runs/seven_state/Q04/q04_reproduction_r1 --output runs/seven_state/Q04/budget_reproduction_r1
+uv run python experiments/seven_state_campaign.py --stage budget_q05 --parent runs/seven_state/Q05/q05_reproduction_r1 --output runs/seven_state/Q05/budget_reproduction_r1
+uv run python experiments/seven_state_campaign.py --stage secondary_q05 --output runs/seven_state/Q05/secondary_reproduction_r1
+uv run python experiments/seven_state_campaign.py --stage rate_q05 --output runs/seven_state/Q05/rate_reproduction_r1
+# Run timing probes sequentially after the other stages finish.
+uv run python experiments/time_seven_state.py --scenario two_route_obstacle --output runs/seven_state/Q04/timing_reproduction_r1
+uv run python experiments/time_seven_state.py --scenario s_turn --output runs/seven_state/Q05/timing_reproduction_r1
 uv run ruff check .
 uv run ruff format --check .
 uv run pytest
+```
+
+Rebuild the curated figures from committed compact data without optimization:
+
+```bash
+for q in Q01 Q02 Q03 Q04 Q05; do
+  uv run python experiments/plot_seven_state.py --stage "$q" --input "runs/seven_state/$q/seven_state_${q,,}_v1"
+done
+uv run python experiments/plot_seven_state.py --stage budget --input runs/seven_state/Q04/seven_state_q04_budget_v1
+uv run python experiments/plot_seven_state.py --stage budget --input runs/seven_state/Q05/seven_state_q05_budget_v1
+uv run python experiments/plot_seven_state.py --stage secondary --input runs/seven_state/Q05/seven_state_q05_secondary_v1
+uv run python experiments/plot_seven_state.py --stage rate --input runs/seven_state/Q05/seven_state_q05_rate_v1
+uv run python experiments/research_index.py --render
+uv run python experiments/research_index.py
+```
+
+The loop uses Bash lowercase expansion. Raw audits require the locally regenerated raw records; cloning supplies compact reconstruction inputs and the original audit reports:
+
+```bash
+uv run python experiments/verify_seven_state.py --frozen --input runs/seven_state/Q03/seven_state_q03_v1
+uv run python experiments/verify_seven_state.py --input runs/seven_state/Q04/seven_state_q04_v1
+uv run python experiments/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_v1
+uv run python experiments/verify_seven_state.py --input runs/seven_state/Q04/seven_state_q04_budget_v1
+uv run python experiments/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_budget_v1
+uv run python experiments/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_secondary_v1
+uv run python experiments/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_rate_v1
+# Optional, when raw records are present:
+uv run python experiments/summarize_seven_state.py --input runs/seven_state/Q05/seven_state_q05_rate_v1
 ```
 
 Use fresh suffixed IDs for reproductions; completed run directories are never overwritten. The five primary figures are curated under `results/showcase`; supporting figures are committed under `docs/figures`. The registry links exact source commits/config hashes, primary and historical runs, and reconstruction commands. The previous five-state primary figure is preserved at `results/archive/five_state_Q05_key.png`; previous four-state figure/data paths remain intact.

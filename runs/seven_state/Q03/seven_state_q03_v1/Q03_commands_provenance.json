@@ -4,7 +4,7 @@
     "runs/seven_state/Q03/seven_state_q03_v1/per_seed.csv": "44a030994a8fe43cdbcfb7cf4b5e37fc4345314f3f3cf70d91b3d449856e6c4a"
   },
   "reconstruction": "Saved compact records only; no simulation or sampling",
-  "plot_source_sha256": "55dad81ad1b611161527d86702dc923cfc70db9a4d16d695ee876d5019e75bb8",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
   "figure_sha256": "a39f434299add6b6ff5f66f07b8cfea19c64c502533fe240c441bf59daf66b98",
   "summary_sha256": "101046173f4c0a1cebc9ad3dd6a42506ab008ff2a136a4f3487b773774e7c43d"
 }

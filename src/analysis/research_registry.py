@@ -305,6 +305,7 @@ evidence](results/archive/legacy_index.md)
                     "goal_summary.csv",
                     "failure_modes.csv",
                     "selected_weight_components.csv",
+                    "proposal_pushforward.csv",
                 ]
                 if (root / primary["path"] / name).is_file()
             ]

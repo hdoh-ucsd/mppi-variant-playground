@@ -1,0 +1,10 @@
+{
+  "figure": "docs/figures/seven_state_Q05_rate.png",
+  "inputs_sha256": {
+    "runs/seven_state/Q05/seven_state_q05_rate_v1/summary.csv": "d4c95735d6622b5e1391c6e7d2f14e4672c7ada4d55653b4923a6d4ef1654415"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "702cd9a123a11492f49ed8e07e3e686b6ace14efae2bb35c5e5628a7d8ea67c2",
+  "summary_sha256": "d4c95735d6622b5e1391c6e7d2f14e4672c7ada4d55653b4923a6d4ef1654415"
+}

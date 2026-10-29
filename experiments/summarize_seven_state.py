@@ -1,6 +1,7 @@
 """Derive terminal-failure and selected weight diagnostics from existing episode records."""
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -24,6 +25,7 @@ def summarize(root):
     }
     failures = []
     components = []
+    pushforwards = []
     goals = []
     for _, row in frame.iterrows():
         episode = Path(row.episode_path)
@@ -89,6 +91,40 @@ def summarize(root):
             )
         for path in sorted((episode / "snapshots").glob("*.npz")):
             with np.load(path) as data:
+                rate = config["controller"].get("steering_rate_limit")
+                if rate is not None and path.stem == "step_0000":
+                    scale = np.array(
+                        [config["vehicle"]["steering_limit"], config["vehicle"]["throttle_limit"]]
+                    )
+                    record = dict(
+                        case=row["case"],
+                        proposal=row.proposal,
+                        seed=row.seed,
+                        rate_limit=rate,
+                        samples=len(data["weights"]),
+                        source=str(path),
+                        source_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                    )
+                    for label, values in [
+                        ("latent", data["latent_controls"][:, 0]),
+                        ("applied_normalized", data["sampled_controls"][:, 0] / scale),
+                    ]:
+                        covariance = np.cov(values.T)
+                        record.update(
+                            {
+                                label + "_steering_variance": covariance[0, 0],
+                                label + "_throttle_variance": covariance[1, 1],
+                                label + "_correlation": covariance[0, 1]
+                                / np.sqrt(covariance[0, 0] * covariance[1, 1]),
+                            }
+                        )
+                    record["first_sample_rate_saturation_fraction"] = float(
+                        np.mean(
+                            abs(data["sampled_controls"][:, 0, 0])
+                            >= rate * config["vehicle"]["dt"] - 1e-12
+                        )
+                    )
+                    pushforwards.append(record)
                 for component, costs, ratio in [
                     ("cost_only", data["costs"], None),
                     ("ratio_only", np.zeros_like(data["costs"]), data["log_base_over_proposal"]),
@@ -141,6 +177,8 @@ def summarize(root):
             "max_weight",
         ],
     ).to_csv(root / "selected_weight_components.csv", index=False)
+    if pushforwards:
+        pd.DataFrame(pushforwards).to_csv(root / "proposal_pushforward.csv", index=False)
     goals = pd.DataFrame(goals)
     records = []
     for keys, g in goals.groupby(["case", "cohort", "proposal"], sort=False):

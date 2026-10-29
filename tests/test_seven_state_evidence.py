@@ -30,7 +30,16 @@ def test_saved_figures_never_sample_or_integrate(tmp_path, monkeypatch):
     for question in ["Q01", "Q02", "Q03", "Q04", "Q05"]:
         root = ROOT / f"runs/seven_state/{question}/seven_state_{question.lower()}_v1"
         dynamic_plots.generate(root, question)
-    assert len(captured) == 9
+    for q, name, stage in [
+        ("Q04", "budget", "budget"),
+        ("Q05", "budget", "budget"),
+        ("Q05", "secondary", "secondary"),
+        ("Q05", "rate", "rate"),
+    ]:
+        dynamic_plots.generate(
+            ROOT / f"runs/seven_state/{q}/seven_state_{q.lower()}_{name}_v1", stage
+        )
+    assert len(captured) == 13
     microscope = next(fig for name, fig in captured if name == "Q03_microscope")
     assert len({ax.get_xlim() for ax in microscope.axes}) == 1
     assert len({ax.get_ylim() for ax in microscope.axes}) == 1

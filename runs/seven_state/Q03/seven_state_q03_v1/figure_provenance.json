@@ -5,7 +5,7 @@
     "runs/seven_state/Q03/seven_state_q03_v1/frozen_states/pre_obstacle.json": "769071bfe5345e725d9ca2ed5c837f866af2763f3657f6af732d54861de00788"
   },
   "reconstruction": "Saved compact records only; no simulation or sampling",
-  "plot_source_sha256": "55dad81ad1b611161527d86702dc923cfc70db9a4d16d695ee876d5019e75bb8",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
   "figure_sha256": "bbe035fe0100be3471f146ea8881921032a78d56964e9e883e6829bba913f62d",
   "summary_sha256": "101046173f4c0a1cebc9ad3dd6a42506ab008ff2a136a4f3487b773774e7c43d"
 }

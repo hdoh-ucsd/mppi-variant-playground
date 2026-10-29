@@ -28,7 +28,7 @@ Completion, collision, clearance, route station crossing, occupancy, ESS and pro
 
 ## Main finding
 
-Across five seven-state scenes, compatibility completion is 397/400 and independent holdout completion 391/400, with zero collisions. In holdout two-route trials, full takes 17 upper routes out of 20; standard/isotropic take 5 and diagonal 2. Route frequencies characterize these matrices, not published algorithm families.
+Across five seven-state scenes, compatibility completion is 397/400 and independent holdout completion 391/400, with zero disk-proxy collisions. In holdout two-route trials, full takes 17 upper routes out of 20; standard/isotropic take 5 and diagonal 2. Route frequencies characterize these matrices, not published algorithm families.
 
 ## Interpretation
 
@@ -36,7 +36,7 @@ Executed bundles, occupancy, local rollout clouds and inter-seed dispersion desc
 
 ## Limitations
 
-Twenty seeds per scenario and cohort give wide intervals. Feedback changes state and warm start. Failures are terminal-region timeouts; one calibration and selected matrices cannot establish general superiority.
+Twenty seeds per scenario and cohort give wide intervals. Feedback changes state and warm start. Failures are terminal-region timeouts; one calibration and selected matrices cannot establish general superiority. Collision counts use a centered disk proxy; full-body avoidance is not established.
 
 ## Registered experiment
 
@@ -46,7 +46,7 @@ Twenty seeds per scenario and cohort give wide intervals. Feedback changes state
 | dynamics model | dynamic_single_track_7 |
 | control inputs | steering [rad], signed normalized throttle [−1,1] |
 | controller configuration | Gaussian IT-MPPI; T=20, λ=8, base diag(.14,.26); standard/isotropic/diagonal/full normalized trace .40; Q03 adds aligned/misaligned |
-| seeds | 42–61 compatibility; 31000–31019 independent holdout |
+| seeds | 42–61 compatibility; 31000–31019 independent holdout; 36000–36009 isolated timing |
 | sampling budget | Primary K=384; T=20; 800 episodes; separate K=128/384/768/1536 sweep |
 | source commit | fe98accd84213647c0ff7c006226df6ef1dd3d1f |
 

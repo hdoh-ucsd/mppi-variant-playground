@@ -326,7 +326,7 @@ def driving(root, question):
                 ax.plot(row["px"], row["py"], color=COLORS[p], label=p)
             ax.set_title("Predeclared holdout seed 31000", fontsize=8)
         fig.suptitle(
-            "Q04 · Seven-state closed-loop outcomes · K=384 · T=20 · all failures "
+            "Q04 · Seven-state closed-loop outcomes · disk collision proxy · all failures "
             "retained\nCompatibility and independent holdout seeds shown separately; "
             "representative paths are not selected by outcome"
         )
@@ -334,7 +334,7 @@ def driving(root, question):
         fig = plt.figure(figsize=(13, 7), layout="constrained")
         gs = fig.add_gridspec(2, 3)
         ax = fig.add_subplot(gs[0, :2])
-        intervals(ax, d, "success", "clearance", "Success rate / Wilson 95%")
+        intervals(ax, d, "success", "clearance", "Disk-proxy completion / Wilson 95%")
         ax.set(
             xlabel="Corridor clearance [m]",
             ylim=(-0.02, 1.02),
@@ -477,7 +477,7 @@ def secondary(root):
 
 def rate_study(root):
     root = Path(root)
-    d = pd.read_csv(root / "summary.csv")
+    d = pd.read_csv(root / "summary.csv").copy()
     d["rate_limit"] = d["case"].str.removeprefix("rate_").astype(float)
     fig, axes = plt.subplots(2, 3, figsize=(12, 6), layout="constrained")
     for ax, metric, label in zip(
