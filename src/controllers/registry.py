@@ -4,8 +4,15 @@ from controllers.accounting import CountedModel
 from controllers.dial import DIAL
 from controllers.mppi import MPPI
 from controllers.tsallis import TsallisMPPI
+from controllers.tube import TubeMPPI
 
-CONTROLLERS = {"it_mppi": MPPI, "tsallis_vi": TsallisMPPI, "dial_mpc": DIAL, "dial_no_anneal": DIAL}
+CONTROLLERS = {
+    "it_mppi": MPPI,
+    "tsallis_vi": TsallisMPPI,
+    "tube_mppi": TubeMPPI,
+    "dial_mpc": DIAL,
+    "dial_no_anneal": DIAL,
+}
 
 
 def create_controller(dynamics, cost, config):

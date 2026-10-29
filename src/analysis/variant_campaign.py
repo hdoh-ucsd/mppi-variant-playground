@@ -39,6 +39,8 @@ def case_config(options, scenario, algorithm, samples):
 
 def equal_work_samples(options, algorithm):
     # All work is counted again by the model-call instrument during execution.
+    if algorithm == "tube_mppi":
+        return (options["transition_budget"] - 18 * 20) // (2 * 20) - 1
     iterations = options["algorithms"][algorithm].get("iterations", 1)
     return options["transition_budget"] // (20 * iterations) - 1
 

@@ -12,6 +12,7 @@ algorithms:
   tsallis_vi: {tsallis_r: 1.5, elite_fraction: 0.8}
   dial_mpc: {iterations: 4, beta_trajectory: 1.0, beta_horizon: 1.0, anneal: true, covariance: [[0.2, 0], [0, 0.2]]}
   dial_no_anneal: {iterations: 4, beta_trajectory: 1.0, beta_horizon: 1.0, anneal: false, covariance: [[0.2, 0], [0, 0.2]]}
+  tube_mppi: {reset_threshold: 450.0, tracking_q: [4, 8, 6, 2, 2, 1, 1], tracking_r: [1, 1], tracking_terminal_multiplier: 5.0}
 studies:
   V01_tsallis:
     algorithms: [it_mppi, tsallis_vi]
@@ -19,3 +20,6 @@ studies:
   V02_dial:
     algorithms: [it_mppi, dial_mpc, dial_no_anneal]
     scenarios: [two_route_obstacle, narrow_passage]
+  V03_tube:
+    algorithms: [it_mppi, tube_mppi]
+    scenarios: [disturbance, model_mismatch]
