@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "controller": "isotropic",
+  "scenario": "open_space",
+  "seed": 45,
+  "environment_seed_entropy": [
+    45,
+    1001
+  ],
+  "mode": "wall_clock",
+  "git": {
+    "commit": "5ec715c671e58d6be22731ec090b39288875e9b3",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T02:40:16.280762+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": true,
+    "goal_position_error": 0.432186190259099,
+    "goal_orientation_error": 0.022688245147359343,
+    "time_to_completion_s": 6.0,
+    "executed_duration_s": 6.0,
+    "cumulative_evaluation_cost": 140.4849809950566,
+    "collision": false,
+    "minimum_obstacle_clearance": null,
+    "constraint_violations": 0,
+    "mean_ess": 15.717497849948824,
+    "mean_weight_entropy": 1.791283124564098,
+    "degenerate_weight_fraction": 0.425,
+    "mean_trajectory_spread": 2.1050945409296413,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.19754189237571618,
+    "dynamics_evaluations_per_step": 43036,
+    "total_dynamics_evaluations": 1721440,
+    "total_rollout_evaluations": 61440,
+    "mean_planning_latency_s": 0.012490035974042257,
+    "p95_planning_latency_s": 0.012994910233828705,
+    "total_normalized_control_effort": 2.2155156241403238,
+    "total_normalized_control_variation": 18.578640589765644,
+    "maximum_steering_change_rad": 0.41294296149491183,
+    "steps": 40,
+    "total_simulation_wall_time_s": 0.5089919860183727,
+    "process_peak_rss_mib": 146.95703125,
+    "deadline_miss_fraction": 0.0
+  }
+}

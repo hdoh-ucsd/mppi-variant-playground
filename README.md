@@ -93,7 +93,16 @@ Large rollout archives and GIF/MP4 files stay local and are ignored by Git. Re-r
 
 ## Findings and limits
 
-See [executed results](docs/results.md) for measured success counts, costs, ESS and latency. No statistically significant superiority is claimed. Low ESS, saturation, finite-horizon local behavior, and failure to park after a disturbance are scientifically relevant outcomes of this configuration.
+Executed **180 benchmark episodes across three separately reported budget modes**, plus two additional environment checks. The matched-evaluation success counts (five seeds per cell) are:
+
+| Controller | Open space | Narrow passage | Disturbance |
+|---|---:|---:|---:|
+| standard | 5/5 | 4/5 | 1/5 |
+| isotropic | 3/5 | 5/5 | 0/5 |
+| diagonal | 5/5 | 5/5 | 0/5 |
+| full | 3/5 | 4/5 | 1/5 |
+
+See [executed results and delivery report](docs/results.md) for measured costs, ESS, latency, validation and provenance. No statistically significant superiority is claimed. Low ESS, saturation, finite-horizon local behavior, and failure to park after a disturbance are scientifically relevant outcomes of this configuration.
 
 Five environments are available: open space, narrow passage, obstacle field, sudden disturbance, and parameter mismatch. The milestone comparison uses the first, second and fourth. A kinematic bicycle with a disk footprint cannot reproduce aggressive tire dynamics, contact-rich locomotion, perception, or hardware timing. There are no safety or robustness guarantees for this implementation. See [limitations](docs/limitations.md) and [implementation fidelity](docs/implementation_fidelity.md).
 

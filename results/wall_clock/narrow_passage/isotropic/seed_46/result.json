@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "controller": "isotropic",
+  "scenario": "narrow_passage",
+  "seed": 46,
+  "environment_seed_entropy": [
+    46,
+    1001
+  ],
+  "mode": "wall_clock",
+  "git": {
+    "commit": "5ec715c671e58d6be22731ec090b39288875e9b3",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T02:40:33.003011+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": true,
+    "goal_position_error": 0.36678992183369225,
+    "goal_orientation_error": 0.07548342228980554,
+    "time_to_completion_s": 5.7,
+    "executed_duration_s": 5.7,
+    "cumulative_evaluation_cost": 144.61457332882225,
+    "collision": false,
+    "minimum_obstacle_clearance": 0.22253500219718522,
+    "constraint_violations": 0,
+    "mean_ess": 1.9911547298632168,
+    "mean_weight_entropy": 0.7709319860431026,
+    "degenerate_weight_fraction": 0.631578947368421,
+    "mean_trajectory_spread": 2.0299139762451706,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.2705884472052187,
+    "dynamics_evaluations_per_step": 21532,
+    "total_dynamics_evaluations": 818216,
+    "total_rollout_evaluations": 29184,
+    "mean_planning_latency_s": 0.013391732314056227,
+    "p95_planning_latency_s": 0.01502536380139645,
+    "total_normalized_control_effort": 2.801282760099133,
+    "total_normalized_control_variation": 26.499160885354595,
+    "maximum_steering_change_rad": 0.6029461869786781,
+    "steps": 38,
+    "total_simulation_wall_time_s": 0.5148596499930136,
+    "process_peak_rss_mib": 150.15234375,
+    "deadline_miss_fraction": 0.05263157894736842
+  }
+}

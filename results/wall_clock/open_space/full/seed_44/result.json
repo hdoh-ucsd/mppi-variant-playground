@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "controller": "full",
+  "scenario": "open_space",
+  "seed": 44,
+  "environment_seed_entropy": [
+    44,
+    1001
+  ],
+  "mode": "wall_clock",
+  "git": {
+    "commit": "5ec715c671e58d6be22731ec090b39288875e9b3",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T02:40:22.976074+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": false,
+    "goal_position_error": 0.7073058109498364,
+    "goal_orientation_error": 0.016187759707078975,
+    "time_to_completion_s": null,
+    "executed_duration_s": 18.0,
+    "cumulative_evaluation_cost": 167.02638639927335,
+    "collision": false,
+    "minimum_obstacle_clearance": null,
+    "constraint_violations": 0,
+    "mean_ess": 2.901752022139161,
+    "mean_weight_entropy": 1.1741897691622565,
+    "degenerate_weight_fraction": 0.5416666666666666,
+    "mean_trajectory_spread": 0.9143664970675257,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.4514491868606709,
+    "dynamics_evaluations_per_step": 43036,
+    "total_dynamics_evaluations": 5164320,
+    "total_rollout_evaluations": 184320,
+    "mean_planning_latency_s": 0.011671412915651066,
+    "p95_planning_latency_s": 0.013152192649431526,
+    "total_normalized_control_effort": 5.55488070115484,
+    "total_normalized_control_variation": 60.118516287929566,
+    "maximum_steering_change_rad": 0.6209490266761194,
+    "steps": 120,
+    "total_simulation_wall_time_s": 1.4138997640111484,
+    "process_peak_rss_mib": 150.0546875,
+    "deadline_miss_fraction": 0.0
+  }
+}

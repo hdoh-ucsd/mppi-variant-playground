@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "isotropic",
+  "scenario": "narrow_passage",
+  "seed": 43,
+  "environment_seed_entropy": [
+    43,
+    1001
+  ],
+  "mode": "dynamics",
+  "git": {
+    "commit": "1f70c5a73be802dab33271b429d4225639f1b392",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T02:38:56.694509+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": true,
+    "goal_position_error": 0.4490268903489183,
+    "goal_orientation_error": 0.11090646029046614,
+    "time_to_completion_s": 8.1,
+    "executed_duration_s": 8.1,
+    "cumulative_evaluation_cost": 164.08729678914858,
+    "collision": false,
+    "minimum_obstacle_clearance": 0.2259835026836676,
+    "constraint_violations": 0,
+    "mean_ess": 1.8392451180193572,
+    "mean_weight_entropy": 0.6775964826618308,
+    "degenerate_weight_fraction": 0.6666666666666666,
+    "mean_trajectory_spread": 1.5379916611425244,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.23790087836163815,
+    "dynamics_evaluations_per_step": 10780,
+    "total_dynamics_evaluations": 582120,
+    "total_rollout_evaluations": 20736,
+    "mean_planning_latency_s": 0.008139616777986736,
+    "p95_planning_latency_s": 0.00959052764956141,
+    "total_normalized_control_effort": 4.639801264341778,
+    "total_normalized_control_variation": 54.64072035432865,
+    "maximum_steering_change_rad": 1.0,
+    "steps": 54,
+    "total_simulation_wall_time_s": 0.4474380250030663,
+    "process_peak_rss_mib": 149.62109375
+  }
+}
