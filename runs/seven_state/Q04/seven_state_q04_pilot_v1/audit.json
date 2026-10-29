@@ -1,0 +1,14 @@
+{
+  "episodes": 20,
+  "raw_episodes_verified": 20,
+  "snapshots_verified": 66,
+  "common_conditions_verified": true,
+  "paired_cohorts_verified": true,
+  "model_and_substep_collisions_verified": true,
+  "model_mismatch_parameters_verified": true,
+  "state_dimension": 7,
+  "control_fields": [
+    "steering",
+    "throttle"
+  ]
+}

@@ -160,3 +160,18 @@ def test_episode_replay_and_disturbance_stream(tmp_path):
     assert a == b
     np.testing.assert_array_equal(ta.to_numpy(), tb.to_numpy())
     assert a["optimizer_entropy"] != a["disturbance_entropy"]
+
+
+def test_no_obstacle_diagnostics_are_json_serializable(tmp_path):
+    import json
+
+    from analysis.dynamic_campaign import job
+
+    c = configuration()
+    c, _, *_ = resolved_case(c, "open_space", samples=8)
+    c["controller"]["horizon"] = 3
+    c["execution"]["max_steps"] = 2
+    row, record = job((c, "open_space", "standard", 42, "pilot", str(tmp_path), []))
+    json.dumps(row, allow_nan=False)
+    json.dumps(record, allow_nan=False)
+    assert record[1]["clearance"] == [None, None]

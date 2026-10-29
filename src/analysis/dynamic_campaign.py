@@ -1,5 +1,7 @@
 """Seven-state execution adapter using the existing planner and artifact framework."""
 
+import hashlib
+import json
 from concurrent.futures import ProcessPoolExecutor
 from copy import deepcopy
 from datetime import UTC, datetime
@@ -10,6 +12,7 @@ import pandas as pd
 import yaml
 
 from analysis.artifacts import begin, fingerprint
+from analysis.trajectory_statistics import first_crossing
 from dynamics.bicycle import wrap_angle
 from dynamics.dynamic_vehicle import DynamicVehicle
 from evaluation.metrics import binomial_interval, mean_interval
@@ -195,7 +198,16 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
     total += float(controller.cost.terminal(state))
     collision = bool((diag.clearance <= 0).any())
     success = reached(state, geometry, config) and not collision
+    station = (
+        first_crossing(states[:, :2], 4.0)
+        if config["scenario"]["name"] == "two_route_obstacle"
+        else None
+    )
     result = dict(
+        station_crossing_y_m=station,
+        route_class=("not_reached" if station is None else ("upper" if station > 0 else "lower"))
+        if config["scenario"]["name"] == "two_route_obstacle"
+        else "not_assessed",
         success=success,
         collision=collision,
         termination="completed" if success else ("collision" if collision else "censored_timeout"),
@@ -325,18 +337,14 @@ def job(args):
         proposal=proposal,
         seed=seed,
         cohort=cohort,
+        reused=False,
         episode_path=str(Path(output) / "episodes" / case / proposal / f"seed_{seed}"),
         shared_condition_sha256=fingerprint(config),
         **result,
     )
+    clean = diag.replace([np.inf, -np.inf], np.nan)
     representative = (
-        (
-            path.to_dict("list"),
-            diag.replace([np.inf, -np.inf], np.nan)
-            .astype(object)
-            .where(pd.notna(diag), None)
-            .to_dict("list"),
-        )
+        (path.to_dict("list"), clean.astype(object).where(pd.notna(clean), None).to_dict("list"))
         if seed in [42, 31000, 32000]
         else None
     )
@@ -348,6 +356,17 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
     config = deepcopy(config)
     config["phase"] = "pilot" if pilot else "evaluation"
     root, manifest = begin(output, config, "seven_state_" + stage)
+    core = hashlib.sha256()
+    for file in [
+        "src/controllers/mppi.py",
+        "src/dynamics/dynamic_vehicle.py",
+        "src/costs/dynamic_vehicle.py",
+        "src/scenarios/dynamic_scenes.py",
+        "src/sampling/gaussian.py",
+    ]:
+        core.update(Path(file).read_bytes())
+    manifest["engine_source_sha256"] = core.hexdigest()
+    write_json(root / "manifest.json", manifest)
     cases = []
     if stage == "q04":
         for name in config["scenarios"]:
@@ -384,6 +403,22 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
             for name, c, g, f in cases
         },
     )
+    parent = None
+    parent_frame = None
+    seed_options = config["holdout_seeds"] if stage == "budget_q04" else config["s_turn_seeds"]
+    reuse_case = None
+    if stage.startswith("budget_"):
+        q = "Q04" if stage == "budget_q04" else "Q05"
+        parent = Path("runs/seven_state") / q / f"seven_state_{q.lower()}_v1"
+        parent_manifest = json.loads((parent / "manifest.json").read_text())
+        if not parent_manifest["complete"]:
+            raise RuntimeError("Budget parent is incomplete")
+        if parent_manifest["engine_source_sha256"] != manifest["engine_source_sha256"]:
+            raise RuntimeError("Budget reference used a different model/controller implementation")
+        parent_frame = pd.read_csv(parent / "per_seed.csv")
+        if stage == "budget_q05":
+            additional_seeds = parent_manifest["cohorts"]["holdout"]
+        reuse_case = f"K{config['controller']['samples']}"
     cohorts = (
         {"pilot": [42]}
         if pilot
@@ -402,8 +437,8 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
                 "holdout": additional_seeds
                 or list(
                     range(
-                        config["s_turn_seeds"]["start"],
-                        config["s_turn_seeds"]["start"] + config["s_turn_seeds"]["count"],
+                        seed_options["start"],
+                        seed_options["start"] + seed_options["count"],
                     )
                 )
             }
@@ -412,6 +447,7 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
     args = [
         (c, name, p, seed, cohort, str(root), config["execution"]["snapshot_steps"])
         for name, c, g, f in cases
+        if name != reuse_case
         for cohort, seeds in cohorts.items()
         for p in PROPOSALS
         for seed in seeds
@@ -419,8 +455,41 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
     rows = []
     paths = {}
     diagnostics = {}
+    if parent_frame is not None:
+        selected = parent_frame[
+            (parent_frame.samples == config["controller"]["samples"])
+            & (parent_frame.cohort == "holdout")
+        ]
+        if stage == "budget_q04":
+            selected = selected[selected.scenario == config["budget_q04_scenario"]]
+        else:
+            selected = selected[selected.clearance == config["budget_q05_clearance"]]
+        expected = cohorts["holdout"]
+        selected = selected[selected.seed.isin(expected)].copy()
+        c = next(c for name, c, g, f in cases if name == reuse_case)
+        if selected.shared_condition_sha256.nunique() != 1 or selected.shared_condition_sha256.iloc[
+            0
+        ] != fingerprint(c):
+            raise RuntimeError("Cannot reuse a different physical/controller condition")
+        for _proposal, g in selected.groupby("proposal"):
+            if sorted(g.seed) != expected:
+                raise RuntimeError("Budget parent seeds are incomplete")
+        old_case = selected.case.iloc[0]
+        selected["case"] = reuse_case
+        selected["reused"] = True
+        rows = selected.to_dict("records")
+        for filename, target in [
+            ("representative_paths.json", paths),
+            ("representative_diagnostics.json", diagnostics),
+        ]:
+            original = json.loads((parent / filename).read_text())
+            for key, value in original.items():
+                if key.startswith(old_case + "__") and key.endswith("__holdout"):
+                    target[reuse_case + key[len(old_case) :]] = value
+        manifest["reused_primary_run"] = str(parent)
     with ProcessPoolExecutor(max_workers=config["workers"]) as pool:
         for row, record in pool.map(job, args):
+            row["reused"] = False
             rows.append(row)
             if record is not None:
                 key = f"{row['case']}__{row['proposal']}__{row['cohort']}"
@@ -460,6 +529,10 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
                 initial_n=len(old) - len(extra),
                 final_n=len(cohorts["holdout"]),
             )
+    return finish_records(root, config, rows, paths, diagnostics, manifest, cohorts)
+
+
+def finish_records(root, config, rows, paths, diagnostics, manifest, cohorts):
     frame = pd.DataFrame(rows)
     frame.to_csv(root / "per_seed.csv", index=False)
     summary(frame, root, ["case", "scenario", "clearance", "samples", "cohort"])
@@ -474,6 +547,11 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
         sampling_dimension=2 * config["controller"]["horizon"],
         episodes=len(frame),
         cohorts=cohorts,
+        episodes_executed_new=int(
+            (
+                ~frame.get("reused", pd.Series(False, index=frame.index)).fillna(False).astype(bool)
+            ).sum()
+        ),
         rhs_per_transition=2 * config["vehicle"]["substeps"],
         finished_at_utc=datetime.now(UTC).isoformat(),
         disturbance_stream="SeedSequence([4401,seed]); one common realized impulse per seed",

@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "level": "seven_state_q04",
+  "phase": "pilot",
+  "started_at_utc": "2026-10-29T06:53:03.603231+00:00",
+  "git": {
+    "commit": "0006f840f99ab6be155b66ea7833e9210fe40367",
+    "dirty": true,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "02b6e886483ee088c6aa5ca08c283761bfb9f0a318b4f647418d13beee9e6508",
+  "configuration_sha256": "1b8223bf808cd50eb76e250d8f30f2b62f6b4a76c31fe61c68f53866a6aecbfb",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "engine_source_sha256": "3de4191d90c4a2c860719373c9cbfd2337714313645db0462361c001e36ccadd",
+  "finalization_repair": "No-obstacle infinite clearance serialized as JSON null; recovered from original raw records without controller execution",
+  "run_id": "seven_state_q04_pilot_v1",
+  "dynamics_model": "dynamic_single_track_7",
+  "state_fields": [
+    "px",
+    "py",
+    "heading",
+    "roll",
+    "vx",
+    "vy",
+    "yaw_rate"
+  ],
+  "control_fields": [
+    "steering",
+    "throttle"
+  ],
+  "sampling_dimension": 40,
+  "episodes": 20,
+  "cohorts": {
+    "pilot": [
+      42
+    ]
+  },
+  "episodes_executed_new": 20,
+  "rhs_per_transition": 6,
+  "finished_at_utc": "2026-10-29T06:57:03.068783+00:00",
+  "disturbance_stream": "SeedSequence([4401,seed]); one common realized impulse per seed",
+  "optimizer_stream": "SeedSequence([4400,seed])",
+  "collision_check": "Swept disk on each midpoint integration substep; same cost and geometry in planning/execution",
+  "raw_storage": "Local ignored episodes and snapshots; cloning alone does not contain full raw evidence"
+}

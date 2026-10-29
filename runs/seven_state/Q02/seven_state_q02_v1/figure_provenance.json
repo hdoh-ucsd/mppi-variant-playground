@@ -1,0 +1,23 @@
+{
+  "git": {
+    "commit": "0006f840f99ab6be155b66ea7833e9210fe40367",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "d0e94101f55c2dc14f98ce73c26ba0c000a2ce02b0cfff1d35f66c27a26abb3d",
+  "inputs": [
+    "config.yaml",
+    "cases.json",
+    "trials.csv",
+    "summary.csv"
+  ],
+  "plot_source_files": [
+    "src/analysis/plots.py",
+    "src/analysis/extension_plots.py"
+  ],
+  "plot_source_sha256": "6281b422abfcabc34dc9f982f30591115e9f2f988c2d2c9ac80f8e1207638f99",
+  "figures": [
+    "05_temperature_weights.svg",
+    "05b_dimension_diagnostics.svg"
+  ]
+}
