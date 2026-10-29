@@ -1,12 +1,152 @@
 # MPPI Variant Playground
 
-**[Formulations](docs/formulations.md) · [Paper Map](docs/paper_map.md)**
-
 **A reproducible research playground for understanding *why* Model Predictive Path Integral (MPPI) controllers behave differently.**
 
 MPPI plans by sampling control sequences, predicting their trajectories, and updating a nominal plan using cost-dependent weights. This repository studies how changes to the **sampling proposal** affect finite-sample estimates, selected controls, and closed-loop behavior. It connects mathematical derivations to controlled toy problems and a seven-state vehicle benchmark.
 
 > **Scope.** The implemented controller is Gaussian information-theoretic MPPI (IT-MPPI) with several **fixed proposal covariance settings**. These are *not* implementations of separate published MPPI variants. Tsallis-VI, DIAL-MPC, Tube-MPPI, Robust-MPPI, and CC-MPPI remain future comparison targets.
+
+## Formulations
+
+The implemented baseline solves a distributional control problem: choose a distribution
+$Q$ over latent control sequences that trades expected rollout cost against departure
+from a fixed Gaussian base $P$:
+
+$$
+\min_Q\;\mathbb E_Q[J(Z)]+\lambda D_{\mathrm{KL}}(Q\Vert P),
+\qquad
+\pi^*(Z)=\eta^{-1}\exp[-J(Z)/\lambda]p(Z).
+$$
+
+Here $Z=(z_0,\ldots,z_{T-1})$, $J$ is the trajectory cost, $\lambda>0$ is temperature,
+and $\eta$ normalizes the target. The base and sampling proposal are
+
+$$
+p(Z)=\prod_{t=0}^{T-1}\mathcal N(z_t;0,C_0),
+\qquad
+q_{U,C}(Z)=\prod_{t=0}^{T-1}\mathcal N(z_t;U_t,C).
+$$
+
+The base covariance $C_0$ defines part of the objective; the proposal mean $U$ and
+covariance $C$ determine where samples are drawn. Projecting the target onto a
+Gaussian with fixed covariance gives the ideal mean $U^*=\mathbb E_{\pi^*}[Z]$.
+For $K$ samples $Z^{(k)}=U+\epsilon^{(k)}$ from the proposal, MPPI estimates it with
+
+$$
+L_k=-J(Z^{(k)})/\lambda+\log p(Z^{(k)})-\log q_{U,C}(Z^{(k)}),
+\qquad
+w_k=\frac{\exp(L_k-\max_j L_j)}{\sum_i\exp(L_i-\max_j L_j)},
+$$
+
+$$
+U^+=\sum_{k=1}^{K}w_kZ^{(k)}
+=U+\sum_{k=1}^{K}w_k\epsilon^{(k)}.
+$$
+
+The full Gaussian density correction is
+
+$$
+\log\frac{p(Z^{(k)})}{q_{U,C}(Z^{(k)})}
+=-\frac12\sum_t\left[
+(z_t^{(k)})^\top C_0^{-1}z_t^{(k)}
+-(\epsilon_t^{(k)})^\top C^{-1}\epsilon_t^{(k)}
++\log\det C_0-\log\det C
+\right].
+$$
+
+When $C=C_0$, this reduces, up to a sample-independent term, to
+$-\sum_t U_t^\top C^{-1}\epsilon_t^{(k)}$. The familiar cross-term correction
+therefore applies to that equal-covariance case; changing $C$ generally requires the
+full ratio. Cost-only weights generally define a different target.
+
+**What the current experiments vary.** With the state, warm start, base, cost and
+temperature fixed, changing $C$ preserves the ideal target but changes the finite-sample
+estimate. The main seven-state campaign uses $C_0=\operatorname{diag}(0.14,0.26)$,
+$T=20$, $K=384$ and $\lambda=8$; budget studies vary $K$ separately.
+
+| Proposal | Steering variance | Throttle variance | Cross-covariance | Latent trace |
+| --- | ---: | ---: | ---: | ---: |
+| Standard | 0.14 | 0.26 | 0 | 0.40 |
+| Isotropic | 0.20 | 0.20 | 0 | 0.40 |
+| Diagonal | 0.09 | 0.31 | 0 | 0.40 |
+| Full | 0.14 | 0.26 | 0.07 | 0.40 |
+
+These are fixed Gaussian proposal settings within one formulation. Equal trace matches
+expected squared latent perturbation magnitude, not determinant, entropy, or physical
+control dispersion after saturation. Q03 also examines sensitivity-aligned and
+misaligned proposals; historical campaigns use separately recorded matrices.
+
+**From a distribution to an applied command.** The seven-state model maps latent
+controls to steering and signed throttle with
+$u_t=\operatorname{clip}(\operatorname{diag}(0.5,1)z_t,\text{bounds})$.
+Likelihoods are evaluated before clipping; the mapped controls determine rollout costs.
+The controller applies the first mapped command, shifts the latent plan, and replans.
+The separate command-slew study additionally limits steering changes using the previous
+command. This changes the physical control distribution while retaining the latent
+Gaussian density correction.
+
+Finite self-normalized estimates can be biased and dominated by a few samples.
+$\mathrm{ESS}=1/\sum_k w_k^2$ measures weight concentration; it does not certify
+accurate target means or safe executed controls. The [full derivation](docs/formulations.md)
+records numerical assumptions and the historical baseline settings.
+
+## Paper map
+
+The diagram connects the eight references used in this repository. Arrows indicate
+conceptual reading connections, not a verified citation graph. Blue marks the implemented
+baseline; amber marks planned formulations; gray marks historical or tutorial context.
+
+```mermaid
+flowchart TB
+    P1["[1] Williams et al. · 2016<br/>Original MPPI"]
+    P2["[2] Williams et al. · 2017<br/>Information-theoretic formulation<br/>Target, importance weights, mean update"]
+    P8["[8] Jordana et al. · 2025<br/>Zero-order optimization tutorial<br/>Random search and smoothing"]
+
+    subgraph SEARCH["Weighting and search"]
+        P5["[5] Wang et al. · 2021<br/>Tsallis-VI MPC<br/>Divergence and cost-to-weight transform"]
+        P7["[7] Xue et al. · 2024<br/>DIAL-MPC<br/>Iterative refinement and noise annealing"]
+    end
+
+    subgraph FEEDBACK["Feedback and uncertainty"]
+        P3["[3] Williams et al. · 2018<br/>Tube-MPPI<br/>Nominal planning and tracking"]
+        P4["[4] Gandhi et al. · 2021<br/>Robust-MPPI<br/>Tracking-aware rollout optimization"]
+        P6["[6] Yin et al. · 2022<br/>CC-MPPI<br/>Feedback sampling and state covariance"]
+        P3 -->|Account for tracking in planning| P4
+    end
+
+    P1 -->|Information-theoretic derivation| P2
+    P8 -.->|Optimization perspective| P2
+    P2 -->|Change the weighting law| P5
+    P2 -->|Change the search schedule| P7
+    P2 -->|Add a tracking architecture| P3
+    P2 -->|Control trajectory dispersion| P6
+
+    classDef baseline fill:#dbeafe,stroke:#2563eb,color:#172554
+    classDef planned fill:#fef3c7,stroke:#b45309,color:#451a03
+    classDef context fill:#f1f5f9,stroke:#64748b,color:#0f172a
+    class P2 baseline
+    class P3,P4,P5,P6,P7 planned
+    class P1,P8 context
+```
+
+| Reference | Mathematical feature to investigate | Repository status |
+| --- | --- | --- |
+| [1] [Williams et al., 2016 — original MPPI](https://doi.org/10.1109/ICRA.2016.7487277) | Path-integral sampling control; historical starting point. | Context; no equation-by-equation reproduction claimed. |
+| [2] [Williams et al., 2017 — IT-MPPI](https://arxiv.org/html/1707.02342v1) | KL-regularized target, base/proposal importance ratio, and weighted mean projection. | Implemented finite-dimensional Gaussian baseline above. |
+| [3] [Williams et al., 2018 — Tube-MPPI](https://www.roboticsproceedings.org/rss14/p42.pdf) | Separate nominal planning and ancillary tracking, including nominal reset logic. | Planned; requires an explicit tracking architecture. |
+| [4] [Gandhi et al., 2021 — Robust-MPPI](https://arxiv.org/html/2102.09027v1) | Include tracking feedback in nominal/actual rollouts and the importance-sampling construction. | Planned; an environmental disturbance alone does not implement RMPPI. |
+| [5] [Wang et al., 2021 — Tsallis-VI MPC](https://arxiv.org/html/2104.00241v1) | Change the distributional regularizer and cost-to-weight transform; fit the parameterized policy. | Planned; transform convention, support and scale require their own derivation. |
+| [6] [Yin et al., 2022 — CC-MPPI](https://arxiv.org/html/2109.12147v3) | Linearize dynamics, design covariance-steering feedback, and sample with feedback under state-covariance constraints. | Planned; full control-proposal covariance alone is insufficient. |
+| [7] [Xue et al., 2024 — DIAL-MPC](https://arxiv.org/html/2409.15610v1) | Refine samples iteratively with trajectory-wise and horizon-wise noise annealing. | Planned; count all inner-pass rollouts when comparing work. |
+| [8] [Jordana et al., 2025 — zero-order optimization tutorial](https://arxiv.org/html/2506.22087v1) | Relate random search, smoothing and distribution optimization while distinguishing their objectives. | Conceptual context for interpreting sampling methods. |
+
+Read [1] → [2] for the baseline derivation; [2] → [5] or [7] for weighting and
+search; [2] → [3] → [4] for tracking; and [2] → [6] for state uncertainty.
+Proposal control covariance, predicted state covariance and a prescribed covariance
+bound are different objects. CEM is another planned optimizer—elite selection and
+mean/covariance refitting—with no separate paper in this eight-reference set.
+The [source notes](docs/paper_map.md#source-map-and-verified-equation-locations)
+record reviewed versions, equation locations and access limitations.
 
 ## Start here
 
@@ -24,24 +164,6 @@ A proposal covariance can alter which trajectories are sampled and how concentra
 1. **Analytic:** compare an estimator to a known Gaussian target.
 2. **Decision-level:** freeze the physical state and nominal control sequence, then compare MPPI updates.
 3. **Closed-loop:** execute the same vehicle tasks across paired random seeds and increasing difficulty.
-
-## Mathematical baseline
-
-Let $Z=(z_0,\ldots,z_{T-1})$ be a sequence of normalized latent control inputs, $J(Z)$ its rollout cost, and $\lambda>0$ a temperature. The implemented controller uses a fixed Gaussian base distribution $p$, and samples from a possibly different Gaussian proposal $q_{U,C}$:
-
-$$
-\pi^*(Z)\;\propto\;\exp[-J(Z)/\lambda]p(Z),
-\qquad
-\tilde w_k = \exp[-J(Z_k)/\lambda]\frac{p(Z_k)}{q_{U,C}(Z_k)}.
-$$
-
-After normalizing $w_k=\tilde w_k/\sum_j\tilde w_j$, it computes
-
-$$
-U^+ = \sum_{k=1}^{K}w_k Z_k.
-$$
-
-Changing proposal covariance $C$ does not change $\pi^*$ when the base, objective, and temperature are held fixed. It **does** change the finite-sample estimate, including the density correction $p/q$. Gaussian likelihoods are evaluated in latent coordinates before physical controls are clipped. Details and implementation assumptions: [Formulations](docs/formulations.md).
 
 ## Research questions and key figures
 
