@@ -1,0 +1,41 @@
+{
+  "gaussian": {
+    "cases": 447,
+    "trials": 28608,
+    "matched_non_timing_trial_records": 28608,
+    "source": "e8cb3e16ec46deab65c91a27e228d6ef046ed6b2"
+  },
+  "temperature": {
+    "cases": 71,
+    "trials": 4544,
+    "matched_non_timing_trial_records": 4544,
+    "source": "e8cb3e16ec46deab65c91a27e228d6ef046ed6b2"
+  },
+  "saturation": {
+    "cases": 40,
+    "trials": 640,
+    "matched_non_timing_trial_records": 640,
+    "source": "e8cb3e16ec46deab65c91a27e228d6ef046ed6b2"
+  },
+  "nonconvex": {
+    "cases": 30,
+    "trials": 960,
+    "matched_non_timing_trial_records": 960,
+    "source": "e8cb3e16ec46deab65c91a27e228d6ef046ed6b2"
+  },
+  "closed_loop": {
+    "cases": 90,
+    "trials": 720,
+    "matched_non_timing_trial_records": 720,
+    "source": "e8cb3e16ec46deab65c91a27e228d6ef046ed6b2"
+  },
+  "timing_and_memory_fields_excluded": [
+    "mean_planning_latency_s",
+    "p95_planning_latency_s",
+    "total_simulation_wall_time_s",
+    "process_peak_rss_mib"
+  ],
+  "matched_complete_control_trajectories": 720,
+  "matched_complete_control_sequences": 720,
+  "identical_png_figures": 14
+}

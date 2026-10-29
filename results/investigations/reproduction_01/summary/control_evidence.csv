@@ -1,0 +1,7 @@
+scenario,proposal_name,success_count,n
+disturbance,isotropic,0,8
+disturbance,r4_a45,2,8
+narrow_passage,isotropic,8,8
+narrow_passage,r4_a45,6,8
+open_space,isotropic,7,8
+open_space,r4_a45,7,8

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "level": "evidence_summary",
+  "phase": "evaluation",
+  "started_at_utc": "2026-10-29T04:02:30.064054+00:00",
+  "git": {
+    "commit": "e8cb3e16ec46deab65c91a27e228d6ef046ed6b2",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "source_sha256": "59ce40108a3ed6d7e8deccc98382a4ab7b17332e3a4051986ecc650f9f6e3c66",
+  "configuration_sha256": "90f3e39848bb1bfa7480fc856fda4714f66a26eb89926e8c524e62bce60e65c3",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true
+}

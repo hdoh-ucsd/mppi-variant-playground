@@ -1,0 +1,3 @@
+# Nonconvex adaptive-mean study
+
+Every iteration preserves the base/cost/temperature target and refits the proposal mean. Both objectives have a known zero-cost global minimizer. Their target means are separate quadrature references, with grid-refinement discrepancy and prior tail bounds saved. The target mean need not minimize the objective, especially between modes. Best visited cost, mean cost and mean-estimation error are separate. Visiting the declared basin counts as discovery, not convergence of the mean. No monotonic or global-convergence guarantee is assumed for finite-batch adaptive updates.

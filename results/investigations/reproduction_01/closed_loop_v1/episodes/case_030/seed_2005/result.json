@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "isotropic",
+  "scenario": "narrow_passage",
+  "seed": 2005,
+  "environment_seed_entropy": [
+    2005,
+    1001
+  ],
+  "mode": "covariance_mechanism",
+  "git": {
+    "commit": "e8cb3e16ec46deab65c91a27e228d6ef046ed6b2",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T03:58:16.787915+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": true,
+    "goal_position_error": 0.2194149939963904,
+    "goal_orientation_error": 0.01945212427155152,
+    "time_to_completion_s": 9.75,
+    "executed_duration_s": 9.75,
+    "cumulative_evaluation_cost": 166.40043040669875,
+    "collision": false,
+    "minimum_obstacle_clearance": 0.20643898750961973,
+    "constraint_violations": 0,
+    "mean_ess": 1.9087809559096858,
+    "mean_weight_entropy": 0.7388332932318572,
+    "degenerate_weight_fraction": 0.6615384615384615,
+    "mean_trajectory_spread": 0.8599048992959247,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.07827507144883908,
+    "dynamics_evaluations_per_step": 3612,
+    "total_dynamics_evaluations": 234780,
+    "total_rollout_evaluations": 8320,
+    "mean_planning_latency_s": 0.005097611244911184,
+    "p95_planning_latency_s": 0.00697546400479041,
+    "total_normalized_control_effort": 3.5605436224401346,
+    "total_normalized_control_variation": 39.418761985034244,
+    "maximum_steering_change_rad": 0.8054058066029451,
+    "steps": 65,
+    "total_simulation_wall_time_s": 0.34175388398580253,
+    "process_peak_rss_mib": 179.484375
+  }
+}
