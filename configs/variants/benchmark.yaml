@@ -2,7 +2,7 @@ phase: evaluation
 workers: 8
 seeds: [48000, 48001, 48002]
 calibration_seeds: [47900, 47901, 47902]
-calibration_samples: [16, 32, 64, 128, 256, 384]
+calibration_samples: [16, 32, 64, 128, 256, 384, 768, 1536, 3072]
 planning_deadline_s: 0.15
 calibration_fraction: 0.8
 transition_budget: 7700
@@ -10,7 +10,12 @@ s_turn_clearance: 0.35
 algorithms:
   it_mppi: {}
   tsallis_vi: {tsallis_r: 1.5, elite_fraction: 0.8}
+  dial_mpc: {iterations: 4, beta_trajectory: 1.0, beta_horizon: 1.0, anneal: true, covariance: [[0.2, 0], [0, 0.2]]}
+  dial_no_anneal: {iterations: 4, beta_trajectory: 1.0, beta_horizon: 1.0, anneal: false, covariance: [[0.2, 0], [0, 0.2]]}
 studies:
   V01_tsallis:
     algorithms: [it_mppi, tsallis_vi]
     scenarios: [open_space, two_route_obstacle]
+  V02_dial:
+    algorithms: [it_mppi, dial_mpc, dial_no_anneal]
+    scenarios: [two_route_obstacle, narrow_passage]

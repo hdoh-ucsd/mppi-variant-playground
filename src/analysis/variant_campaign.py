@@ -31,15 +31,16 @@ def case_config(options, scenario, algorithm, samples):
         kind="standard",
         covariance=config["proposals"]["standard"],
         saved_rollouts=0,
-        **options["algorithms"][algorithm],
     )
+    config["controller"].update(options["algorithms"][algorithm])
     config["planning_deadline_s"] = options["planning_deadline_s"]
     return config, geometry
 
 
 def equal_work_samples(options, algorithm):
     # All work is counted again by the model-call instrument during execution.
-    return options["transition_budget"] // 20 - 1
+    iterations = options["algorithms"][algorithm].get("iterations", 1)
+    return options["transition_budget"] // (20 * iterations) - 1
 
 
 def calibrate(options, study, root):
