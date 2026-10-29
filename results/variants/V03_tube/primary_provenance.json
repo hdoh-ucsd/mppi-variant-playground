@@ -1,0 +1,11 @@
+{
+  "figure": "results/variants/V03_tube/figures/primary.png",
+  "inputs_sha256": {
+    "results/variants/V03_tube/summary.csv": "b9db4627e755b3e00e9c1e271c765c389c470b5f0511d7c4f43562617f6c79ad",
+    "results/variants/V03_tube/per_seed.csv": "a5bf7cce7047b493ee23e6bacdcb7e575445faf2880aa7984cad034ac1e61b4c"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "6c5f4575be1485d38d2cf379bc1b4d94dbc7089a2730cba16f0b8d953d4d2f5a",
+  "summary_sha256": "b9db4627e755b3e00e9c1e271c765c389c470b5f0511d7c4f43562617f6c79ad"
+}
