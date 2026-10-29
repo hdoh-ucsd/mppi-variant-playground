@@ -64,10 +64,11 @@ def representative_snapshot(records, config, variant):
 
 
 def bundle_figure(root, scenario, records, setup, config, index, bounds):
+    ratio = (bounds[1][1] - bounds[1][0]) / (bounds[0][1] - bounds[0][0])
     fig, axes = plt.subplots(
         1,
         len(config["variants"]),
-        figsize=(4.1 * len(config["variants"]), 4.5),
+        figsize=(4.1 * len(config["variants"]), max(2.6, 1.2 + 3.3 * ratio)),
         squeeze=False,
         layout="constrained",
     )
@@ -214,7 +215,7 @@ def local_snapshots(records, config):
     return snapshots, ((low[0], high[0]), (low[1], high[1]))
 
 
-def cloud_figure(root, scenario, records, setup, config):
+def cloud_figure(root, scenario, records, setup, config, *, suffix=""):
     snapshots, bounds = local_snapshots(records, config)
     fig, axes = plt.subplots(
         1, len(snapshots), figsize=(4.4 * len(snapshots), 5), squeeze=False, layout="constrained"
@@ -252,7 +253,7 @@ def cloud_figure(root, scenario, records, setup, config):
         "All sampled paths; paired time index, different current states and warm starts",
         fontsize=13,
     )
-    publish(fig, root, f"{scenario}_C_rollout_cloud", **data)
+    publish(fig, root, f"{scenario}_C_rollout_cloud{suffix}", **data)
 
 
 def dispersion_figure(root, scenario, setup, config, index, bounds):
@@ -424,6 +425,7 @@ def generate(input_path):
     records = load_runs(root)
     index = json.loads((root / "distributions/index.json").read_text())
     style()
+    additional_snapshots = []
     for scenario in config["scenarios"]:
         selected = [r for r in records if r["scenario"] == scenario]
         setup = read_yaml(selected[0]["directory"] / "config.yaml")["scenario"]
@@ -437,6 +439,19 @@ def generate(input_path):
         cloud_figure(root, scenario, selected, setup, config)
         dispersion_figure(root, scenario, setup, config, index, bounds)
         dashboard_figure(root, scenario, selected, setup, config, index)
+        if "disturbance" in setup:
+            post_step = setup["disturbance"]["step"] + 1
+            if post_step in config["snapshot_steps"]:
+                post_config = config | {"representative_step": post_step}
+                cloud_figure(root, scenario, selected, setup, post_config, suffix="_post_impulse")
+                additional_snapshots.append(
+                    {
+                        "scenario": scenario,
+                        "seed": config["representative_seed"],
+                        "step": post_step,
+                        "reason": "first planning state after impulse",
+                    }
+                )
     write_json(
         root / "figure_provenance.json",
         {
@@ -444,6 +459,9 @@ def generate(input_path):
             "plot_source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             "inputs": ["config.yaml", "cases.json", "trials.csv", "distributions/", "episodes/"],
             "sampling_during_plotting": False,
+            "main_snapshot_seed": config["representative_seed"],
+            "main_snapshot_step": config["representative_step"],
+            "additional_snapshots": additional_snapshots,
             "figures": sorted(path.name for path in (root / "figures").glob("*.svg")),
         },
     )

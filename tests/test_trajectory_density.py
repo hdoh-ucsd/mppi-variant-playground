@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from analysis.rollout_snapshots import load_snapshot
 from analysis.trajectory_density import run_study
 from analysis.trajectory_plots import generate
 from utils.config import read_yaml
@@ -98,3 +99,27 @@ def test_unregistered_future_variant_is_not_silently_relabelled(tmp_path):
     config["variants"] = ["tsallis"]
     with pytest.raises(ValueError, match="factory"):
         run_study(config, tmp_path / "invalid")
+
+
+def test_post_impulse_snapshot_uses_the_observed_state_after_execution_step_20(tmp_path):
+    config = small_config()
+    config.update(
+        scenarios=["sudden_disturbance"],
+        variants=["standard"],
+        max_steps=23,
+        snapshot_steps=[0, 10, 21],
+        representative_step=10,
+    )
+    frame = run_study(config, tmp_path / "run")
+    directory = tmp_path / "run" / frame.episode_path.iloc[0]
+    trajectory = pd.read_csv(directory / "executed_trajectory.csv")
+    snapshot = load_snapshot(directory / "snapshots/step_0021.npz")
+    fields = ["px", "py", "heading", "velocity"]
+    np.testing.assert_allclose(snapshot["current_state"], trajectory[fields].iloc[21], atol=1e-13)
+    np.testing.assert_allclose(
+        snapshot["executed_next_state"], trajectory[fields].iloc[22], atol=1e-13
+    )
+    generate(tmp_path / "run")
+    assert (tmp_path / "run/figures/sudden_disturbance_C_rollout_cloud_post_impulse.png").exists()
+    provenance = json.loads((tmp_path / "run/figure_provenance.json").read_text())
+    assert provenance["additional_snapshots"][0]["step"] == 21

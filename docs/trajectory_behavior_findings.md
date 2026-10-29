@@ -12,6 +12,8 @@ Default scenarios are narrow passage, open space and `sudden_disturbance` (an ex
 
 The representative local cloud is **seed 42, planning step 10**, selected in advance. At steps 0, 5, 10, 15, 20, 21 and 25, the controller records **all K rollout trajectories**, raw costs, normalized optimization weights, lowest-raw-cost index, highest-weight index, current state, updated-mean plan, applied sampled controls and log base/proposal ratio. Steps 21 and 25 are after the disturbance applied during execution step 20. Events after episode termination are absent, never fabricated.
 
+A supplemental disturbance cloud uses step 21, the first observed planning state after the impulse at 3.15 s. This rendering uses the already recorded population and leaves the main seed-42/step-10 comparison intact. Its selection follows the known event time, and changes neither the experiment nor its recorded configuration.
+
 ## Four different distributions
 
 1. **Proposal controls:** the configured latent Gaussian. This is the input distribution used for sampling.
@@ -72,8 +74,63 @@ uv run python experiments/trajectory_density_study.py --scenarios narrow_passage
 
 # Rebuild figures from a completed dataset, with no controller execution.
 uv run python experiments/trajectory_density_study.py --output results/investigations/trajectory_behavior_v1 --plots-only
+uv run python experiments/verify_trajectory_behavior.py --input results/investigations/trajectory_behavior_v1
 ```
 
 ## Executed findings
 
-The numerical findings and final figure links will be filled after the validated evaluation run. No conclusion about route selection, useful curvature, recovery, or an ESS/dispersion relationship is assumed in advance.
+Executed 320 episodes: four covariance settings × four scenarios × 20 paired seeds. All episodes record clean source revision `077e7d90eb2f2d3fd302a284daf5d9868bf28135`. The dataset contains 2,240 selected-step snapshots, each with all 384 rollouts and their costs and weights. All 320 episodes are retained: 174 goal completions, 146 failures, zero observed collisions and zero actuator/speed violations. Outcomes below are descriptions of these configurations and seeds, not general covariance-family rankings.
+
+### Route mixture can differ when completion counts are similar
+
+In the optional obstacle task, the first forward crossing of x=4 m was:
+
+| Setting | Upper crossing | Lower crossing | No crossing | Goal completion |
+|---|---:|---:|---:|---:|
+| standard | 0/20 | 20/20 | 0/20 | 4/20 |
+| isotropic | 0/20 | 20/20 | 0/20 | 6/20 |
+| diagonal | 0/20 | 20/20 | 0/20 | 6/20 |
+| full | 3/20 | 17/20 | 0/20 | 5/20 |
+
+The [executed bundle](../results/investigations/trajectory_behavior_v1/figures/two_route_obstacle_A_executed_bundle.png) and [occupancy map](../results/investigations/trajectory_behavior_v1/figures/two_route_obstacle_B_occupancy_density.png) reveal the upper/lower mixture for full covariance. Its mean pointwise y-quantile 90% width across traveled progress is 1.684 m, compared with 0.416–0.463 m for the other three settings. This supports an observed distributional difference even though completion counts range only from 4/20 to 6/20. Twenty seeds do not establish true route probabilities; the asymmetric initial position and finite horizon also matter.
+
+The full setting's arc-length-aligned mean path has minimum swept clearance **−0.206 m** against the inflated disk/circle geometry, despite zero collisions in the individual executed runs. The [dispersion figure](../results/investigations/trajectory_behavior_v1/figures/two_route_obstacle_D_progress_dispersion.png) illustrates why an averaged path or a band spanning multiple routes must not be treated as a feasible plan. This is a property of the descriptive mean, not a controller collision.
+
+### Broad sampling and concentrated weights coexist
+
+At the declared narrow-passage snapshot, seed 42 / step 10:
+
+| Setting | ESS / 384 | Unweighted endpoint variance trace [m²] | Weighted endpoint variance trace [m²] |
+|---|---:|---:|---:|
+| standard | 1.374 | 2.726 | 0.335 |
+| isotropic | 1.437 | 3.380 | 0.247 |
+| diagonal | 1.185 | 2.760 | 0.101 |
+| full | 1.708 | 3.235 | 0.341 |
+
+The [full local cloud](../results/investigations/trajectory_behavior_v1/figures/narrow_passage_C_rollout_cloud.png) shows broad candidate coverage, including curved alternatives, with weights concentrated on a small portion. The lowest-raw-cost path and highest-weight path differ for all four settings in this snapshot. The importance correction is part of the weight, so raw cost alone does not identify which path dominates the update. Curved paths being present is not proof that they are useful or will be executed; their optimizer weights, costs and obstacle context must be inspected.
+
+The full setting has a broader unweighted endpoint trace than standard at this one snapshot, while its inter-seed mean 90% y-width in the passage is smaller: 0.285 versus 0.418 m. These are distinct populations under different conditioning. One cannot infer closed-loop route spread from proposal variance, one rollout cloud, or ESS alone.
+
+In the five failed standard passage episodes, observations at t≥12 s have pooled median ESS **110.84** and median speed **0 m/s**. The [dashboard](../results/investigations/trajectory_behavior_v1/figures/narrow_passage_E_behavior_dashboard.png) retains those late high-ESS traces. High episode-average ESS can accompany stalled execution; it does not establish useful optimization or goal convergence. These late frames are not independent experimental trials.
+
+### Post-disturbance behavior is separately visible
+
+Goal-pose completion after the shared impulse is 6/20 standard, 5/20 isotropic, 1/20 diagonal and 1/20 full. Mean pointwise 90% y-widths across traveled progress are 0.722, 0.575, 0.587 and 0.717 m, respectively. The [executed bundle](../results/investigations/trajectory_behavior_v1/figures/sudden_disturbance_A_executed_bundle.png), [progress bands](../results/investigations/trajectory_behavior_v1/figures/sudden_disturbance_D_progress_dispersion.png), and [post-impulse rollout cloud](../results/investigations/trajectory_behavior_v1/figures/sudden_disturbance_C_rollout_cloud_post_impulse.png) show the path variations around that event. Reference-line recovery and full goal-pose completion remain different outcomes in the per-run records.
+
+The open-space and disturbance rollouts at step 10 are identical within each variant/seed before the unannounced impulse, as expected. The extra step-21 panel provides the post-event view. Its current states and warm starts have evolved differently across variants, so it supports behavior-level comparison rather than a pure frozen-state covariance attribution.
+
+### Figure files and validation
+
+The output root is `results/investigations/trajectory_behavior_v1/`. For each of `narrow_passage`, `open_space`, `sudden_disturbance`, and `two_route_obstacle`, the five primary stems are:
+
+- `{scenario}_A_executed_bundle`
+- `{scenario}_B_occupancy_density`
+- `{scenario}_C_rollout_cloud`
+- `{scenario}_D_progress_dispersion`
+- `{scenario}_E_behavior_dashboard`
+
+Each has `.png`, `.svg` and `_data.npz` files under `figures/`. The supplemental stem is `sudden_disturbance_C_rollout_cloud_post_impulse`. There are **21 PNG/SVG/data sets**. All plots come from executed records and saved arrays, with no controller calls during reconstruction.
+
+The tests cover snapshot shape/weight validation, loss-aware archive round trips, unmodified commands and trajectories with recording enabled, observer-copy isolation, occupancy mass/integral and seed/time weighting, progress alignment without terminal padding, fixed-seed reproduction, raw-record schemas and reconstruction with random sampling disabled. The post-impulse test checks that step 21 starts at executed state index 21 and marks state 22 as the actual next state. Full dataset audit results and the current test count are saved alongside the study.
+
+The optional route case provides an observed multimodal example, but the suite does not isolate covariance as the sole cause of a route switch, establish statistical superiority, or provide a state-distribution safety guarantee. A frozen-state/warm-start experiment would be required for that causal attribution. Occupancy smoothing, finite seed counts, chosen time/progress alignment and the original toy bicycle model remain material limits.
