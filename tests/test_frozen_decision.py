@@ -9,6 +9,7 @@ from scipy.stats import multivariate_normal
 
 from analysis import frozen_decision as study
 from analysis.frozen_decision_plots import generate
+from analysis.frozen_decision_report import generate_report
 from evaluation.runner import write_json
 from utils.config import load_experiment, read_yaml
 
@@ -191,6 +192,10 @@ def test_real_small_suite_reproducibility_and_saved_only_figures(frozen, tmp_pat
     monkeypatch.setattr(np.random, "default_rng", lambda *a: pytest.fail("Resampled"))
     monkeypatch.setattr(study, "decision", lambda *a, **k: pytest.fail("Reoptimized"))
     generate(tmp_path / "a")
+    generate_report(tmp_path / "a")
+    assert (tmp_path / "a/interpretation.md").exists()
+    orientation = pd.read_csv(tmp_path / "a/orientation_comparison.csv")
+    assert len(orientation) == 2
     assert len(list((tmp_path / "a/figures").glob("*.png"))) == 6
     assert len(list((tmp_path / "a/figures").glob("*.svg"))) == 6
     assert len(list((tmp_path / "a/figures").glob("*_data.npz"))) == 6
@@ -201,3 +206,15 @@ def test_invalid_gaussian_draws_are_rejected(frozen):
         study.decision(frozen, [[0.28, 0], [0, 0.16]], np.zeros((12, 3, 2)))
     with pytest.raises(ValueError, match="positive definite"):
         study.decision(frozen, [[1, 2], [2, 1]], np.zeros((12, 4, 2)))
+
+
+def test_sampled_and_mean_plan_objectives_use_the_same_shared_cost(frozen):
+    _, stats, snap = study.decision(
+        frozen, [[0.28, 0.08], [0.08, 0.16]], study.normal_draws(0, 7, 12, 4)
+    )
+    for i in (0, 5, 11):
+        states, value = study.predict(frozen, snap["latent_controls"][i])
+        np.testing.assert_array_equal(states, snap["sampled_states"][i])
+        assert value == pytest.approx(snap["costs"][i], abs=1e-12)
+    _, value = study.predict(frozen, snap["updated_mean"])
+    assert value == pytest.approx(stats["nominal_objective"], abs=1e-12)

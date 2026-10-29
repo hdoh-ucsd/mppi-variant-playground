@@ -161,3 +161,5 @@ results/                       Experiment records and generated figures
 ## Frozen-state decision microscope
 
 To isolate proposal effects from different closed-loop states and warm starts, see the [frozen-state decision analysis](docs/frozen_decision_analysis.md). It compares six trace-matched Gaussian proposals at identical inputs, with shared random draws, 50 paired seeds, eight rollout budgets and independent high-sample reference diagnostics. This studies finite-sample decisions and predicted consequences; it does not add a new MPPI variant.
+
+Executed evidence: [findings and exact figure paths](results/investigations/frozen_decision_v1/interpretation.md). The 7,200-decision run shows persistent finite-budget proposal effects and severe weight degeneracy, including unresolved high-sample references.

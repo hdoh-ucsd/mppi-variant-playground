@@ -4,6 +4,7 @@ import argparse
 
 from analysis.frozen_decision import run_study
 from analysis.frozen_decision_plots import generate
+from analysis.frozen_decision_report import generate_report
 from utils.config import read_yaml
 
 if __name__ == "__main__":
@@ -15,3 +16,4 @@ if __name__ == "__main__":
     if not args.plots_only:
         run_study(read_yaml(args.config), args.output)
     generate(args.output)
+    generate_report(args.output)

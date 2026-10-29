@@ -58,6 +58,9 @@ def cloud(ax, states, weights=None, norm=None):
         order = np.argsort(weights)
         lines.set_segments(states[order, :, :2])
         lines.set_array(weights[order])
+        relative = weights[order] / norm.vmax
+        lines.set_alpha(0.025 + 0.925 * relative)
+        lines.set_linewidths(0.3 + 2.0 * relative)
     ax.add_collection(lines)
     return lines
 
@@ -329,7 +332,13 @@ def generate(root):
 
         fig, axes = plt.subplots(1, 3, figsize=(15, 5.5), layout="constrained")
         nominal_points = np.concatenate([s["nominal_states"][:, :2] for s in snaps])
-        nl, nh = nominal_points.min(axis=0) - 0.2, nominal_points.max(axis=0) + 0.2
+        obstacles = frozen["config"]["scenario"]["obstacles"]
+        anchors = []
+        for x, y, radius in obstacles:
+            radius += frozen["config"]["scenario"]["vehicle_radius"]
+            anchors.extend([[x - radius, y - radius], [x + radius, y + radius]])
+        context = np.vstack([nominal_points, np.array(anchors).reshape(-1, 2)])
+        nl, nh = context.min(axis=0) - 0.2, context.max(axis=0) + 0.2
         nominal_bounds = ((nl[0], nh[0]), (nl[1], nh[1]))
         for ax in axes[:2]:
             decorate(ax, frozen, nominal_bounds)
@@ -339,10 +348,9 @@ def generate(root):
             r = radius + frozen["config"]["scenario"]["vehicle_radius"] + 0.7
             zoom_bounds = ((x - r, x + r), (y - r, y + r))
         else:
-            zoom_bounds = (
-                (nominal_points[-1, 0] - 1, nominal_points[-1, 0] + 1),
-                (nominal_points[-1, 1] - 1, nominal_points[-1, 1] + 1),
-            )
+            endpoints = np.array([snap["nominal_states"][-1, :2] for snap in snaps])
+            zoom_low, zoom_high = endpoints.min(axis=0) - 0.3, endpoints.max(axis=0) + 0.3
+            zoom_bounds = ((zoom_low[0], zoom_high[0]), (zoom_low[1], zoom_high[1]))
         axes[1].set(xlim=zoom_bounds[0], ylim=zoom_bounds[1])
         clearances = []
         for i, (label, snap) in enumerate(zip(LABELS, snaps, strict=True)):
@@ -415,5 +423,9 @@ def generate(root):
             figures=sorted(p.name for p in (root / "figures").glob("*.png")),
             regeneration="No optimization, environment execution or random draws",
             weighted_density="Empirical weighted endpoints; not physical uncertainty density",
+            weighted_cloud=(
+                "Color: linear normalized weight; alpha=.025+.925*w/common_max; "
+                "line width=.3+2*w/common_max; all paths retained"
+            ),
         ),
     )

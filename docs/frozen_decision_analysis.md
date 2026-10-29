@@ -42,7 +42,7 @@ Each frozen state produces these six stems under `results/investigations/frozen_
 
 | Stem | Question and interpretation |
 | --- | --- |
-| `{state}_A_decision_microscope` | How do the unweighted population, weighted population and updated nominal prediction differ? All six proposals use the same spatial axes and common weight scale. Lowest raw cost and highest weight are distinct paths. |
+| `{state}_A_decision_microscope` | How do the unweighted population, weighted population and updated nominal prediction differ? All six proposals use the same spatial axes and common weight scale. Weighted paths also use opacity `.025+.925*w/common_max` and width `.3+2*w/common_max` so near-zero-weight paths remain faint; these are display rules, not additional normalization. Lowest raw cost and highest weight are distinct paths. |
 | `{state}_B_first_command_difference` | What is the paired change from standard? All seeds are shown with mean ± pointwise 95% t interval. Comparisons use normalized clipped commands; secondary axes show m/s² and rad. |
 | `{state}_C_weighted_endpoint_density` | Where is empirical weighted rollout endpoint mass? Identical bins, domain and linear color scale, no smoothing. This is not a physical uncertainty probability density. |
 | `{state}_D_budget_estimation` | Do distances to the independent reference or paired standard diminish with K? Mean ± pointwise 95% t intervals across paired seeds; unresolved references remain prominently labeled. ESS and deterministic objective are separate. |
