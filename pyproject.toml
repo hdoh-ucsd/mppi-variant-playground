@@ -8,7 +8,16 @@ version = "0.1.0"
 description = "Unified reproducible CPU toy experiments for MPPI covariance structures"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["numpy>=1.26", "scipy>=1.12", "matplotlib>=3.9", "pyyaml>=6", "pandas>=2.2", "imageio>=2.34", "pillow>=10"]
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.12",
+    "matplotlib>=3.9",
+    "pyyaml>=6",
+    "pandas>=2.2",
+    "imageio>=2.34",
+    "pillow>=10",
+    "cvxpy>=1.6,<2",
+]
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.9"]

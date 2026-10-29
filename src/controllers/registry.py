@@ -1,6 +1,7 @@
 """Explicit formulation names; covariance choices remain baseline configurations."""
 
 from controllers.accounting import CountedModel
+from controllers.covariance import CovarianceMPPI
 from controllers.dial import DIAL
 from controllers.mppi import MPPI
 from controllers.robust import RobustMPPI
@@ -12,6 +13,7 @@ CONTROLLERS = {
     "tsallis_vi": TsallisMPPI,
     "tube_mppi": TubeMPPI,
     "robust_mppi": RobustMPPI,
+    "cc_mppi": CovarianceMPPI,
     "dial_mpc": DIAL,
     "dial_no_anneal": DIAL,
 }

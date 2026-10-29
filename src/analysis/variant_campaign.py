@@ -34,11 +34,19 @@ def case_config(options, scenario, algorithm, samples):
     )
     config["controller"].update(options["algorithms"][algorithm])
     config["planning_deadline_s"] = options["planning_deadline_s"]
+    config["execution"]["extra_snapshot_seeds"] = [options["seeds"][0]]
+    fraction = options.get("stochastic_input_fraction", 0.0)
+    if fraction:
+        config["execution_control_noise_covariance"] = (
+            fraction * np.array(config["controller"]["base_covariance"])
+        ).tolist()
     return config, geometry
 
 
 def equal_work_samples(options, algorithm):
     # All work is counted again by the model-call instrument during execution.
+    if algorithm == "cc_mppi":
+        return options["transition_budget"] // 20 - 21
     if algorithm == "robust_mppi":
         probes = options["algorithms"][algorithm].get("candidate_samples", 8)
         overhead = 20 * (5 * (probes + 1) + 18 + 4)
@@ -94,7 +102,9 @@ def execute_job(args):
     options, scenario, algorithm, seed, protocol, samples, raw = args
     config, _ = case_config(options, scenario, algorithm, samples)
     path = Path(raw) / protocol / scenario / algorithm / f"seed_{seed}"
-    result, trajectory, diag = run_episode(config, algorithm, seed, path)
+    result, trajectory, diag = run_episode(
+        config, algorithm, seed, path, capture_steps=[0, 20, 21, 40]
+    )
     # Keep one external metric schema and retain optional formulation-specific columns.
     row = {k: v for k, v in result.items() if not isinstance(v, (dict, list))}
     row.update(
@@ -171,6 +181,7 @@ def run(study_id, output, raw, *, options_path="configs/variants/benchmark.yaml"
     options = read_yaml(options_path)
     study = options["studies"][study_id]
     assert_validated()
+    options["stochastic_input_fraction"] = study.get("stochastic_input_fraction", 0.0)
     config = deepcopy(options) | {"study": study_id, "shared_campaign": configuration()}
     root, manifest = begin(output, config, "published_formulation_comparison")
     settings = calibrate(options, study, root)
@@ -216,7 +227,11 @@ def run(study_id, output, raw, *, options_path="configs/variants/benchmark.yaml"
         episodes=len(frame),
         finished_at_utc=datetime.now(UTC).isoformat(),
         raw_storage=str(raw),
-        noise="Existing paired disturbance stream; no additional process noise in V01–V04.",
+        noise=(
+            "Paired SeedSequence([4402,seed]) normalized actuator noise; covariance "
+            f"{options['stochastic_input_fraction']} times common base C0. "
+            "Existing impulses retained."
+        ),
         timing=(
             "Wall-clock protocol serial; work protocol concurrent. "
             "Concurrent timing is not used for cross-method speed claims."

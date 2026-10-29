@@ -14,6 +14,14 @@ algorithms:
   dial_no_anneal: {iterations: 4, beta_trajectory: 1.0, beta_horizon: 1.0, anneal: false, covariance: [[0.2, 0], [0, 0.2]]}
   tube_mppi: {reset_threshold: 450.0, tracking_q: [4, 8, 6, 2, 2, 1, 1], tracking_r: [1, 1], tracking_terminal_multiplier: 5.0}
   robust_mppi: {candidate_samples: 8, free_energy_threshold: 5000.0, tracking_q: [4, 8, 6, 2, 2, 1, 1], tracking_r: [1, 1], tracking_terminal_multiplier: 5.0}
+  cc_mppi:
+    uncontrolled_fraction: 0.2
+    noise_ratio: 100.0
+    terminal_covariance_bound: [1.0, 1.0, 0.25, 0.04, 1.0, 0.5, 0.5]
+    covariance_q: [1, 1, 1, 1, 1, 1, 1]
+    covariance_r: [1, 1]
+    cc_control_r: [0.01, 0.01]
+    covariance_tolerance: 0.00001
 studies:
   V01_tsallis:
     algorithms: [it_mppi, tsallis_vi]
@@ -27,3 +35,7 @@ studies:
   V04_robust:
     algorithms: [it_mppi, robust_mppi]
     scenarios: [disturbance, model_mismatch]
+  V05_covariance_steering:
+    algorithms: [it_mppi, cc_mppi]
+    scenarios: [open_space, narrow_passage]
+    stochastic_input_fraction: 0.01

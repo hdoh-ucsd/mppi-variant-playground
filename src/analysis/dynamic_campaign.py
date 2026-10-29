@@ -101,6 +101,15 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
     controller.reset(state, np.random.SeedSequence([4400, seed]))
     disturbance_rng = np.random.default_rng(np.random.SeedSequence([4401, seed]))
     factor = float(1 + 0.1 * disturbance_rng.normal())
+    input_noise_covariance = config.get("execution_control_noise_covariance")
+    input_noise = (
+        np.random.default_rng(np.random.SeedSequence([4402, seed])).standard_normal(
+            (config["execution"]["max_steps"], 2)
+        )
+        @ np.linalg.cholesky(input_noise_covariance).T
+        if input_noise_covariance is not None
+        else None
+    )
     event = config["scenario"].get("disturbance")
     event_delta = np.array(event["delta"]) * factor if event else np.zeros(7)
     states, controls, logs = [state.copy()], [], []
@@ -134,6 +143,9 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
             diag["planning_latency_s"] = command_seconds
             diag["dynamics_evaluations"] = model.transitions - count_before
             diag["rhs_evaluations"] = diag["dynamics_evaluations"] * 2 * model.substeps
+        commanded_control = control.copy()
+        if input_noise is not None:
+            control = execution.clip_control(control + input_noise[step] * execution.control_scale)
         nxt, path = execution.step(state, control, return_path=True)
         if event and step == event["step"]:
             nxt += event_delta
@@ -141,7 +153,7 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
             nxt[4] = np.clip(nxt[4], 0, execution.velocity_max)
             path = np.concatenate([path, nxt[None]], axis=0)
         gap = float(controller.cost.path_clearance(path))
-        expected = model.step(state, control)
+        expected = model.step(state, commanded_control)
         error = nxt - expected
         error[2] = wrap_angle(error[2])
         total += float(
@@ -168,6 +180,8 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
             for key, value in diag.items():
                 if key not in logs[-1] and np.isscalar(value) and not isinstance(value, str):
                     logs[-1][key] = value
+            logs[-1]["commanded_steering"] = float(commanded_control[0])
+            logs[-1]["commanded_throttle"] = float(commanded_control[1])
             logs[-1]["deadline_violation"] = bool(
                 diag["planning_latency_s"] > config.get("planning_deadline_s", model.dt)
             )
@@ -175,24 +189,22 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
         if snap is not None:
             folder = output / "snapshots"
             folder.mkdir(exist_ok=True)
-            np.savez_compressed(
-                folder / f"step_{step:04d}.npz",
-                **{
-                    k: snap[k]
-                    for k in (
-                        "sampled_states",
-                        "sampled_controls",
-                        "latent_controls",
-                        "costs",
-                        "weights",
-                        "proposal_mean",
-                        "updated_mean",
-                        "nominal_states",
-                        "current_state",
-                        "log_base_over_proposal",
-                    )
-                },
+            fields = (
+                "sampled_states",
+                "sampled_controls",
+                "latent_controls",
+                "costs",
+                "weights",
+                "proposal_mean",
+                "updated_mean",
+                "nominal_states",
+                "current_state",
+                "log_base_over_proposal",
             )
+            saved_snapshot = {k: snap[k] for k in fields}
+            if "algorithm" in config["controller"]:
+                saved_snapshot.update({k: v for k, v in snap.items() if isinstance(v, np.ndarray)})
+            np.savez_compressed(folder / f"step_{step:04d}.npz", **saved_snapshot)
         states.append(nxt)
         controls.append(control)
         state = nxt
