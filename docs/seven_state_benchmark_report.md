@@ -1,6 +1,6 @@
 # Seven-state dynamic vehicle campaign
 
-This document distinguishes model validation, analytic checks and vehicle experiments. At this implementation checkpoint, the dynamic model and controller have passed tests; campaign outcomes remain unreported until their immutable run records exist. The [pre-implementation audit](seven_state_audit.md) records the starting scope.
+This document distinguishes model validation, analytic checks and vehicle experiments. The validated physics approximation and actual Q01–Q05 records are separate from the preserved historical four/five-state evidence. The [pre-implementation audit](seven_state_audit.md) records the starting scope.
 
 ## Motivation and relation to the paper
 
@@ -42,11 +42,26 @@ Integration is explicit midpoint RK2 with dt=.15 s and three substeps, h=.05 s. 
 
 Validation covers zero equilibrium, straight throttle driving, constant steering, steady turning, left/right symmetry, reversal, braking without reverse, lateral/yaw/roll transients, near-zero perturbations, bounds and refinement convergence. The turning oracle independently solves nonlinear tire/force balances at fixed speed. Fitted XY curvature is compared with that dynamic oracle; kinematic u tan(δ)/L is not treated as exact.
 
-The model must pass `runs/seven_state/validation/dynamics_v1/validation.json` before any campaign driver runs. Nonfinite integration raises; there is no fallback to another vehicle. Preliminary validation passed; formal versioned evidence and actual values are added after execution.
+The model must pass `runs/seven_state/validation/dynamics_v1/validation.json` before any campaign driver runs. Nonfinite integration raises; there is no fallback to another vehicle. The [formal validation](../runs/seven_state/validation/dynamics_v1/validation.json) passed all 12 grouped checks before MPPI evaluation. Independent steady-turn yaw rate was .0983484939 rad/s; simulated .0983481878. Expected lateral velocity .0236797029 m/s; measured .0236797698. Expected roll .0114696678 rad; measured .0114693667. Expected curvature .0491893316 m⁻¹; fitted .0491888933. Independent force-balance residual was 3.16×10⁻¹⁴. Endpoint refinement errors against eight-substep refinement were .00020847, .00005355 and .00001063 for 1×, 2× and 4× the default substep count. The refinement comparison holds the commanded control interval fixed.
+
+![Validation of the seven-state dynamics](figures/seven_state_validation.png)
+
+This verifies internal consistency of the declared model, not agreement with a measured vehicle. Validation trajectories, config and source provenance are retained alongside the check results.
 
 ## Protocol
 
 The same shared MPPI planner, full latent p/q correction and base distribution are used within a condition. Control order is **steering, throttle**, with physical transform `clip(diag(.5,1) z, bounds)`. New proposals have normalized trace .40: standard diag(.14,.26), isotropic .20 I, diagonal diag(.09,.31), full [[.14,.07],[.07,.26]]. The fixed base is diag(.14,.26). These are not the old acceleration/steering covariances under new names. Q03 also rotates matched-eigenvalue (.30,.10) proposals using local cost sensitivity, without inferring control directions from XY geometry.
+
+The covariance labels describe different geometric interventions. Before clipping, for one zero-mean control perturbation:
+
+| Proposal | Steering standard deviation [rad] | Throttle standard deviation | Steering/throttle correlation | Latent determinant |
+| --- | ---: | ---: | ---: | ---: |
+| Standard | .1871 | .5099 | 0 | .0364 |
+| Isotropic | .2236 | .4472 | 0 | .0400 |
+| Diagonal | .1500 | .5568 | 0 | .0279 |
+| Full | .1871 | .5099 | .3669 | .0315 |
+
+Isotropic reallocates variance toward steering relative to standard; diagonal reallocates it toward throttle. Full preserves both marginal variances and adds positive coupling. For paired standard normals, full has εδ=√.14 z₁ and ετ=(.07/√.14)z₁+√(.26−.07²/.14)z₂. This explicitly changes which steering/throttle combinations are sampled together. Trace matching alone therefore does not make exploration equivalent. The same 2×2 covariance is repeated independently across horizon steps; no temporal covariance is introduced.
 
 Primary driving uses K=384, T=20, temperature 8 and desired body-forward speed 1.4 m/s. Sampling dimension is **2T=40**, not seven. Optimizer stream entropy is [4400,seed], disturbance entropy [4401,seed], and Q03 paired normals/reference streams use disjoint [101,state_index,seed] / [202,state_index,rep] namespaces. Disturbance impulses are realized once per seed and shared across proposals.
 
@@ -58,12 +73,110 @@ The seed-42 pilot precedes holdouts 32000–32019. If any primary marginal Wilso
 
 The common finish region uses terminal progress shortfall ≤.30 m, lateral goal error ≤.40 m, heading error ≤.35 rad, vx error ≤.8 m/s, |vy|≤.35 m/s, |r|≤.35 rad/s and |roll|≤.15 rad, without collision. Progress is projected/clipped to the route endpoint, so later recovery in a straight runout is allowed; Euclidean goal error is retained. This is not a stopped-point or first-crossing-only criterion. Timeouts are censored at 160 steps (24 s), and completion time is reported only among completions.
 
-## Question status at implementation checkpoint
+## Q01 — analytic reproducibility
 
-- Q01/Q02: existing analytic evidence is preserved; independent-seed replications are pending. These questions do not require vehicle dynamics.
-- Q03: new frozen states, 50 paired seeds, eight K values and independent high-sample repetitions are pending. Unreliable references will remain unresolved.
-- Q04/Q05 and budget checks: implementation and physical reference validation are available; actual outcomes are pending.
-- Q06: planned formulation comparison. CEM, Tsallis-VI, DIAL, Tube-MPPI, RMPPI and CC-MPPI are not implemented by relabeling covariance proposals.
+The independent replication used seeds 34000–34063, 447 cases and 28,608 trials with the original declared target parameters. It is independent of vehicle dynamics. Original records remain under `results/investigations/gaussian_v1`; new records are under [Q01](../runs/seven_state/Q01/seven_state_q01_v1/).
+
+For the fixed quadratic target and K=256:
+
+| Proposal | MSE | Bias norm | Empirical variance trace | Mean ESS |
+| --- | ---: | ---: | ---: | ---: |
+| Isotropic | .006505 | .014268 | .006401 | 121.69 |
+| Diagonal 0° | .015121 | .003751 | .015347 | 107.71 |
+| Full +45° | .003646 | .010488 | .003592 | 154.89 |
+| Diagonal 90° | .054718 | .029452 | .054705 | 72.05 |
+| Full −45° | .065524 | .016936 | .066273 | 54.98 |
+
+At K=4096 the corresponding MSE values are .000300, .001479, .000160, .004220 and .026790. Favorable and unfavorable orientations both remain visible; this supports a geometric finite-sample effect rather than a universal advantage for full covariance. Bias is an empirical 64-seed mean; with sample variance using n−1, empirical MSE equals squared bias plus (n−1)/n times variance trace. The orientation panel fixes the proposal mean at zero; shifted-mean cases remain in the data and are not connected into the same curve.
+
+## Q02 — concentration and accuracy
+
+The analytic temperature/dimension replication used the same 64 independent seeds, 71 cases and 4,544 trials. At isotropic K=512, mean ESS goes from 40.56 at λ=.1 to 450.61 at λ=10, while mean estimation error changes from .04284 to .05207. Temperature changes the exact target: this is not an accuracy comparison for one fixed target. The dimension controls separately apply cost-only, density-ratio-only and combined log weights; all have exact Gaussian target moments appropriate to that control.
+
+Vehicle diagnostics are separately labeled. For example, Q04 holdout two-route episode-mean ESS is 106.95 standard, 10.62 isotropic, 8.71 diagonal and 6.54 full at K=384. Successful closed-loop traversal can coexist with strongly concentrated weights. The full proposal also changes route frequencies. Neither fact certifies the accuracy of a single MPPI update. [Selected snapshot decompositions](../runs/seven_state/Q04/seven_state_q04_v1/selected_weight_components.csv) separate cost-only, ratio-only and combined ESS at the predeclared snapshot steps. These diagnostic controls do not change the executed controller or establish a causal decomposition of failure. Vehicle sampling dimension is 2×20=40; the state dimension is seven.
+
+## Q03 — frozen decisions
+
+The new campaign executed **7,200 decisions**: three frozen states, six proposals, eight K values and 50 paired seeds 33000–33049. Source seed 31415 is separate. A raw audit verified 1,026 saved populations, shared inputs and paired normals, latent likelihood ratios, normalized weights and weighted control updates. Open-space input is step 8; obstacle input is the first declared x-window state with independently feasible upper/lower route witnesses; post-disturbance input is step 21. Selection does not inspect which proposal wins. Exact frozen states and warm starts are committed.
+
+Each high-sample reference pools eight independent batches of 65,536 rollouts (524,288 per state), with disjoint reference streams. Pooling uses log masses; reported uncertainty is a delete-block jackknife, not a bound on self-normalized importance-sampling bias.
+
+| Frozen state | Pooled ESS | Largest weight | Minimum batch ESS | RMS CI half-width | Declared diagnostic status |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Open space | 101.18 | .06123 | 5.00 | .09271 | unresolved |
+| Pre-obstacle | 1.51 | .80955 | 1.03 | .72621 | unresolved |
+| Post-disturbance | 129,950.55 | .0000882 | 16,063.30 | .00288 | diagnostically usable |
+
+Only the last passes the predeclared overlap and precision screens. Even that status is a finite-sample diagnostic, not proof of all target modes being found. The other distances are distances to unresolved estimates, not validated target errors.
+
+Post-disturbance normalized plan RMS distance to the usable reference:
+
+| Proposal | K=64 | K=384 | K=4096 |
+| --- | ---: | ---: | ---: |
+| Standard | .10853 | .04549 | .01401 |
+| Sensitivity aligned | .24713 | .23591 | .15975 |
+| Sensitivity misaligned | .18179 | .11148 | .05014 |
+
+The aligned/misaligned matrices share eigenvalues .30,.10 and trace .40. “Aligned” means alignment with a documented local cost-sensitivity direction, not the unknown target covariance. The base prior, proposal mean and full 40-dimensional overlap also determine importance weights. Thus alignment alone need not improve this estimator; the observed negative result is retained. Paired distances between updates can remain substantial even where a reference is unresolved.
+
+The [microscope](../results/showcase/Q03_key.png) uses one predeclared obstacle decision, seed 33000. It shows the first 48 unweighted paths, at most 64 displayed weighted paths, all 384 weighted endpoints, and the updated nominal prediction. All panels share limits derived from the full saved population bounds. Lowest raw cost and highest corrected weight are marked independently; they differ in this example because corrected weights also contain p/q. It is neither an executed path nor an occupancy distribution. [First-command distributions](figures/seven_state_Q03_commands.png) and [K convergence with intervals](figures/seven_state_Q03_convergence.png) use all 50 seeds. The “nominal” trajectory is a nonlinear rollout of the weighted latent mean, not a weighted average of state trajectories.
+
+## Q04 — closed-loop propagation
+
+The five-scene study executed 800 episodes at K=384: 400 compatibility episodes (seeds 42–61) and 400 holdout episodes (31000–31019). Completion was **397/400 compatibility** and **391/400 holdout**, with **zero collisions** in either cohort. Every episode and 133 saved populations passed the replay/likelihood audit. The mismatch execution really uses Cf=Cr=315 N/rad while planning uses 450; it is not an identically configured plant. The disturbance is a shared seed-dependent step-20 state impulse; there is no robust tracking controller or forecast.
+
+Holdout completions (n=20 per cell):
+
+| Scenario | Standard | Isotropic | Diagonal | Full |
+| --- | ---: | ---: | ---: | ---: |
+| Open space | 20 | 20 | 20 | 20 |
+| Narrow passage | 19 | 20 | 20 | 18 |
+| Two-route obstacle | 20 | 20 | 20 | 18 |
+| Disturbance | 20 | 19 | 19 | 18 |
+| Model mismatch | 20 | 20 | 20 | 20 |
+
+These proportions have broad uncertainty: 20/20 has a Wilson 95% lower bound about .839. A difference of one or two completions is not a robust ranking. Paired success/cost differences are in `paired_differences.csv`; compatibility results remain separate in `summary.csv` and the primary figure. Goal position, heading and speed error summaries are in `goal_summary.csv`.
+
+In holdout two-route trials, upper-route counts are 5 standard, 5 isotropic, 2 diagonal and 17 full out of 20. This is a characteristic of these proposal matrices under accumulated feedback, not a causal comparison at common states. Positive steering/throttle coupling in the full setting supplies a plausible exploration mechanism for more upper routes, but the experiment does not isolate that explanation from its changed weight concentration and subsequent warm starts. A negative-correlation counterpart would be a separate controlled test. Corresponding mean episode evaluation costs are 248.51, 259.26, 252.83 and 259.19, and mean per-command planning times under this execution load are 50.42, 52.40, 51.93 and 53.01 ms. No equal-time or real-time claim follows. Cost includes censored failures; completion time is conditioned on completion. Mean paths over routes need not be feasible, so the primary figure shows individual representative executions selected by seed 31000 before outcomes.
+
+## Q05 — S-turn outcomes
+
+The seed-42 pilot completed 15/16 conditions, with one full-proposal timeout at .20 m and no collisions. No controller/environment retuning followed. The independent primary sweep used seeds 32000–32019 and completed **313/320 episodes**, with **zero collisions and seven timeouts**.
+
+| Clearance [m] | Standard | Isotropic | Diagonal | Full |
+| --- | ---: | ---: | ---: | ---: |
+| .90 | 20/20 | 19/20 | 20/20 | 20/20 |
+| .60 | 20/20 | 20/20 | 20/20 | 20/20 |
+| .35 | 20/20 | 19/20 | 20/20 | 20/20 |
+| .20 | 20/20 | 16/20 | 20/20 | 19/20 |
+
+The widest primary marginal Wilson 95% interval is [.584,.919] (width .335) for isotropic at .20 m. It does not exceed the declared .36 expansion threshold, so the seed set remains 20 for every setting. This is a bounded precision rule, not a claim that the uncertainty is small. At .20 m the paired isotropic-minus-standard success difference is −.20, with a descriptive pointwise t interval [−.392,−.008]; full-minus-standard is −.05 [−.155,.055]. These are not simultaneous intervals across the campaign. The difficulty threshold is unresolved, and nonmonotonic cells are retained.
+
+Every clearance has an executed feasible reference: 105 control steps (15.75 s < 24 s), two steering reversals, peak steering .2606 rad, profile rate .3592 rad/s and throttle ≤1. Actual reference substep-swept minimum clearance is .8971,.5974,.3477,.1979 m respectively. This reference uses the seven-state physics, not a kinematic-radius oracle. Peak reference |vy|=.1446 m/s, |yaw rate|=.4441 rad/s and |roll|=.03395 rad. Feasibility metadata is in `conditions.json`; MPPI does not receive the reference controls.
+
+The closed-loop body response differs substantially from that mild feasible witness. At .35 m, mean episode peak |vy| is .394/.447/.390/.414 m/s for standard/isotropic/diagonal/full; peak |yaw rate| is 1.307/1.316/1.299/1.337 rad/s and peak |roll| .155/.157/.153/.157 rad. Their mean ESS is only 4.77/2.09/2.23/1.99 out of 384. Thus tighter geometry exposes dynamic and sampling behavior even when most trials complete; a success-only table would miss this. The primary figure includes vy, yaw and roll traces from predeclared seed 32000 at .35 m. At .90 m that same isotropic seed fails; it remains in the data and failure table rather than being replaced by a successful example.
+
+Planning time at K=384 averaged roughly .306–.342 s per command across primary S-turn cells, versus dt=.15 s. This CPU implementation/run configuration does not demonstrate real-time control. The later K studies report their own measured timings and work counts rather than transferring the faster circle-scene measurements.
+
+## Sample-budget sensitivity
+
+The Q04 two-route sweep has completed: at K=128 success is 18/20 standard, 20/20 isotropic, 16/20 diagonal and 17/20 full; at K=768 and 1536 every setting completes 20/20. The S-turn K sweep and secondary checks are still running at this checkpoint; their outcomes will be added from completed records. K=384 rows reference their original primary episode paths rather than duplicated raw arrays.
+
+## Uncertainty, failure interpretation and scientific scope
+
+Binary marginal intervals use Wilson 95% intervals. Continuous means and paired seed differences use descriptive pointwise Student-t intervals; they are not simultaneous confidence bands or corrected multiple-comparison tests. Pairing controls optimizer/disturbance streams within a condition but closed-loop paths subsequently observe different states. Computational timing was measured with the same per-plan timer and one BLAS thread per worker; parallel process load and software/hardware affect latency. Exact transition/RHS counters support work comparisons even when timing is noisy.
+
+All 12 Q04 failures violate the lateral goal tolerance; eight also miss the speed tolerance and three miss heading. No Q04 failure has insufficient projected progress. In Q05 all seven failures miss terminal speed; one also has insufficient progress and one misses the lateral goal tolerance. This is consistent with stopping/overshooting near a forward-only finish region, not evidence that the corridor is physically impossible. Exact terminal states and violated checks are in `failure_modes.csv` under each primary run. The .90 m isotropic failure stops at x=27.31 m, y=−.675 m; the reference goal is around x=20.51 m, y=−.021 m. This makes the runout limitation concrete: projected progress can be 1 while Euclidean position error is large or speed is invalid. The common terminal objective does not penalize positive longitudinal overshoot, and no recovery/parking controller is provided. These are protocol limitations, not hidden successes.
+
+The mathematical target stays fixed within a covariance intervention, and all full-rank Gaussian proposals retain latent support. This does not imply an unbiased finite-K self-normalized estimate, a useful ESS, reliable high-sample coverage, or monotonic realized error at every K. Clipping changes the physical pushforward distribution and saturation, but densities are correctly evaluated before clipping. Trace matching does not match determinant, entropy, physical dispersion or task-relevant directions.
+
+Supported: covariance orientation can help or harm exact-target estimation; cost and density ratios can each concentrate weights; locally aligned exploration need not minimize estimator error; frozen finite-K controls differ at identical inputs; feedback propagates those differences into route and completion distributions. Unsupported: universal covariance-family superiority, reproduction of AutoRally dynamics, certified collision safety, physical impossibility inferred from MPPI failure, or superiority of another published MPPI formulation.
+
+Q06 remains **PLANNED**. Future work should test genuine alternative weighting/feedback architectures, multiple calibrations and corridor handedness, wider horizons, better independent reference proposals, and secondary difficulty axes. The prescribed seven-state instantaneous-steering model has no hard steering-rate actuator limit; a controlled rate study requires additional actuator/history modeling and a new validation protocol. The preferred-cruising-speed and disturbance-magnitude S-turn checks are running with separately declared independent seeds 35000–35019; their outcomes are not yet reported at this checkpoint. The existing five-state rate study remains historical evidence, not a substitute seven-state result.
+
+## Source provenance
+
+Manifests preserve the source commit, full source/configuration hashes and original dirty flag. Some later records have `dirty: true` while presentation/analysis edits were underway; they must not be presented as clean-checkout provenance. The physical model, cost, sampler and shared controller have a common recorded engine fingerprint, and raw replay verifies the saved dynamics, weights and decisions. Exact executed configurations and all original provenance flags remain intact. The Q04 pilot finalization repair is explicitly recorded in its manifest and did not rerun optimization.
 
 ## Storage and reproduction
 
@@ -85,4 +198,4 @@ uv run ruff format --check .
 uv run pytest
 ```
 
-Use fresh suffixed IDs for reproductions; completed run directories are never overwritten. Final outcome tables, statistical uncertainty, reference reliability and failure analysis will be appended only from executed records. One primary figure per completed question will be curated after validation, with the old four/five-state findings explicitly labeled and retained.
+Use fresh suffixed IDs for reproductions; completed run directories are never overwritten. The five primary figures are curated under `results/showcase`; supporting figures are committed under `docs/figures`. The registry links exact source commits/config hashes, primary and historical runs, and reconstruction commands. The previous five-state primary figure is preserved at `results/archive/five_state_Q05_key.png`; previous four-state figure/data paths remain intact.

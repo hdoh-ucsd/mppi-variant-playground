@@ -1,26 +1,11 @@
 {
-  "git": {
-    "commit": "0006f840f99ab6be155b66ea7833e9210fe40367",
-    "dirty": false,
-    "status_scope": "repository excluding generated results/ and runs/"
+  "figure": "results/showcase/Q01_key.png",
+  "inputs_sha256": {
+    "runs/seven_state/Q01/seven_state_q01_v1/summary.csv": "56b19474f9b70e6e15f0c352a0f694979861898fa4fbff718c76531b74dacf6b",
+    "runs/seven_state/Q01/seven_state_q01_v1/cases.json": "d5e356de85802b9ffb68bd2f742599c274e51a04cbb21970f37ca0e3b29b8117"
   },
-  "source_sha256": "d0e94101f55c2dc14f98ce73c26ba0c000a2ce02b0cfff1d35f66c27a26abb3d",
-  "inputs": [
-    "config.yaml",
-    "cases.json",
-    "trials.csv",
-    "summary.csv"
-  ],
-  "plot_source_files": [
-    "src/analysis/plots.py",
-    "src/analysis/extension_plots.py"
-  ],
-  "plot_source_sha256": "6281b422abfcabc34dc9f982f30591115e9f2f988c2d2c9ac80f8e1207638f99",
-  "figures": [
-    "01_covariance_geometry.svg",
-    "02_rotated_quadratic.svg",
-    "03_alignment_sweep.svg",
-    "03b_scale_constraints.svg",
-    "04_sample_efficiency.svg"
-  ]
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "0957a47fc0ff79db1ba3c3af27489d00b49effe6162ed7fc4842116d93ca070d",
+  "figure_sha256": "69234e82a2c5f82a816fe67db54ea2a5698778600ca8606776ae102380691dc1",
+  "summary_sha256": "56b19474f9b70e6e15f0c352a0f694979861898fa4fbff718c76531b74dacf6b"
 }

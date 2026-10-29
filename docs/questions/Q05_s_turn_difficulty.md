@@ -16,7 +16,7 @@ Sequential steering reversals with less clearance may expose proposal inefficien
 
 ## Independent variables
 
-Primary: corridor clearance. Secondary planned checks: rollout count and steering-rate limit.
+Primary: clearance .90,.60,.35,.20 m. Separate K=128/384/768/1536 at .35 m; separate cruising-speed and disturbance checks; actuator-rate study deferred.
 
 ## Controlled variables
 
@@ -28,7 +28,7 @@ Success/collision, censored progress, cross-track error, clearance, completion t
 
 ## Main finding
 
-At .20 m clearance, completion is 17/20 standard, 18/20 isotropic and 20/20 diagonal/full. All 17 failures among 480 episodes are timeouts near the finish, with zero collisions.
+Seven-state S-turn completion: 0.9 m: standard 20/20, isotropic 19/20, diagonal 20/20, full 20/20; 0.6 m: standard 20/20, isotropic 20/20, diagonal 20/20, full 20/20; 0.35 m: standard 20/20, isotropic 19/20, diagonal 20/20, full 20/20; 0.2 m: standard 20/20, isotropic 16/20, diagonal 20/20, full 19/20. Across 320 primary episodes, 0 collisions; all failed trajectories are retained.
 
 ## Interpretation
 
@@ -36,27 +36,49 @@ A larger observed completion gap at the tightest clearance coexists with termina
 
 ## Limitations
 
-Twenty seeds give broad paired intervals. The difficulty threshold is unresolved; finish-region recovery, one corridor handedness, one horizon and specific matrices limit generalization.
+One handedness, one horizon and specific matrices limit generalization. Completion allows straight-runout recovery. Intervals are pointwise. Steering-rate sweeps remain deferred; rate constraints need an augmented actuator/history model.
+
+## Registered experiment
+
+| Field | Value |
+| --- | --- |
+| experiment name | Seven-state feasible S-turn clearance campaign |
+| dynamics model | dynamic_single_track_7 |
+| control inputs | steering [rad], signed normalized throttle [−1,1] |
+| controller configuration | Gaussian IT-MPPI; T=20, λ=8, base diag(.14,.26); standard/isotropic/diagonal/full normalized trace .40; Q03 adds aligned/misaligned |
+| seeds | 42 pilot; 32000–32019 holdout (20 per setting) |
+| sampling budget | Primary K=384; T=20; 320 episodes; separate K sweep |
+| source commit | 7bea369e3455bf62785fcf8fc0db59c8bcbfc6a7 |
 
 ## Configuration and provenance
 
-[Original configuration](../../runs/Q05/s_turn_clearance_v1/config.yaml)
+[Original configuration](../../runs/seven_state/Q05/seven_state_q05_v1/config.yaml)
 
-Source run IDs: s_turn_clearance_v1
+Source run IDs: seven_state_q05_v1, seven_state_q05_pilot_v1, s_turn_clearance_v1
 
-- [Run s_turn_clearance_v1](../../runs/Q05/s_turn_clearance_v1/): [manifest](../../runs/Q05/s_turn_clearance_v1/manifest.json), source `ff3df5824856e8252a221bc6a4fdce8105ec298c`.
+- [Run s_turn_clearance_v1](../../runs/Q05/s_turn_clearance_v1/): [manifest](../../runs/Q05/s_turn_clearance_v1/manifest.json), source `ff3df5824856e8252a221bc6a4fdce8105ec298c`; model: steering_rate_bicycle_5; inputs: acceleration [m/s²], steering rate [rad/s].
+
+- [Run seven_state_q05_v1](../../runs/seven_state/Q05/seven_state_q05_v1/): [manifest](../../runs/seven_state/Q05/seven_state_q05_v1/manifest.json), source `7bea369e3455bf62785fcf8fc0db59c8bcbfc6a7`; model: dynamic_single_track_7; inputs: steering [rad], signed normalized throttle [−1,1].
+
+- [Run seven_state_q05_pilot_v1](../../runs/seven_state/Q05/seven_state_q05_pilot_v1/): [manifest](../../runs/seven_state/Q05/seven_state_q05_pilot_v1/manifest.json), source `fe98accd84213647c0ff7c006226df6ef1dd3d1f`; model: dynamic_single_track_7; inputs: steering [rad], signed normalized throttle [−1,1].
 
 ## Selected figure
 
 ![S-turn difficulty and controller limitations](../../results/showcase/Q05_key.png)
 
-[Numeric summary](../../runs/Q05/s_turn_clearance_v1/summary.csv)
+[Numeric summary](../../runs/seven_state/Q05/seven_state_q05_v1/summary.csv)
 
 ## Reproduce and regenerate
 
 ```bash
-uv run python experiments/s_turn_study.py --config runs/Q05/s_turn_clearance_v1/config.yaml --phase evaluation --output runs/Q05/s_turn_reproduction
-uv run python experiments/s_turn_study.py --plots-only --output runs/Q05/s_turn_clearance_v1 --showcase results/showcase/Q05_key.png
+uv run python experiments/seven_state_campaign.py --stage q05 --output runs/seven_state/Q05/q05_reproduction
+uv run python experiments/plot_seven_state.py --stage Q05 --input runs/seven_state/Q05/seven_state_q05_v1
 ```
 
-[Full methods, interpretation and additional figures](../Q05_methods.md)
+## Supporting figures
+
+- [Saved-data figure](../../docs/figures/seven_state_Q05_diagnostics.png)
+
+[Seven-state campaign report and methods](../seven_state_benchmark_report.md)
+
+[Historical methods (earlier model / original analytic seeds)](../Q05_methods.md)

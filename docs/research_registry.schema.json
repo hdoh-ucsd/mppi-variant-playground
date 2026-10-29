@@ -37,7 +37,16 @@
           "interpretation",
           "limitations",
           "reproduce",
-          "regenerate"
+          "regenerate",
+          "experiment_name",
+          "dynamics_model",
+          "control_inputs",
+          "controller_configuration",
+          "seeds",
+          "sampling_budget",
+          "source_commit",
+          "primary_run_id",
+          "supporting_figures"
         ],
         "properties": {
           "id": {
@@ -130,6 +139,60 @@
           "regenerate": {
             "type": "string",
             "minLength": 1
+          },
+          "experiment_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dynamics_model": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "control_inputs": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "controller_configuration": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "seeds": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sampling_budget": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_commit": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "primary_run_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "supporting_figures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }
@@ -146,7 +209,10 @@
           "manifest",
           "source_commit",
           "configuration",
-          "summary"
+          "summary",
+          "dynamics_model",
+          "control_inputs",
+          "experiment_name"
         ],
         "properties": {
           "id": {

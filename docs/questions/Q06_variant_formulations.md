@@ -38,6 +38,18 @@ Paper-level changes to weighting, annealing, feedback and state-covariance desig
 
 No experimental claims or placeholder figures. Covariance ablations are not these published formulations.
 
+## Registered experiment
+
+| Field | Value |
+| --- | --- |
+| experiment name | Published formulation comparison (planned) |
+| dynamics model | not yet declared |
+| control inputs | not yet declared |
+| controller configuration | Alternative formulations not implemented |
+| seeds | not yet declared |
+| sampling budget | not yet declared |
+| source commit | None |
+
 ## Configuration and provenance
 
 [Original configuration](../../configs/investigations/published_formulations_plan.yaml)

@@ -351,7 +351,9 @@ def job(args):
     return row, representative
 
 
-def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=None):
+def run_closed(
+    config, output, *, stage="q04", pilot=False, additional_seeds=None, parent_path=None
+):
     assert_validated()
     config = deepcopy(config)
     config["phase"] = "pilot" if pilot else "evaluation"
@@ -433,7 +435,11 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
     reuse_case = None
     if stage.startswith("budget_"):
         q = "Q04" if stage == "budget_q04" else "Q05"
-        parent = Path("runs/seven_state") / q / f"seven_state_{q.lower()}_v1"
+        parent = (
+            Path(parent_path)
+            if parent_path is not None
+            else Path("runs/seven_state") / q / f"seven_state_{q.lower()}_v1"
+        )
         parent_manifest = json.loads((parent / "manifest.json").read_text())
         if not parent_manifest["complete"]:
             raise RuntimeError("Budget parent is incomplete")
@@ -511,6 +517,7 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
                 if key.startswith(old_case + "__") and key.endswith("__holdout"):
                     target[reuse_case + key[len(old_case) :]] = value
         manifest["reused_primary_run"] = str(parent)
+    initial_rows = len(rows)
     with ProcessPoolExecutor(max_workers=config["workers"]) as pool:
         for row, record in pool.map(job, args):
             row["reused"] = False
@@ -520,7 +527,11 @@ def run_closed(config, output, *, stage="q04", pilot=False, additional_seeds=Non
                 paths[key], diagnostics[key] = record
             if len(rows) % 20 == 0:
                 pd.DataFrame(rows).to_csv(root / "per_seed.csv", index=False)
-                print(f"{stage}: {len(rows)}/{len(args)} episodes", flush=True)
+                print(
+                    f"{stage}: {len(rows) - initial_rows}/{len(args)} new episodes "
+                    f"({initial_rows} reused)",
+                    flush=True,
+                )
     if stage == "q05" and not pilot:
         preliminary = pd.DataFrame(rows)
         widths = [

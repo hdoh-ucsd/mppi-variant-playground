@@ -20,7 +20,7 @@ Six trace-matched proposals, K=64…4096 and 50 paired evaluation seeds.
 
 ## Controlled variables
 
-Observed state, warm start, previous control, bicycle model, cost, base, temperature and horizon.
+Identical seven-state observation, latent warm start, previous control, model, cost, horizon, base, temperature and paired standard normals; only proposal covariance differs.
 
 ## Metrics
 
@@ -28,7 +28,7 @@ Paired command differences, ESS, entropy, mean-plan objective, reference diagnos
 
 ## Main finding
 
-7,200 decisions isolate covariance at common frozen inputs. High-sample reference ESS is only 1.10–2.19 from 524,288 rollouts per state; all three reference means remain unresolved.
+7,200 seven-state frozen decisions show finite-budget differences. Only the post-disturbance high-sample reference passes the declared diagnostics: standard RMS error drops .1085→.0140 from K=64→4096; sensitivity-aligned .2471→.1597. Open-space and obstacle references remain unresolved.
 
 ## Interpretation
 
@@ -36,27 +36,48 @@ Proposal geometry changes finite sampled rollouts, corrected weights, controls a
 
 ## Limitations
 
-Distances to unresolved references are not validated target-mean errors. Three states, one warm start per state and pointwise intervals do not establish general superiority.
+Two reference means fail overlap/precision diagnostics. Distances to those estimates are not validated target errors. Local sensitivity alignment is not target covariance matching; three states and one warm start each limit inference.
+
+## Registered experiment
+
+| Field | Value |
+| --- | --- |
+| experiment name | Seven-state frozen MPPI decisions at three common inputs |
+| dynamics model | dynamic_single_track_7 |
+| control inputs | steering [rad], signed normalized throttle [−1,1] |
+| controller configuration | Gaussian IT-MPPI; T=20, λ=8, base diag(.14,.26); standard/isotropic/diagonal/full normalized trace .40; Q03 adds aligned/misaligned |
+| seeds | 33000–33049, source 31415; reference namespaces [202,state,rep] |
+| sampling budget | K=64,128,256,384,512,1024,2048,4096; 7,200 decisions + 3×8×65,536 independent reference rollouts |
+| source commit | 0006f840f99ab6be155b66ea7833e9210fe40367 |
 
 ## Configuration and provenance
 
-[Original configuration](../../results/investigations/frozen_decision_v1/config.yaml)
+[Original configuration](../../runs/seven_state/Q03/seven_state_q03_v1/config.yaml)
 
-Source run IDs: frozen_decision_v1
+Source run IDs: seven_state_q03_v1, frozen_decision_v1
 
-- [Run frozen_decision_v1](../../results/investigations/frozen_decision_v1/): [manifest](../../results/investigations/frozen_decision_v1/manifest.json), source `7aaf76eaed90588b9404b2fbed483ae9efce1156`.
+- [Run frozen_decision_v1](../../results/investigations/frozen_decision_v1/): [manifest](../../results/investigations/frozen_decision_v1/manifest.json), source `7aaf76eaed90588b9404b2fbed483ae9efce1156`; model: kinematic_bicycle_4; inputs: acceleration [m/s²], steering [rad].
+
+- [Run seven_state_q03_v1](../../runs/seven_state/Q03/seven_state_q03_v1/): [manifest](../../runs/seven_state/Q03/seven_state_q03_v1/manifest.json), source `0006f840f99ab6be155b66ea7833e9210fe40367`; model: dynamic_single_track_7; inputs: steering [rad], signed normalized throttle [−1,1].
 
 ## Selected figure
 
 ![Frozen-state MPPI decision analysis](../../results/showcase/Q03_key.png)
 
-[Numeric summary](../../results/investigations/frozen_decision_v1/summary.csv)
+[Numeric summary](../../runs/seven_state/Q03/seven_state_q03_v1/summary.csv)
 
 ## Reproduce and regenerate
 
 ```bash
-uv run python experiments/frozen_state_decision.py --output runs/Q03/frozen_decision_reproduction
-uv run python experiments/frozen_state_decision.py --output results/investigations/frozen_decision_v1 --plots-only
+uv run python experiments/seven_state_campaign.py --stage q03 --output runs/seven_state/Q03/q03_reproduction
+uv run python experiments/plot_seven_state.py --stage Q03 --input runs/seven_state/Q03/seven_state_q03_v1
 ```
 
-[Full methods, interpretation and additional figures](../frozen_decision_analysis.md)
+## Supporting figures
+
+- [Saved-data figure](../../docs/figures/seven_state_Q03_convergence.png)
+- [Saved-data figure](../../docs/figures/seven_state_Q03_commands.png)
+
+[Seven-state campaign report and methods](../seven_state_benchmark_report.md)
+
+[Historical methods (earlier model / original analytic seeds)](../frozen_decision_analysis.md)

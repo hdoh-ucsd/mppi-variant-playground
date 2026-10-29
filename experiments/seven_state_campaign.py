@@ -27,6 +27,7 @@ if __name__ == "__main__":
         ],
     )
     p.add_argument("--output", required=True)
+    p.add_argument("--parent", help="Completed primary run for a budget replication")
     p.add_argument(
         "--seeds", type=int, help="Predeclared S-turn expanded seed count for budget pairing"
     )
@@ -57,4 +58,11 @@ if __name__ == "__main__":
                 range(config["s_turn_seeds"]["start"], config["s_turn_seeds"]["start"] + args.seeds)
             )
         )
-        run_closed(config, args.output, stage=stage, pilot=pilot, additional_seeds=seeds)
+        run_closed(
+            config,
+            args.output,
+            stage=stage,
+            pilot=pilot,
+            additional_seeds=seeds,
+            parent_path=args.parent,
+        )

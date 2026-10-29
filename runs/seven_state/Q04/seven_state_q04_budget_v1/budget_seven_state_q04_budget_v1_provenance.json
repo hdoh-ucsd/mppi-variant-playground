@@ -1,0 +1,10 @@
+{
+  "figure": "docs/figures/seven_state_budget_seven_state_q04_budget_v1.png",
+  "inputs_sha256": {
+    "runs/seven_state/Q04/seven_state_q04_budget_v1/summary.csv": "147cb4799ae66f92cd9147630148dc503440bcfaeadaeaf632a147a2be7e3b98"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "0957a47fc0ff79db1ba3c3af27489d00b49effe6162ed7fc4842116d93ca070d",
+  "figure_sha256": "007bf5bd2882921dfc5fe2999f1487347ab633b5cb3e75562acba9864009f1d6",
+  "summary_sha256": "147cb4799ae66f92cd9147630148dc503440bcfaeadaeaf632a147a2be7e3b98"
+}

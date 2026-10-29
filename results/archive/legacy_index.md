@@ -30,4 +30,16 @@ Earlier top-level vehicle studies are also preserved:
 
 A completed manifest is an execution record, not a scientific guarantee. Question documents report diagnostics and unresolved reference estimates. `reproduction_01` is a separately executed historical reproduction, not a newly generated duplicate. Large historical binaries remain tracked to preserve evidence; no new bulk archives are added.
 
-New Q05 evidence is stored separately under [runs/Q05/s_turn_clearance_v1](../../runs/Q05/s_turn_clearance_v1/). It is indexed in the canonical registry rather than copied into this historical archive.
+Historical five-state Q05 evidence is stored separately under [runs/Q05/s_turn_clearance_v1](../../runs/Q05/s_turn_clearance_v1/). It is indexed in the canonical registry rather than copied into this historical archive.
+
+
+## Model labels after the seven-state campaign
+
+| Evidence | Dynamics | Current role |
+| --- | --- | --- |
+| Original Gaussian, temperature, saturation and nonconvex investigations | Analytic distributions, no vehicle | Mathematical references; independent Q01/Q02 replications now available |
+| Original frozen-decision, trajectory-behavior and closed-loop investigations | Four-state kinematic bicycle, acceleration/steering | Historical Q03/Q04; original data/figures unchanged |
+| `runs/Q05/s_turn_clearance_v1` | Five-state acceleration/steering-rate bicycle | Historical S-turn; [preserved primary PNG](five_state_Q05_key.png) |
+| `runs/seven_state/Q03`–`Q05` | Seven-state dynamic single-track, steering/throttle | Primary vehicle campaign, separately registered |
+
+The new Q01/Q02 run names include the campaign namespace but remain vehicle-independent analytic tests. The old five-state curated figure was copied with a verified matching hash before replacing the README selection. New showcase figures do not overwrite their historical numerical sources. Full new raw arrays remain local and ignored; compact records and selected figures are tracked. See [registry](../registry.yaml) and [scientific report](../../docs/seven_state_benchmark_report.md).

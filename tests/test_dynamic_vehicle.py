@@ -182,6 +182,7 @@ def test_secondary_speed_changes_objective_without_regenerating_corridor():
     from evaluation.runner import make_controller
 
     config, geometry, *_ = resolved_case(configuration(), "s_turn", clearance=0.35)
+    config["controller"].update(kind="standard", covariance=config["proposals"]["standard"])
     baseline = make_controller(config)
     config["running_speed_target"] = 1.8
     secondary = make_controller(config)

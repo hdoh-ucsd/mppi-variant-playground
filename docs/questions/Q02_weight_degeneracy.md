@@ -28,7 +28,7 @@ ESS, entropy, largest weight, exact mean error and Gaussian overlap diagnostics.
 
 ## Main finding
 
-In the isotropic K=512 slice, mean ESS rises from 41.95 at λ=.1 to 453.29 at λ=10 while mean error is nonmonotonic. Separate dimension probes isolate cost and density-ratio concentration.
+At K=512 the isotropic mean ESS grows from 40.56 at λ=.1 to 450.61 at λ=10, while mean error changes from .04284 to .05207 against each changed exact target. Cost-only, ratio-only and combined dimension probes separate concentration mechanisms.
 
 ## Interpretation
 
@@ -36,27 +36,43 @@ ESS summarizes normalized weights. Temperature changes the target; density ratio
 
 ## Limitations
 
-This is not a fixed-target temperature accuracy ranking or a causal diagnosis of every vehicle failure. Finite ESS does not certify population overlap.
+Temperature changes the target. ESS does not certify estimation accuracy or target coverage. Seven states correspond to a 40-dimensional sampled control sequence here.
+
+## Registered experiment
+
+| Field | Value |
+| --- | --- |
+| experiment name | Independent-seed temperature and dimension concentration replication |
+| dynamics model | analytic_gaussian |
+| control inputs | Gaussian vector (no vehicle) |
+| controller configuration | Fixed Gaussian base/proposal-corrected SNIS; exact target moments |
+| seeds | 34000–34063 (64 independent replication seeds) |
+| sampling budget | K=512; d=2…56; 4,544 trials |
+| source commit | 0006f840f99ab6be155b66ea7833e9210fe40367 |
 
 ## Configuration and provenance
 
-[Original configuration](../../results/investigations/temperature_v1/config.yaml)
+[Original configuration](../../runs/seven_state/Q02/seven_state_q02_v1/config.yaml)
 
-Source run IDs: temperature_v1
+Source run IDs: seven_state_q02_v1, temperature_v1
 
-- [Run temperature_v1](../../results/investigations/temperature_v1/): [manifest](../../results/investigations/temperature_v1/manifest.json), source `dd50f534ad47e765bec39715f6f801b790a251b2`.
+- [Run temperature_v1](../../results/investigations/temperature_v1/): [manifest](../../results/investigations/temperature_v1/manifest.json), source `dd50f534ad47e765bec39715f6f801b790a251b2`; model: analytic_gaussian; inputs: not applicable (Gaussian latent vectors).
+
+- [Run seven_state_q02_v1](../../runs/seven_state/Q02/seven_state_q02_v1/): [manifest](../../runs/seven_state/Q02/seven_state_q02_v1/manifest.json), source `0006f840f99ab6be155b66ea7833e9210fe40367`; model: analytic_gaussian; inputs: Gaussian vector (no vehicle).
 
 ## Selected figure
 
 ![Importance-weight concentration](../../results/showcase/Q02_key.png)
 
-[Numeric summary](../../results/investigations/temperature_v1/summary.csv)
+[Numeric summary](../../runs/seven_state/Q02/seven_state_q02_v1/summary.csv)
 
 ## Reproduce and regenerate
 
 ```bash
-uv run python experiments/temperature_sweep.py --output runs/Q02/temperature_reproduction
-uv run python experiments/temperature_sweep.py --output results/investigations/temperature_v1 --plots-only
+uv run python experiments/seven_state_campaign.py --stage q02 --output runs/seven_state/Q02/q02_reproduction
+uv run python experiments/plot_seven_state.py --stage Q02 --input runs/seven_state/Q02/seven_state_q02_v1
 ```
 
-[Full methods, interpretation and additional figures](../covariance_mechanisms.md)
+[Seven-state campaign report and methods](../seven_state_benchmark_report.md)
+
+[Historical methods (earlier model / original analytic seeds)](../covariance_mechanisms.md)

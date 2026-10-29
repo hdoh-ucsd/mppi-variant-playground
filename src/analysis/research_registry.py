@@ -11,7 +11,9 @@ ROOT = Path(__file__).resolve().parents[2]
 FIELDS = (
     "id title document status research_question mathematical_motivation hypothesis configuration "
     "independent_variables controlled_variables metrics run_ids key_figure source_figure summary "
-    "main_finding interpretation limitations reproduce regenerate"
+    "main_finding interpretation limitations reproduce regenerate "
+    "experiment_name dynamics_model control_inputs controller_configuration seeds sampling_budget "
+    "source_commit primary_run_id supporting_figures"
 ).split()
 
 
@@ -30,9 +32,10 @@ def validate(registry, root=ROOT):
         raise ValueError("Exactly Q01–Q06 are required")
     by_id = {r["id"]: r for r in runs}
     for run in runs:
-        for (
-            field
-        ) in "id question_ids status path manifest source_commit configuration summary".split():
+        for field in (
+            "id question_ids status path manifest source_commit configuration summary "
+            "dynamics_model control_inputs experiment_name"
+        ).split():
             if field not in run:
                 raise ValueError(f"Missing provenance field {field}")
         for field in ("path", "manifest", "configuration", "summary"):
@@ -53,13 +56,22 @@ def validate(registry, root=ROOT):
         if digest != manifest.get("configuration_sha256"):
             raise ValueError("Configuration provenance hash mismatch")
     for q in questions:
+        for path in q.get("supporting_figures", []):
+            if not (root / path).is_file():
+                raise ValueError("Broken supporting figure link")
         if set(FIELDS) - q.keys():
             raise ValueError("Missing question fields")
         for field in ("document", "configuration"):
             if not (root / q[field]).is_file():
                 raise ValueError(f"Missing {field}: {q[field]}")
         if q["status"] == "PLANNED":
-            if q["key_figure"] or q["run_ids"] or q["summary"]:
+            if (
+                q["key_figure"]
+                or q["run_ids"]
+                or q["summary"]
+                or q["source_commit"]
+                or q["primary_run_id"]
+            ):
                 raise ValueError("Planned question cannot claim figures or results")
             continue
         if (
@@ -71,6 +83,13 @@ def validate(registry, root=ROOT):
         if any(q["id"] not in by_id[r]["question_ids"] for r in q["run_ids"]):
             raise ValueError("Question/run association disagrees")
         primary_run = by_id[q["run_ids"][0]]
+        if (
+            q["primary_run_id"] != primary_run["id"]
+            or q["source_commit"] != primary_run["source_commit"]
+        ):
+            raise ValueError("Question source provenance disagrees with primary run")
+        if q["dynamics_model"] != primary_run["dynamics_model"]:
+            raise ValueError("Question dynamics model disagrees with primary run")
         if (
             q["summary"] != primary_run["summary"]
             or q["configuration"] != primary_run["configuration"]
@@ -93,6 +112,17 @@ def validate(registry, root=ROOT):
             summary_hash = hashlib.sha256((root / q["summary"]).read_bytes()).hexdigest()
             if data["summary_sha256"] != summary_hash:
                 raise ValueError("Figure summary provenance hash mismatch")
+            for path, digest in data.get("inputs_sha256", {}).items():
+                source = root / path
+                if (
+                    not source.is_file()
+                    or hashlib.sha256(source.read_bytes()).hexdigest() != digest
+                ):
+                    raise ValueError("Figure input provenance hash mismatch")
+            if data.get("plot_source_sha256"):
+                code = root / "src/analysis/dynamic_plots.py"
+                if hashlib.sha256(code.read_bytes()).hexdigest() != data["plot_source_sha256"]:
+                    raise ValueError("Figure reconstruction source is stale")
     return dict(
         questions=len(questions),
         executed=sum(q["status"] == "EXECUTED" for q in questions),
@@ -105,6 +135,8 @@ def render(registry, root=ROOT):
     backtick = chr(96)
     fence = backtick * 3
     intro = r"""# MPPI Variant Playground
+
+## Project objective
 
 A research companion for understanding MPPI formulations through their mathematics,
 finite-sample decisions and control behavior. Follow a scientific question from hypothesis
@@ -141,7 +173,27 @@ Arrows are conceptual reading connections. [Eight papers, equation locations and
 versions](docs/paper_map.md) separate paper-level claims from the implementation and
 experimentally verified claims.
 
-## Research Questions and Key Results
+## Implemented models
+
+| Model | State dimension | Controls | Evidence |
+| --- | --- | --- | --- |
+| Kinematic bicycle | 4: x, y, yaw, speed | acceleration, steering | Historical baseline, retained |
+| Steering-rate bicycle | 5 | acceleration, steering rate | Historical S-turn |
+| Dynamic single-track | 7 | steering, signed throttle | Primary Q03–Q05 campaign |
+
+The seven-state state is `[px,py,heading,roll,vx,vy,yaw_rate]` in SI units.
+It uses saturating tire forces, body lateral/yaw dynamics and an explicit
+first-order roll equation. It is a documented physics approximation, not the paper's learned
+AutoRally model.
+[Equations, validation and scientific report](docs/seven_state_benchmark_report.md).
+
+## Research questions
+
+Q01 and analytic Q02 are independent of vehicle dynamics. Q03–Q05 below use the seven-state
+vehicle. Historical four/five-state evidence remains separately labeled in each question.
+Q06 is a paper/formulation investigation with no implemented alternative algorithms.
+
+## Key results
 
 [Research index](docs/research_index.md) · [Registry](results/registry.yaml) · [Historical
 evidence](results/archive/legacy_index.md)
@@ -170,6 +222,18 @@ evidence](results/archive/legacy_index.md)
             "limitations",
         ):
             document.extend([f"## {field.replace('_', ' ').capitalize()}", "", q[field], ""])
+        document.extend(["## Registered experiment", "", "| Field | Value |", "| --- | --- |"])
+        for field in (
+            "experiment_name",
+            "dynamics_model",
+            "control_inputs",
+            "controller_configuration",
+            "seeds",
+            "sampling_budget",
+            "source_commit",
+        ):
+            document.append(f"| {field.replace('_', ' ')} | {q[field]} |")
+        document.append("")
         document.extend(
             [
                 "## Configuration and provenance",
@@ -187,7 +251,8 @@ evidence](results/archive/legacy_index.md)
                         (
                             f"- [Run {run['id']}](../../{run['path']}/): "
                             f"[manifest](../../{run['manifest']}), source "
-                            f"{backtick}{run['source_commit']}{backtick}."
+                            f"{backtick}{run['source_commit']}{backtick}; "
+                            f"model: {run['dynamics_model']}; inputs: {run['control_inputs']}."
                         ),
                         "",
                     ]
@@ -230,6 +295,19 @@ evidence](results/archive/legacy_index.md)
                 "",
             ]
         )
+        if q["supporting_figures"]:
+            document.extend(["## Supporting figures", ""])
+            document.extend(
+                [f"- [Saved-data figure](../../{path})" for path in q["supporting_figures"]]
+            )
+            document.append("")
+        if q["id"] != "Q06":
+            document.extend(
+                [
+                    "[Seven-state campaign report and methods](../seven_state_benchmark_report.md)",
+                    "",
+                ]
+            )
         methods = {
             "Q01": "experimental_findings.md",
             "Q02": "covariance_mechanisms.md",
@@ -240,7 +318,8 @@ evidence](results/archive/legacy_index.md)
         if q["id"] in methods:
             document.extend(
                 [
-                    f"[Full methods, interpretation and additional figures](../{methods[q['id']]})",
+                    "[Historical methods (earlier model / original analytic seeds)]"
+                    f"(../{methods[q['id']]})",
                     "",
                 ]
             )
@@ -253,7 +332,7 @@ evidence](results/archive/legacy_index.md)
     storage = """
 ## Storage and provenance
 
-- Full new raw records belong in §runs/Qxx/<run_id>/§. Historical run names are relative
+- Full new raw records belong in §runs/seven_state/Qxx/<run_id>/§. Historical run names are relative
   symlinks to original tracked evidence, not copied result trees.
 - §results/showcase/§ holds one selected PNG per executed question. Other figures stay
   accessible from question documents.
@@ -271,18 +350,6 @@ uv run python experiments/research_index.py
 """.replace("§", backtick)
     (root / "docs/research_index.md").write_text("\n".join(index) + storage)
     outro = """
-## Current implementation status
-
-Standard, isotropic, diagonal and full are covariance settings of one IT-MPPI
-implementation. The original four-state acceleration/steering bicycle remains available.
-The S-turn study adds a separate five-state acceleration/steering-rate bicycle and newly
-declared normalized covariances; see [Q05](docs/questions/Q05_s_turn_difficulty.md) for
-its execution status.
-
-CEM, Tsallis-VI, DIAL-MPC, Tube-MPPI, Robust-MPPI and CC-MPPI remain **PLANNED**.
-Covariance ablations are not those published formulations. See [implementation
-fidelity](docs/implementation_fidelity.md) and [limitations](docs/limitations.md).
-
 ## Reproduction
 
 Linux, Python 3.11+ and uv; CPU NumPy, no GPU required.
@@ -296,9 +363,19 @@ uv run pytest
 uv run python experiments/research_index.py
 §§§
 
-Use a fresh §runs/Qxx/<run_id>§ directory for execution. Use saved data and §--plots-only§
-to reconstruct figures. Historical §results/§ directories retain their original records.
-No new bulk binary archive is committed.
+Use fresh run IDs for simulation; immutable completed directories are never overwritten.
+Exact commands are in each question and the [report](docs/seven_state_benchmark_report.md).
+The following rebuilds a figure from committed compact data without simulation:
+
+§§§bash
+uv run python experiments/plot_seven_state.py --stage Q03 \
+  --input runs/seven_state/Q03/seven_state_q03_v1
+§§§
+
+Full raw episodes and rollout NPZs are ignored local evidence. **Cloning does not contain
+those raw records.** No LFS/external store is configured; rerun recorded commands to
+recreate them. Small summaries, inputs, configs, manifests and selected figures are tracked.
+Historical §results/investigations/§ evidence is preserved.
 
 §§§text
 configs/       Declared models, costs, controllers and experiment designs
@@ -306,8 +383,20 @@ src/           Shared MPPI, sampling, dynamics, geometry and analysis
 experiments/   Execution, reconstruction and registry validation CLIs
 docs/          Question documents, derivations, paper map and findings
 results/       Registry, curated showcase and preserved historical evidence
-runs/Qxx/      Raw new records and relative references to historical runs
+runs/seven_state/  Question-based new campaign records (bulk raw ignored)
 tests/         Numerical, physical and evidence-consistency checks
 §§§
+
+## Limitations
+
+These are covariance settings of one Gaussian IT-MPPI, not different published algorithms.
+Specific matrices, one calibration, one S-turn handedness, one horizon and broad binomial
+intervals limit generalization. ESS is not estimator accuracy. Two Q03 reference means
+remain unresolved. The finish region allows runout recovery, not stopped-point parking.
+The model omits load transfer, roll inertia/feedback and an actuator-rate state; it has
+no reverse drive. Equal-K sweeps are not equal-wall-clock experiments or real-time guarantees.
+See the [scientific report](docs/seven_state_benchmark_report.md) for failures, uncertainty
+and the deferred steering-rate study.
+
 """.replace("§", backtick)
     (root / "README.md").write_text("\n".join(readme) + outro)

@@ -1,5 +1,7 @@
 # Technical and research limitations
 
+The primary seven-state campaign has its own [model, uncertainty and failure limitations](seven_state_benchmark_report.md). It samples 40-dimensional steering/throttle sequences, uses static tire loads and dynamic first-order roll, allows forward runout recovery, and does not implement actuator-rate constraints. Two new Q03 reference means remain unresolved. K and preferred-speed/disturbance checks do not establish universal covariance superiority or real-time feasibility.
+
 The list below describes the original vehicle milestone. The subsequent [covariance mechanism study](covariance_mechanisms.md) adds isolated estimation and parameter sweeps; its [findings](experimental_findings.md) state their additional evidence and limitations.
 
 - This milestone studies finite-budget covariance choices in a single small deterministic prediction model. It does not establish a universal algorithm ranking.

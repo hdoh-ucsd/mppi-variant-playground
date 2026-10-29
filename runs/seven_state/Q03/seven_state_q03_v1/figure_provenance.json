@@ -1,0 +1,11 @@
+{
+  "figure": "results/showcase/Q03_key.png",
+  "inputs_sha256": {
+    "runs/seven_state/Q03/seven_state_q03_v1/figure_inputs.json": "f526968491824df7ae6f39fde3d9f06a5a48ef4a23d478dd4486f18541282a90",
+    "runs/seven_state/Q03/seven_state_q03_v1/frozen_states/pre_obstacle.json": "769071bfe5345e725d9ca2ed5c837f866af2763f3657f6af732d54861de00788"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "0957a47fc0ff79db1ba3c3af27489d00b49effe6162ed7fc4842116d93ca070d",
+  "figure_sha256": "bbe035fe0100be3471f146ea8881921032a78d56964e9e883e6829bba913f62d",
+  "summary_sha256": "101046173f4c0a1cebc9ad3dd6a42506ab008ff2a136a4f3487b773774e7c43d"
+}

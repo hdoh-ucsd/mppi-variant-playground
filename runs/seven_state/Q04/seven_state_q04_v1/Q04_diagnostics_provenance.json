@@ -1,0 +1,10 @@
+{
+  "figure": "docs/figures/seven_state_Q04_diagnostics.png",
+  "inputs_sha256": {
+    "runs/seven_state/Q04/seven_state_q04_v1/summary.csv": "526734b18c74712c6aa458189e945eee6386f035b0cc5248cc4c5e8b4e500e67"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "0957a47fc0ff79db1ba3c3af27489d00b49effe6162ed7fc4842116d93ca070d",
+  "figure_sha256": "9e79ad9bad8479e95b9fc265186a73368459f31216d105ad29eb4fe1be0843a0",
+  "summary_sha256": "526734b18c74712c6aa458189e945eee6386f035b0cc5248cc4c5e8b4e500e67"
+}

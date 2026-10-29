@@ -1,5 +1,7 @@
 # Paired experimental protocol
 
+The primary driving protocol now uses seven-state dynamics. The protocol below remains historical four-state evidence; its control coordinates and seed counts do not describe the new campaign. [Seven-state report](seven_state_benchmark_report.md) · [Current research index](research_index.md).
+
 ## Experimental questions
 
 This document specifies the existing shared vehicle experiments. Their role in the broader research is to illustrate behavior and provide reproducible diagnostics. The [mathematical investigation plan](research_questions.md) defines the mechanism-specific questions for each variant and the additional probes required to answer them.

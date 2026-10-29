@@ -1,5 +1,7 @@
 # Implementation fidelity
 
+The shared IT-MPPI now also supports a validated seven-state physics approximation with steering/throttle inputs. It is not the AutoRally system-identified dynamics. Historical four-state and five-state rate models remain separate; no additional published MPPI algorithm has been implemented. [Seven-state report](seven_state_benchmark_report.md) · [Current research index](research_index.md).
+
 | Component | Delivered behavior | Difference / scope |
 |---|---|---|
 | Standard MPPI | Finite-dimensional Gaussian IT-MPPI, full base/proposal ratio, fixed SPD covariance, exponential normalized weights, latent weighted mean | Follows the accessible 2017 information-theoretic formulation; not an equation-by-equation reimplementation of inaccessible 2016 publisher full text |

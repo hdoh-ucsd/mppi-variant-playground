@@ -46,6 +46,7 @@ def publish(fig, root, name, sources, *, key=None, support=False):
         figure=str(target or out / f"{name}.png"),
         inputs_sha256=hashes,
         reconstruction="Saved compact records only; no simulation or sampling",
+        plot_source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         figure_sha256=hashlib.sha256((out / f"{name}.png").read_bytes()).hexdigest(),
         summary_sha256=hashlib.sha256((root / "summary.csv").read_bytes()).hexdigest(),
     )
@@ -346,6 +347,8 @@ def driving(root, question):
             row = paths[f"clearance_0.35__{p}__holdout"]
             ax.plot(row["px"], row["py"], color=COLORS[p])
         ax.set_title("Predeclared seed 32000 · clearance .35 m", fontsize=9)
+        ax.set(aspect="equal", adjustable="box")
+        trace_end = max(paths[f"clearance_0.35__{p}__holdout"]["time_s"][-1] for p in PROPOSALS[:4])
         for j, (field, label) in enumerate(
             [
                 ("vy", "Lateral velocity [m/s]"),
@@ -361,7 +364,7 @@ def driving(root, question):
                 xlabel="Time [s]",
                 ylabel=label,
                 title="Same representative executions",
-                xlim=(0, 24),
+                xlim=(0, trace_end),
             )
         fig.suptitle(
             "K=384 · T=20 · feasible reference at every clearance · intervals include timeouts "
@@ -440,6 +443,37 @@ def budget(root):
     )
 
 
+def secondary(root):
+    root = Path(root)
+    d = pd.read_csv(root / "summary.csv")
+    fig, axes = plt.subplots(2, 3, figsize=(12, 6), layout="constrained")
+    for i, prefix in enumerate(["speed_", "impulse_"]):
+        g = d[d["case"].str.startswith(prefix)].copy()
+        g["level"] = g["case"].str.removeprefix(prefix).astype(float)
+        if i == 1:
+            baseline = d[d["case"] == "speed_1.4"].copy()
+            baseline["level"] = 0.0
+            g = pd.concat([baseline, g], ignore_index=True)
+        for j, (metric, label) in enumerate(
+            [
+                ("success", "Success / Wilson 95%"),
+                ("cumulative_evaluation_cost", "Mean evaluation cost"),
+                ("mean_ess", "Episode mean ESS"),
+            ]
+        ):
+            intervals(axes[i, j], g, metric, "level", label)
+            axes[i, j].set_xlabel(
+                "Preferred cruising speed [m/s]" if i == 0 else "Lateral impulse magnitude [m]"
+            )
+        axes[i, 0].set_ylim(-0.02, 1.02)
+    axes[0, 2].legend(fontsize=7)
+    fig.suptitle(
+        "Q05 · Separate secondary checks · new paired seeds 35000–35019\n"
+        "Fixed geometry, K=384 and terminal speed 1.4 m/s; baseline records reused in plot"
+    )
+    publish(fig, root, "Q05_secondary", [root / "summary.csv"], support=True)
+
+
 def generate(root, stage):
     if not read(root, "manifest.json").get("complete"):
         raise ValueError("Cannot plot an incomplete run")
@@ -450,5 +484,7 @@ def generate(root, stage):
         frozen(root)
     elif stage in ["Q04", "Q05"]:
         driving(root, stage)
+    elif stage == "secondary":
+        secondary(root)
     else:
         budget(root)
