@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Research evidence registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "questions",
+    "runs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "document",
+          "status",
+          "research_question",
+          "mathematical_motivation",
+          "hypothesis",
+          "configuration",
+          "independent_variables",
+          "controlled_variables",
+          "metrics",
+          "run_ids",
+          "key_figure",
+          "source_figure",
+          "summary",
+          "main_finding",
+          "interpretation",
+          "limitations",
+          "reproduce",
+          "regenerate",
+          "experiment_name",
+          "dynamics_model",
+          "control_inputs",
+          "controller_configuration",
+          "seeds",
+          "sampling_budget",
+          "source_commit",
+          "primary_run_id",
+          "supporting_figures"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^Q0[1-6]$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "document": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "PLANNED",
+              "EXECUTED"
+            ]
+          },
+          "research_question": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mathematical_motivation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hypothesis": {
+            "type": "string",
+            "minLength": 1
+          },
+          "configuration": {
+            "type": "string",
+            "minLength": 1
+          },
+          "independent_variables": {
+            "type": "string",
+            "minLength": 1
+          },
+          "controlled_variables": {
+            "type": "string",
+            "minLength": 1
+          },
+          "metrics": {
+            "type": "string",
+            "minLength": 1
+          },
+          "run_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "key_figure": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_figure": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "main_finding": {
+            "type": "string",
+            "minLength": 1
+          },
+          "interpretation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "limitations": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reproduce": {
+            "type": "string",
+            "minLength": 1
+          },
+          "regenerate": {
+            "type": "string",
+            "minLength": 1
+          },
+          "experiment_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dynamics_model": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "control_inputs": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "controller_configuration": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "seeds": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sampling_budget": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_commit": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "primary_run_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "supporting_figures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "question_ids",
+          "status",
+          "path",
+          "manifest",
+          "source_commit",
+          "configuration",
+          "summary",
+          "dynamics_model",
+          "control_inputs",
+          "experiment_name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "source_commit": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$"
+          },
+          "status": {
+            "const": "EXECUTED"
+          },
+          "question_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "pattern": "^Q0[1-6]$"
+            }
+          }
+        }
+      }
+    }
+  },
+  "description": "Semantic validator checks paths, unique IDs, provenance, completion and figure/result associations."
+}

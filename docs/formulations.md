@@ -1,5 +1,7 @@
 # Mathematical formulation and comparison
 
+The primary Q03–Q05 campaign now uses seven-state single-track dynamics and steering/throttle controls. The Gaussian latent-control formulation is unchanged; the new transform is `clip(diag(.5,1) z, bounds)`, with densities evaluated before clipping. [Seven-state report](seven_state_benchmark_report.md) · [Current research index](research_index.md).
+
 ## Implemented target and projection
 
 This section derives the **specific finite-dimensional problem implemented here**. It is an information-theoretic control-sequence formulation, rather than a claim to reproduce continuous-time stochastic vehicle dynamics.

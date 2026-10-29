@@ -4,7 +4,11 @@ __pycache__/
 *.egg-info/
 .dist/
 dist/
-build/
+/build/
+/.build/
+/cmake-build-debug/
+/bazel-*
+/MODULE.bazel.lock
 
 # Virtual environments and local tool caches
 .venv/
@@ -15,6 +19,8 @@ venv/
 .ruff_cache/
 .mypy_cache/
 .ipynb_checkpoints/
+*.ipynb_checkpoints
+/.cache/sampling_c3_run.lock
 
 # Test coverage reports
 .coverage
@@ -34,6 +40,8 @@ coverage.xml
 .codex/
 .agents/
 *.pem
+CLAUDE.md
+AGENTS.md
 
 # Editor and operating system files
 .idea/
@@ -42,13 +50,39 @@ coverage.xml
 *.swo
 *~
 .DS_Store
+*.DS_Store*
 Thumbs.db
 Desktop.ini
 
-# Generated experiment archives, animations, and scratch runs
-# Keep CSV/JSON/YAML evidence and PNG/SVG presentation figures versionable.
-results/**/rollouts.npz
-results/**/*.gif
-results/**/*.mp4
-results/pilot*/
-results/smoke*/
+# Generated experiment results and data
+/results/*
+!/results/registry.yaml
+!/results/showcase/
+!/results/archive/
+/results_*/
+*.csv
+!/runs/Q*/*/*.csv
+!/runs/seven_state/*/*/*.csv
+!/runs/seven_state/Q03/*/reference_estimates/*/*.csv
+/runs/**/episodes/
+/runs/**/snapshots/
+/runs/**/figures/
+/runs/**/*.npz
+/runs/**/*.gif
+/runs/**/*.mp4
+/runs/**/tmp/
+/examples/Cassie/saved_trajectories/
+
+# Solver, profiler, and crash output
+attic/multibody/solver_log/
+/model_IIS.ilp
+/valgrind.log
+core
+core.*
+
+# Additional IDE workspace metadata
+.clwb/
+.ijwb
+/runs/Q05/s_turn_pilot_42/
+
+/runs/seven_state/validation/dynamics_pilot_v1/

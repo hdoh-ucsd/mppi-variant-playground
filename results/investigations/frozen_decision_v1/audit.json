@@ -1,0 +1,14 @@
+{
+  "decisions": 7200,
+  "snapshots_checked": 1026,
+  "frozen_inputs_identical": true,
+  "common_target_verified": true,
+  "common_random_numbers_verified": true,
+  "exact_density_ratios_verified": true,
+  "normalized_weights_verified": true,
+  "weighted_updates_verified": true,
+  "nominal_objectives_verified": true,
+  "reference_streams_independent": true,
+  "weighted_endpoint_mass_normalized": true,
+  "note": "Reconstructs paired normals only for audit; figure regeneration draws no randomness."
+}

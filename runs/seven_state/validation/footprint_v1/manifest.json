@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "level": "seven_state_reference_footprint",
+  "phase": "footprint_validation",
+  "started_at_utc": "2026-10-29T08:16:11.488969+00:00",
+  "git": {
+    "commit": "79d626f2ba41e88416a52993d98599e4ce9acae5",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "f5b500e368f962f087a36618d05d3d3bf21c21607faed072542d2a34d2803905",
+  "configuration_sha256": "a61bdab28f82bce451e11c8da96005f64becb200947552771c81ce94b92bcc92",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "run_id": "footprint_v1",
+  "dynamics_model": "dynamic_single_track_7",
+  "finished_at_utc": "2026-10-29T08:16:11.892923+00:00"
+}

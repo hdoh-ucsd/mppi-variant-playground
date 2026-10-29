@@ -1,0 +1,19 @@
+{
+  "episodes_in_summary": 16,
+  "raw_episodes_verified": 16,
+  "snapshots_verified": 0,
+  "paired_seeds": 1,
+  "feasible_conditions": 4,
+  "input_conditions_common": true,
+  "original_base_covariance": [
+    [
+      0.26,
+      0.0
+    ],
+    [
+      0.0,
+      0.14
+    ]
+  ],
+  "raw_checked": true
+}

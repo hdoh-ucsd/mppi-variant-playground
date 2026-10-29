@@ -1,0 +1,12 @@
+{
+  "figure": "results/showcase/Q04_key.png",
+  "inputs_sha256": {
+    "runs/seven_state/Q04/seven_state_q04_v1/summary.csv": "526734b18c74712c6aa458189e945eee6386f035b0cc5248cc4c5e8b4e500e67",
+    "runs/seven_state/Q04/seven_state_q04_v1/geometry.json": "c0fb794a64ca79db4ab323b4fbd8f87c6b547672d556f9b780417efe6539727e",
+    "runs/seven_state/Q04/seven_state_q04_v1/representative_paths.json": "ba59126261402b2c2efbe255406a5b97ebcb86348928fc0e755e79370fe6e87d"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "85fc2c8dafd782597017b4994c41a711bcd5c3cae207f5ea6d86f0c05b387155",
+  "summary_sha256": "526734b18c74712c6aa458189e945eee6386f035b0cc5248cc4c5e8b4e500e67"
+}

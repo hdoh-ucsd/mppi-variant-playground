@@ -1,0 +1,95 @@
+phase: pilot
+run_id: s_turn_clearance_v1
+vehicle:
+  dt: 0.15
+  wheelbase: 1.0
+  acceleration_limit: 2.0
+  velocity_min: 0.0
+  velocity_max: 2.0
+  steering_limit: 0.55
+  steering_rate_limit: 0.8
+corridor:
+  vehicle_radius: 0.22
+  turn_radius: 3.0
+  turn_separation: 3.0
+  entry_length: 2.0
+  exit_length: 2.0
+  speed_target: 1.0
+  clearance_levels:
+  - 0.9
+  - 0.6
+  - 0.35
+  - 0.2
+  end_extension: 8.0
+controller:
+  horizon: 24
+  samples: 256
+  temperature: 8.0
+  base_covariance:
+  - - 0.26
+    - 0.0
+  - - 0.0
+    - 0.14
+proposals:
+  standard:
+  - - 0.26
+    - 0.0
+  - - 0.0
+    - 0.14
+  isotropic:
+  - - 0.2
+    - 0.0
+  - - 0.0
+    - 0.2
+  diagonal:
+  - - 0.31
+    - 0.0
+  - - 0.0
+    - 0.09
+  full:
+  - - 0.26
+    - 0.07
+  - - 0.07
+    - 0.14
+cost:
+  remaining_progress: 1.0
+  speed: 2.0
+  heading: 1.0
+  clearance: 100.0
+  safety_margin: 0.15
+  collision: 3000.0
+  control: 0.05
+  variation: 0.1
+  terminal_progress: 4.0
+  terminal_goal: 10.0
+  terminal_heading: 4.0
+  terminal_speed: 3.0
+execution:
+  max_steps: 200
+  position_tolerance: 0.3
+  heading_tolerance: 0.35
+  speed_tolerance: 0.7
+  snapshot_steps:
+  - 15
+  - 40
+  - 65
+  representative_seed: 20000
+  representative_clearance: 0.35
+seeds:
+  start: 20000
+  count: 20
+pilot_seed: 42
+secondary_samples:
+- 128
+secondary_rate_limits:
+- 0.4
+secondary_clearance: 0.35
+initial_state:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+goal_state: reference_terminal
+workers: 8
+goal_mode: finish_gate

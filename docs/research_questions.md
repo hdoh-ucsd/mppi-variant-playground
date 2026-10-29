@@ -1,5 +1,9 @@
 # Mathematical investigation of MPPI variants
 
+Current executed evidence is indexed by Q01–Q06 in the registry and question documents. Q01/Q02 have new independent analytic replications; Q03–Q05 now have seven-state records. Q06 remains planned. [Seven-state report](seven_state_benchmark_report.md) · [Current research index](research_index.md).
+
+Current Q01–Q06 execution status, selected figures and reproducible evidence are maintained in the [canonical research index](research_index.md) and [registry](../results/registry.yaml). The mechanism-oriented designs below are background; a proposed probe is not evidence of execution.
+
 The purpose is to explain the characteristics of each variant through its equations and suitable experiments. Every study should connect **mathematical change → predicted effect → isolated numerical observation → control behavior**, including assumptions and cases where that prediction ceases to apply.
 
 The baseline covariance probes below are now implemented in the [covariance mechanism study](covariance_mechanisms.md), with [execution details](mathematical_investigations.md) and [observed findings](experimental_findings.md). The broader algorithm-family studies remain planned.

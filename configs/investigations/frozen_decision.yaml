@@ -1,0 +1,20 @@
+phase: evaluation
+horizon: 28
+primary_samples: 384
+sample_counts: [64, 128, 256, 384, 512, 1024, 2048, 4096]
+seeds: {start: 10000, count: 50}
+representative_seed: 10000
+reference_episode_seed: 31415
+reference_samples: 65536
+reference_repetitions: 8
+reference_min_ess: 100
+reference_max_weight: 0.05
+reference_max_rms_ci_halfwidth: 0.05
+sensitivity_step: 0.001
+orientation_eigenvalues: [0.34, 0.10]
+selection:
+  open_space_step: 8
+  pre_obstacle_min_x: 0.7
+  pre_obstacle_max_x: 1.0
+  post_disturbance_step: 21
+repetition_counts: [10, 25, 50]

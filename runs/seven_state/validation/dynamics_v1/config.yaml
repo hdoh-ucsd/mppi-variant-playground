@@ -1,0 +1,24 @@
+phase: validation
+vehicle:
+  dt: 0.15
+  substeps: 3
+  mass: 35.0
+  yaw_inertia: 8.0
+  front_distance: 0.4
+  rear_distance: 0.4
+  cornering_front: 450.0
+  cornering_rear: 450.0
+  friction: 0.9
+  gravity: 9.81
+  engine_force: 70.0
+  brake_force: 105.0
+  drag_linear: 0.4
+  drag_quadratic: 0.5
+  steering_limit: 0.5
+  throttle_limit: 1.0
+  velocity_max: 4.0
+  low_speed: 0.5
+  low_speed_damping_time: 0.15
+  cg_height: 0.2
+  roll_stiffness: 120.0
+  roll_damping: 48.0

@@ -27,7 +27,7 @@ def begin(output, config, level):
     output.mkdir(parents=True, exist_ok=False)
     (output / "config.yaml").write_text(yaml.safe_dump(config, sort_keys=False))
     code = hashlib.sha256()
-    for folder in ("src", "experiments", "configs/investigations"):
+    for folder in ("src", "experiments", "configs"):
         for path in sorted((REPO / folder).rglob("*")):
             if path.suffix in {".py", ".yaml"}:
                 code.update(str(path.relative_to(REPO)).encode())

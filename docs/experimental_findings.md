@@ -1,5 +1,7 @@
 # Covariance mechanism findings
 
+The results below are the preserved original analytic/kinematic campaign. New independent analytic replications and seven-state Q03–Q05 outcomes are reported separately; do not transfer these old vehicle numbers to the new plant. [Seven-state report](seven_state_benchmark_report.md) · [Current research index](research_index.md).
+
 This report follows **claim → derivation → hypothesis → isolated test → observation → interpretation → limitation**. Mathematical identities are distinguished from observations throughout. Evaluation configurations were committed before the corresponding runs; no scenario or covariance setting was retuned using these outcomes. The runs are exploratory scientific evidence with predeclared configurations, not a preregistered confirmatory test.
 
 ## Executed evidence and provenance

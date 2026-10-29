@@ -1,5 +1,7 @@
 # Trajectory behavior: distributions in state space
 
+The trajectories and claims below use the historical four-state kinematic bicycle. The new primary Q04 uses the seven-state plant, five scenes, and separate compatibility/holdout cohorts. [Seven-state report](seven_state_benchmark_report.md) · [Current research index](research_index.md).
+
 This suite makes the current MPPI covariance settings visible through the trajectories they generate. Standard, isotropic, diagonal and full are four fixed proposal settings of the same information-theoretic MPPI controller. Tsallis, DIAL, Tube, Robust and CC-MPPI remain unimplemented; this suite provides a saved-data interface that their future implementations can use.
 
 The existing analytic experiments are preserved. [Figure 1: covariance geometry](../results/investigations/gaussian_v1/figures/01_covariance_geometry.png) and [Figure 2: the quadratic target](../results/investigations/gaussian_v1/figures/02_rotated_quadratic.png) remain methodological/appendix figures. The new A–E figures address behavior in physical XY space.

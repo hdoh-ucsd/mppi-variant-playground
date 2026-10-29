@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "level": "seven_state_q05",
+  "phase": "pilot",
+  "started_at_utc": "2026-10-29T07:05:50.579151+00:00",
+  "git": {
+    "commit": "fe98accd84213647c0ff7c006226df6ef1dd3d1f",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "f0a96df4d91bef7415cf7ac266c5d3afd687ffe56832b30d1f5003ab9ebb94d7",
+  "configuration_sha256": "1b8223bf808cd50eb76e250d8f30f2b62f6b4a76c31fe61c68f53866a6aecbfb",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "engine_source_sha256": "3de4191d90c4a2c860719373c9cbfd2337714313645db0462361c001e36ccadd",
+  "run_id": "seven_state_q05_pilot_v1",
+  "dynamics_model": "dynamic_single_track_7",
+  "state_fields": [
+    "px",
+    "py",
+    "heading",
+    "roll",
+    "vx",
+    "vy",
+    "yaw_rate"
+  ],
+  "control_fields": [
+    "steering",
+    "throttle"
+  ],
+  "sampling_dimension": 40,
+  "episodes": 16,
+  "cohorts": {
+    "pilot": [
+      42
+    ]
+  },
+  "episodes_executed_new": 16,
+  "rhs_per_transition": 6,
+  "finished_at_utc": "2026-10-29T07:06:42.430755+00:00",
+  "disturbance_stream": "SeedSequence([4401,seed]); one common realized impulse per seed",
+  "optimizer_stream": "SeedSequence([4400,seed])",
+  "collision_check": "Swept disk on each midpoint integration substep; same cost and geometry in planning/execution",
+  "raw_storage": "Local ignored episodes and snapshots; cloning alone does not contain full raw evidence"
+}

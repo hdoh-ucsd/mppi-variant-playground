@@ -1,0 +1,11 @@
+status: PLANNED
+executable: false
+formulations:
+- CEM
+- Tsallis-VI
+- DIAL-MPC
+- Tube-MPPI
+- Robust-MPPI
+- CC-MPPI
+protocol: docs/questions/Q06_variant_formulations.md
+note: Derive and implement each defining formulation before executing comparisons.

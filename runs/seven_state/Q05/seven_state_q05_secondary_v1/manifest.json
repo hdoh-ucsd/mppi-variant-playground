@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "level": "seven_state_secondary_q05",
+  "phase": "evaluation",
+  "started_at_utc": "2026-10-29T07:19:55.447422+00:00",
+  "git": {
+    "commit": "3ced0faafe0390e6377dfe85498787a33a5b2d39",
+    "dirty": true,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "d5f93e174480fba2efbb3d1d904a4715f7ce3a2ff07a36d2cf5640286f05a421",
+  "configuration_sha256": "5ecd9cf5a0d20057ad8513fc909277df29d580cd01021b29f5bae6022fdfda9a",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "engine_source_sha256": "3de4191d90c4a2c860719373c9cbfd2337714313645db0462361c001e36ccadd",
+  "run_id": "seven_state_q05_secondary_v1",
+  "dynamics_model": "dynamic_single_track_7",
+  "state_fields": [
+    "px",
+    "py",
+    "heading",
+    "roll",
+    "vx",
+    "vy",
+    "yaw_rate"
+  ],
+  "control_fields": [
+    "steering",
+    "throttle"
+  ],
+  "sampling_dimension": 40,
+  "episodes": 400,
+  "cohorts": {
+    "holdout": [
+      35000,
+      35001,
+      35002,
+      35003,
+      35004,
+      35005,
+      35006,
+      35007,
+      35008,
+      35009,
+      35010,
+      35011,
+      35012,
+      35013,
+      35014,
+      35015,
+      35016,
+      35017,
+      35018,
+      35019
+    ]
+  },
+  "episodes_executed_new": 400,
+  "rhs_per_transition": 6,
+  "finished_at_utc": "2026-10-29T07:39:52.280062+00:00",
+  "disturbance_stream": "SeedSequence([4401,seed]); one common realized impulse per seed",
+  "optimizer_stream": "SeedSequence([4400,seed])",
+  "collision_check": "Swept disk on each midpoint integration substep; same cost and geometry in planning/execution",
+  "raw_storage": "Local ignored episodes and snapshots; cloning alone does not contain full raw evidence"
+}

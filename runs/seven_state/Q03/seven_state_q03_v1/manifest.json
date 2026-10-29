@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "level": "seven_state_frozen",
+  "phase": "evaluation",
+  "started_at_utc": "2026-10-29T06:47:43.874199+00:00",
+  "git": {
+    "commit": "0006f840f99ab6be155b66ea7833e9210fe40367",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "d0e94101f55c2dc14f98ce73c26ba0c000a2ce02b0cfff1d35f66c27a26abb3d",
+  "configuration_sha256": "fc1747540875d57a7f9564e2661078c79e35b3cbb5d138017a30307b5346d85d",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "run_id": "seven_state_q03_v1",
+  "decisions": 7200,
+  "dynamics_model": "dynamic_single_track_7",
+  "control_fields": [
+    "steering",
+    "throttle"
+  ],
+  "sampling_dimension": 40,
+  "evaluation_rollouts": 7660800,
+  "rhs_evaluations": 920160000,
+  "evaluation_stream": "SeedSequence([101,state_index,seed])",
+  "reference_stream": "SeedSequence([202,state_index,rep])",
+  "raw_storage": "Full primary and representative-budget populations are local ignored arrays; curated inputs contain XY display subsets, full endpoint weights and costs"
+}

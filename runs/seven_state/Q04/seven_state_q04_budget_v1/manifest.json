@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "level": "seven_state_budget_q04",
+  "phase": "evaluation",
+  "started_at_utc": "2026-10-29T07:19:52.572579+00:00",
+  "git": {
+    "commit": "3ced0faafe0390e6377dfe85498787a33a5b2d39",
+    "dirty": true,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "d5f93e174480fba2efbb3d1d904a4715f7ce3a2ff07a36d2cf5640286f05a421",
+  "configuration_sha256": "fc1747540875d57a7f9564e2661078c79e35b3cbb5d138017a30307b5346d85d",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "engine_source_sha256": "3de4191d90c4a2c860719373c9cbfd2337714313645db0462361c001e36ccadd",
+  "reused_primary_run": "runs/seven_state/Q04/seven_state_q04_v1",
+  "run_id": "seven_state_q04_budget_v1",
+  "dynamics_model": "dynamic_single_track_7",
+  "state_fields": [
+    "px",
+    "py",
+    "heading",
+    "roll",
+    "vx",
+    "vy",
+    "yaw_rate"
+  ],
+  "control_fields": [
+    "steering",
+    "throttle"
+  ],
+  "sampling_dimension": 40,
+  "episodes": 320,
+  "cohorts": {
+    "holdout": [
+      31000,
+      31001,
+      31002,
+      31003,
+      31004,
+      31005,
+      31006,
+      31007,
+      31008,
+      31009,
+      31010,
+      31011,
+      31012,
+      31013,
+      31014,
+      31015,
+      31016,
+      31017,
+      31018,
+      31019
+    ]
+  },
+  "episodes_executed_new": 240,
+  "rhs_per_transition": 6,
+  "finished_at_utc": "2026-10-29T07:23:15.753936+00:00",
+  "disturbance_stream": "SeedSequence([4401,seed]); one common realized impulse per seed",
+  "optimizer_stream": "SeedSequence([4400,seed])",
+  "collision_check": "Swept disk on each midpoint integration substep; same cost and geometry in planning/execution",
+  "raw_storage": "Local ignored episodes and snapshots; cloning alone does not contain full raw evidence"
+}

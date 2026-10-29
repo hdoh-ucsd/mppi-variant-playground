@@ -1,0 +1,10 @@
+{
+  "decisions": 7200,
+  "snapshots_verified": 1026,
+  "state_dimension": 7,
+  "sampling_dimension": 40,
+  "frozen_inputs_verified": true,
+  "common_normals_verified": true,
+  "common_target_and_ratios_verified": true,
+  "no_closed_loop_evaluation": "Only source prefixes execute; evaluation decisions do not advance an environment"
+}

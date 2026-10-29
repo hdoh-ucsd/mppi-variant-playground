@@ -29,12 +29,31 @@ def git_info():
 
     return {
         "commit": run("rev-parse", "HEAD"),
-        "dirty": bool(run("status", "--porcelain", "--", ".", ":(exclude)results")),
-        "status_scope": "repository excluding generated results/",
+        "dirty": bool(
+            run("status", "--porcelain", "--", ".", ":(exclude)results", ":(exclude)runs")
+        ),
+        "status_scope": "repository excluding generated results/ and runs/",
     }
 
 
 def make_controller(config):
+    if config.get("model_kind") == "dynamic7":
+        from costs.dynamic_vehicle import VehicleCost
+        from dynamics.dynamic_vehicle import DynamicVehicle
+        from scenarios.dynamic_scenes import geometry_for_config
+
+        model = DynamicVehicle(**config["vehicle"])
+        geometry = geometry_for_config(config)
+        return MPPI(
+            model,
+            VehicleCost(
+                geometry,
+                model,
+                config["cost"],
+                config.get("running_speed_target", config["speed_target"]),
+            ),
+            config["controller"],
+        )
     model = Bicycle(**config["dynamics"])
     s = config["scenario"]
     cost = SharedCost(

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "level": "analytic_gaussian",
+  "phase": "evaluation",
+  "started_at_utc": "2026-10-29T06:46:12.321994+00:00",
+  "git": {
+    "commit": "0006f840f99ab6be155b66ea7833e9210fe40367",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "d0e94101f55c2dc14f98ce73c26ba0c000a2ce02b0cfff1d35f66c27a26abb3d",
+  "configuration_sha256": "d3c39b563f341be3a3e50285f9c49b7d52a7edd7be62008d7d4932f98e91df39",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "cases": 71,
+  "trials": 4544,
+  "cost_evaluations": 2326528
+}

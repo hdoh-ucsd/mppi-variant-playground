@@ -1,0 +1,13 @@
+{
+  "git": {
+    "commit": "ff3df5824856e8252a221bc6a4fdce8105ec298c",
+    "dirty": true,
+    "status_scope": "repository excluding generated results/"
+  },
+  "figure_sha256": "ca26381baeaee33b9ccb35770b66a416d4ba1febab5e4b1311b2250be49ca6f2",
+  "summary_sha256": "991a5333ca9b00c759b1a2ff07fbc96d27ad6bc2f73f909fcdab9db3c7806996",
+  "plotting_data_sha256": "6a7311c34716fd7745cffa929ee38c5a241996338d90e9e4bc36cdc8055ca375",
+  "plot_source_sha256": "5c7c8b6ca3dc12f96b4d9b7ca739ad531e5c3e17c46851f16d55f6f072902c9a",
+  "representative_rule": "Predeclared first evaluation seed at clearance .35; failures retained",
+  "regeneration": "Saved summaries, paths and polygon geometry only; no model execution or random draws"
+}

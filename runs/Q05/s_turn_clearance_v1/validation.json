@@ -1,0 +1,40 @@
+{
+  "pre_change_pytest_passed": 109,
+  "final_pytest_passed": 125,
+  "ruff_check": "passed",
+  "ruff_format_check": "passed",
+  "registry": {
+    "questions": 6,
+    "executed": 5,
+    "planned": [
+      "Q06"
+    ],
+    "run_ids_unique": true,
+    "figure_and_configuration_provenance": "verified"
+  },
+  "raw_audit": {
+    "episodes_in_summary": 480,
+    "raw_episodes_verified": 480,
+    "snapshots_verified": 68,
+    "paired_seeds": 20,
+    "feasible_conditions": 6,
+    "input_conditions_common": true,
+    "original_base_covariance": [
+      [
+        0.26,
+        0.0
+      ],
+      [
+        0.0,
+        0.14
+      ]
+    ],
+    "raw_checked": true
+  },
+  "evaluation_source_commit": "ff3df5824856e8252a221bc6a4fdce8105ec298c",
+  "evaluation_core_unchanged_after_execution": true,
+  "original_historical_results_unchanged_against": "cfe67f959233967daf763e2f8fe771db12f2c39d",
+  "storage_rules": "raw episodes, snapshots, arrays and per-run figures ignored; small summaries and showcase versionable",
+  "regeneration": "saved-data figure generation verified without random draws or model execution",
+  "new_binary_archives": 0
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "level": "seven_state_latency",
+  "phase": "timing_calibration",
+  "started_at_utc": "2026-10-29T08:16:20.481746+00:00",
+  "git": {
+    "commit": "79d626f2ba41e88416a52993d98599e4ce9acae5",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "f5b500e368f962f087a36618d05d3d3bf21c21607faed072542d2a34d2803905",
+  "configuration_sha256": "f27cade6f6f7449542fa5ccefd29c5b059a3e9cce702ad00c137e6ded5728a10",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "run_id": "seven_state_q05_timing_v1",
+  "plans_measured": 160,
+  "finished_at_utc": "2026-10-29T08:17:24.968572+00:00",
+  "dynamics_model": "dynamic_single_track_7",
+  "sampling_dimension": 40
+}

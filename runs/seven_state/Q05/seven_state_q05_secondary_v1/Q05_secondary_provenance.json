@@ -1,0 +1,10 @@
+{
+  "figure": "docs/figures/seven_state_Q05_secondary.png",
+  "inputs_sha256": {
+    "runs/seven_state/Q05/seven_state_q05_secondary_v1/summary.csv": "8c01dae2d48e0d521919f94d633076c6efaba2874a1ed8f079abd3fc9163ba3d"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "7139fb87a9767ce4775b0350b157a1e6e9300773d30b2c497a2b495d9f3e91d3",
+  "summary_sha256": "8c01dae2d48e0d521919f94d633076c6efaba2874a1ed8f079abd3fc9163ba3d"
+}

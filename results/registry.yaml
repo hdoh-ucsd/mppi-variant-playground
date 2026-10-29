@@ -1,0 +1,519 @@
+schema_version: 1
+questions:
+- id: Q01
+  title: Sampling covariance and estimation accuracy
+  document: docs/questions/Q01_sampling_accuracy.md
+  status: EXECUTED
+  research_question: How do proposal orientation, anisotropy and budget affect finite-sample error for
+    a fixed Gibbs target?
+  mathematical_motivation: The Gaussian Gibbs mean is (P⁻¹+H/λ)⁻¹Hb/λ, independent of the proposal covariance.
+  hypothesis: A suitably oriented proposal can reduce finite-sample MSE; misalignment can reverse the
+    effect.
+  configuration: runs/seven_state/Q01/seven_state_q01_v1/config.yaml
+  independent_variables: Orientation, anisotropy, sample count, scale constraint; cost rotation in a separate
+    factorial slice.
+  controlled_variables: Base distribution, quadratic cost and temperature within each comparison; common
+    random numbers per paired seed.
+  metrics: Bias, variance, MSE, ESS and moment error across 64 evaluation seeds.
+  run_ids:
+  - seven_state_q01_v1
+  - gaussian_v1
+  key_figure: results/showcase/Q01_key.png
+  source_figure: null
+  summary: runs/seven_state/Q01/seven_state_q01_v1/summary.csv
+  main_finding: 'An independent 64-seed replication preserves positive and negative orientation examples:
+    at K=256, MSE is 0.006505 isotropic, 0.003646 at +45° and 0.065524 at −45°. These are estimates of
+    one exact Gaussian target, not vehicle results.'
+  interpretation: A common Gaussian Gibbs target separates proposal-induced finite-sample error from a
+    changed optimization problem. ESS alone does not determine mean-estimation variance.
+  limitations: An exact quadratic target is not a vehicle task. Trace matching does not match determinant;
+    empirical 64-seed variance and bias are finite-sample quantities.
+  reproduce: uv run python experiments/seven_state_campaign.py --stage q01 --output runs/seven_state/Q01/q01_reproduction
+  regenerate: uv run python experiments/plot_seven_state.py --stage Q01 --input runs/seven_state/Q01/seven_state_q01_v1
+  experiment_name: Independent-seed exact Gaussian covariance replication
+  source_commit: 0006f840f99ab6be155b66ea7833e9210fe40367
+  primary_run_id: seven_state_q01_v1
+  dynamics_model: analytic_gaussian
+  control_inputs: Gaussian vector (no vehicle)
+  controller_configuration: Fixed Gaussian base/proposal-corrected SNIS; exact target moments
+  seeds: 34000–34063 (64 independent replication seeds)
+  sampling_budget: K=32…4096; d=2; 28,608 trials
+  supporting_figures: []
+- id: Q02
+  title: Importance-weight concentration
+  document: docs/questions/Q02_weight_degeneracy.md
+  status: EXECUTED
+  research_question: When do cost weighting and Gaussian density corrections concentrate importance weights,
+    and how does ESS relate to error?
+  mathematical_motivation: ESS=1/Σw² measures weight concentration, whereas estimator variance also depends
+    on the integrand.
+  hypothesis: Sharper Boltzmann factors and high-dimensional proposal mismatch can each concentrate weights.
+  configuration: runs/seven_state/Q02/seven_state_q02_v1/config.yaml
+  independent_variables: Temperature and dimension; cost-only, ratio-only and combined controls.
+  controlled_variables: Analytic target recomputed for each temperature; paired seeds and sample budgets
+    within each comparison.
+  metrics: ESS, entropy, largest weight, exact mean error and Gaussian overlap diagnostics.
+  run_ids:
+  - seven_state_q02_v1
+  - temperature_v1
+  key_figure: results/showcase/Q02_key.png
+  source_figure: null
+  summary: runs/seven_state/Q02/seven_state_q02_v1/summary.csv
+  main_finding: At K=512 the isotropic mean ESS grows from 40.56 at λ=.1 to 450.61 at λ=10, while mean
+    error changes from .04284 to .05207 against each changed exact target. Cost-only, ratio-only and combined
+    dimension probes separate concentration mechanisms.
+  interpretation: ESS summarizes normalized weights. Temperature changes the target; density ratios alone
+    can concentrate in high dimensions.
+  limitations: Temperature changes the target. ESS does not certify estimation accuracy or target coverage.
+    Seven states correspond to a 40-dimensional sampled control sequence here.
+  reproduce: uv run python experiments/seven_state_campaign.py --stage q02 --output runs/seven_state/Q02/q02_reproduction
+  regenerate: uv run python experiments/plot_seven_state.py --stage Q02 --input runs/seven_state/Q02/seven_state_q02_v1
+  experiment_name: Independent-seed temperature and dimension concentration replication
+  source_commit: 0006f840f99ab6be155b66ea7833e9210fe40367
+  primary_run_id: seven_state_q02_v1
+  dynamics_model: analytic_gaussian
+  control_inputs: Gaussian vector (no vehicle)
+  controller_configuration: Fixed Gaussian base/proposal-corrected SNIS; exact target moments
+  seeds: 34000–34063 (64 independent replication seeds)
+  sampling_budget: K=512; d=2…56; 4,544 trials
+  supporting_figures: []
+- id: Q03
+  title: Frozen-state MPPI decision analysis
+  document: docs/questions/Q03_frozen_decision.md
+  status: EXECUTED
+  research_question: How does changing only proposal covariance alter one MPPI decision at a frozen state
+    and warm start?
+  mathematical_motivation: Fixing p, J, λ and the proposal mean isolates the covariance intervention in
+    self-normalized importance sampling.
+  hypothesis: Covariance changes finite-budget decisions; differences may diminish with K if sampling
+    adequately covers the target.
+  configuration: runs/seven_state/Q03/seven_state_q03_v1/config.yaml
+  independent_variables: Six trace-matched proposals, K=64…4096 and 50 paired evaluation seeds.
+  controlled_variables: Identical seven-state observation, latent warm start, previous control, model,
+    cost, horizon, base, temperature and paired standard normals; only proposal covariance differs.
+  metrics: Paired command differences, ESS, entropy, mean-plan objective, reference diagnostics and latency.
+  run_ids:
+  - seven_state_q03_v1
+  - frozen_decision_v1
+  key_figure: results/showcase/Q03_key.png
+  source_figure: null
+  summary: runs/seven_state/Q03/seven_state_q03_v1/summary.csv
+  main_finding: '7,200 seven-state frozen decisions show finite-budget differences. Only the post-disturbance
+    high-sample reference passes the declared diagnostics: standard RMS error drops .1085→.0140 from K=64→4096;
+    sensitivity-aligned .2471→.1597. Open-space and obstacle references remain unresolved.'
+  interpretation: Proposal geometry changes finite sampled rollouts, corrected weights, controls and open-loop
+    predictions, even with the same target.
+  limitations: Two reference means fail overlap/precision diagnostics. Distances to those estimates are
+    not validated target errors. Local sensitivity alignment is not target covariance matching; three
+    states and one warm start each limit inference.
+  reproduce: uv run python experiments/seven_state_campaign.py --stage q03 --output runs/seven_state/Q03/q03_reproduction
+  regenerate: uv run python experiments/plot_seven_state.py --stage Q03 --input runs/seven_state/Q03/seven_state_q03_v1
+  experiment_name: Seven-state frozen MPPI decisions at three common inputs
+  source_commit: 0006f840f99ab6be155b66ea7833e9210fe40367
+  primary_run_id: seven_state_q03_v1
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle [−1,1]
+  controller_configuration: Gaussian IT-MPPI; T=20, λ=8, base diag(.14,.26); standard/isotropic/diagonal/full
+    normalized trace .40; Q03 adds aligned/misaligned
+  seeds: 33000–33049, source 31415; reference namespaces [202,state,rep]
+  sampling_budget: K=64,128,256,384,512,1024,2048,4096; 7,200 decisions + 3×8×65,536 independent reference
+    rollouts
+  supporting_figures:
+  - docs/figures/seven_state_Q03_convergence.png
+  - docs/figures/seven_state_Q03_commands.png
+- id: Q04
+  title: Closed-loop trajectory differences
+  document: docs/questions/Q04_closed_loop.md
+  status: EXECUTED
+  research_question: How do covariance settings change executed route distributions, and which distribution
+    does each plot describe?
+  mathematical_motivation: Closed-loop feedback changes observed states and warm starts, so static estimation
+    benefits need not transfer.
+  hypothesis: Proposal changes may accumulate into visibly different route and recovery distributions.
+  configuration: runs/seven_state/Q04/seven_state_q04_v1/config.yaml
+  independent_variables: Four covariance settings; five scenarios; separate compatibility and holdout
+    cohorts; K in a controlled obstacle-task sweep.
+  controlled_variables: Costs, dynamics, limits, budgets and exogenous disturbances within each scenario.
+  metrics: Completion, collision, clearance, route station crossing, occupancy, ESS and progress-aligned
+    dispersion.
+  run_ids:
+  - seven_state_q04_v1
+  - seven_state_q04_timing_v1
+  - seven_state_q04_budget_v1
+  - seven_state_q04_pilot_v1
+  - trajectory_behavior_v1
+  key_figure: results/showcase/Q04_key.png
+  source_figure: null
+  summary: runs/seven_state/Q04/seven_state_q04_v1/summary.csv
+  main_finding: Across five seven-state scenes, compatibility completion is 397/400 and independent holdout
+    completion 391/400, with zero disk-proxy collisions. In holdout two-route trials, full takes 17 upper
+    routes out of 20; standard/isotropic take 5 and diagonal 2. Route frequencies characterize these matrices,
+    not published algorithm families.
+  interpretation: Executed bundles, occupancy, local rollout clouds and inter-seed dispersion describe
+    different distributions. A mean over routes need not be feasible.
+  limitations: Twenty seeds per scenario and cohort give wide intervals. Feedback changes state and warm
+    start. Failures are terminal-region timeouts; one calibration and selected matrices cannot establish
+    general superiority. Collision counts use a centered disk proxy; full-body avoidance is not established.
+  reproduce: uv run python experiments/seven_state_campaign.py --stage q04 --output runs/seven_state/Q04/q04_reproduction
+  regenerate: uv run python experiments/plot_seven_state.py --stage Q04 --input runs/seven_state/Q04/seven_state_q04_v1
+  experiment_name: Seven-state five-scenario paired closed-loop campaign
+  source_commit: fe98accd84213647c0ff7c006226df6ef1dd3d1f
+  primary_run_id: seven_state_q04_v1
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle [−1,1]
+  controller_configuration: Gaussian IT-MPPI; T=20, λ=8, base diag(.14,.26); standard/isotropic/diagonal/full
+    normalized trace .40; Q03 adds aligned/misaligned
+  seeds: 42–61 compatibility; 31000–31019 independent holdout; 36000–36009 isolated timing
+  sampling_budget: Primary K=384; T=20; 800 episodes; separate K=128/384/768/1536 sweep
+  supporting_figures:
+  - docs/figures/seven_state_Q04_diagnostics.png
+  - docs/figures/seven_state_budget_seven_state_q04_budget_v1.png
+- id: Q05
+  title: S-turn difficulty and controller limitations
+  document: docs/questions/Q05_s_turn_difficulty.md
+  status: EXECUTED
+  research_question: At what corridor clearance do specific proposal covariances produce measurable differences
+    in controlled S-turn traversal?
+  mathematical_motivation: Finite-budget importance sampling, actuator limits and a restricted horizon
+    interact with feasible-set geometry.
+  hypothesis: Sequential steering reversals with less clearance may expose proposal inefficiency; no proposal
+    is expected to win by construction.
+  configuration: runs/seven_state/Q05/seven_state_q05_v1/config.yaml
+  independent_variables: 'Primary: clearance .90,.60,.35,.20 m. Separate K=128/384/768/1536 at .35 m;
+    separate cruising-speed and disturbance checks; discrete command slew studied separately; continuous
+    actuator dynamics omitted.'
+  controlled_variables: Vehicle, objective, speed target, steering limit, horizon and samples within each
+    clearance condition.
+  metrics: Success/collision, censored progress, cross-track error, clearance, completion time, evaluation
+    cost, ESS, entropy, effort, rate saturation, latency and transitions.
+  run_ids:
+  - seven_state_q05_v1
+  - seven_state_reference_footprint_v1
+  - seven_state_q05_rate_v1
+  - seven_state_q05_timing_v1
+  - seven_state_q05_secondary_v1
+  - seven_state_q05_budget_v1
+  - seven_state_q05_pilot_v1
+  - s_turn_clearance_v1
+  key_figure: results/showcase/Q05_key.png
+  source_figure: null
+  summary: runs/seven_state/Q05/seven_state_q05_v1/summary.csv
+  main_finding: 'Seven-state S-turn completion: 0.9 m: standard 20/20, isotropic 19/20, diagonal 20/20,
+    full 20/20; 0.6 m: standard 20/20, isotropic 20/20, diagonal 20/20, full 20/20; 0.35 m: standard 20/20,
+    isotropic 19/20, diagonal 20/20, full 20/20; 0.2 m: standard 20/20, isotropic 16/20, diagonal 20/20,
+    full 19/20. Across 320 primary episodes, 0 disk-proxy collisions; all failed trajectories are retained.
+    The separate state-jump checks have 44 collisions, reported separately.'
+  interpretation: A larger observed completion gap at the tightest clearance coexists with terminal speed/heading
+    failures; this does not isolate covariance-driven route discovery.
+  limitations: One handedness, one horizon and specific matrices limit generalization. Completion allows
+    straight-runout recovery. Intervals are pointwise. Discrete command slew is separate; continuous actuator
+    dynamics are omitted. Executed collision counts use a centered disk proxy that does not enclose the
+    axles; full-body collision avoidance is not established.
+  reproduce: uv run python experiments/seven_state_campaign.py --stage q05 --output runs/seven_state/Q05/q05_reproduction
+  regenerate: uv run python experiments/plot_seven_state.py --stage Q05 --input runs/seven_state/Q05/seven_state_q05_v1
+  experiment_name: Seven-state feasible S-turn clearance campaign
+  source_commit: 7bea369e3455bf62785fcf8fc0db59c8bcbfc6a7
+  primary_run_id: seven_state_q05_v1
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle [−1,1]
+  controller_configuration: Gaussian IT-MPPI; T=20, λ=8, base diag(.14,.26); standard/isotropic/diagonal/full
+    normalized trace .40; Q03 adds aligned/misaligned
+  seeds: 42 pilot; 32000–32019 primary holdout (20 per setting); 35000–35019 cruise/impulse; 37000–37019
+    slew; 36000–36009 timing
+  sampling_budget: Primary K=384; T=20; 320 episodes; separate K sweep
+  supporting_figures:
+  - docs/figures/seven_state_Q05_diagnostics.png
+  - docs/figures/seven_state_Q05_secondary.png
+  - docs/figures/seven_state_Q05_rate.png
+  - docs/figures/seven_state_budget_seven_state_q05_budget_v1.png
+- id: Q06
+  title: Published MPPI formulation comparisons
+  document: docs/questions/Q06_variant_formulations.md
+  status: PLANNED
+  research_question: Which defining mathematical changes in published MPPI formulations produce observable
+    mechanisms under their stated assumptions?
+  mathematical_motivation: Different objectives and feedback architectures cannot be compared merely by
+    renaming one Gaussian sampler.
+  hypothesis: Each defining mathematical change should produce a measurable mechanism under its own assumptions.
+  configuration: configs/investigations/published_formulations_plan.yaml
+  independent_variables: Future divergence/weighting law, search schedule, feedback architecture and state
+    covariance objectives.
+  controlled_variables: To be declared per formulation, including target, tracker, noise assumptions and
+    all inner-loop work.
+  metrics: 'To be declared: update identities, oracle checks, task outcomes, actual computational work
+    and assumptions.'
+  run_ids: []
+  key_figure: null
+  source_figure: null
+  summary: null
+  main_finding: PLANNED — CEM, Tsallis-VI, DIAL, Tube-MPPI, Robust-MPPI and CC-MPPI are not implemented
+    or evaluated.
+  interpretation: Paper-level changes to weighting, annealing, feedback and state-covariance design require
+    distinct implementations and appropriate isolated tests.
+  limitations: No experimental claims or placeholder figures. Covariance ablations are not these published
+    formulations.
+  reproduce: 'PLANNED: no executable study exists; follow docs/paper_map.md and docs/implementation_fidelity.md.'
+  regenerate: 'PLANNED: no figures to regenerate.'
+  experiment_name: Published formulation comparison (planned)
+  dynamics_model: not yet declared
+  control_inputs: not yet declared
+  controller_configuration: Alternative formulations not implemented
+  seeds: not yet declared
+  sampling_budget: not yet declared
+  source_commit: null
+  primary_run_id: null
+  supporting_figures: []
+runs:
+- id: gaussian_v1
+  question_ids:
+  - Q01
+  status: EXECUTED
+  path: results/investigations/gaussian_v1
+  manifest: results/investigations/gaussian_v1/manifest.json
+  source_commit: dd50f534ad47e765bec39715f6f801b790a251b2
+  configuration: results/investigations/gaussian_v1/config.yaml
+  summary: results/investigations/gaussian_v1/summary.csv
+  dynamics_model: analytic_gaussian
+  control_inputs: not applicable (Gaussian latent vectors)
+  experiment_name: gaussian_v1 (historical)
+  key_figure: results/investigations/gaussian_v1/figures/03_alignment_sweep.png
+- id: temperature_v1
+  question_ids:
+  - Q02
+  status: EXECUTED
+  path: results/investigations/temperature_v1
+  manifest: results/investigations/temperature_v1/manifest.json
+  source_commit: dd50f534ad47e765bec39715f6f801b790a251b2
+  configuration: results/investigations/temperature_v1/config.yaml
+  summary: results/investigations/temperature_v1/summary.csv
+  dynamics_model: analytic_gaussian
+  control_inputs: not applicable (Gaussian latent vectors)
+  experiment_name: temperature_v1 (historical)
+  key_figure: results/investigations/temperature_v1/figures/05b_dimension_diagnostics.png
+- id: frozen_decision_v1
+  question_ids:
+  - Q03
+  status: EXECUTED
+  path: results/investigations/frozen_decision_v1
+  manifest: results/investigations/frozen_decision_v1/manifest.json
+  source_commit: 7aaf76eaed90588b9404b2fbed483ae9efce1156
+  configuration: results/investigations/frozen_decision_v1/config.yaml
+  summary: results/investigations/frozen_decision_v1/summary.csv
+  dynamics_model: kinematic_bicycle_4
+  control_inputs: acceleration [m/s²], steering [rad]
+  experiment_name: frozen_decision_v1 (historical)
+  key_figure: results/investigations/frozen_decision_v1/figures/post_disturbance_B_first_command_difference.png
+- id: trajectory_behavior_v1
+  question_ids:
+  - Q04
+  status: EXECUTED
+  path: results/investigations/trajectory_behavior_v1
+  manifest: results/investigations/trajectory_behavior_v1/manifest.json
+  source_commit: 077e7d90eb2f2d3fd302a284daf5d9868bf28135
+  configuration: results/investigations/trajectory_behavior_v1/config.yaml
+  summary: results/investigations/trajectory_behavior_v1/behavior_summary.csv
+  dynamics_model: kinematic_bicycle_4
+  control_inputs: acceleration [m/s²], steering [rad]
+  experiment_name: trajectory_behavior_v1 (historical)
+  key_figure: results/investigations/trajectory_behavior_v1/figures/two_route_obstacle_D_progress_dispersion.png
+- id: s_turn_clearance_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/Q05/s_turn_clearance_v1
+  manifest: runs/Q05/s_turn_clearance_v1/manifest.json
+  source_commit: ff3df5824856e8252a221bc6a4fdce8105ec298c
+  configuration: runs/Q05/s_turn_clearance_v1/config.yaml
+  summary: runs/Q05/s_turn_clearance_v1/summary.csv
+  figure_provenance: runs/Q05/s_turn_clearance_v1/figure_provenance.json
+  dynamics_model: steering_rate_bicycle_5
+  control_inputs: acceleration [m/s²], steering rate [rad/s]
+  experiment_name: s_turn_clearance_v1 (historical)
+  key_figure: results/archive/five_state_Q05_key.png
+- id: seven_state_q01_v1
+  question_ids:
+  - Q01
+  status: EXECUTED
+  path: runs/seven_state/Q01/seven_state_q01_v1
+  manifest: runs/seven_state/Q01/seven_state_q01_v1/manifest.json
+  source_commit: 0006f840f99ab6be155b66ea7833e9210fe40367
+  configuration: runs/seven_state/Q01/seven_state_q01_v1/config.yaml
+  summary: runs/seven_state/Q01/seven_state_q01_v1/summary.csv
+  dynamics_model: analytic_gaussian
+  control_inputs: Gaussian vector (no vehicle)
+  experiment_name: seven_state_q01_v1
+  figure_provenance: runs/seven_state/Q01/seven_state_q01_v1/figure_provenance.json
+- id: seven_state_q02_v1
+  question_ids:
+  - Q02
+  status: EXECUTED
+  path: runs/seven_state/Q02/seven_state_q02_v1
+  manifest: runs/seven_state/Q02/seven_state_q02_v1/manifest.json
+  source_commit: 0006f840f99ab6be155b66ea7833e9210fe40367
+  configuration: runs/seven_state/Q02/seven_state_q02_v1/config.yaml
+  summary: runs/seven_state/Q02/seven_state_q02_v1/summary.csv
+  dynamics_model: analytic_gaussian
+  control_inputs: Gaussian vector (no vehicle)
+  experiment_name: seven_state_q02_v1
+  figure_provenance: runs/seven_state/Q02/seven_state_q02_v1/figure_provenance.json
+- id: seven_state_q03_v1
+  question_ids:
+  - Q03
+  status: EXECUTED
+  path: runs/seven_state/Q03/seven_state_q03_v1
+  manifest: runs/seven_state/Q03/seven_state_q03_v1/manifest.json
+  source_commit: 0006f840f99ab6be155b66ea7833e9210fe40367
+  configuration: runs/seven_state/Q03/seven_state_q03_v1/config.yaml
+  summary: runs/seven_state/Q03/seven_state_q03_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle [−1,1]
+  experiment_name: seven_state_q03_v1
+  figure_provenance: runs/seven_state/Q03/seven_state_q03_v1/figure_provenance.json
+- id: seven_state_q04_v1
+  question_ids:
+  - Q04
+  status: EXECUTED
+  path: runs/seven_state/Q04/seven_state_q04_v1
+  manifest: runs/seven_state/Q04/seven_state_q04_v1/manifest.json
+  source_commit: fe98accd84213647c0ff7c006226df6ef1dd3d1f
+  configuration: runs/seven_state/Q04/seven_state_q04_v1/config.yaml
+  summary: runs/seven_state/Q04/seven_state_q04_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle [−1,1]
+  experiment_name: seven_state_q04_v1
+  figure_provenance: runs/seven_state/Q04/seven_state_q04_v1/figure_provenance.json
+- id: seven_state_q04_pilot_v1
+  question_ids:
+  - Q04
+  status: EXECUTED
+  path: runs/seven_state/Q04/seven_state_q04_pilot_v1
+  manifest: runs/seven_state/Q04/seven_state_q04_pilot_v1/manifest.json
+  source_commit: 0006f840f99ab6be155b66ea7833e9210fe40367
+  configuration: runs/seven_state/Q04/seven_state_q04_pilot_v1/config.yaml
+  summary: runs/seven_state/Q04/seven_state_q04_pilot_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle [−1,1]
+  experiment_name: seven_state_q04_pilot_v1
+- id: seven_state_q04_budget_v1
+  question_ids:
+  - Q04
+  status: EXECUTED
+  path: runs/seven_state/Q04/seven_state_q04_budget_v1
+  manifest: runs/seven_state/Q04/seven_state_q04_budget_v1/manifest.json
+  source_commit: 3ced0faafe0390e6377dfe85498787a33a5b2d39
+  configuration: runs/seven_state/Q04/seven_state_q04_budget_v1/config.yaml
+  summary: runs/seven_state/Q04/seven_state_q04_budget_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle [−1,1]
+  experiment_name: seven_state_q04_budget_v1
+- id: seven_state_q05_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/Q05/seven_state_q05_v1
+  manifest: runs/seven_state/Q05/seven_state_q05_v1/manifest.json
+  source_commit: 7bea369e3455bf62785fcf8fc0db59c8bcbfc6a7
+  configuration: runs/seven_state/Q05/seven_state_q05_v1/config.yaml
+  summary: runs/seven_state/Q05/seven_state_q05_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle [−1,1]
+  experiment_name: seven_state_q05_v1
+  figure_provenance: runs/seven_state/Q05/seven_state_q05_v1/figure_provenance.json
+- id: seven_state_q05_pilot_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/Q05/seven_state_q05_pilot_v1
+  manifest: runs/seven_state/Q05/seven_state_q05_pilot_v1/manifest.json
+  source_commit: fe98accd84213647c0ff7c006226df6ef1dd3d1f
+  configuration: runs/seven_state/Q05/seven_state_q05_pilot_v1/config.yaml
+  summary: runs/seven_state/Q05/seven_state_q05_pilot_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle [−1,1]
+  experiment_name: seven_state_q05_pilot_v1
+- id: seven_state_q05_budget_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/Q05/seven_state_q05_budget_v1
+  manifest: runs/seven_state/Q05/seven_state_q05_budget_v1/manifest.json
+  source_commit: 3ced0faafe0390e6377dfe85498787a33a5b2d39
+  configuration: runs/seven_state/Q05/seven_state_q05_budget_v1/config.yaml
+  summary: runs/seven_state/Q05/seven_state_q05_budget_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle [−1,1]
+  experiment_name: seven_state_q05_budget_v1
+- id: seven_state_dynamics_validation_v1
+  question_ids:
+  - Q03
+  - Q04
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/validation/dynamics_v1
+  manifest: runs/seven_state/validation/dynamics_v1/manifest.json
+  source_commit: 0006f840f99ab6be155b66ea7833e9210fe40367
+  configuration: runs/seven_state/validation/dynamics_v1/config.yaml
+  summary: runs/seven_state/validation/dynamics_v1/validation.json
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle
+  experiment_name: Independent dynamic steady-turn and integration validation
+- id: seven_state_q05_secondary_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/Q05/seven_state_q05_secondary_v1
+  manifest: runs/seven_state/Q05/seven_state_q05_secondary_v1/manifest.json
+  source_commit: 3ced0faafe0390e6377dfe85498787a33a5b2d39
+  configuration: runs/seven_state/Q05/seven_state_q05_secondary_v1/config.yaml
+  summary: runs/seven_state/Q05/seven_state_q05_secondary_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle
+  experiment_name: Isolated cruising-speed and disturbance S-turn checks
+- id: seven_state_q05_rate_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/Q05/seven_state_q05_rate_v1
+  manifest: runs/seven_state/Q05/seven_state_q05_rate_v1/manifest.json
+  source_commit: afc63ebc9495cff3c4469b80a86e170684af2996
+  configuration: runs/seven_state/Q05/seven_state_q05_rate_v1/config.yaml
+  summary: runs/seven_state/Q05/seven_state_q05_rate_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle
+  experiment_name: Discrete steering-command slew at fixed S-turn geometry
+- id: seven_state_q04_timing_v1
+  question_ids:
+  - Q04
+  status: EXECUTED
+  path: runs/seven_state/Q04/seven_state_q04_timing_v1
+  manifest: runs/seven_state/Q04/seven_state_q04_timing_v1/manifest.json
+  source_commit: 79d626f2ba41e88416a52993d98599e4ce9acae5
+  configuration: runs/seven_state/Q04/seven_state_q04_timing_v1/config.yaml
+  summary: runs/seven_state/Q04/seven_state_q04_timing_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle
+  experiment_name: Isolated initial-state per-plan latency calibration
+- id: seven_state_q05_timing_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/Q05/seven_state_q05_timing_v1
+  manifest: runs/seven_state/Q05/seven_state_q05_timing_v1/manifest.json
+  source_commit: 79d626f2ba41e88416a52993d98599e4ce9acae5
+  configuration: runs/seven_state/Q05/seven_state_q05_timing_v1/config.yaml
+  summary: runs/seven_state/Q05/seven_state_q05_timing_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle
+  experiment_name: Isolated initial-state per-plan latency calibration
+- id: seven_state_reference_footprint_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/validation/footprint_v1
+  manifest: runs/seven_state/validation/footprint_v1/manifest.json
+  source_commit: 79d626f2ba41e88416a52993d98599e4ce9acae5
+  configuration: runs/seven_state/validation/footprint_v1/config.yaml
+  summary: runs/seven_state/validation/footprint_v1/validation.json
+  dynamics_model: dynamic_single_track_7
+  control_inputs: Recorded steering/throttle reference
+  experiment_name: Axle-enclosing reference capsule and interpolation clearance

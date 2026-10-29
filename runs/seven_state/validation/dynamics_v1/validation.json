@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "checks": {
+    "zero_equilibrium": true,
+    "straight_motion": true,
+    "left_right_symmetry": true,
+    "dynamic_turn_oracle": true,
+    "lateral_and_roll_signs": true,
+    "constant_radius_geometry": true,
+    "steering_reversal": true,
+    "braking_no_reverse": true,
+    "near_zero_stability": true,
+    "physical_bounds": true,
+    "integration_convergence": true,
+    "dynamic_roll_not_algebraic": true
+  },
+  "independent_oracle": {
+    "vy": 0.023679702933643958,
+    "yaw_rate": 0.09834849389122563,
+    "throttle": 0.04109065415162566,
+    "roll": 0.011469667778828564,
+    "curvature": 0.04918933161266138,
+    "force_balance_residual": 3.163413953785445e-14
+  },
+  "measured": {
+    "vy": 0.02367976980317051,
+    "yaw_rate": 0.09834818779848051,
+    "roll": 0.011469366744529124,
+    "fitted_xy_curvature": 0.04918889329874867
+  },
+  "integration_errors": [
+    0.00020847077997327123,
+    5.355304077235505e-05,
+    1.0629796871746838e-05
+  ],
+  "parameters": {
+    "dt": 0.15,
+    "substeps": 3,
+    "mass": 35.0,
+    "yaw_inertia": 8.0,
+    "front_distance": 0.4,
+    "rear_distance": 0.4,
+    "cornering_front": 450.0,
+    "cornering_rear": 450.0,
+    "friction": 0.9,
+    "gravity": 9.81,
+    "engine_force": 70.0,
+    "brake_force": 105.0,
+    "drag_linear": 0.4,
+    "drag_quadratic": 0.5,
+    "steering_limit": 0.5,
+    "throttle_limit": 1.0,
+    "velocity_max": 4.0,
+    "low_speed": 0.5,
+    "low_speed_damping_time": 0.15,
+    "cg_height": 0.2,
+    "roll_stiffness": 120.0,
+    "roll_damping": 48.0,
+    "state_dimension": 7
+  }
+}
