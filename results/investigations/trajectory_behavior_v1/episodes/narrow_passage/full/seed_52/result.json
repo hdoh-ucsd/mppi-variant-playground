@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "full",
+  "scenario": "narrow_passage",
+  "seed": 52,
+  "environment_seed_entropy": [
+    52,
+    1001
+  ],
+  "mode": "trajectory_behavior",
+  "git": {
+    "commit": "077e7d90eb2f2d3fd302a284daf5d9868bf28135",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T04:41:22.173800+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": true,
+    "goal_position_error": 0.3836856290239275,
+    "goal_orientation_error": 0.12554309985612067,
+    "time_to_completion_s": 5.25,
+    "executed_duration_s": 5.25,
+    "cumulative_evaluation_cost": 140.42987946450168,
+    "collision": false,
+    "minimum_obstacle_clearance": 0.04425138655374547,
+    "constraint_violations": 0,
+    "mean_ess": 2.788512586953353,
+    "mean_weight_entropy": 1.1432395626483716,
+    "degenerate_weight_fraction": 0.45714285714285713,
+    "mean_trajectory_spread": 2.1453203911200904,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.30938190015123174,
+    "dynamics_evaluations_per_step": 10780,
+    "total_dynamics_evaluations": 377300,
+    "total_rollout_evaluations": 13440,
+    "mean_planning_latency_s": 0.007836855345937822,
+    "p95_planning_latency_s": 0.00874411420954857,
+    "total_normalized_control_effort": 3.1901297821702066,
+    "total_normalized_control_variation": 29.54715707623188,
+    "maximum_steering_change_rad": 0.89414332467288,
+    "steps": 35,
+    "total_simulation_wall_time_s": 0.3326073389907833,
+    "process_peak_rss_mib": 181.9140625
+  }
+}

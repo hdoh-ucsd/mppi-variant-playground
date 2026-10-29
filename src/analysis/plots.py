@@ -31,8 +31,9 @@ def proposal_color(name):
     return dict(zip(names, COLORS, strict=True)).get(aliases.get(name, name), COLORS[0])
 
 
-def publish(fig, root, name, **data):
-    fig.tight_layout()
+def publish(fig, root, name, *, tight_layout=True, **data):
+    if tight_layout:
+        fig.tight_layout()
     out = Path(root) / "figures"
     out.mkdir(exist_ok=True)
     save(fig, out, name)

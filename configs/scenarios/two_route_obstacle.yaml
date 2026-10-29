@@ -1,0 +1,9 @@
+name: two_route_obstacle
+initial_state: [0.0, -0.4, 0.0, 0.0]
+goal_state: [8.0, 0.0, 0.0, 0.0]
+vehicle_radius: 0.22
+max_steps: 120
+position_tolerance: 0.45
+heading_tolerance: 0.35
+speed_tolerance: 0.45
+obstacles: [[4.0, 0.0, 0.9]]

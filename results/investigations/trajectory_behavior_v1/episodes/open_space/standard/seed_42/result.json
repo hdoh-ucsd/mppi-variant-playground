@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "standard",
+  "scenario": "open_space",
+  "seed": 42,
+  "environment_seed_entropy": [
+    42,
+    1001
+  ],
+  "mode": "trajectory_behavior",
+  "git": {
+    "commit": "077e7d90eb2f2d3fd302a284daf5d9868bf28135",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T04:41:26.434086+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": true,
+    "goal_position_error": 0.2791777257280867,
+    "goal_orientation_error": 0.21880054921830538,
+    "time_to_completion_s": 5.3999999999999995,
+    "executed_duration_s": 5.3999999999999995,
+    "cumulative_evaluation_cost": 137.54177592531326,
+    "collision": false,
+    "minimum_obstacle_clearance": null,
+    "constraint_violations": 0,
+    "mean_ess": 2.1228737111346585,
+    "mean_weight_entropy": 0.8047432645160442,
+    "degenerate_weight_fraction": 0.7222222222222222,
+    "mean_trajectory_spread": 2.046514897175876,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.45423427761890095,
+    "dynamics_evaluations_per_step": 10780,
+    "total_dynamics_evaluations": 388080,
+    "total_rollout_evaluations": 13824,
+    "mean_planning_latency_s": 0.004585477999676691,
+    "p95_planning_latency_s": 0.005391424005210865,
+    "total_normalized_control_effort": 3.304396682615866,
+    "total_normalized_control_variation": 28.44382064757859,
+    "maximum_steering_change_rad": 0.7055055997558343,
+    "steps": 36,
+    "total_simulation_wall_time_s": 0.22771263000322506,
+    "process_peak_rss_mib": 181.9140625
+  }
+}

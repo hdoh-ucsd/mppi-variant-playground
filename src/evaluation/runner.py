@@ -52,14 +52,14 @@ def write_json(path, data):
     Path(path).write_text(json.dumps(data, indent=2, allow_nan=False) + "\n")
 
 
-def run_episode(config, seed, output, mode="native"):
+def run_episode(config, seed, output, mode="native", *, observer=None, controller_factory=None):
     validate_experiment(config)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
     (output / "config.yaml").write_text(yaml.safe_dump(config, sort_keys=False))
     started_at = datetime.now(UTC).isoformat()
     provenance = git_info()
-    controller = make_controller(config)
+    controller = (controller_factory or make_controller)(config)
     scenario = config["scenario"]
     environment_seed = np.random.SeedSequence([seed, 1001])
     env = Environment(scenario, config["dynamics"], environment_seed)
@@ -80,7 +80,10 @@ def run_episode(config, seed, output, mode="native"):
         observed = env.state.copy()
         control = controller.command(observed)
         diag = controller.get_diagnostics()
-        rollouts.append(diag.pop("saved_rollouts"))
+        # Preserve the compact baseline archive when selected steps capture all samples.
+        rollouts.append(
+            diag.pop("saved_rollouts")[: config["controller"].get("saved_rollouts", 32)]
+        )
         plans.append(diag.pop("planned_trajectory"))
         diag.pop("weights")
         mu, cov = diag.pop("perturbation_mean"), diag.pop("perturbation_covariance")
@@ -105,6 +108,20 @@ def run_episode(config, seed, output, mode="native"):
         total_cost += score.running(observed, control, previous)
         gap = swept_clearance(observed, actual, scenario["obstacles"], scenario["vehicle_radius"])
         total_cost += model.dt * score.weights["collision"] * (gap <= 0)
+        if observer is not None:
+            snapshot_getter = getattr(controller, "get_rollout_snapshot", None)
+            observer(
+                {
+                    "step": index,
+                    "state": observed.copy(),
+                    "next_state": actual.copy(),
+                    "control": control.copy(),
+                    "diagnostics": dict(diag),
+                    "cumulative_running_cost": float(total_cost),
+                    "collision": bool(gap <= 0),
+                    "snapshot": snapshot_getter() if snapshot_getter is not None else None,
+                }
+            )
         previous = control
         states.append(actual)
         controls.append(control)
