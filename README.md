@@ -188,9 +188,10 @@ and completed episodes have different durations. The cost axis is logarithmic.
 
 ### Reading the experiment videos
 
-Click any animated preview below to open its full-resolution MP4. The GIFs use the
-complete videos at their original playback speed, reduced to **960×540 and 8 FPS**
-for inline viewing. Opening explanations, failure cases, and ending limitations remain.
+Click any animated preview below to open its full-resolution MP4. The GIFs loop the
+experiment continuously at its original playback speed, reduced to **960×540 and 8 FPS**.
+Opening and ending slides are omitted; failure cases remain in the animation.
+The full MP4s and accompanying text retain the explanations and limitations.
 
 The six linked MP4s replay saved numerical evidence at **1280×720, H.264, 30 FPS**.
 The [video manifest](media/experiments/manifest.json) records selection rules, exact
