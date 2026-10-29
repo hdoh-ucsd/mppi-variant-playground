@@ -2,8 +2,8 @@
 
 import argparse
 
-from mppi_variant_playground.evaluation.runner import run_episode
-from mppi_variant_playground.utils.config import load_experiment
+from evaluation.runner import run_episode
+from utils.config import load_experiment
 
 
 def main():

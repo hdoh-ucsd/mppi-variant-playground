@@ -3,8 +3,8 @@
 import numpy as np
 from scipy.stats import norm, t
 
-from mppi_variant_playground.dynamics.bicycle import wrap_angle
-from mppi_variant_playground.scenarios.environment import swept_clearance
+from dynamics.bicycle import wrap_angle
+from scenarios.environment import swept_clearance
 
 
 def reached(state, scenario):

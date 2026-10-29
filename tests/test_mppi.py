@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from mppi_variant_playground.evaluation.runner import make_controller
-from mppi_variant_playground.utils.config import load_experiment
+from evaluation.runner import make_controller
+from utils.config import load_experiment
 
 
 @pytest.mark.parametrize("kind", ["standard", "isotropic", "diagonal", "full"])

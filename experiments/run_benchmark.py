@@ -1,6 +1,6 @@
 import argparse
 
-from mppi_variant_playground.evaluation.benchmark import run_benchmark
+from evaluation.benchmark import run_benchmark
 
 
 def main():

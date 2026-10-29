@@ -5,15 +5,15 @@ from time import perf_counter
 
 import numpy as np
 
-from mppi_variant_playground.controllers.base import Controller
-from mppi_variant_playground.sampling.gaussian import (
+from controllers.base import Controller
+from sampling.gaussian import (
     importance_weights,
     log_base_over_proposal,
     sample_gaussian,
     validate_covariance,
     weighted_update,
 )
-from mppi_variant_playground.scenarios.environment import swept_clearance
+from scenarios.environment import swept_clearance
 
 
 class MPPI(Controller):

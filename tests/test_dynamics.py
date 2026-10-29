@@ -1,9 +1,9 @@
 import numpy as np
 import pytest
 
-from mppi_variant_playground.dynamics.bicycle import Bicycle, wrap_angle
-from mppi_variant_playground.scenarios.environment import Environment, clearance, swept_clearance
-from mppi_variant_playground.utils.config import load_experiment
+from dynamics.bicycle import Bicycle, wrap_angle
+from scenarios.environment import Environment, clearance, swept_clearance
+from utils.config import load_experiment
 
 
 def test_euler_and_vectorization():

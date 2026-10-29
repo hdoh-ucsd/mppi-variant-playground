@@ -14,12 +14,12 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from mppi_variant_playground.controllers.mppi import MPPI
-from mppi_variant_playground.costs.shared import SharedCost
-from mppi_variant_playground.dynamics.bicycle import Bicycle, wrap_angle
-from mppi_variant_playground.evaluation.metrics import episode_metrics, reached
-from mppi_variant_playground.scenarios.environment import Environment, swept_clearance
-from mppi_variant_playground.utils.config import validate_experiment
+from controllers.mppi import MPPI
+from costs.shared import SharedCost
+from dynamics.bicycle import Bicycle, wrap_angle
+from evaluation.metrics import episode_metrics, reached
+from scenarios.environment import Environment, swept_clearance
+from utils.config import validate_experiment
 
 
 def git_info():

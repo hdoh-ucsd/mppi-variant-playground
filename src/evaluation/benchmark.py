@@ -4,14 +4,14 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from mppi_variant_playground.evaluation.metrics import binomial_interval, mean_interval
-from mppi_variant_playground.evaluation.runner import (
+from evaluation.metrics import binomial_interval, mean_interval
+from evaluation.runner import (
     git_info,
     make_controller,
     run_episode,
     write_json,
 )
-from mppi_variant_playground.utils.config import DEFAULT_ROOT, load_experiment, read_yaml
+from utils.config import DEFAULT_ROOT, load_experiment, read_yaml
 
 
 def calibrate(config, candidates, target):

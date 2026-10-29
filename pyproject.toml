@@ -13,6 +13,18 @@ dependencies = ["numpy>=1.26", "scipy>=1.12", "matplotlib>=3.9", "pyyaml>=6", "p
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.9"]
 
+[tool.hatch.build.targets.wheel]
+packages = [
+    "src/controllers",
+    "src/costs",
+    "src/dynamics",
+    "src/evaluation",
+    "src/sampling",
+    "src/scenarios",
+    "src/utils",
+    "src/visualization",
+]
+
 [tool.ruff]
 line-length = 100
 

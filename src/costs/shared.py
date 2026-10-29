@@ -4,8 +4,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from mppi_variant_playground.dynamics.bicycle import wrap_angle
-from mppi_variant_playground.scenarios.environment import clearance
+from dynamics.bicycle import wrap_angle
+from scenarios.environment import clearance
 
 
 @dataclass

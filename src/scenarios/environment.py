@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from mppi_variant_playground.dynamics.bicycle import Bicycle, wrap_angle
+from dynamics.bicycle import Bicycle, wrap_angle
 
 
 def clearance(state, obstacles, vehicle_radius):

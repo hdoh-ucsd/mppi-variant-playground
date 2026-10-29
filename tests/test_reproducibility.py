@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 
-from mppi_variant_playground.evaluation.runner import make_controller, run_episode
-from mppi_variant_playground.scenarios.environment import Environment
-from mppi_variant_playground.utils.config import load_experiment
+from evaluation.runner import make_controller, run_episode
+from scenarios.environment import Environment
+from utils.config import load_experiment
 
 
 def test_reset_and_different_seeds():

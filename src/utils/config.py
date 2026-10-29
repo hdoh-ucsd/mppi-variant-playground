@@ -4,9 +4,9 @@ from pathlib import Path
 import numpy as np
 import yaml
 
-from mppi_variant_playground.dynamics.bicycle import Bicycle
+from dynamics.bicycle import Bicycle
 
-DEFAULT_ROOT = Path(__file__).resolve().parents[3] / "configs"
+DEFAULT_ROOT = Path(__file__).resolve().parents[2] / "configs"
 
 
 def read_yaml(path):

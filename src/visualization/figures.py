@@ -13,7 +13,7 @@ import pandas as pd
 from matplotlib.collections import LineCollection
 from matplotlib.patches import Circle, Ellipse, Polygon
 
-from mppi_variant_playground.utils.config import read_yaml
+from utils.config import read_yaml
 
 COLORS = {"standard": "#2563eb", "isotropic": "#db7b14", "diagonal": "#16806a", "full": "#a344ae"}
 

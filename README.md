@@ -144,7 +144,7 @@ Each episode saves its resolved configuration, provenance, numerical results, tr
 
 ```text
 configs/                       Dynamics, costs, controllers, scenarios, and budgets
-src/mppi_variant_playground/    Sampling, MPPI, dynamics, evaluation, and visualization
+src/                           Sampling, MPPI, dynamics, evaluation, and visualization
 experiments/                   Episode, benchmark, and figure entry points
 tests/                         Numerical identities, behavior, and reproducibility checks
 docs/                          Derivations, paper map, study plans, and recorded findings

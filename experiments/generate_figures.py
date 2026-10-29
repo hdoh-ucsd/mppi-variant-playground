@@ -1,6 +1,6 @@
 import argparse
 
-from mppi_variant_playground.visualization.figures import generate
+from visualization.figures import generate
 
 
 def main():

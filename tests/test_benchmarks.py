@@ -5,16 +5,16 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from mppi_variant_playground.dynamics.bicycle import Bicycle
-from mppi_variant_playground.evaluation.benchmark import summarize
-from mppi_variant_playground.evaluation.metrics import (
+from dynamics.bicycle import Bicycle
+from evaluation.benchmark import summarize
+from evaluation.metrics import (
     binomial_interval,
     episode_metrics,
     mean_interval,
     reached,
 )
-from mppi_variant_playground.evaluation.runner import run_episode
-from mppi_variant_playground.utils.config import load_experiment, validate_experiment
+from evaluation.runner import run_episode
+from utils.config import load_experiment, validate_experiment
 
 
 @pytest.mark.parametrize(

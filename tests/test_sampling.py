@@ -3,7 +3,7 @@ import pytest
 from scipy.special import softmax
 from scipy.stats import multivariate_normal
 
-from mppi_variant_playground.sampling.gaussian import (
+from sampling.gaussian import (
     importance_weights,
     log_base_over_proposal,
     sample_gaussian,
