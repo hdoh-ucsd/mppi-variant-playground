@@ -217,8 +217,13 @@ def local_snapshots(records, config):
 
 def cloud_figure(root, scenario, records, setup, config, *, suffix=""):
     snapshots, bounds = local_snapshots(records, config)
+    ratio = (bounds[1][1] - bounds[1][0]) / (bounds[0][1] - bounds[0][0])
     fig, axes = plt.subplots(
-        1, len(snapshots), figsize=(4.4 * len(snapshots), 5), squeeze=False, layout="constrained"
+        1,
+        len(snapshots),
+        figsize=(4.4 * len(snapshots), max(3.2, 1.8 + 3.5 * ratio)),
+        squeeze=False,
+        layout="constrained",
     )
     data = {}
     for ax, variant in zip(axes[0], config["variants"], strict=True):
@@ -238,7 +243,7 @@ def cloud_figure(root, scenario, records, setup, config, *, suffix=""):
             }
         )
     handles, labels = axes[0, 0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="lower center", ncol=3, fontsize=8, bbox_to_anchor=(0.5, -0.02))
+    fig.legend(handles, labels, loc="lower center", ncol=3, fontsize=8, bbox_to_anchor=(0.5, -0.14))
     fig.colorbar(
         lines,
         ax=list(axes[0]),
