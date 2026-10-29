@@ -1,0 +1,13 @@
+{
+  "status": "EXECUTED",
+  "implementation": "Fixed-covariance Tsallis Gaussian projection, Table II; r=1.5, normalized costs, 80% quantile cutoff, fixed-base importance correction.",
+  "mathematical_validation": "11 targeted tests including pre-variant baseline oracle; independent discrete r=2 optimum, cutoff, fixed-scale KL limit, reproducibility.",
+  "finding": "Open-space completion 3/3 for both; two-route 3/3 IT-MPPI and 0/3 Tsallis, all timeouts and no collisions; higher Tsallis ESS does not guarantee task progress.",
+  "limitations": [
+    "Three paired seeds; wide intervals.",
+    "Timing calibration grid capped at K384; common 150 ms ceiling is not equal consumed runtime.",
+    "Both protocols selected K384; numerical duplicates are repeated executions, not independent evidence.",
+    "Batch normalized/quantile scale changes Tsallis objective across decisions.",
+    "Centered disk collision proxy."
+  ]
+}

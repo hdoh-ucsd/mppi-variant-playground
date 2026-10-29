@@ -1,0 +1,11 @@
+{
+  "figure": "results/variants/V01_tsallis/figures/primary.png",
+  "inputs_sha256": {
+    "results/variants/V01_tsallis/summary.csv": "66ca5935a20d5cb1ed2f15533f9ecd24e8990eda8df9c77ba7afbe8194d9973c",
+    "results/variants/V01_tsallis/per_seed.csv": "a6ff6e1bc6c27f9cc392e6dbb787418ff6149233271b69414597a20da9619833"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "c6648fe7a71239ac7608cd62847a8ab4d10e937bc40a5b475f898726fed12037",
+  "summary_sha256": "66ca5935a20d5cb1ed2f15533f9ecd24e8990eda8df9c77ba7afbe8194d9973c"
+}

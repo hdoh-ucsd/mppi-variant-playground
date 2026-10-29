@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "level": "published_formulation_comparison",
+  "phase": "evaluation",
+  "started_at_utc": "2026-10-29T18:07:34.656553+00:00",
+  "git": {
+    "commit": "0aab6d6efb8724af3bb535d240cdf4d56bbfbeef",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "2678030c939e222cbd17f45b243a0fa821e045f6ddd037442f50281b6e9a22ad",
+  "configuration_sha256": "4b722a653c9a5ebc80b5687af315d0fa61fdcff1e4d892da99cf9fc475cc519f",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "episodes": 24,
+  "finished_at_utc": "2026-10-29T18:08:11.399884+00:00",
+  "raw_storage": "runs/variants/V01_tsallis",
+  "noise": "Existing paired disturbance stream; no additional process noise in V01\u2013V04.",
+  "timing": "Wall-clock protocol serial; work protocol concurrent. Concurrent timing is not used for cross-method speed claims.",
+  "budget": "7700 predicted transitions per command; every actual model call is instrumented."
+}
