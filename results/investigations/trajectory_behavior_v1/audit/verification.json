@@ -1,0 +1,14 @@
+{
+  "episodes": 320,
+  "full_population_snapshots": 2240,
+  "normalized_occupancy_maps": 16,
+  "matched_baseline_episodes": 60,
+  "source_revisions": [
+    "077e7d90eb2f2d3fd302a284daf5d9868bf28135"
+  ],
+  "audit_git": {
+    "commit": "87be4e9a51497f7ef94636f557c2e6f2157b01b8",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  }
+}

@@ -1,0 +1,17 @@
+scenario,variant,mean_path_min_swept_clearance_m
+narrow_passage,standard,0.26928007966605505
+narrow_passage,isotropic,0.29969235137502137
+narrow_passage,diagonal,0.27618137688905353
+narrow_passage,full,0.2975984177745059
+open_space,standard,
+open_space,isotropic,
+open_space,diagonal,
+open_space,full,
+sudden_disturbance,standard,
+sudden_disturbance,isotropic,
+sudden_disturbance,diagonal,
+sudden_disturbance,full,
+two_route_obstacle,standard,0.14315142825538904
+two_route_obstacle,isotropic,0.18275363170944545
+two_route_obstacle,diagonal,0.18929170722286334
+two_route_obstacle,full,-0.20606061355643226

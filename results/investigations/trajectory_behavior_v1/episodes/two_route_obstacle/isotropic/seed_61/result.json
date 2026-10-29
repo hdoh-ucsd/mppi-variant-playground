@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "isotropic",
+  "scenario": "two_route_obstacle",
+  "seed": 61,
+  "environment_seed_entropy": [
+    61,
+    1001
+  ],
+  "mode": "trajectory_behavior",
+  "git": {
+    "commit": "077e7d90eb2f2d3fd302a284daf5d9868bf28135",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T04:43:18.983453+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": false,
+    "goal_position_error": 0.6567411041960292,
+    "goal_orientation_error": 0.5384265916112163,
+    "time_to_completion_s": null,
+    "executed_duration_s": 18.0,
+    "cumulative_evaluation_cost": 191.72980014081253,
+    "collision": false,
+    "minimum_obstacle_clearance": 0.15089934033582106,
+    "constraint_violations": 0,
+    "mean_ess": 2.335527197606953,
+    "mean_weight_entropy": 0.9434037965073793,
+    "degenerate_weight_fraction": 0.5583333333333333,
+    "mean_trajectory_spread": 0.8744622373965106,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.44859790756180085,
+    "dynamics_evaluations_per_step": 10780,
+    "total_dynamics_evaluations": 1293600,
+    "total_rollout_evaluations": 46080,
+    "mean_planning_latency_s": 0.006378937414895821,
+    "p95_planning_latency_s": 0.008574775756278541,
+    "total_normalized_control_effort": 8.099834721020583,
+    "total_normalized_control_variation": 87.54163953655973,
+    "maximum_steering_change_rad": 0.7214343269785959,
+    "steps": 120,
+    "total_simulation_wall_time_s": 0.8491178940166719,
+    "process_peak_rss_mib": 183.44140625
+  }
+}

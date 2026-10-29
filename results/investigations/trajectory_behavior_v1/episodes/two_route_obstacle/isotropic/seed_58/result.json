@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "isotropic",
+  "scenario": "two_route_obstacle",
+  "seed": 58,
+  "environment_seed_entropy": [
+    58,
+    1001
+  ],
+  "mode": "trajectory_behavior",
+  "git": {
+    "commit": "077e7d90eb2f2d3fd302a284daf5d9868bf28135",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T04:43:17.448497+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": false,
+    "goal_position_error": 0.9488449701178643,
+    "goal_orientation_error": 0.30380928174340704,
+    "time_to_completion_s": null,
+    "executed_duration_s": 18.0,
+    "cumulative_evaluation_cost": 205.82001913972076,
+    "collision": false,
+    "minimum_obstacle_clearance": 0.1613560874092684,
+    "constraint_violations": 0,
+    "mean_ess": 2.260679126228096,
+    "mean_weight_entropy": 0.9486333757962566,
+    "degenerate_weight_fraction": 0.5416666666666666,
+    "mean_trajectory_spread": 0.9265104920444057,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.8838385398521181,
+    "dynamics_evaluations_per_step": 10780,
+    "total_dynamics_evaluations": 1293600,
+    "total_rollout_evaluations": 46080,
+    "mean_planning_latency_s": 0.006420986325974809,
+    "p95_planning_latency_s": 0.008231929047906306,
+    "total_normalized_control_effort": 7.591756232240662,
+    "total_normalized_control_variation": 92.39171927738413,
+    "maximum_steering_change_rad": 0.7941449133766902,
+    "steps": 120,
+    "total_simulation_wall_time_s": 0.845450038992567,
+    "process_peak_rss_mib": 183.37109375
+  }
+}

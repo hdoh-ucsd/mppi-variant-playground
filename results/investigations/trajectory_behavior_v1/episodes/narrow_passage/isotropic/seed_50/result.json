@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "isotropic",
+  "scenario": "narrow_passage",
+  "seed": 50,
+  "environment_seed_entropy": [
+    50,
+    1001
+  ],
+  "mode": "trajectory_behavior",
+  "git": {
+    "commit": "077e7d90eb2f2d3fd302a284daf5d9868bf28135",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T04:41:00.809904+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": true,
+    "goal_position_error": 0.44795970357580644,
+    "goal_orientation_error": 0.06119976880412192,
+    "time_to_completion_s": 6.8999999999999995,
+    "executed_duration_s": 6.8999999999999995,
+    "cumulative_evaluation_cost": 191.6139454892803,
+    "collision": false,
+    "minimum_obstacle_clearance": 0.259504769283436,
+    "constraint_violations": 0,
+    "mean_ess": 1.967621768028032,
+    "mean_weight_entropy": 0.7327066612698389,
+    "degenerate_weight_fraction": 0.6304347826086957,
+    "mean_trajectory_spread": 1.9604145671003523,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.21180858098427863,
+    "dynamics_evaluations_per_step": 10780,
+    "total_dynamics_evaluations": 495880,
+    "total_rollout_evaluations": 17664,
+    "mean_planning_latency_s": 0.007870605975926004,
+    "p95_planning_latency_s": 0.008683081992785446,
+    "total_normalized_control_effort": 4.320088555274743,
+    "total_normalized_control_variation": 50.64726228881809,
+    "maximum_steering_change_rad": 0.8530544741182114,
+    "steps": 46,
+    "total_simulation_wall_time_s": 0.4267168870137539,
+    "process_peak_rss_mib": 181.64453125
+  }
+}

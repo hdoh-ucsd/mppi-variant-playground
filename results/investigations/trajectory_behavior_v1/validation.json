@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "validation_git": {
+    "commit": "409765ea281c360056c8060f92644f9a2548345d",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "pytest_passed": 98,
+  "pytest_failed": 0,
+  "ruff_lint": "passed",
+  "ruff_format": "passed",
+  "wheel_build": "passed",
+  "full_data_audit": {
+    "episodes": 320,
+    "full_population_snapshots": 2240,
+    "normalized_occupancy_maps": 16,
+    "matched_baseline_episodes": 60,
+    "source_revisions": [
+      "077e7d90eb2f2d3fd302a284daf5d9868bf28135"
+    ],
+    "audit_git": {
+      "commit": "87be4e9a51497f7ef94636f557c2e6f2157b01b8",
+      "dirty": false,
+      "status_scope": "repository excluding generated results/"
+    }
+  },
+  "figure_sets": 21,
+  "formats": [
+    "PNG",
+    "SVG",
+    "NPZ numerical plot inputs"
+  ],
+  "original_analytic_figures_1_and_2_preserved": true,
+  "snapshot_recording_changes_random_draws": false,
+  "no_controller_execution_during_plot_reconstruction": true,
+  "reproduction_command": "uv run python experiments/trajectory_density_study.py --scenarios narrow_passage open_space sudden_disturbance two_route_obstacle --output NEW_OUTPUT_DIRECTORY",
+  "limits": [
+    "Twenty optimizer seeds; zero execution noise",
+    "Paired seed/step clouds have different current states and warm starts",
+    "Pointwise bands are not confidence or safety regions",
+    "Mean paths can intersect obstacles even when individual runs do not"
+  ]
+}

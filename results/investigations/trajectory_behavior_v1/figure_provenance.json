@@ -1,0 +1,49 @@
+{
+  "git": {
+    "commit": "409765ea281c360056c8060f92644f9a2548345d",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "plot_source_sha256": "b3b699d5827ae51d15113be266cc0659484f05b0e620f4fe9718c499770493a3",
+  "inputs": [
+    "config.yaml",
+    "cases.json",
+    "trials.csv",
+    "distributions/",
+    "episodes/"
+  ],
+  "sampling_during_plotting": false,
+  "main_snapshot_seed": 42,
+  "main_snapshot_step": 10,
+  "additional_snapshots": [
+    {
+      "scenario": "sudden_disturbance",
+      "seed": 42,
+      "step": 21,
+      "reason": "first planning state after impulse"
+    }
+  ],
+  "figures": [
+    "narrow_passage_A_executed_bundle.svg",
+    "narrow_passage_B_occupancy_density.svg",
+    "narrow_passage_C_rollout_cloud.svg",
+    "narrow_passage_D_progress_dispersion.svg",
+    "narrow_passage_E_behavior_dashboard.svg",
+    "open_space_A_executed_bundle.svg",
+    "open_space_B_occupancy_density.svg",
+    "open_space_C_rollout_cloud.svg",
+    "open_space_D_progress_dispersion.svg",
+    "open_space_E_behavior_dashboard.svg",
+    "sudden_disturbance_A_executed_bundle.svg",
+    "sudden_disturbance_B_occupancy_density.svg",
+    "sudden_disturbance_C_rollout_cloud.svg",
+    "sudden_disturbance_C_rollout_cloud_post_impulse.svg",
+    "sudden_disturbance_D_progress_dispersion.svg",
+    "sudden_disturbance_E_behavior_dashboard.svg",
+    "two_route_obstacle_A_executed_bundle.svg",
+    "two_route_obstacle_B_occupancy_density.svg",
+    "two_route_obstacle_C_rollout_cloud.svg",
+    "two_route_obstacle_D_progress_dispersion.svg",
+    "two_route_obstacle_E_behavior_dashboard.svg"
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "full",
+  "scenario": "two_route_obstacle",
+  "seed": 43,
+  "environment_seed_entropy": [
+    43,
+    1001
+  ],
+  "mode": "trajectory_behavior",
+  "git": {
+    "commit": "077e7d90eb2f2d3fd302a284daf5d9868bf28135",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T04:43:36.594724+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": false,
+    "goal_position_error": 1.1269192298270454,
+    "goal_orientation_error": 0.09741926660993494,
+    "time_to_completion_s": null,
+    "executed_duration_s": 18.0,
+    "cumulative_evaluation_cost": 204.04895305378702,
+    "collision": false,
+    "minimum_obstacle_clearance": 0.04505459718620805,
+    "constraint_violations": 0,
+    "mean_ess": 2.003826046602547,
+    "mean_weight_entropy": 0.7080481106124767,
+    "degenerate_weight_fraction": 0.6916666666666667,
+    "mean_trajectory_spread": 0.8807732301335833,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.7899343467734683,
+    "dynamics_evaluations_per_step": 10780,
+    "total_dynamics_evaluations": 1293600,
+    "total_rollout_evaluations": 46080,
+    "mean_planning_latency_s": 0.006680736625518572,
+    "p95_planning_latency_s": 0.008076515697757712,
+    "total_normalized_control_effort": 9.162152195407732,
+    "total_normalized_control_variation": 121.24669096219083,
+    "maximum_steering_change_rad": 0.9096046626827787,
+    "steps": 120,
+    "total_simulation_wall_time_s": 0.8837336110009346,
+    "process_peak_rss_mib": 183.65234375
+  }
+}
