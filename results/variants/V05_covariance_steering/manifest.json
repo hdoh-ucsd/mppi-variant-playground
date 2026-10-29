@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "level": "published_formulation_comparison",
+  "phase": "evaluation",
+  "started_at_utc": "2026-10-29T18:24:34.738598+00:00",
+  "git": {
+    "commit": "eaafc10412ed344314262cd9794d07b0188631c5",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "9ea4de042d8cb421d863e53ec43ce4a913f6dd4dab3430fc0dae1bab1969e28b",
+  "configuration_sha256": "b25c913f589da4ff8e91fff6b3b98ed6d903e1e606f1b3d0d1df7027d8130ced",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "episodes": 24,
+  "finished_at_utc": "2026-10-29T18:25:30.168097+00:00",
+  "raw_storage": "runs/variants/V05_covariance_steering",
+  "noise": "Paired SeedSequence([4402,seed]) normalized actuator noise; covariance 0.01 times common base C0. Existing impulses retained.",
+  "timing": "Wall-clock protocol serial; work protocol concurrent. Concurrent timing is not used for cross-method speed claims.",
+  "budget": "7700 predicted transitions per command; every actual model call is instrumented."
+}

@@ -1,0 +1,11 @@
+{
+  "figure": "results/variants/V05_covariance_steering/figures/primary.png",
+  "inputs_sha256": {
+    "results/variants/V05_covariance_steering/summary.csv": "18ce728012d4c088fa7a8f96a8d4834f5b3dc603f3dd85ea44c323506a9e475b",
+    "results/variants/V05_covariance_steering/per_seed.csv": "4044b431924b1b9979f8a1504bb414e70586423b4b908a93eb4900d29c758a74"
+  },
+  "reconstruction": "Saved compact records only; no simulation or sampling",
+  "plot_source_sha256": "7dbea091c31e483377e26e3853c8231d357277fed70ef5a0c4e4008fb5d9ed5e",
+  "figure_sha256": "648dba22ec796db7d7cec7350c25408928b5f2cff2d9c0819f71dd7e821f3039",
+  "summary_sha256": "18ce728012d4c088fa7a8f96a8d4834f5b3dc603f3dd85ea44c323506a9e475b"
+}
