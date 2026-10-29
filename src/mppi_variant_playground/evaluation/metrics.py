@@ -1,7 +1,7 @@
 """Metrics computed from executed physical states, separate from sampling costs."""
 
 import numpy as np
-from scipy.stats import t
+from scipy.stats import norm, t
 
 from mppi_variant_playground.dynamics.bicycle import wrap_angle
 from mppi_variant_playground.scenarios.environment import swept_clearance
@@ -105,3 +105,23 @@ def mean_interval(values):
         "ci95_low": mean - radius if radius is not None else None,
         "ci95_high": mean + radius if radius is not None else None,
     }
+
+
+def binomial_interval(values):
+    """Wilson 95% interval for an episode-level binary fraction."""
+    values = np.asarray(values, dtype=float)
+    values = values[np.isfinite(values)]
+    result = mean_interval(values)
+    if not len(values):
+        return result
+    if not np.isin(values, [0, 1]).all():
+        raise ValueError("Binomial intervals require binary observations")
+    n, fraction = len(values), result["mean"]
+    z = norm.ppf(0.975)
+    denominator = 1 + z**2 / n
+    center = (fraction + z**2 / (2 * n)) / denominator
+    radius = z * np.sqrt(fraction * (1 - fraction) / n + z**2 / (4 * n**2)) / denominator
+    result.update(
+        ci95_low=max(0.0, float(center - radius)), ci95_high=min(1.0, float(center + radius))
+    )
+    return result

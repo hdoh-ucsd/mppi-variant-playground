@@ -7,4 +7,4 @@ horizon: 28
 sampling_scale_constraint: matched_trace
 normalized_trace: 0.44
 wall_clock_target_s: 0.015
-wall_clock_candidates: [64, 128, 256, 384, 512, 768]
+wall_clock_candidates: [64, 128, 256, 384, 512, 768, 1024, 1536, 3072]

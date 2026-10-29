@@ -4,8 +4,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from mppi_variant_playground.evaluation.metrics import mean_interval
-from mppi_variant_playground.evaluation.runner import make_controller, run_episode, write_json
+from mppi_variant_playground.evaluation.metrics import binomial_interval, mean_interval
+from mppi_variant_playground.evaluation.runner import (
+    git_info,
+    make_controller,
+    run_episode,
+    write_json,
+)
 from mppi_variant_playground.utils.config import DEFAULT_ROOT, load_experiment, read_yaml
 
 
@@ -43,10 +48,12 @@ def summarize(results, output):
     for keys, group in frame.groupby(["mode", "scenario", "controller"], sort=False):
         for metric in frame.columns[4:]:
             values = pd.to_numeric(group[metric], errors="coerce").to_numpy(dtype=float)
+            interval = binomial_interval if metric in {"success", "collision"} else mean_interval
             summary.append(
                 dict(zip(["mode", "scenario", "controller"], keys, strict=True))
                 | {"metric": metric}
-                | mean_interval(values)
+                | interval(values)
+                | {"ci_method": "wilson" if metric in {"success", "collision"} else "student_t"}
             )
     pd.DataFrame(summary).to_csv(output / "summary.csv", index=False)
     write_json(output / "summary.json", summary)
@@ -73,6 +80,14 @@ def summarize(results, output):
                         }
                     )
     write_json(output / "paired_differences.json", paired)
+    write_json(
+        output / "analysis_provenance.json",
+        {
+            "git": git_info(),
+            "input": "per-run result.json metadata and metrics",
+            "intervals": "Wilson for binary outcomes; Student-t for continuous seed means",
+        },
+    )
     return frame
 
 

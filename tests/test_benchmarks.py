@@ -7,7 +7,12 @@ import pytest
 
 from mppi_variant_playground.dynamics.bicycle import Bicycle
 from mppi_variant_playground.evaluation.benchmark import summarize
-from mppi_variant_playground.evaluation.metrics import episode_metrics, mean_interval, reached
+from mppi_variant_playground.evaluation.metrics import (
+    binomial_interval,
+    episode_metrics,
+    mean_interval,
+    reached,
+)
 from mppi_variant_playground.evaluation.runner import run_episode
 from mppi_variant_playground.utils.config import load_experiment, validate_experiment
 
@@ -154,3 +159,12 @@ def test_sustained_disturbance_recovery_metric():
         states, controls, logs, scenario, Bicycle(dt=0.1), 0, np.zeros((8, 4))
     )
     assert metrics["disturbance_recovery_time_s"] == pytest.approx(0.3)
+
+
+def test_binary_wilson_intervals_remain_bounded_at_extremes():
+    low = binomial_interval([0, 0, 0, 0, 0])
+    high = binomial_interval([1, 1, 1, 1, 1])
+    assert low["mean"] == 0 and low["ci95_low"] == 0
+    assert low["ci95_high"] == pytest.approx(0.4344824648)
+    assert high["ci95_high"] == 1
+    assert high["ci95_low"] == pytest.approx(1 - low["ci95_high"])
