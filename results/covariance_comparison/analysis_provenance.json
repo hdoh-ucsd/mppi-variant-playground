@@ -1,9 +1,0 @@
-{
-  "git": {
-    "commit": "5ec715c671e58d6be22731ec090b39288875e9b3",
-    "dirty": false,
-    "status_scope": "repository excluding generated results/"
-  },
-  "input": "per-run result.json metadata and metrics",
-  "intervals": "Wilson for binary outcomes; Student-t for continuous seed means"
-}

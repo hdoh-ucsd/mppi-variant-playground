@@ -131,157 +131,87 @@ def validate(registry, root=ROOT):
 
 
 def render(registry, root=ROOT):
+    """Render one evidence index; the README owns the formulation narrative."""
     root = Path(root)
-    backtick = chr(96)
-    fence = backtick * 3
-    index = [
-        "# Research index",
+    lines = [
+        "# Historical research evidence index",
         "",
-        "Stable IDs connect each question to hypotheses, controls, evidence and limitations.",
+        "This index retains Q01–Q05 configurations, findings and provenance. "
+        "The [README](../README.md) contains the current formulations, V01–V06 comparisons "
+        "and mechanism figures. Q06 below is the superseded historical plan.",
         "",
-        "| Question | Status | Finding |",
+        "| Question | Status | Primary numerical evidence |",
         "| --- | --- | --- |",
     ]
     for q in registry["questions"]:
-        document = [f"# {q['id']} — {q['title']}", "", f"**Status: {q['status']}**", ""]
+        evidence = f"[Summary](../{q['summary']})" if q["summary"] else "Historical plan only"
+        lines.append(
+            f"| [{q['id']} — {q['title']}](#{q['id'].lower()}) | {q['status']} | {evidence} |"
+        )
+    for q in registry["questions"]:
+        lines.extend(["", f"## {q['id']}", "", f"**{q['title']}** — {q['status']}", ""])
         for field in (
             "research_question",
             "mathematical_motivation",
             "hypothesis",
-            "independent_variables",
-            "controlled_variables",
-            "metrics",
             "main_finding",
             "interpretation",
             "limitations",
-        ):
-            document.extend([f"## {field.replace('_', ' ').capitalize()}", "", q[field], ""])
-        document.extend(["## Registered experiment", "", "| Field | Value |", "| --- | --- |"])
-        for field in (
-            "experiment_name",
+            "independent_variables",
+            "controlled_variables",
+            "metrics",
             "dynamics_model",
             "control_inputs",
             "controller_configuration",
             "seeds",
             "sampling_budget",
-            "source_commit",
         ):
-            document.append(f"| {field.replace('_', ' ')} | {q[field]} |")
-        document.append("")
-        document.extend(
-            [
-                "## Configuration and provenance",
-                "",
-                f"[Original configuration](../../{q['configuration']})",
-                "",
-                "Source run IDs: " + (", ".join(q["run_ids"]) or "none — PLANNED"),
-                "",
-            ]
-        )
+            if q[field]:
+                lines.extend([f"**{field.replace('_', ' ').capitalize()}:** {q[field]}", ""])
+        lines.extend([f"[Exact configuration](../{q['configuration']})", ""])
+        if q["key_figure"]:
+            lines.extend(
+                [
+                    f"[Primary figure](../{q['key_figure']}) · "
+                    f"[Numerical summary](../{q['summary']})",
+                    "",
+                ]
+            )
         for run in registry["runs"]:
             if run["id"] in q["run_ids"]:
-                document.extend(
+                lines.extend(
                     [
-                        (
-                            f"- [Run {run['id']}](../../{run['path']}/): "
-                            f"[manifest](../../{run['manifest']}), source "
-                            f"{backtick}{run['source_commit']}{backtick}; "
-                            f"model: {run['dynamics_model']}; inputs: {run['control_inputs']}."
-                        ),
+                        f"- **{run['id']}**: [manifest](../{run['manifest']}), "
+                        f"[summary](../{run['summary']}), source `{run['source_commit']}`.",
                         "",
                     ]
                 )
-        if q["key_figure"]:
-            document.extend(
-                [
-                    "## Selected figure",
-                    "",
-                    f"![{q['title']}](../../{q['key_figure']})",
-                    "",
-                    f"[Numeric summary](../../{q['summary']})",
-                    "",
-                ]
-            )
-        document.extend(
-            [
-                "## Reproduce and regenerate",
-                "",
-                fence + "bash",
-                q["reproduce"],
-                q["regenerate"],
-                fence,
-                "",
-            ]
-        )
-        if q["run_ids"]:
-            primary = next(run for run in registry["runs"] if run["id"] == q["run_ids"][0])
-            tables = [
-                str(Path(primary["path"]) / name)
-                for name in [
-                    "per_seed.csv",
-                    "paired_differences.csv",
-                    "goal_summary.csv",
-                    "failure_modes.csv",
-                    "selected_weight_components.csv",
-                    "proposal_pushforward.csv",
-                ]
-                if (root / primary["path"] / name).is_file()
-            ]
-            if tables:
-                document.extend(["## Supporting numerical records", ""])
-                document.extend([f"- [{Path(path).name}](../../{path})" for path in tables])
-                document.append("")
-        if q["supporting_figures"]:
-            document.extend(["## Supporting figures", ""])
-            document.extend(
-                [f"- [Saved-data figure](../../{path})" for path in q["supporting_figures"]]
-            )
-            document.append("")
-        if q["id"] != "Q06":
-            document.extend(
-                [
-                    "[Seven-state campaign report and methods](../seven_state_benchmark_report.md)",
-                    "",
-                ]
-            )
-        methods = {
-            "Q01": "experimental_findings.md",
-            "Q02": "covariance_mechanisms.md",
-            "Q03": "frozen_decision_analysis.md",
-            "Q04": "trajectory_behavior_findings.md",
-            "Q05": "Q05_methods.md",
-        }
-        if q["id"] in methods:
-            document.extend(
-                [
-                    "[Historical methods (earlier model / original analytic seeds)]"
-                    f"(../{methods[q['id']]})",
-                    "",
-                ]
-            )
-        (root / q["document"]).write_text("\n".join(document))
-        index.append(
-            f"| [{q['id']} — "
-            f"{q['title']}]({Path(q['document']).relative_to('docs')}) | "
-            f"{q['status']} | {q['main_finding']} |"
-        )
-    storage = """
-## Storage and provenance
-
-- Full new raw records belong in §runs/seven_state/Qxx/<run_id>/§. Historical run names are relative
-  symlinks to original tracked evidence, not copied result trees.
-- §results/showcase/§ holds one selected PNG per executed question. Other figures stay
-  accessible from question documents.
-- Raw episodes, arrays, snapshots, animations and redundant plots are ignored. Small
-  top-level CSV/JSON summaries, exact YAML and manifests remain versionable under §runs/§.
-- [Legacy index](../results/archive/legacy_index.md) preserves original paths and
-  provenance. Historical experiments were not rerun for this reorganization.
-
-Validate or rebuild the research index and question documents (the README is maintained separately):
-
-§§§bash
-uv run python experiments/research_index.py --render
-uv run python experiments/research_index.py
-§§§
-""".replace("§", backtick)
-    (root / "docs/research_index.md").write_text("\n".join(index) + storage)
+        for path in q["supporting_figures"]:
+            lines.extend([f"[Supporting figure](../{path})", ""])
+        lines.extend(["```bash", q["reproduce"], q["regenerate"], "```", ""])
+    lines.extend(
+        [
+            "## Storage and recovery",
+            "",
+            "- `results/showcase/` retains the five primary Q01–Q05 figures.",
+            "- `runs/seven_state/` retains exact configurations, compact summaries and provenance. "
+            "Full episodes and rollout arrays are ignored; reproduce them before raw audits.",
+            "- `results/variants/` retains current formulation comparisons and mechanism evidence.",
+            "- [Historical recovery index](../results/archive/legacy_index.md) links superseded "
+            "documents and bulky earlier results at their immutable pre-cleanup revision.",
+            "",
+            "[Seven-state model equations, validation and campaign report]"
+            "(seven_state_benchmark_report.md)",
+            "",
+            "Validate or regenerate this single index (the README is maintained separately):",
+            "",
+            "```bash",
+            "uv run python experiments/research_index.py --render",
+            "uv run python experiments/research_index.py",
+            "```",
+            "",
+        ]
+    )
+    destination = root / "docs/research_index.md"
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text("\n".join(lines))

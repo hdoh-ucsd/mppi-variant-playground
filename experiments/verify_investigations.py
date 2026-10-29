@@ -15,7 +15,7 @@ from evaluation.runner import run_episode
 from utils.config import read_yaml
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument("--input", default="results/investigations")
+parser.add_argument("--input", default="runs/legacy/investigations")
 args = parser.parse_args()
 root = Path(args.input)
 checked = 0

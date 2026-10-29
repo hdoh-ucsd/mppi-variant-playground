@@ -93,3 +93,13 @@ core.*
 !/results/variants/**/*.csv
 /results/variants/**/figures/
 /runs/variants/
+
+# Local recovery archive and outputs from superseded benchmark drivers.
+/runs/archive/
+/runs/legacy/
+
+# Keep only the model validation and essential frozen-decision supplements in docs.
+/docs/figures/*
+!/docs/figures/seven_state_validation.png
+!/docs/figures/seven_state_Q03_commands.png
+!/docs/figures/seven_state_Q03_convergence.png

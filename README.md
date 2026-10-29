@@ -752,31 +752,31 @@ continue to describe that evidence.
 
 ![Q01: sampling covariance and estimation accuracy](results/showcase/Q01_key.png)
 
-For a **fixed, analytically solvable Gaussian target**, proposal orientation can help *or* hurt. At $K=256$ with 64 independent replication seeds, observed mean squared error was **0.003646** for the +45° full proposal, **0.006505** for isotropic, and **0.065524** for the −45° full proposal. These results concern estimation, **not vehicle performance**. [Experiment Q01](docs/questions/Q01_sampling_accuracy.md).
+For a **fixed, analytically solvable Gaussian target**, proposal orientation can help *or* hurt. At $K=256$ with 64 independent replication seeds, observed mean squared error was **0.003646** for the +45° full proposal, **0.006505** for isotropic, and **0.065524** for the −45° full proposal. These results concern estimation, **not vehicle performance**. [Experiment Q01](docs/research_index.md#q01).
 
 ### Q02 · What makes importance weights concentrate?
 
 ![Q02: importance-weight concentration](results/showcase/Q02_key.png)
 
-Temperature and high-dimensional proposal mismatch can concentrate weights by different mechanisms. Effective sample size (ESS) is an overlap diagnostic, **not a guarantee of estimator accuracy**; changing temperature also changes the target. [Experiment Q02](docs/questions/Q02_weight_degeneracy.md).
+Temperature and high-dimensional proposal mismatch can concentrate weights by different mechanisms. Effective sample size (ESS) is an overlap diagnostic, **not a guarantee of estimator accuracy**; changing temperature also changes the target. [Experiment Q02](docs/research_index.md#q02).
 
 ### Q03 · How does sampling geometry change one MPPI decision?
 
 ![Q03: frozen-state sampling, weighting and updated plan](results/showcase/Q03_key.png)
 
-At an identical seven-state vehicle observation and warm start, different proposal covariances produce different sampled trajectories, corrected weights, and updated controls. The high-sample target reference is **unresolved** for the open-space and pre-obstacle decisions; only the post-disturbance reference passes the stated diagnostic screens. The pre-obstacle reference's pooled ESS is just **1.51 despite 524,288 samples**. [Experiment Q03](docs/questions/Q03_frozen_decision.md).
+At an identical seven-state vehicle observation and warm start, different proposal covariances produce different sampled trajectories, corrected weights, and updated controls. The high-sample target reference is **unresolved** for the open-space and pre-obstacle decisions; only the post-disturbance reference passes the stated diagnostic screens. The pre-obstacle reference's pooled ESS is just **1.51 despite 524,288 samples**. [Experiment Q03](docs/research_index.md#q03).
 
 ### Q04 · Do decision differences persist in closed-loop driving?
 
 ![Q04: seven-state vehicle closed-loop comparisons](results/showcase/Q04_key.png)
 
-The seven-state study recorded **391 completions in 400 independent holdout episodes** across five scenarios. Completion is often nearly saturated, but route selection can differ: in the two-route task, the full proposal selected the upper route in **17/20** holdout runs, versus **5/20** for standard and isotropic and **2/20** for diagonal. These are observations about specific covariance matrices, **not general rankings of MPPI families**. [Experiment Q04](docs/questions/Q04_closed_loop.md).
+The seven-state study recorded **391 completions in 400 independent holdout episodes** across five scenarios. Completion is often nearly saturated, but route selection can differ: in the two-route task, the full proposal selected the upper route in **17/20** holdout runs, versus **5/20** for standard and isotropic and **2/20** for diagonal. These are observations about specific covariance matrices, **not general rankings of MPPI families**. [Experiment Q04](docs/research_index.md#q04).
 
 ### Q05 · When does a more demanding S-turn expose limitations?
 
 ![Q05: S-turn success, representative paths and lateral dynamics](results/showcase/Q05_key.png)
 
-In the primary seven-state S-turn study ($K=384$, 20 paired holdout seeds per setting), **313/320 episodes completed**. At the tightest 0.20 m clearance, completions were 20/20 standard, 16/20 isotropic, 20/20 diagonal, and 19/20 full. All seven primary failures were terminal-state timeouts; there were zero disk-proxy collisions. Separate studies investigate command-slew limits, speed preference, state-jump disturbances and sample budgets; they are **not pooled** into the primary clearance results. [Experiment Q05](docs/questions/Q05_s_turn_difficulty.md).
+In the primary seven-state S-turn study ($K=384$, 20 paired holdout seeds per setting), **313/320 episodes completed**. At the tightest 0.20 m clearance, completions were 20/20 standard, 16/20 isotropic, 20/20 diagonal, and 19/20 full. All seven primary failures were terminal-state timeouts; there were zero disk-proxy collisions. Separate studies investigate command-slew limits, speed preference, state-jump disturbances and sample budgets; they are **not pooled** into the primary clearance results. [Experiment Q05](docs/research_index.md#q05).
 
 ### Q06 · Original published-formulation plan
 
@@ -866,7 +866,16 @@ include these raw files**; reproduce the simulations before running raw replay a
 Every population is not stored at every decision; recorded seeds and configs permit
 regeneration. No new result overwrites the historical Q01–Q05 evidence.
 
+The maintained documentation has two roles: this README contains formulations and
+experimental interpretation; `docs/` contains the detailed vehicle report and one
+consolidated historical evidence index. Superseded reports and bulk earlier outputs
+are recoverable through the [historical recovery index](results/archive/legacy_index.md).
+The local ignored archive is `runs/archive/02a331f_cleanup/`; it is not part of a clone.
+
 ```text
+docs/                   Seven-state report, consolidated Q01–Q06 index, three key supplements
+results/showcase/       Five primary Q01–Q05 historical figures
+results/archive/        One index linking superseded evidence at an immutable Git revision
 src/controllers/        Explicit formulations, registry and shared feedback/accounting
 src/dynamics/           Existing validated physical plant
 src/costs/              Existing common external task objectives
@@ -897,6 +906,6 @@ tests/                  Mathematical references, invariants and baseline regress
 - Disk collision geometry, simplified roll, instantaneous steering, no reverse, terminal
   runout recovery and one S-turn handedness remain limitations of the shared benchmark.
 - CEM, adaptive covariance/policy classes, contraction-metric trackers and hardware
-  reproductions remain unimplemented. Existing historical source notes in
-  [formulations](docs/formulations.md) and [paper map](docs/paper_map.md) are retained;
-  the implementation status and new adaptation details are stated here.
+  reproductions remain unimplemented. The formulations and paper map are embedded
+  in this README; superseded source notes are available through the
+  [historical recovery index](results/archive/legacy_index.md).

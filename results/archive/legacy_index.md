@@ -1,45 +1,36 @@
-# Historical evidence index
+# Historical recovery index
 
-Historical files remain at their original locations. `runs/Q01`–`Q04` contain relative symlinks, not copied result trees. Curated PNGs are deliberate presentation selections; all other historical plots, archives and arrays retain their provenance and links.
+The current README and `results/variants/` are the primary formulation evidence.
+Q01–Q05 retain their showcase figures and seven-state numerical records. Superseded
+four/five-state reports and bulky earlier result trees were removed from the current
+checkout during repository cleanup; their committed versions remain in Git history.
 
-| Location | Recorded status | Source revision |
-| --- | --- | --- |
-| [results/investigations/closed_loop_v1](../investigations/closed_loop_v1/) | EXECUTED (manifest complete) | `daba0ba6720d7720d7f6e513d1c092e906a42734` |
-| [results/investigations/frozen_decision_v1](../investigations/frozen_decision_v1/) | EXECUTED (manifest complete) | `7aaf76eaed90588b9404b2fbed483ae9efce1156` |
-| [results/investigations/gaussian_v1](../investigations/gaussian_v1/) | EXECUTED (manifest complete) | `dd50f534ad47e765bec39715f6f801b790a251b2` |
-| [results/investigations/nonconvex_v1](../investigations/nonconvex_v1/) | EXECUTED (manifest complete) | `daba0ba6720d7720d7f6e513d1c092e906a42734` |
-| [results/investigations/reproduction_01/closed_loop_v1](../investigations/reproduction_01/closed_loop_v1/) | EXECUTED (manifest complete) | `e8cb3e16ec46deab65c91a27e228d6ef046ed6b2` |
-| [results/investigations/reproduction_01/gaussian_v1](../investigations/reproduction_01/gaussian_v1/) | EXECUTED (manifest complete) | `e8cb3e16ec46deab65c91a27e228d6ef046ed6b2` |
-| [results/investigations/reproduction_01/nonconvex_v1](../investigations/reproduction_01/nonconvex_v1/) | EXECUTED (manifest complete) | `e8cb3e16ec46deab65c91a27e228d6ef046ed6b2` |
-| [results/investigations/reproduction_01/saturation_v1](../investigations/reproduction_01/saturation_v1/) | EXECUTED (manifest complete) | `e8cb3e16ec46deab65c91a27e228d6ef046ed6b2` |
-| [results/investigations/reproduction_01/summary](../investigations/reproduction_01/summary/) | EXECUTED (manifest complete) | `e8cb3e16ec46deab65c91a27e228d6ef046ed6b2` |
-| [results/investigations/reproduction_01/temperature_v1](../investigations/reproduction_01/temperature_v1/) | EXECUTED (manifest complete) | `e8cb3e16ec46deab65c91a27e228d6ef046ed6b2` |
-| [results/investigations/saturation_v1](../investigations/saturation_v1/) | EXECUTED (manifest complete) | `daba0ba6720d7720d7f6e513d1c092e906a42734` |
-| [results/investigations/summary](../investigations/summary/) | EXECUTED (manifest complete) | `636882bab1753e434a2043395fe68a8cebe3832e` |
-| [results/investigations/temperature_v1](../investigations/temperature_v1/) | EXECUTED (manifest complete) | `dd50f534ad47e765bec39715f6f801b790a251b2` |
-| [results/investigations/trajectory_behavior_v1](../investigations/trajectory_behavior_v1/) | EXECUTED (manifest complete) | `077e7d90eb2f2d3fd302a284daf5d9868bf28135` |
+**Pre-cleanup revision:** `02a331f5e968d230ae6da2c02fda74dd14eed7ba`.
 
-Earlier top-level vehicle studies are also preserved:
-- [results/additional](../additional/)
-- [results/covariance_comparison](../covariance_comparison/)
-- [results/native](../native/)
-- [results/pilot_provenance](../pilot_provenance/)
-- [results/pilot_seed42](../pilot_seed42/)
-- [results/smoke_validation](../smoke_validation/)
-- [results/wall_clock](../wall_clock/)
+| Historical material | Immutable location |
+| --- | --- |
+| Earlier mathematical, frozen-decision and trajectory investigations, including reproduction runs | [Original investigation tree](https://github.com/hdoh-ucsd/mppi-variant-playground/tree/02a331f5e968d230ae6da2c02fda74dd14eed7ba/results/investigations) |
+| Earlier covariance comparison | [Original comparison tree](https://github.com/hdoh-ucsd/mppi-variant-playground/tree/02a331f5e968d230ae6da2c02fda74dd14eed7ba/results/covariance_comparison) |
+| Earlier native and wall-clock outputs | [Native](https://github.com/hdoh-ucsd/mppi-variant-playground/tree/02a331f5e968d230ae6da2c02fda74dd14eed7ba/results/native), [wall-clock](https://github.com/hdoh-ucsd/mppi-variant-playground/tree/02a331f5e968d230ae6da2c02fda74dd14eed7ba/results/wall_clock) |
+| Superseded reports and source notes | [Original docs tree](https://github.com/hdoh-ucsd/mppi-variant-playground/tree/02a331f5e968d230ae6da2c02fda74dd14eed7ba/docs) |
+| Five-state S-turn primary figure | [Historical figure](https://github.com/hdoh-ucsd/mppi-variant-playground/blob/02a331f5e968d230ae6da2c02fda74dd14eed7ba/results/archive/five_state_Q05_key.png) |
+| Earlier run/source-commit inventory | [Original recovery index](https://github.com/hdoh-ucsd/mppi-variant-playground/blob/02a331f5e968d230ae6da2c02fda74dd14eed7ba/results/archive/legacy_index.md) |
 
-A completed manifest is an execution record, not a scientific guarantee. Question documents report diagnostics and unresolved reference estimates. `reproduction_01` is a separately executed historical reproduction, not a newly generated duplicate. Large historical binaries remain tracked to preserve evidence; no new bulk archives are added.
+To recover committed historical files into a separate directory without repopulating
+current `docs/` or `results/`:
 
-Historical five-state Q05 evidence is stored separately under [runs/Q05/s_turn_clearance_v1](../../runs/Q05/s_turn_clearance_v1/). It is indexed in the canonical registry rather than copied into this historical archive.
+```bash
+mkdir -p /tmp/mppi-historical-evidence
+git archive 02a331f5e968d230ae6da2c02fda74dd14eed7ba docs results \
+  | tar -x -C /tmp/mppi-historical-evidence
+```
 
+The workspace also retains a **local, Git-ignored** recovery archive at
+`runs/archive/02a331f_cleanup/`, including previously untracked pilot data and cached
+figures. Its `inventory.json` records moved roots. A fresh clone does not contain
+that local archive or other ignored raw executions. Historical internal paths refer
+to their original revision; use a checkout of that revision for legacy replay.
 
-## Model labels after the seven-state campaign
-
-| Evidence | Dynamics | Current role |
-| --- | --- | --- |
-| Original Gaussian, temperature, saturation and nonconvex investigations | Analytic distributions, no vehicle | Mathematical references; independent Q01/Q02 replications now available |
-| Original frozen-decision, trajectory-behavior and closed-loop investigations | Four-state kinematic bicycle, acceleration/steering | Historical Q03/Q04; original data/figures unchanged |
-| `runs/Q05/s_turn_clearance_v1` | Five-state acceleration/steering-rate bicycle | Historical S-turn; [preserved primary PNG](five_state_Q05_key.png) |
-| `runs/seven_state/Q03`–`Q05` | Seven-state dynamic single-track, steering/throttle | Primary vehicle campaign, separately registered |
-
-The new Q01/Q02 run names include the campaign namespace but remain vehicle-independent analytic tests. The old five-state curated figure was copied with a verified matching hash before replacing the README selection. New showcase figures do not overwrite their historical numerical sources. Full new raw arrays remain local and ignored; compact records and selected figures are tracked. See [registry](../registry.yaml) and [scientific report](../../docs/seven_state_benchmark_report.md).
+Current evidence and reproduction commands are in the [README](../../README.md),
+[consolidated research index](../../docs/research_index.md), and
+[seven-state model report](../../docs/seven_state_benchmark_report.md).

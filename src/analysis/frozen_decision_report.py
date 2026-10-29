@@ -416,11 +416,11 @@ def generate_report(root):
             "uv sync --frozen",
             "export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLBACKEND=Agg",
             "uv run python experiments/frozen_state_decision.py \\\n"
-            "  --output results/investigations/frozen_decision_reproduction",
+            "  --output runs/legacy/investigations/frozen_decision_reproduction",
             "uv run python experiments/frozen_state_decision.py \\\n"
-            "  --output results/investigations/frozen_decision_v1 --plots-only",
+            "  --output runs/legacy/investigations/frozen_decision_v1 --plots-only",
             "uv run python experiments/verify_frozen_decision.py \\\n"
-            "  --input results/investigations/frozen_decision_v1",
+            "  --input runs/legacy/investigations/frozen_decision_v1",
             "uv run ruff check .",
             "uv run ruff format --check .",
             "uv run pytest",

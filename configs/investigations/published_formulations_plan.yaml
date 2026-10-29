@@ -7,5 +7,6 @@ formulations:
 - Tube-MPPI
 - Robust-MPPI
 - CC-MPPI
-protocol: docs/questions/Q06_variant_formulations.md
-note: Derive and implement each defining formulation before executing comparisons.
+protocol: README.md
+note: Historical unexecuted Q06 plan. Superseded by configs/variants/benchmark.yaml
+  and mechanisms.yaml; CEM remains planned.

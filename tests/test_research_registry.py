@@ -13,7 +13,7 @@ from analysis.research_registry import FIELDS, ROOT, read_registry, render, vali
 def test_registry_and_schema_are_consistent():
     r = read_registry()
     assert validate(r)["questions"] == 6
-    schema = json.loads((ROOT / "docs/research_registry.schema.json").read_text())
+    schema = json.loads((ROOT / "configs/research_registry.schema.json").read_text())
     assert set(schema["properties"]["questions"]["items"]["required"]) == set(FIELDS)
 
 
@@ -64,7 +64,7 @@ def test_showcase_contains_only_registered_primary_figures():
 
 def test_render_preserves_curated_readme(tmp_path):
     registry = read_registry()
-    (tmp_path / "docs/questions").mkdir(parents=True)
+    (tmp_path / "docs").mkdir(parents=True)
     readme = tmp_path / "README.md"
     original = (ROOT / "README.md").read_bytes()
     readme.write_bytes(original)
@@ -72,3 +72,4 @@ def test_render_preserves_curated_readme(tmp_path):
     assert readme.read_bytes() == original
     assert (tmp_path / "docs/research_index.md").is_file()
     assert all((tmp_path / q["document"]).is_file() for q in registry["questions"])
+    assert not (tmp_path / "docs/questions").exists()

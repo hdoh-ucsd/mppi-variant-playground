@@ -1,3 +1,0 @@
-# Closed-loop covariance validation
-
-These runs reuse the existing MPPI, costs, actuator constraints and prediction/execution separation. Resolved episode YAML and all trajectories, commands, per-step diagnostics and rollout archives are saved. Covariance acts in normalized input coordinates; its angle is not a spatial obstacle orientation. Each episode changes state and warm start, so this is a separate transfer check, with no analytic reference for its update mean. The static Gaussian target and vehicle control-sequence target are different problems. Report all failures, seed variability and timing; do not infer causal mediation from a correlation between ESS, saturation and success.

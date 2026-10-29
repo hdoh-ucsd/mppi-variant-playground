@@ -1,6 +1,6 @@
 # Seven-state dynamic vehicle campaign
 
-This document distinguishes model validation, analytic checks and vehicle experiments. The validated physics approximation and actual Q01–Q05 records are separate from the preserved historical four/five-state evidence. The [pre-implementation audit](seven_state_audit.md) records the starting scope.
+This document distinguishes model validation, analytic checks and vehicle experiments. The validated physics approximation and actual Q01–Q05 records are separate from the preserved historical four/five-state evidence. The [pre-implementation audit](https://github.com/hdoh-ucsd/mppi-variant-playground/blob/02a331f5e968d230ae6da2c02fda74dd14eed7ba/docs/seven_state_audit.md) records the starting scope.
 
 ## Motivation and relation to the paper
 
@@ -75,7 +75,7 @@ The common finish region uses terminal progress shortfall ≤.30 m, lateral goal
 
 ## Q01 — analytic reproducibility
 
-The independent replication used seeds 34000–34063, 447 cases and 28,608 trials with the original declared target parameters. It is independent of vehicle dynamics. Original records remain under `results/investigations/gaussian_v1`; new records are under [Q01](../runs/seven_state/Q01/seven_state_q01_v1/).
+The independent replication used seeds 34000–34063, 447 cases and 28,608 trials with the original declared target parameters. It is independent of vehicle dynamics. Original records are available through the [historical recovery index](../results/archive/legacy_index.md); the retained independent replication records are under [Q01](../runs/seven_state/Q01/seven_state_q01_v1/).
 
 For the fixed quadratic target and K=256:
 
@@ -317,13 +317,13 @@ uv run python experiments/verify_seven_state.py --input runs/seven_state/Q05/sev
 uv run python experiments/summarize_seven_state.py --input runs/seven_state/Q05/seven_state_q05_rate_v1
 ```
 
-Use fresh suffixed IDs for reproductions; completed run directories are never overwritten. The five primary figures are curated under `results/showcase`; supporting figures are committed under `docs/figures`. The registry links exact source commits/config hashes, primary and historical runs, and reconstruction commands. The previous five-state primary figure is preserved at `results/archive/five_state_Q05_key.png`; previous four-state figure/data paths remain intact.
+Use fresh suffixed IDs for reproductions; completed run directories are never overwritten. The five primary figures are curated under `results/showcase`. `docs/figures` retains the model validation and two Q03 supplements; other regenerated supplements remain ignored. The registry links the retained seven-state runs, exact source commits/configuration hashes and reconstruction commands. Earlier four/five-state figures and bulk result trees are available through the [historical recovery index](../results/archive/legacy_index.md).
 
 
 ## Final execution and review ledger
 
 The campaign records 33,152 analytic trials, 7,200 frozen evaluation decisions, 24 independent high-sample reference batches, and 2,276 unique seven-state driving episodes. Driving summary tables contain 160 additional K=384 references to original episodes; those are reused records, not additional executions or copied raw arrays. Another 320 plans are isolated timing measurements, not driving episodes. These totals account for work across conditions and are not a pooled performance ranking.
 
-All 146 tests pass, including physical signs, independent dynamic-turn references, refinement convergence, latent Gaussian ratios/weighted updates, frozen input isolation, default equivalence and active command-slew projection, geometric feasibility, saved-data-only figure reconstruction and registry provenance. Raw audits verify all driving stages and 1,026 frozen populations; the rate audit additionally reconstructs constrained sample trajectories/costs and all executed slew bounds. Registry validation resolves 20 immutable runs, five executed questions and Q06 planned. Original `results/investigations/` data and original bicycle model files are unchanged.
+At the original campaign completion, all 146 tests passed, including physical signs, independent dynamic-turn references, refinement convergence, latent Gaussian ratios/weighted updates, frozen input isolation, default equivalence and active command-slew projection, geometric feasibility, saved-data-only figure reconstruction and registry provenance. Raw audits verify all driving stages and 1,026 frozen populations; the rate audit additionally reconstructs constrained sample trajectories/costs and all executed slew bounds. The original registry resolved 20 runs. After cleanup, the active historical registry retains 15 seven-state runs and five executed questions; the unexecuted historical Q06 plan points to its V01–V06 successors. Superseded evidence remains recoverable at the pinned pre-cleanup revision; no numerical model or retained experiment result was changed by cleanup.
 
 The remaining limitations are substantive: no original AutoRally identification data, two unresolved Q03 target means, a center-disk scoring proxy, no full-body collision-avoidance evaluation, no continuous actuator/servo dynamics, a permissive finish/runout criterion, selected calibration/matrices and broad pointwise uncertainty. Future experiments should address these explicitly with new frozen protocols and run IDs, rather than reinterpret the present evidence as a universal algorithm ranking.

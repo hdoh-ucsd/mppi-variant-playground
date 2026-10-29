@@ -2,7 +2,7 @@ schema_version: 1
 questions:
 - id: Q01
   title: Sampling covariance and estimation accuracy
-  document: docs/questions/Q01_sampling_accuracy.md
+  document: docs/research_index.md
   status: EXECUTED
   research_question: How do proposal orientation, anisotropy and budget affect finite-sample error for
     a fixed Gibbs target?
@@ -17,7 +17,6 @@ questions:
   metrics: Bias, variance, MSE, ESS and moment error across 64 evaluation seeds.
   run_ids:
   - seven_state_q01_v1
-  - gaussian_v1
   key_figure: results/showcase/Q01_key.png
   source_figure: null
   summary: runs/seven_state/Q01/seven_state_q01_v1/summary.csv
@@ -41,7 +40,7 @@ questions:
   supporting_figures: []
 - id: Q02
   title: Importance-weight concentration
-  document: docs/questions/Q02_weight_degeneracy.md
+  document: docs/research_index.md
   status: EXECUTED
   research_question: When do cost weighting and Gaussian density corrections concentrate importance weights,
     and how does ESS relate to error?
@@ -55,7 +54,6 @@ questions:
   metrics: ESS, entropy, largest weight, exact mean error and Gaussian overlap diagnostics.
   run_ids:
   - seven_state_q02_v1
-  - temperature_v1
   key_figure: results/showcase/Q02_key.png
   source_figure: null
   summary: runs/seven_state/Q02/seven_state_q02_v1/summary.csv
@@ -79,7 +77,7 @@ questions:
   supporting_figures: []
 - id: Q03
   title: Frozen-state MPPI decision analysis
-  document: docs/questions/Q03_frozen_decision.md
+  document: docs/research_index.md
   status: EXECUTED
   research_question: How does changing only proposal covariance alter one MPPI decision at a frozen state
     and warm start?
@@ -94,7 +92,6 @@ questions:
   metrics: Paired command differences, ESS, entropy, mean-plan objective, reference diagnostics and latency.
   run_ids:
   - seven_state_q03_v1
-  - frozen_decision_v1
   key_figure: results/showcase/Q03_key.png
   source_figure: null
   summary: runs/seven_state/Q03/seven_state_q03_v1/summary.csv
@@ -123,7 +120,7 @@ questions:
   - docs/figures/seven_state_Q03_commands.png
 - id: Q04
   title: Closed-loop trajectory differences
-  document: docs/questions/Q04_closed_loop.md
+  document: docs/research_index.md
   status: EXECUTED
   research_question: How do covariance settings change executed route distributions, and which distribution
     does each plot describe?
@@ -141,7 +138,6 @@ questions:
   - seven_state_q04_timing_v1
   - seven_state_q04_budget_v1
   - seven_state_q04_pilot_v1
-  - trajectory_behavior_v1
   key_figure: results/showcase/Q04_key.png
   source_figure: null
   summary: runs/seven_state/Q04/seven_state_q04_v1/summary.csv
@@ -165,12 +161,10 @@ questions:
     normalized trace .40; Q03 adds aligned/misaligned
   seeds: 42–61 compatibility; 31000–31019 independent holdout; 36000–36009 isolated timing
   sampling_budget: Primary K=384; T=20; 800 episodes; separate K=128/384/768/1536 sweep
-  supporting_figures:
-  - docs/figures/seven_state_Q04_diagnostics.png
-  - docs/figures/seven_state_budget_seven_state_q04_budget_v1.png
+  supporting_figures: []
 - id: Q05
   title: S-turn difficulty and controller limitations
-  document: docs/questions/Q05_s_turn_difficulty.md
+  document: docs/research_index.md
   status: EXECUTED
   research_question: At what corridor clearance do specific proposal covariances produce measurable differences
     in controlled S-turn traversal?
@@ -194,7 +188,6 @@ questions:
   - seven_state_q05_secondary_v1
   - seven_state_q05_budget_v1
   - seven_state_q05_pilot_v1
-  - s_turn_clearance_v1
   key_figure: results/showcase/Q05_key.png
   source_figure: null
   summary: runs/seven_state/Q05/seven_state_q05_v1/summary.csv
@@ -221,14 +214,10 @@ questions:
   seeds: 42 pilot; 32000–32019 primary holdout (20 per setting); 35000–35019 cruise/impulse; 37000–37019
     slew; 36000–36009 timing
   sampling_budget: Primary K=384; T=20; 320 episodes; separate K sweep
-  supporting_figures:
-  - docs/figures/seven_state_Q05_diagnostics.png
-  - docs/figures/seven_state_Q05_secondary.png
-  - docs/figures/seven_state_Q05_rate.png
-  - docs/figures/seven_state_budget_seven_state_q05_budget_v1.png
+  supporting_figures: []
 - id: Q06
-  title: Published MPPI formulation comparisons
-  document: docs/questions/Q06_variant_formulations.md
+  title: Original formulation plan (superseded by V01–V06)
+  document: docs/research_index.md
   status: PLANNED
   research_question: Which defining mathematical changes in published MPPI formulations produce observable
     mechanisms under their stated assumptions?
@@ -246,90 +235,26 @@ questions:
   key_figure: null
   source_figure: null
   summary: null
-  main_finding: PLANNED — CEM, Tsallis-VI, DIAL, Tube-MPPI, Robust-MPPI and CC-MPPI are not implemented
-    or evaluated.
-  interpretation: Paper-level changes to weighting, annealing, feedback and state-covariance design require
-    distinct implementations and appropriate isolated tests.
-  limitations: No experimental claims or placeholder figures. Covariance ablations are not these published
-    formulations.
-  reproduce: 'PLANNED: no executable study exists; follow docs/paper_map.md and docs/implementation_fidelity.md.'
-  regenerate: 'PLANNED: no figures to regenerate.'
-  experiment_name: Published formulation comparison (planned)
-  dynamics_model: not yet declared
-  control_inputs: not yet declared
-  controller_configuration: Alternative formulations not implemented
-  seeds: not yet declared
-  sampling_budget: not yet declared
+  main_finding: This historical experiment ID was never executed. Its plan was superseded by the implemented
+    and executed V01–V06 formulation studies and mechanism experiments in README.md; CEM remains planned.
+  interpretation: PLANNED describes this archived question ID, not the implementation status of the current
+    controllers.
+  limitations: Use the current README for formulation fidelity, experiments and limits; do not interpret
+    this historical plan as current implementation status.
+  reproduce: uv run python experiments/variant_benchmark.py --study V06_unified --output results/variants/V06_reproduction
+    --raw runs/variants/V06_reproduction
+  regenerate: uv run python experiments/formulation_mechanisms.py --plot-only --output results/variants/mechanisms
+  experiment_name: Historical unexecuted formulation plan
+  dynamics_model: Not specified in the historical plan
+  control_inputs: Not specified in the historical plan
+  controller_configuration: Not specified for this historical ID; current implementations are documented
+    in README.md.
+  seeds: Not specified in the historical plan
+  sampling_budget: Not specified in the historical plan
   source_commit: null
   primary_run_id: null
   supporting_figures: []
 runs:
-- id: gaussian_v1
-  question_ids:
-  - Q01
-  status: EXECUTED
-  path: results/investigations/gaussian_v1
-  manifest: results/investigations/gaussian_v1/manifest.json
-  source_commit: dd50f534ad47e765bec39715f6f801b790a251b2
-  configuration: results/investigations/gaussian_v1/config.yaml
-  summary: results/investigations/gaussian_v1/summary.csv
-  dynamics_model: analytic_gaussian
-  control_inputs: not applicable (Gaussian latent vectors)
-  experiment_name: gaussian_v1 (historical)
-  key_figure: results/investigations/gaussian_v1/figures/03_alignment_sweep.png
-- id: temperature_v1
-  question_ids:
-  - Q02
-  status: EXECUTED
-  path: results/investigations/temperature_v1
-  manifest: results/investigations/temperature_v1/manifest.json
-  source_commit: dd50f534ad47e765bec39715f6f801b790a251b2
-  configuration: results/investigations/temperature_v1/config.yaml
-  summary: results/investigations/temperature_v1/summary.csv
-  dynamics_model: analytic_gaussian
-  control_inputs: not applicable (Gaussian latent vectors)
-  experiment_name: temperature_v1 (historical)
-  key_figure: results/investigations/temperature_v1/figures/05b_dimension_diagnostics.png
-- id: frozen_decision_v1
-  question_ids:
-  - Q03
-  status: EXECUTED
-  path: results/investigations/frozen_decision_v1
-  manifest: results/investigations/frozen_decision_v1/manifest.json
-  source_commit: 7aaf76eaed90588b9404b2fbed483ae9efce1156
-  configuration: results/investigations/frozen_decision_v1/config.yaml
-  summary: results/investigations/frozen_decision_v1/summary.csv
-  dynamics_model: kinematic_bicycle_4
-  control_inputs: acceleration [m/s²], steering [rad]
-  experiment_name: frozen_decision_v1 (historical)
-  key_figure: results/investigations/frozen_decision_v1/figures/post_disturbance_B_first_command_difference.png
-- id: trajectory_behavior_v1
-  question_ids:
-  - Q04
-  status: EXECUTED
-  path: results/investigations/trajectory_behavior_v1
-  manifest: results/investigations/trajectory_behavior_v1/manifest.json
-  source_commit: 077e7d90eb2f2d3fd302a284daf5d9868bf28135
-  configuration: results/investigations/trajectory_behavior_v1/config.yaml
-  summary: results/investigations/trajectory_behavior_v1/behavior_summary.csv
-  dynamics_model: kinematic_bicycle_4
-  control_inputs: acceleration [m/s²], steering [rad]
-  experiment_name: trajectory_behavior_v1 (historical)
-  key_figure: results/investigations/trajectory_behavior_v1/figures/two_route_obstacle_D_progress_dispersion.png
-- id: s_turn_clearance_v1
-  question_ids:
-  - Q05
-  status: EXECUTED
-  path: runs/Q05/s_turn_clearance_v1
-  manifest: runs/Q05/s_turn_clearance_v1/manifest.json
-  source_commit: ff3df5824856e8252a221bc6a4fdce8105ec298c
-  configuration: runs/Q05/s_turn_clearance_v1/config.yaml
-  summary: runs/Q05/s_turn_clearance_v1/summary.csv
-  figure_provenance: runs/Q05/s_turn_clearance_v1/figure_provenance.json
-  dynamics_model: steering_rate_bicycle_5
-  control_inputs: acceleration [m/s²], steering rate [rad/s]
-  experiment_name: s_turn_clearance_v1 (historical)
-  key_figure: results/archive/five_state_Q05_key.png
 - id: seven_state_q01_v1
   question_ids:
   - Q01
