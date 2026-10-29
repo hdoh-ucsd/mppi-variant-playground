@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "level": "published_formulation_comparison",
+  "phase": "evaluation",
+  "started_at_utc": "2026-10-29T18:18:27.296022+00:00",
+  "git": {
+    "commit": "62de189a1eac3458842407ac4a069644350dcaac",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "76a4d73fbb99960fd3134afad3b8fbbfd0f347a3272d63a2563cac68a9ba1131",
+  "configuration_sha256": "84921f362b7af9eedd0ff9f60f1a0a16926b002adc8fde5cd06b8afa18fc704e",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "episodes": 24,
+  "finished_at_utc": "2026-10-29T18:20:21.061076+00:00",
+  "raw_storage": "runs/variants/V04_robust",
+  "noise": "Existing paired disturbance stream; no additional process noise in V01\u2013V04.",
+  "timing": "Wall-clock protocol serial; work protocol concurrent. Concurrent timing is not used for cross-method speed claims.",
+  "budget": "7700 predicted transitions per command; every actual model call is instrumented."
+}

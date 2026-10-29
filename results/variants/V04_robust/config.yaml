@@ -1,0 +1,284 @@
+phase: evaluation
+workers: 8
+seeds:
+- 48000
+- 48001
+- 48002
+calibration_seeds:
+- 47900
+- 47901
+- 47902
+calibration_samples:
+- 16
+- 32
+- 64
+- 128
+- 256
+- 384
+- 768
+- 1536
+- 3072
+planning_deadline_s: 0.15
+calibration_fraction: 0.8
+transition_budget: 7700
+s_turn_clearance: 0.35
+algorithms:
+  it_mppi: {}
+  tsallis_vi:
+    tsallis_r: 1.5
+    elite_fraction: 0.8
+  dial_mpc:
+    iterations: 4
+    beta_trajectory: 1.0
+    beta_horizon: 1.0
+    anneal: true
+    covariance:
+    - - 0.2
+      - 0
+    - - 0
+      - 0.2
+  dial_no_anneal:
+    iterations: 4
+    beta_trajectory: 1.0
+    beta_horizon: 1.0
+    anneal: false
+    covariance:
+    - - 0.2
+      - 0
+    - - 0
+      - 0.2
+  tube_mppi:
+    reset_threshold: 450.0
+    tracking_q:
+    - 4
+    - 8
+    - 6
+    - 2
+    - 2
+    - 1
+    - 1
+    tracking_r:
+    - 1
+    - 1
+    tracking_terminal_multiplier: 5.0
+  robust_mppi:
+    candidate_samples: 8
+    free_energy_threshold: 5000.0
+    tracking_q:
+    - 4
+    - 8
+    - 6
+    - 2
+    - 2
+    - 1
+    - 1
+    tracking_r:
+    - 1
+    - 1
+    tracking_terminal_multiplier: 5.0
+studies:
+  V01_tsallis:
+    algorithms:
+    - it_mppi
+    - tsallis_vi
+    scenarios:
+    - open_space
+    - two_route_obstacle
+  V02_dial:
+    algorithms:
+    - it_mppi
+    - dial_mpc
+    - dial_no_anneal
+    scenarios:
+    - two_route_obstacle
+    - narrow_passage
+  V03_tube:
+    algorithms:
+    - it_mppi
+    - tube_mppi
+    scenarios:
+    - disturbance
+    - model_mismatch
+  V04_robust:
+    algorithms:
+    - it_mppi
+    - robust_mppi
+    scenarios:
+    - disturbance
+    - model_mismatch
+study: V04_robust
+shared_campaign:
+  phase: evaluation
+  model_kind: dynamic7
+  workers: 12
+  controller:
+    horizon: 20
+    samples: 384
+    temperature: 8.0
+    base_covariance:
+    - - 0.14
+      - 0.0
+    - - 0.0
+      - 0.26
+  proposals:
+    standard:
+    - - 0.14
+      - 0.0
+    - - 0.0
+      - 0.26
+    isotropic:
+    - - 0.2
+      - 0.0
+    - - 0.0
+      - 0.2
+    diagonal:
+    - - 0.09
+      - 0.0
+    - - 0.0
+      - 0.31
+    full:
+    - - 0.14
+      - 0.07
+    - - 0.07
+      - 0.26
+  vehicle_radius: 0.22
+  speed_target: 1.4
+  cost:
+    remaining_progress: 1.0
+    speed: 2.0
+    heading: 1.0
+    clearance: 100.0
+    safety_margin: 0.15
+    collision: 3000.0
+    control: 0.05
+    variation: 0.1
+    lateral_velocity: 1.0
+    yaw_rate: 0.2
+    roll: 2.0
+    terminal_progress: 4.0
+    terminal_goal: 8.0
+    terminal_heading: 4.0
+    terminal_speed: 3.0
+  execution:
+    max_steps: 160
+    position_tolerance: 0.3
+    heading_tolerance: 0.35
+    speed_tolerance: 0.8
+    goal_lateral_tolerance: 0.4
+    lateral_velocity_tolerance: 0.35
+    yaw_rate_tolerance: 0.35
+    roll_tolerance: 0.15
+    snapshot_steps:
+    - 0
+    - 10
+    - 21
+    - 40
+    - 65
+    representative_seed: 42
+  compatibility_seeds:
+    start: 42
+    count: 20
+  holdout_seeds:
+    start: 31000
+    count: 20
+  s_turn_seeds:
+    start: 32000
+    count: 20
+  s_turn_max_seeds: 40
+  s_turn_precision_width: 0.36
+  pilot_seeds:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 42
+  scenarios:
+  - open_space
+  - narrow_passage
+  - two_route_obstacle
+  - disturbance
+  - model_mismatch
+  s_turn:
+    turn_radius: 3.0
+    turn_separation: 3.0
+    entry_length: 2.0
+    exit_length: 3.0
+    end_extension: 8.0
+    clearance_levels:
+    - 0.9
+    - 0.6
+    - 0.35
+    - 0.2
+    representative_clearance: 0.35
+    steering_profile_rate_limit: 0.8
+  budget_counts:
+  - 128
+  - 384
+  - 768
+  - 1536
+  budget_q04_scenario: two_route_obstacle
+  budget_q05_clearance: 0.35
+  frozen:
+    seed: 31415
+    samples: 384
+    horizon: 20
+    seeds:
+      start: 33000
+      count: 50
+    representative_seed: 33000
+    sample_counts:
+    - 64
+    - 128
+    - 256
+    - 384
+    - 512
+    - 1024
+    - 2048
+    - 4096
+    reference_samples: 65536
+    reference_repetitions: 8
+    reference_min_ess: 100
+    reference_max_weight: 0.05
+    reference_max_rms_ci_halfwidth: 0.05
+    sensitivity_step: 0.001
+    orientation_eigenvalues:
+    - 0.3
+    - 0.1
+    repetition_counts:
+    - 10
+    - 25
+    - 50
+    open_step: 8
+    obstacle_min_x: 0.6
+    obstacle_max_x: 1.2
+    disturbance_step: 21
+  vehicle:
+    dt: 0.15
+    substeps: 3
+    mass: 35.0
+    yaw_inertia: 8.0
+    front_distance: 0.4
+    rear_distance: 0.4
+    cornering_front: 450.0
+    cornering_rear: 450.0
+    friction: 0.9
+    gravity: 9.81
+    engine_force: 70.0
+    brake_force: 105.0
+    drag_linear: 0.4
+    drag_quadratic: 0.5
+    steering_limit: 0.5
+    throttle_limit: 1.0
+    velocity_max: 4.0
+    low_speed: 0.5
+    low_speed_damping_time: 0.15
+    cg_height: 0.2
+    roll_stiffness: 120.0
+    roll_damping: 48.0
+  control_fields:
+  - steering
+  - throttle
