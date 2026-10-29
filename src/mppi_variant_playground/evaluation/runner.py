@@ -27,7 +27,11 @@ def git_info():
         result = subprocess.run(["git", *args], capture_output=True, text=True, check=False)
         return result.stdout.strip() if result.returncode == 0 else None
 
-    return {"commit": run("rev-parse", "HEAD"), "dirty": bool(run("status", "--porcelain"))}
+    return {
+        "commit": run("rev-parse", "HEAD"),
+        "dirty": bool(run("status", "--porcelain", "--", ".", ":(exclude)results")),
+        "status_scope": "repository excluding generated results/",
+    }
 
 
 def make_controller(config):
