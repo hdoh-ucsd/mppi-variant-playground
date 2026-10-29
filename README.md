@@ -103,16 +103,17 @@ evidence](results/archive/legacy_index.md)
 
 ### Q05 — S-turn difficulty and controller limitations
 
-**PLANNED — no executed result or figure.**
+![S-turn difficulty and controller limitations](results/showcase/Q05_key.png)
 
-**Finding:** PLANNED — the feasible reference and final seed-42 pilot pass at all four clearance levels; multi-seed evaluation is pending.
+**Finding:** At .20 m clearance, completion is 17/20 standard, 18/20 isotropic and 20/20 diagonal/full. All 17 failures among 480 episodes are timeouts near the finish, with zero collisions.
 
-**Interpretation:** The study separates physical feasibility from finite-horizon, finite-sampling and objective limitations.
+**Interpretation:** A larger observed completion gap at the tightest clearance coexists with terminal speed/heading failures; this does not isolate covariance-driven route discovery.
 
-**Limitations:** Do not attribute failure to covariance before geometry and reference feasibility are validated.
+**Limitations:** Twenty seeds give broad paired intervals. The difficulty threshold is unresolved; finish-region recovery, one corridor handedness, one horizon and specific matrices limit generalization.
 
 - [Detailed experiment](docs/questions/Q05_s_turn_difficulty.md)
-- [Original configuration](configs/investigations/s_turn.yaml)
+- [Original configuration](runs/Q05/s_turn_clearance_v1/config.yaml)
+- [Data summary](runs/Q05/s_turn_clearance_v1/summary.csv)
 - [Reproduction commands](docs/questions/Q05_s_turn_difficulty.md#reproduce-and-regenerate)
 
 ### Q06 — Published MPPI formulation comparisons

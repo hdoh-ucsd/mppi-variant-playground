@@ -4,7 +4,7 @@
 
 ## Research question
 
-Frozen-state MPPI decision analysis?
+How does changing only proposal covariance alter one MPPI decision at a frozen state and warm start?
 
 ## Mathematical motivation
 

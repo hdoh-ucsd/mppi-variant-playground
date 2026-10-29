@@ -4,7 +4,7 @@
 
 ## Research question
 
-Published MPPI formulation comparisons?
+Which defining mathematical changes in published MPPI formulations produce observable mechanisms under their stated assumptions?
 
 ## Mathematical motivation
 

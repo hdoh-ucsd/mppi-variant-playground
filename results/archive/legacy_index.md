@@ -29,3 +29,5 @@ Earlier top-level vehicle studies are also preserved:
 - [results/wall_clock](../wall_clock/)
 
 A completed manifest is an execution record, not a scientific guarantee. Question documents report diagnostics and unresolved reference estimates. `reproduction_01` is a separately executed historical reproduction, not a newly generated duplicate. Large historical binaries remain tracked to preserve evidence; no new bulk archives are added.
+
+New Q05 evidence is stored separately under [runs/Q05/s_turn_clearance_v1](../../runs/Q05/s_turn_clearance_v1/). It is indexed in the canonical registry rather than copied into this historical archive.

@@ -40,14 +40,96 @@
           "regenerate"
         ],
         "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^Q0[1-6]$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "document": {
+            "type": "string",
+            "minLength": 1
+          },
           "status": {
             "enum": [
               "PLANNED",
               "EXECUTED"
             ]
           },
-          "id": {
-            "pattern": "^Q0[1-6]$"
+          "research_question": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mathematical_motivation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hypothesis": {
+            "type": "string",
+            "minLength": 1
+          },
+          "configuration": {
+            "type": "string",
+            "minLength": 1
+          },
+          "independent_variables": {
+            "type": "string",
+            "minLength": 1
+          },
+          "controlled_variables": {
+            "type": "string",
+            "minLength": 1
+          },
+          "metrics": {
+            "type": "string",
+            "minLength": 1
+          },
+          "run_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "key_figure": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_figure": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "main_finding": {
+            "type": "string",
+            "minLength": 1
+          },
+          "interpretation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "limitations": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reproduce": {
+            "type": "string",
+            "minLength": 1
+          },
+          "regenerate": {
+            "type": "string",
+            "minLength": 1
           }
         }
       }
@@ -65,7 +147,26 @@
           "source_commit",
           "configuration",
           "summary"
-        ]
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "source_commit": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$"
+          },
+          "status": {
+            "const": "EXECUTED"
+          },
+          "question_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "pattern": "^Q0[1-6]$"
+            }
+          }
+        }
       }
     }
   },

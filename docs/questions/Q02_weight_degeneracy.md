@@ -4,7 +4,7 @@
 
 ## Research question
 
-Importance-weight concentration?
+When do cost weighting and Gaussian density corrections concentrate importance weights, and how does ESS relate to error?
 
 ## Mathematical motivation
 

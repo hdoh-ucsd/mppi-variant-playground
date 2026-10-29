@@ -46,6 +46,12 @@ def validate(registry, root=ROOT):
             raise ValueError("Missing or mismatched provenance")
         if (root / run["summary"]).stat().st_size < 20:
             raise ValueError("Empty results summary")
+        configuration = yaml.safe_load((root / run["configuration"]).read_text())
+        digest = hashlib.sha256(
+            json.dumps(configuration, sort_keys=True, allow_nan=False).encode()
+        ).hexdigest()
+        if digest != manifest.get("configuration_sha256"):
+            raise ValueError("Configuration provenance hash mismatch")
     for q in questions:
         if set(FIELDS) - q.keys():
             raise ValueError("Missing question fields")
@@ -64,6 +70,12 @@ def validate(registry, root=ROOT):
             raise ValueError("Figure claim without corresponding results")
         if any(q["id"] not in by_id[r]["question_ids"] for r in q["run_ids"]):
             raise ValueError("Question/run association disagrees")
+        primary_run = by_id[q["run_ids"][0]]
+        if (
+            q["summary"] != primary_run["summary"]
+            or q["configuration"] != primary_run["configuration"]
+        ):
+            raise ValueError("Question evidence disagrees with its source run")
         if not q["key_figure"] or not (root / q["key_figure"]).is_file():
             raise ValueError("Broken figure link")
         if not q["summary"] or not (root / q["summary"]).is_file():
@@ -78,6 +90,9 @@ def validate(registry, root=ROOT):
             actual = hashlib.sha256((root / q["key_figure"]).read_bytes()).hexdigest()
             if data["figure_sha256"] != actual:
                 raise ValueError("Figure provenance hash mismatch")
+            summary_hash = hashlib.sha256((root / q["summary"]).read_bytes()).hexdigest()
+            if data["summary_sha256"] != summary_hash:
+                raise ValueError("Figure summary provenance hash mismatch")
     return dict(
         questions=len(questions),
         executed=sum(q["status"] == "EXECUTED" for q in questions),

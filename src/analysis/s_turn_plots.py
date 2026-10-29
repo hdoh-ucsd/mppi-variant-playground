@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import os
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -56,9 +57,9 @@ def generate(root, showcase=None):
             "axes.spines.right": False,
         }
     )
-    fig, axes = plt.subplots(
-        1, 2, figsize=(14, 5.5), layout="constrained", gridspec_kw={"width_ratios": [1, 1.5]}
-    )
+    fig = plt.figure(figsize=(14, 6.5), layout="constrained")
+    grid = fig.add_gridspec(2, 2, width_ratios=[1, 1.5])
+    axes = [fig.add_subplot(grid[:, 0]), fig.add_subplot(grid[0, 1]), fig.add_subplot(grid[1, 1])]
     data = dict(
         primary_summary=primary.astype(object).where(pd.notna(primary), None).to_dict("records"),
         representative_seed=config["execution"]["representative_seed"],
@@ -82,42 +83,59 @@ def generate(root, showcase=None):
     ax.grid(alpha=0.15)
     ax.legend(fontsize=9, ncols=2)
     ax.set_title("Does reducing clearance separate the proposals?")
-    ax = axes[1]
-    ax.fill(corridor.boundary.points[:, 0], corridor.boundary.points[:, 1], color="#f1f5f9")
-    for boundary in (corridor.upper, corridor.lower):
-        ax.plot(*boundary.T, color="#64748b", lw=1)
-    ax.plot(*corridor.center.points.T, color="#cbd5e1", lw=1, ls=":", label="Diagnostic centerline")
+    for ax in axes[1:]:
+        ax.fill(corridor.boundary.points[:, 0], corridor.boundary.points[:, 1], color="#f1f5f9")
+        for boundary in (corridor.upper, corridor.lower):
+            ax.plot(*boundary.T, color="#64748b", lw=1)
+        ax.plot(*corridor.center.points.T, color="#cbd5e1", lw=1, ls=":")
+        ax.set(xlabel="x [m]", ylabel="y [m]")
+        ax.set_aspect("equal", adjustable="box")
     for proposal, color in zip(config["proposals"], COLORS, strict=True):
         record = paths[f"{selected['cell']}__{proposal}"]
-        p = frame[
+        row = frame[
             (frame.cell == selected["cell"])
             & (frame.proposal == proposal)
             & (frame.seed == config["execution"]["representative_seed"])
         ].iloc[0]
-        ax.plot(
-            record["px"],
-            record["py"],
-            color=color,
-            lw=1.8,
-            ls="-" if p.success else "--",
-            label=f"{proposal} ({p.termination})",
-        )
-        ax.scatter(
-            record["px"][-1], record["py"][-1], color=color, marker="o" if p.success else "x", s=25
-        )
-        data["paths"][proposal] = dict(x=record["px"], y=record["py"], termination=p.termination)
-    ax.scatter(*corridor.goal[:2], marker="*", color="black", s=65, label="Goal")
-    ax.set(
-        xlabel="x [m]",
-        ylabel="y [m]",
-        title=(
-            f"Same corridor, matched seed "
-            f"{config['execution']['representative_seed']}; "
-            f"c={config['execution']['representative_clearance']} m"
-        ),
+        for ax in axes[1:]:
+            ax.plot(
+                record["px"], record["py"], color=color, lw=1.8, ls="-" if row.success else "--"
+            )
+            ax.scatter(
+                record["px"][-1],
+                record["py"][-1],
+                color=color,
+                marker="o" if row.success else "x",
+                s=25,
+            )
+        data["paths"][proposal] = dict(x=record["px"], y=record["py"], termination=row.termination)
+    allx = np.concatenate([np.array(v["x"]) for v in data["paths"].values()])
+    bounds = [
+        float(min(allx.min(), 0) - 0.5),
+        float(max(allx.max(), corridor.goal[0]) + 0.5),
+        float(lower[:, 1].min() - 0.2),
+        float(upper[:, 1].max() + 0.2),
+    ]
+    axes[1].set(
+        xlim=bounds[:2],
+        ylim=bounds[2:],
+        title=f"Same map, matched seed {config['execution']['representative_seed']}; "
+        f"clearance={config['execution']['representative_clearance']} m",
     )
-    ax.set_aspect("equal", adjustable="box")
-    ax.legend(fontsize=7, ncols=2, loc="upper center", bbox_to_anchor=(0.5, -0.22))
+    axes[1].scatter(*corridor.goal[:2], marker="*", color="black", s=65)
+    apex = corridor.center.points[np.argmax(corridor.center.points[:, 1])]
+    zoom = [float(apex[0] - 4), float(apex[0] + 4), float(apex[1] - 1.2), float(apex[1] + 0.8)]
+    axes[2].set(
+        xlim=zoom[:2], ylim=zoom[2:], title="Shared turn zoom · same axes for all proposals"
+    )
+    axes[2].text(
+        0.01,
+        -0.32,
+        "Solid: completed; dashed / ×: failed; ★: finish gate",
+        transform=axes[2].transAxes,
+        fontsize=8,
+    )
+    data["map_bounds"], data["zoom_bounds"] = bounds, zoom
     fig.suptitle(
         (
             f"Q05 · S-turn difficulty: {config['seeds']['count']} paired seeds, "
@@ -157,6 +175,7 @@ def generate(root, showcase=None):
             ),
         ),
     )
+    figure_link = os.path.relpath(target, root)
     lines = [
         "# Q05 — Executed S-turn findings",
         "",
@@ -210,7 +229,7 @@ def generate(root, showcase=None):
         ),
         "",
         (
-            "[Primary composite](figures/Q05_key.png) · [Numeric plot "
+            f"[Primary composite]({figure_link}) · [Numeric plot "
             "inputs](key_figure_data.json) · [Per-seed metrics](per_seed.csv) · "
             "[Feasibility checks](feasibility.json)"
         ),

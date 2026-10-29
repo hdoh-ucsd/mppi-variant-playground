@@ -3,6 +3,7 @@
 import json
 import re
 from copy import deepcopy
+from pathlib import Path
 
 import pytest
 
@@ -52,3 +53,9 @@ def test_readme_has_at_most_one_existing_primary_image_per_question():
     for path in re.findall(r"\]\(([^)#]+)(?:#[^)]*)?\)", text):
         if "://" not in path:
             assert (ROOT / path).exists(), path
+
+
+def test_showcase_contains_only_registered_primary_figures():
+    registry = read_registry()
+    expected = {Path(q["key_figure"]).name for q in registry["questions"] if q["key_figure"]}
+    assert {p.name for p in (ROOT / "results/showcase").iterdir()} == expected

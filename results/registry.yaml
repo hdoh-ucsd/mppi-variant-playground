@@ -4,7 +4,8 @@ questions:
   title: Sampling covariance and estimation accuracy
   document: docs/questions/Q01_sampling_accuracy.md
   status: EXECUTED
-  research_question: Sampling covariance and estimation accuracy?
+  research_question: How do proposal orientation, anisotropy and budget affect finite-sample error for
+    a fixed Gibbs target?
   mathematical_motivation: The Gaussian Gibbs mean is (P⁻¹+H/λ)⁻¹Hb/λ, independent of the proposal covariance.
   hypothesis: A suitably oriented proposal can reduce finite-sample MSE; misalignment can reverse the
     effect.
@@ -32,7 +33,8 @@ questions:
   title: Importance-weight concentration
   document: docs/questions/Q02_weight_degeneracy.md
   status: EXECUTED
-  research_question: Importance-weight concentration?
+  research_question: When do cost weighting and Gaussian density corrections concentrate importance weights,
+    and how does ESS relate to error?
   mathematical_motivation: ESS=1/Σw² measures weight concentration, whereas estimator variance also depends
     on the integrand.
   hypothesis: Sharper Boltzmann factors and high-dimensional proposal mismatch can each concentrate weights.
@@ -59,7 +61,8 @@ questions:
   title: Frozen-state MPPI decision analysis
   document: docs/questions/Q03_frozen_decision.md
   status: EXECUTED
-  research_question: Frozen-state MPPI decision analysis?
+  research_question: How does changing only proposal covariance alter one MPPI decision at a frozen state
+    and warm start?
   mathematical_motivation: Fixing p, J, λ and the proposal mean isolates the covariance intervention in
     self-normalized importance sampling.
   hypothesis: Covariance changes finite-budget decisions; differences may diminish with K if sampling
@@ -87,7 +90,8 @@ questions:
   title: Closed-loop trajectory differences
   document: docs/questions/Q04_closed_loop.md
   status: EXECUTED
-  research_question: Closed-loop trajectory differences?
+  research_question: How do covariance settings change executed route distributions, and which distribution
+    does each plot describe?
   mathematical_motivation: Closed-loop feedback changes observed states and warm starts, so static estimation
     benefits need not transfer.
   hypothesis: Proposal changes may accumulate into visibly different route and recovery distributions.
@@ -114,35 +118,41 @@ questions:
 - id: Q05
   title: S-turn difficulty and controller limitations
   document: docs/questions/Q05_s_turn_difficulty.md
-  status: PLANNED
-  research_question: S-turn difficulty and controller limitations?
+  status: EXECUTED
+  research_question: At what corridor clearance do specific proposal covariances produce measurable differences
+    in controlled S-turn traversal?
   mathematical_motivation: Finite-budget importance sampling, actuator limits and a restricted horizon
     interact with feasible-set geometry.
   hypothesis: Sequential steering reversals with less clearance may expose proposal inefficiency; no proposal
     is expected to win by construction.
-  configuration: configs/investigations/s_turn.yaml
+  configuration: runs/Q05/s_turn_clearance_v1/config.yaml
   independent_variables: 'Primary: corridor clearance. Secondary planned checks: rollout count and steering-rate
     limit.'
   controlled_variables: Vehicle, objective, speed target, steering limit, horizon and samples within each
     clearance condition.
   metrics: Success/collision, censored progress, cross-track error, clearance, completion time, evaluation
     cost, ESS, entropy, effort, rate saturation, latency and transitions.
-  run_ids: []
-  key_figure: null
+  run_ids:
+  - s_turn_clearance_v1
+  key_figure: results/showcase/Q05_key.png
   source_figure: null
-  summary: null
-  main_finding: PLANNED — the feasible reference and final seed-42 pilot pass at all four clearance levels;
-    multi-seed evaluation is pending.
-  interpretation: The study separates physical feasibility from finite-horizon, finite-sampling and objective
-    limitations.
-  limitations: Do not attribute failure to covariance before geometry and reference feasibility are validated.
-  reproduce: uv run python experiments/s_turn_study.py --phase evaluation --output runs/Q05/s_turn_clearance_v1
+  summary: runs/Q05/s_turn_clearance_v1/summary.csv
+  main_finding: At .20 m clearance, completion is 17/20 standard, 18/20 isotropic and 20/20 diagonal/full.
+    All 17 failures among 480 episodes are timeouts near the finish, with zero collisions.
+  interpretation: A larger observed completion gap at the tightest clearance coexists with terminal speed/heading
+    failures; this does not isolate covariance-driven route discovery.
+  limitations: Twenty seeds give broad paired intervals. The difficulty threshold is unresolved; finish-region
+    recovery, one corridor handedness, one horizon and specific matrices limit generalization.
+  reproduce: uv run python experiments/s_turn_study.py --config runs/Q05/s_turn_clearance_v1/config.yaml
+    --phase evaluation --output runs/Q05/s_turn_reproduction
   regenerate: uv run python experiments/s_turn_study.py --plots-only --output runs/Q05/s_turn_clearance_v1
+    --showcase results/showcase/Q05_key.png
 - id: Q06
   title: Published MPPI formulation comparisons
   document: docs/questions/Q06_variant_formulations.md
   status: PLANNED
-  research_question: Published MPPI formulation comparisons?
+  research_question: Which defining mathematical changes in published MPPI formulations produce observable
+    mechanisms under their stated assumptions?
   mathematical_motivation: Different objectives and feedback architectures cannot be compared merely by
     renaming one Gaussian sampler.
   hypothesis: Each defining mathematical change should produce a measurable mechanism under its own assumptions.
@@ -202,3 +212,13 @@ runs:
   source_commit: 077e7d90eb2f2d3fd302a284daf5d9868bf28135
   configuration: results/investigations/trajectory_behavior_v1/config.yaml
   summary: results/investigations/trajectory_behavior_v1/behavior_summary.csv
+- id: s_turn_clearance_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/Q05/s_turn_clearance_v1
+  manifest: runs/Q05/s_turn_clearance_v1/manifest.json
+  source_commit: ff3df5824856e8252a221bc6a4fdce8105ec298c
+  configuration: runs/Q05/s_turn_clearance_v1/config.yaml
+  summary: runs/Q05/s_turn_clearance_v1/summary.csv
+  figure_provenance: runs/Q05/s_turn_clearance_v1/figure_provenance.json

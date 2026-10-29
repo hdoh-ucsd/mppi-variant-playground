@@ -102,5 +102,5 @@ def audit(root, raw=True):
         original_base_covariance=config["controller"]["base_covariance"],
         raw_checked=raw,
     )
-    write_json(root / "audit.json", result)
+    write_json(root / ("audit.json" if raw else "audit_summaries.json"), result)
     return result

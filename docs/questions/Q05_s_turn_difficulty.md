@@ -1,10 +1,10 @@
 # Q05 — S-turn difficulty and controller limitations
 
-**Status: PLANNED**
+**Status: EXECUTED**
 
 ## Research question
 
-S-turn difficulty and controller limitations?
+At what corridor clearance do specific proposal covariances produce measurable differences in controlled S-turn traversal?
 
 ## Mathematical motivation
 
@@ -28,27 +28,35 @@ Success/collision, censored progress, cross-track error, clearance, completion t
 
 ## Main finding
 
-PLANNED — the feasible reference and final seed-42 pilot pass at all four clearance levels; multi-seed evaluation is pending.
+At .20 m clearance, completion is 17/20 standard, 18/20 isotropic and 20/20 diagonal/full. All 17 failures among 480 episodes are timeouts near the finish, with zero collisions.
 
 ## Interpretation
 
-The study separates physical feasibility from finite-horizon, finite-sampling and objective limitations.
+A larger observed completion gap at the tightest clearance coexists with terminal speed/heading failures; this does not isolate covariance-driven route discovery.
 
 ## Limitations
 
-Do not attribute failure to covariance before geometry and reference feasibility are validated.
+Twenty seeds give broad paired intervals. The difficulty threshold is unresolved; finish-region recovery, one corridor handedness, one horizon and specific matrices limit generalization.
 
 ## Configuration and provenance
 
-[Original configuration](../../configs/investigations/s_turn.yaml)
+[Original configuration](../../runs/Q05/s_turn_clearance_v1/config.yaml)
 
-Source run IDs: none — PLANNED
+Source run IDs: s_turn_clearance_v1
+
+- [Run s_turn_clearance_v1](../../runs/Q05/s_turn_clearance_v1/): [manifest](../../runs/Q05/s_turn_clearance_v1/manifest.json), source `ff3df5824856e8252a221bc6a4fdce8105ec298c`.
+
+## Selected figure
+
+![S-turn difficulty and controller limitations](../../results/showcase/Q05_key.png)
+
+[Numeric summary](../../runs/Q05/s_turn_clearance_v1/summary.csv)
 
 ## Reproduce and regenerate
 
 ```bash
-uv run python experiments/s_turn_study.py --phase evaluation --output runs/Q05/s_turn_clearance_v1
-uv run python experiments/s_turn_study.py --plots-only --output runs/Q05/s_turn_clearance_v1
+uv run python experiments/s_turn_study.py --config runs/Q05/s_turn_clearance_v1/config.yaml --phase evaluation --output runs/Q05/s_turn_reproduction
+uv run python experiments/s_turn_study.py --plots-only --output runs/Q05/s_turn_clearance_v1 --showcase results/showcase/Q05_key.png
 ```
 
 [Full methods, interpretation and additional figures](../Q05_methods.md)

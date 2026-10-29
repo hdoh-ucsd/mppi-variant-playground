@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "level": "s_turn",
+  "phase": "evaluation",
+  "started_at_utc": "2026-10-29T06:07:56.207724+00:00",
+  "git": {
+    "commit": "ff3df5824856e8252a221bc6a4fdce8105ec298c",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "source_sha256": "f5d4432a8e5f690341fcf8de65f1bc962ca040a28bca10c806056dee67e2a65e",
+  "configuration_sha256": "663ceed225cfcc3dd665daf791f59e251fcc78c779f4772e434bb580e3a1d108",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "episodes": 480,
+  "run_id": "s_turn_clearance_v1",
+  "paired_seeds": [
+    20000,
+    20001,
+    20002,
+    20003,
+    20004,
+    20005,
+    20006,
+    20007,
+    20008,
+    20009,
+    20010,
+    20011,
+    20012,
+    20013,
+    20014,
+    20015,
+    20016,
+    20017,
+    20018,
+    20019
+  ],
+  "source_covariance_note": "New normalized acceleration/rate covariances, trace .40; base fixed at diag(.26,.14)",
+  "collision_geometry": "Exact segment/polygon boundary distance for swept disk; Euler straight transitions",
+  "reference_note": "Mechanical feasibility verified before proposal evaluation; no reference controls supplied to MPPI",
+  "raw_records": "episodes/ and feasibility arrays are local and ignored; summaries and representative XY evidence versioned",
+  "primary_axis": "corridor clearance = nominal half-width minus disk radius; speed, horizon, limits and K fixed"
+}

@@ -4,7 +4,7 @@
 
 ## Research question
 
-Sampling covariance and estimation accuracy?
+How do proposal orientation, anisotropy and budget affect finite-sample error for a fixed Gibbs target?
 
 ## Mathematical motivation
 

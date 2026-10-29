@@ -26,7 +26,7 @@ Running cost includes remaining arc-length squared, desired-speed error, local t
 
 An initial exploratory seed-42 pilot with a stopped point-goal produced terminal overshoot/timeouts after the turns. Its raw records remain local at `runs/Q05/s_turn_pilot_42_v2/`; it is not the evaluation dataset. To keep Q05 focused on corridor traversal rather than a separate braking maneuver, the common final design uses a **finish gate at target speed**. No proposal covariance or clearance was changed using that pilot.
 
-Completion requires projected progress within .30 m of the terminal station, heading within .35 rad of the terminal heading, speed within .70 m/s of the 1 m/s target, and no swept collision. A straight 8 m runout beyond the goal avoids penalizing physically safe post-finish prediction. The resolved initial and goal states are stored in each condition's YAML/JSON. Execution stops at first valid completion, first collision or 200 steps (30 s). This differs explicitly from the historical stopped goal-pose criterion.
+Completion requires projected progress within .30 m of the terminal station, heading within .35 rad of the terminal heading, speed within .70 m/s of the 1 m/s target, and no swept collision. A straight 8 m runout beyond the goal avoids penalizing physically safe post-finish prediction. Progress is clipped at the terminal station, so this completion region also permits later heading/speed recovery in that runout. It is not a bounded Euclidean goal ball or a test of validity only at the first gate crossing. A zero change in clipped progress can coexist with forward motion; physical displacement and speed remain in the raw records and failure diagnostics. The resolved initial and goal states are stored in each condition's YAML/JSON. Execution stops at first valid completion, first collision or 200 steps (30 s). This differs explicitly from the historical stopped goal-pose criterion.
 
 ## Design, evidence and interpretation
 
@@ -53,3 +53,15 @@ uv run python experiments/research_index.py
 Completed-run metadata and actual findings are linked from the [Q05 question document](questions/Q05_s_turn_difficulty.md). Earlier historical studies have not been rerun or relocated for this organization work.
 
 The executed final [seed-42 pilot manifest](../runs/Q05/s_turn_finish_gate_pilot_42/manifest.json) records 16/16 finish-gate completions and no collisions. Its [raw-record audit](../runs/Q05/s_turn_finish_gate_pilot_42/audit.json) verifies all 16 episodes. Pilot data are separate from the paired evaluation seeds.
+
+## Auditing saved evidence
+
+```bash
+# Available after cloning the versioned summaries; no raw episodes needed.
+uv run python experiments/verify_s_turn.py --input runs/Q05/s_turn_clearance_v1 --summaries-only
+# Full local records, as verified after the executed study.
+uv run python experiments/verify_s_turn.py --input runs/Q05/s_turn_clearance_v1
+uv run python experiments/s_turn_mechanisms.py --input runs/Q05/s_turn_clearance_v1
+```
+
+[Actual findings and mechanism limitations](Q05_findings.md) distinguish corridor traversal from terminal speed/heading recovery.

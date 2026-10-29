@@ -4,7 +4,7 @@
 
 ## Research question
 
-Closed-loop trajectory differences?
+How do covariance settings change executed route distributions, and which distribution does each plot describe?
 
 ## Mathematical motivation
 
