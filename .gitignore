@@ -1,20 +1,52 @@
-.venv/
+# Python bytecode and packaging artifacts
 __pycache__/
 *.py[cod]
-.pytest_cache/
-.ruff_cache/
 *.egg-info/
 .dist/
 dist/
 build/
+
+# Virtual environments and local tool caches
+.venv/
+venv/
 .uv-cache/
 .mpl-cache/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Test coverage reports
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.tox/
+.nox/
+
+# Local configuration and credentials (keep shareable examples)
 .env
 .env.*
+!.env.example
+!.env.sample
+!.env.template
 .aws/
 .codex/
 .agents/
 *.pem
+
+# Editor and operating system files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Generated experiment archives, animations, and scratch runs
+# Keep CSV/JSON/YAML evidence and PNG/SVG presentation figures versionable.
 results/**/rollouts.npz
 results/**/*.gif
 results/**/*.mp4
