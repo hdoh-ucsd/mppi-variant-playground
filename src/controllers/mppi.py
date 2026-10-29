@@ -31,6 +31,12 @@ class MPPI(Controller):
             raise ValueError("Positive horizon, sample count and temperature required")
         self.covariance = validate_covariance(config["covariance"])
         self.base_covariance = validate_covariance(config["base_covariance"])
+        self.snapshot_steps = frozenset(config.get("snapshot_steps", ()))
+        if any(
+            not isinstance(step, int) or isinstance(step, bool) or step < 0
+            for step in self.snapshot_steps
+        ):
+            raise ValueError("Snapshot steps must be nonnegative integers")
         kind = config["kind"]
         if kind not in {"standard", "isotropic", "diagonal", "full"}:
             raise ValueError(f"Controller {kind!r} is not implemented")
@@ -51,6 +57,8 @@ class MPPI(Controller):
         self.mean = np.zeros((self.horizon, 2))
         self.previous_control = np.zeros(2)
         self.diagnostics = {}
+        self.planning_step = 0
+        self._rollout_snapshot = None
 
     def command(self, observed_state):
         started = perf_counter()
@@ -62,7 +70,8 @@ class MPPI(Controller):
         states = np.broadcast_to(observed_state, (self.samples, 4)).copy()
         costs = np.zeros(self.samples)
         previous = np.broadcast_to(self.previous_control, (self.samples, 2))
-        keep = min(self.config.get("saved_rollouts", 32), self.samples)
+        capture = self.planning_step in self.snapshot_steps
+        keep = self.samples if capture else min(self.config.get("saved_rollouts", 32), self.samples)
         saved = np.empty((keep, self.horizon + 1, 4))
         saved[:, 0] = states[:keep]
         for t in range(self.horizon):
@@ -108,6 +117,24 @@ class MPPI(Controller):
             "extra_optimization_work": 0,
             "planning_latency_s": perf_counter() - started,
         }
+        self._rollout_snapshot = (
+            {
+                "step": self.planning_step,
+                "sampled_states": saved,
+                "sampled_controls": applied,
+                "costs": costs,
+                "weights": weights,
+                "log_base_over_proposal": ratio,
+                "best_rollout_index": int(np.argmin(costs)),
+                "highest_weight_index": int(np.argmax(weights)),
+                "current_state": np.asarray(observed_state).copy(),
+                "nominal_states": planned,
+                "nominal_role": "updated_mean_plan",
+            }
+            if capture
+            else None
+        )
+        self.planning_step += 1
         self.mean[:-1] = updated[1:]
         self.mean[-1] = 0  # common zero tail warm start
         self.previous_control = command.copy()
@@ -115,3 +142,7 @@ class MPPI(Controller):
 
     def get_diagnostics(self):
         return deepcopy(self.diagnostics)
+
+    def get_rollout_snapshot(self):
+        """Optional full-population observation; recording never draws additional randomness."""
+        return deepcopy(self._rollout_snapshot)

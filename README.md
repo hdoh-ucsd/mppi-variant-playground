@@ -85,6 +85,8 @@ All four use the same fixed base covariance, `diag(0.28, 0.16)`, and the full ba
 
 ## How to read the experiments
 
+For presentation-ready behavior comparisons, use the [trajectory distribution study](docs/trajectory_behavior_findings.md). It records full rollout populations and produces executed-path bundles, empirical occupancy maps, weighted local clouds, progress-aligned dispersion bands, and a behavior dashboard for the four implemented settings across paired seeds. The analytic Figures 1 and 2 remain methodological/appendix material.
+
 The [covariance mechanism study](docs/covariance_mechanisms.md) adds an exact Gaussian target, rotation/anisotropy/scale sweeps, repeated finite-sample estimation, temperature and dimension diagnostics, clipped-control analysis, nonconvex updates, and a separate bicycle parameter sweep. See the [investigation protocol](docs/mathematical_investigations.md) for commands and the [new findings](docs/experimental_findings.md) for executed evidence. These additions preserve the original vehicle results described below.
 
 Existing vehicle runs illustrate the behavior of the fixed-covariance baseline. They include open space, a narrow passage, and a sudden disturbance; the code also supports an obstacle field and model mismatch. The saved records include executed trajectories, control commands, effective sample size (ESS, a measure of weight concentration), saturation, and timing.
