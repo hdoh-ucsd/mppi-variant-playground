@@ -76,7 +76,7 @@ The acceleration and steering scales are 2 m/s² and 0.5 rad. Physical covarianc
 | Diagonal | .34 | .10 | 0 | .44 | .0340 |
 | Full | .28 | .16 | .08 | .44 | .0384 |
 
-Matched trace is matched **expected squared latent normalized perturbation energy per time step**, since $\mathbb E\|\epsilon\|^2=\operatorname{tr}C$. It does not match Gaussian volume (determinant), physical perturbation energy, entropy, or realized energy after clipping. Matched determinant and matched post-saturation energy are future experiments, not options silently treated as equivalent. Correlation between acceleration and steering is not a global alignment with a spatial obstacle passage.
+Matched trace is matched **expected squared latent normalized perturbation energy per time step**, since $\mathbb E\|\epsilon\|^2=\operatorname{tr}C$. It does not match Gaussian volume (determinant), physical perturbation energy, entropy, or realized energy after clipping. The original vehicle benchmark implements matched trace only. The separate [covariance mechanism investigation](covariance_mechanisms.md) adds matched-determinant experiments and explicit saturation measurements; matched post-saturation energy remains future work. Correlation between acceleration and steering is not a global alignment with a spatial obstacle passage.
 
 With a fixed target and infinite samples the mean projection does not depend on proposal covariance. Differences in this experiment concern finite-budget estimation, exploration, saturation and subsequent closed-loop warm starts. If each controller instead used $C_0=C$, it would change the target regularizer as well as the exploration distribution.
 

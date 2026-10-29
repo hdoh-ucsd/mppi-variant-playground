@@ -1,0 +1,213 @@
+{
+  "analytic_K": 256,
+  "analytic": [
+    {
+      "proposal_name": "isotropic",
+      "target_proposal_kl": 0.5636347890208474,
+      "ess_mean": 122.42126470956931,
+      "squared_error_mean": 0.007657265849885531
+    },
+    {
+      "proposal_name": "full_r4_a45",
+      "target_proposal_kl": 0.34881415871177435,
+      "ess_mean": 156.532001872826,
+      "squared_error_mean": 0.0036991370472558805
+    },
+    {
+      "proposal_name": "full_r4_a-45",
+      "target_proposal_kl": 1.1152135756213954,
+      "ess_mean": 61.76800821513268,
+      "squared_error_mean": 0.04925432981449251
+    }
+  ],
+  "closed_loop": [
+    {
+      "scenario": "disturbance",
+      "proposal_name": "isotropic",
+      "success_count": 0,
+      "n": 8
+    },
+    {
+      "scenario": "disturbance",
+      "proposal_name": "r4_a45",
+      "success_count": 2,
+      "n": 8
+    },
+    {
+      "scenario": "narrow_passage",
+      "proposal_name": "isotropic",
+      "success_count": 8,
+      "n": 8
+    },
+    {
+      "scenario": "narrow_passage",
+      "proposal_name": "r4_a45",
+      "success_count": 6,
+      "n": 8
+    },
+    {
+      "scenario": "open_space",
+      "proposal_name": "isotropic",
+      "success_count": 7,
+      "n": 8
+    },
+    {
+      "scenario": "open_space",
+      "proposal_name": "r4_a45",
+      "success_count": 7,
+      "n": 8
+    }
+  ],
+  "source_manifests": {
+    "gaussian": {
+      "schema_version": 1,
+      "level": "analytic_gaussian",
+      "phase": "evaluation",
+      "started_at_utc": "2026-10-29T03:36:26.789353+00:00",
+      "git": {
+        "commit": "dd50f534ad47e765bec39715f6f801b790a251b2",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/"
+      },
+      "source_sha256": "04fc479fee327a0d5c9a64556906276bb0750d40a09d7d21696b0ff9faab154d",
+      "configuration_sha256": "9d86b63f0e8dced725ad22c7f243242810bf0611e5ce46938174dd85ca13714b",
+      "python": "3.12.2",
+      "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1",
+        "pandas": "3.1.0",
+        "matplotlib": "3.11.2"
+      },
+      "threads": {
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1"
+      },
+      "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+      "complete": true,
+      "cases": 447,
+      "trials": 28608,
+      "cost_evaluations": 9279488
+    },
+    "temperature": {
+      "schema_version": 1,
+      "level": "analytic_gaussian",
+      "phase": "evaluation",
+      "started_at_utc": "2026-10-29T03:36:26.721013+00:00",
+      "git": {
+        "commit": "dd50f534ad47e765bec39715f6f801b790a251b2",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/"
+      },
+      "source_sha256": "04fc479fee327a0d5c9a64556906276bb0750d40a09d7d21696b0ff9faab154d",
+      "configuration_sha256": "4536dff091f97b09d401668ce8713c7f6dca6ff7fc607a0e94850c691476465c",
+      "python": "3.12.2",
+      "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1",
+        "pandas": "3.1.0",
+        "matplotlib": "3.11.2"
+      },
+      "threads": {
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1"
+      },
+      "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+      "complete": true,
+      "cases": 71,
+      "trials": 4544,
+      "cost_evaluations": 2326528
+    },
+    "saturation": {
+      "schema_version": 1,
+      "level": "saturation",
+      "phase": "evaluation",
+      "started_at_utc": "2026-10-29T03:42:29.513841+00:00",
+      "git": {
+        "commit": "daba0ba6720d7720d7f6e513d1c092e906a42734",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/"
+      },
+      "source_sha256": "83eba26c46c60e595449716dcf98a6c2a3f48c6bcf9a8bafd9058bd7d3832f4d",
+      "configuration_sha256": "d2426d998dea449a913d40df3a91181b9016b43a807acdf9f046f6f2be86cb5a",
+      "python": "3.12.2",
+      "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1",
+        "pandas": "3.1.0",
+        "matplotlib": "3.11.2"
+      },
+      "threads": {
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1"
+      },
+      "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+      "complete": true,
+      "cases": 40,
+      "trials": 640
+    },
+    "nonconvex": {
+      "schema_version": 1,
+      "level": "nonconvex",
+      "phase": "evaluation",
+      "started_at_utc": "2026-10-29T03:42:29.495316+00:00",
+      "git": {
+        "commit": "daba0ba6720d7720d7f6e513d1c092e906a42734",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/"
+      },
+      "source_sha256": "83eba26c46c60e595449716dcf98a6c2a3f48c6bcf9a8bafd9058bd7d3832f4d",
+      "configuration_sha256": "7a8252a474891847d8a3dc521bf76274032ed8331a137856b1f2f03fcfc986f8",
+      "python": "3.12.2",
+      "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1",
+        "pandas": "3.1.0",
+        "matplotlib": "3.11.2"
+      },
+      "threads": {
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1"
+      },
+      "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+      "complete": true,
+      "cases": 30,
+      "trials": 960,
+      "cost_evaluations": 4935360
+    },
+    "closed_loop": {
+      "schema_version": 1,
+      "level": "closed_loop",
+      "phase": "evaluation",
+      "started_at_utc": "2026-10-29T03:42:48.143211+00:00",
+      "git": {
+        "commit": "daba0ba6720d7720d7f6e513d1c092e906a42734",
+        "dirty": false,
+        "status_scope": "repository excluding generated results/"
+      },
+      "source_sha256": "83eba26c46c60e595449716dcf98a6c2a3f48c6bcf9a8bafd9058bd7d3832f4d",
+      "configuration_sha256": "f5ec814ad58d8babb2d6cb0c14a97595de3243c09688b8dd4b96a155c73f913f",
+      "python": "3.12.2",
+      "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+      "packages": {
+        "numpy": "2.5.4",
+        "scipy": "1.18.1",
+        "pandas": "3.1.0",
+        "matplotlib": "3.11.2"
+      },
+      "threads": {
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1"
+      },
+      "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+      "complete": true,
+      "cases": 90,
+      "trials": 720,
+      "cost_evaluations": 14134272
+    }
+  },
+  "boundary": "Static and bicycle targets differ; causal mediation remains unestablished."
+}

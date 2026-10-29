@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="928.8pt" height="568.08pt" viewBox="0 0 928.8 568.08" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-28T20:53:27.915606</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 568.08
+L 928.8 568.08
+L 928.8 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="line2d_1">
+    <path d="M 7.2 385.532128
+L 921.6 385.532128
+" clip-path="url(#p9177f646dd)" style="fill: none; stroke-dasharray: 7.4,3.2; stroke-dashoffset: 0; stroke: #64748b; stroke-width: 2"/>
+   </g>
+   <g id="text_1">
+    <g id="patch_2">
+     <path d="M 348.321562 132.743991
+L 580.478437 132.743991
+Q 587.678437 132.743991 587.678437 125.543991
+L 587.678437 82.281647
+Q 587.678437 75.081647 580.478437 75.081647
+L 348.321562 75.081647
+Q 341.121562 75.081647 341.121562 82.281647
+L 341.121562 125.543991
+Q 341.121562 132.743991 348.321562 132.743991
+z
+" style="fill: #eff6ff; stroke: #2563eb; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(396.845625 92.600944)">Geometry and overlap</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(348.321562 107.004225)">Equal trace 1.2; ratio 4 at +45° / −45°</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(364.094062 121.460006)">KL(target || proposal): 0.35 / 1.12</text>
+   </g>
+   <g id="patch_3">
+    <path d="M 464.4 145.764008
+Q 464.4 155.72082 464.4 164.559598
+" style="fill: none; stroke: #2563eb; stroke-linecap: round"/>
+    <path d="M 466.4 160.559598
+L 464.4 164.559598
+L 462.4 160.559598
+" style="fill: none; stroke: #2563eb; stroke-linecap: round"/>
+   </g>
+   <g id="text_2">
+    <g id="patch_4">
+     <path d="M 287.699062 231.787538
+L 641.100937 231.787538
+Q 648.300937 231.787538 648.300937 224.587538
+L 648.300937 195.780975
+Q 648.300937 188.580975 641.100937 188.580975
+L 287.699062 188.580975
+Q 280.499062 188.580975 280.499062 195.780975
+L 280.499062 224.587538
+Q 280.499062 231.787538 287.699062 231.787538
+z
+" style="fill: #eff6ff; stroke: #2563eb; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(404.754375 206.100272)">Importance weights</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(287.699062 220.503553)">K=256, mean ESS: isotropic 122.4; +45° 156.5; −45° 61.8</text>
+   </g>
+   <g id="patch_5">
+    <path d="M 464.4 252.035445
+Q 464.4 261.992257 464.4 270.831035
+" style="fill: none; stroke: #2563eb; stroke-linecap: round"/>
+    <path d="M 466.4 266.831035
+L 464.4 270.831035
+L 462.4 266.831035
+" style="fill: none; stroke: #2563eb; stroke-linecap: round"/>
+   </g>
+   <g id="text_3">
+    <g id="patch_6">
+     <path d="M 283.437187 345.260616
+L 645.362813 345.260616
+Q 652.562812 345.260616 652.562812 338.060616
+L 652.562812 294.850772
+Q 652.562812 287.650772 645.362813 287.650772
+L 283.437187 287.650772
+Q 276.237188 287.650772 276.237188 294.850772
+L 276.237188 338.060616
+Q 276.237188 345.260616 283.437187 345.260616
+z
+" style="fill: #eff6ff; stroke: #2563eb; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(395.7675 305.170069)">Mean-update accuracy</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(283.437187 319.57335)">Observed MSE: isotropic 0.0077; +45° 0.0037; −45° 0.0493</text>
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'" transform="translate(291.060938 333.976631)">64 paired trials; fixed Gaussian target and proposal mean</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: middle" x="464.4" y="401.472844" transform="rotate(-0 464.4 401.472844)">Separate transfer test: nonlinear dynamics + clipping + warm start</text>
+   </g>
+   <g id="text_5">
+    <g id="patch_7">
+     <path d="M 211.232812 477.924869
+L 717.567188 477.924869
+Q 723.567188 477.924869 723.567188 471.924869
+L 723.567188 447.9194
+Q 723.567188 441.9194 717.567188 441.9194
+L 211.232812 441.9194
+Q 205.232812 441.9194 205.232812 447.9194
+L 205.232812 471.924869
+Q 205.232812 477.924869 211.232812 477.924869
+z
+" style="fill: #fff7ed; stroke: #c2410c; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(358.2125 456.518814)">Goal-pose completion, K=384, trace=0.44</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'" transform="translate(211.232812 468.521548)">disturbance: iso 0/8, +45° 2/8  ·  narrow_passage: iso 8/8, +45° 6/8  ·  open_space: iso 7/8, +45° 7/8</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #475569" x="464.4" y="528.998569" transform="rotate(-0 464.4 528.998569)">Static and bicycle targets differ; causal mediation remains unestablished.</text>
+   </g>
+  </g>
+  <g id="text_7">
+   <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle" x="464.4" y="16.318125" transform="rotate(-0 464.4 16.318125)">9 · Which links are supported, and where transfer remains a separate question</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p9177f646dd">
+   <rect x="7.2" y="29.522812" width="914.4" height="531.357187"/>
+  </clipPath>
+ </defs>
+</svg>

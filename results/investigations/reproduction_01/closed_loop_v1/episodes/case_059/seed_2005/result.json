@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "diagonal",
+  "scenario": "narrow_passage",
+  "seed": 2005,
+  "environment_seed_entropy": [
+    2005,
+    1001
+  ],
+  "mode": "covariance_mechanism",
+  "git": {
+    "commit": "e8cb3e16ec46deab65c91a27e228d6ef046ed6b2",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T04:00:05.516085+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": true,
+    "goal_position_error": 0.4438946893229401,
+    "goal_orientation_error": 0.0477023258062248,
+    "time_to_completion_s": 8.549999999999999,
+    "executed_duration_s": 8.549999999999999,
+    "cumulative_evaluation_cost": 189.8112368567686,
+    "collision": false,
+    "minimum_obstacle_clearance": 0.07721929960210125,
+    "constraint_violations": 0,
+    "mean_ess": 1.4141573319392815,
+    "mean_weight_entropy": 0.3530152909829948,
+    "degenerate_weight_fraction": 0.8771929824561403,
+    "mean_trajectory_spread": 1.8715637202984916,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.05435492994857681,
+    "dynamics_evaluations_per_step": 10780,
+    "total_dynamics_evaluations": 614460,
+    "total_rollout_evaluations": 21888,
+    "mean_planning_latency_s": 0.007825745420791862,
+    "p95_planning_latency_s": 0.00860607098438777,
+    "total_normalized_control_effort": 7.431371052410815,
+    "total_normalized_control_variation": 96.03452446976738,
+    "maximum_steering_change_rad": 1.0,
+    "steps": 57,
+    "total_simulation_wall_time_s": 0.45378376098233275,
+    "process_peak_rss_mib": 180.01171875
+  }
+}

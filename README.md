@@ -85,6 +85,8 @@ All four use the same fixed base covariance, `diag(0.28, 0.16)`, and the full ba
 
 ## How to read the experiments
 
+The [covariance mechanism study](docs/covariance_mechanisms.md) adds an exact Gaussian target, rotation/anisotropy/scale sweeps, repeated finite-sample estimation, temperature and dimension diagnostics, clipped-control analysis, nonconvex updates, and a separate bicycle parameter sweep. See the [investigation protocol](docs/mathematical_investigations.md) for commands and the [new findings](docs/experimental_findings.md) for executed evidence. These additions preserve the original vehicle results described below.
+
 Existing vehicle runs illustrate the behavior of the fixed-covariance baseline. They include open space, a narrow passage, and a sudden disturbance; the code also supports an obstacle field and model mismatch. The saved records include executed trajectories, control commands, effective sample size (ESS, a measure of weight concentration), saturation, and timing.
 
 Use these observations to ask a mathematical question. For example: does changing proposal geometry increase estimation variability? Does low ESS come from the cost transform or poor proposal overlap? How does clipping alter the sampled control distribution? Answer those questions with isolated probes before interpreting a vehicle trajectory.

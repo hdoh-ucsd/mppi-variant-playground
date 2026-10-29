@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "full",
+  "scenario": "narrow_passage",
+  "seed": 2002,
+  "environment_seed_entropy": [
+    2002,
+    1001
+  ],
+  "mode": "covariance_mechanism",
+  "git": {
+    "commit": "e8cb3e16ec46deab65c91a27e228d6ef046ed6b2",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T03:59:21.058419+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": true,
+    "goal_position_error": 0.35576439546116445,
+    "goal_orientation_error": 0.0591820122070712,
+    "time_to_completion_s": 5.85,
+    "executed_duration_s": 5.85,
+    "cumulative_evaluation_cost": 159.46268947854315,
+    "collision": false,
+    "minimum_obstacle_clearance": 0.2795523830854869,
+    "constraint_violations": 0,
+    "mean_ess": 1.7422340076279863,
+    "mean_weight_entropy": 0.595240735180249,
+    "degenerate_weight_fraction": 0.6923076923076923,
+    "mean_trajectory_spread": 2.004328629448191,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.06631086766122683,
+    "dynamics_evaluations_per_step": 10780,
+    "total_dynamics_evaluations": 420420,
+    "total_rollout_evaluations": 14976,
+    "mean_planning_latency_s": 0.008608647537095329,
+    "p95_planning_latency_s": 0.010460784501628951,
+    "total_normalized_control_effort": 3.3203138302308046,
+    "total_normalized_control_variation": 34.50399102795134,
+    "maximum_steering_change_rad": 0.7400338700536411,
+    "steps": 39,
+    "total_simulation_wall_time_s": 0.3422135589935351,
+    "process_peak_rss_mib": 180.01171875
+  }
+}

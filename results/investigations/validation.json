@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "source_git": {
+    "commit": "be3d41524fca3f513c56099c7f47f53f41a86fe6",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "pytest": {
+    "passed": 85,
+    "failed": 0,
+    "command": "uv run pytest"
+  },
+  "ruff_lint": "passed",
+  "ruff_format": "passed",
+  "wheel_build": "passed",
+  "replay": {
+    "gaussian_temperature_dimension_trials": 20,
+    "adaptive_nonconvex_trials": 10,
+    "exact_bicycle_trajectories_and_controls": 3
+  },
+  "figures": {
+    "png": 14,
+    "svg": 14,
+    "numerical_archives": 14,
+    "rebuilt_from_saved_records": true
+  },
+  "original_baseline_code_configs_results_unchanged": true,
+  "metadata": {
+    "control_episodes": 720,
+    "clean_control_episode_source_records": 720,
+    "completed_studies": 5
+  },
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "replay_command": "uv run python experiments/verify_investigations.py --input results/investigations",
+  "limitations": [
+    "Timings are host dependent",
+    "SVG metadata can change",
+    "No exact bicycle target-mean oracle",
+    "No general covariance ranking or causal transfer claim"
+  ]
+}

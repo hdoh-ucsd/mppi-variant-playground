@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "diagonal",
+  "scenario": "disturbance",
+  "seed": 2000,
+  "environment_seed_entropy": [
+    2000,
+    1001
+  ],
+  "mode": "covariance_mechanism",
+  "git": {
+    "commit": "daba0ba6720d7720d7f6e513d1c092e906a42734",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T03:46:23.435440+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": true,
+    "goal_position_error": 0.4410133453300523,
+    "goal_orientation_error": 0.11704496496518546,
+    "time_to_completion_s": 10.65,
+    "executed_duration_s": 10.65,
+    "cumulative_evaluation_cost": 184.37966502427574,
+    "collision": false,
+    "minimum_obstacle_clearance": null,
+    "constraint_violations": 0,
+    "mean_ess": 1.2739385258199494,
+    "mean_weight_entropy": 0.28245138352739857,
+    "degenerate_weight_fraction": 0.9295774647887324,
+    "mean_trajectory_spread": 1.4626368418516928,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.05941024713623679,
+    "reference_cross_track_rmse": 0.48591981027812275,
+    "dynamics_evaluations_per_step": 3612,
+    "total_dynamics_evaluations": 256452,
+    "total_rollout_evaluations": 9088,
+    "mean_planning_latency_s": 0.0029748681429314465,
+    "p95_planning_latency_s": 0.003922173505998217,
+    "total_normalized_control_effort": 10.223410482088793,
+    "total_normalized_control_variation": 128.75699022963548,
+    "maximum_steering_change_rad": 1.0,
+    "steps": 71,
+    "total_simulation_wall_time_s": 0.21864474198082462,
+    "process_peak_rss_mib": 179.9140625
+  }
+}

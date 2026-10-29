@@ -1,0 +1,80 @@
+dynamics:
+  dt: 0.15
+  wheelbase: 1.0
+  velocity_min: 0.0
+  velocity_max: 3.0
+  acceleration_limit: 2.0
+  steering_limit: 0.5
+  steering_gain: 1.0
+  acceleration_gain: 1.0
+controller:
+  kind: diagonal
+  samples: 128
+  horizon: 28
+  temperature: 5.0
+  covariance:
+  - - 0.044
+    - 8.08266887437253e-18
+  - - 8.08266887437253e-18
+    - 0.176
+  base_covariance:
+  - - 0.28
+    - 0.0
+  - - 0.0
+    - 0.16
+  saved_rollouts: 32
+scenario:
+  name: disturbance
+  initial_state:
+  - 0.0
+  - -0.4
+  - 0.0
+  - 0.0
+  goal_state:
+  - 8.0
+  - 0.0
+  - 0.0
+  - 0.0
+  vehicle_radius: 0.22
+  max_steps: 120
+  position_tolerance: 0.45
+  heading_tolerance: 0.35
+  speed_tolerance: 0.45
+  obstacles: []
+  disturbance:
+    step: 20
+    delta:
+    - 0.0
+    - 0.9
+    - 0.18
+    - -0.4
+costs:
+  optimization:
+    goal: 3.0
+    heading: 2.0
+    speed: 3.0
+    cruise_speed: 1.6
+    obstacle: 160.0
+    margin: 0.5
+    collision: 2000.0
+    control: 0.15
+    variation: 0.5
+    terminal: 15.0
+    terminal_heading: 12.0
+    terminal_speed: 4.0
+  evaluation:
+    goal: 1.0
+    heading: 1.0
+    speed: 1.0
+    cruise_speed: 1.6
+    obstacle: 50.0
+    margin: 0.3
+    collision: 2000.0
+    control: 0.15
+    variation: 0.5
+    terminal: 10.0
+    terminal_heading: 10.0
+    terminal_speed: 4.0
+budget:
+  mode: covariance_mechanism
+  sampling_scale_constraint: normalized_matched_trace

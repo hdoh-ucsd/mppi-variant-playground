@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "controller": "full",
+  "scenario": "narrow_passage",
+  "seed": 2001,
+  "environment_seed_entropy": [
+    2001,
+    1001
+  ],
+  "mode": "covariance_mechanism",
+  "git": {
+    "commit": "e8cb3e16ec46deab65c91a27e228d6ef046ed6b2",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "started_at_utc": "2026-10-29T03:59:10.873924+00:00",
+  "backend": "numpy-cpu-float64",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2",
+    "pyyaml": "6.0.3",
+    "imageio": "2.38.1"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "metrics": {
+    "success": true,
+    "goal_position_error": 0.29997712147334454,
+    "goal_orientation_error": 0.1379283612641169,
+    "time_to_completion_s": 5.7,
+    "executed_duration_s": 5.7,
+    "cumulative_evaluation_cost": 152.00528977297174,
+    "collision": false,
+    "minimum_obstacle_clearance": 0.2391598733871316,
+    "constraint_violations": 0,
+    "mean_ess": 1.9833801972331118,
+    "mean_weight_entropy": 0.8140320799092252,
+    "degenerate_weight_fraction": 0.6578947368421053,
+    "mean_trajectory_spread": 1.1592274600066304,
+    "disturbance_recovery_time_s": null,
+    "prediction_tracking_rmse": 0.0,
+    "reference_cross_track_rmse": 0.2712648123105567,
+    "dynamics_evaluations_per_step": 10780,
+    "total_dynamics_evaluations": 409640,
+    "total_rollout_evaluations": 14592,
+    "mean_planning_latency_s": 0.007911274763357238,
+    "p95_planning_latency_s": 0.008724324057402555,
+    "total_normalized_control_effort": 2.871843038378693,
+    "total_normalized_control_variation": 26.939029924153576,
+    "maximum_steering_change_rad": 0.4545178369004668,
+    "steps": 38,
+    "total_simulation_wall_time_s": 0.3058989059936721,
+    "process_peak_rss_mib": 180.01171875
+  }
+}

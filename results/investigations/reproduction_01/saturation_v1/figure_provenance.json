@@ -1,0 +1,23 @@
+{
+  "git": {
+    "commit": "e8cb3e16ec46deab65c91a27e228d6ef046ed6b2",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "source_sha256": "59ce40108a3ed6d7e8deccc98382a4ab7b17332e3a4051986ecc650f9f6e3c66",
+  "inputs": [
+    "config.yaml",
+    "cases.json",
+    "trials.csv",
+    "summary.csv"
+  ],
+  "plot_source_files": [
+    "src/analysis/plots.py",
+    "src/analysis/extension_plots.py"
+  ],
+  "plot_source_sha256": "1ccedbff3e46cfd3f0fe660fd3725038cd93c9071fa68b39a3c4a27b539d647b",
+  "figures": [
+    "07_saturation_distributions.svg",
+    "07b_clipped_variance.svg"
+  ]
+}

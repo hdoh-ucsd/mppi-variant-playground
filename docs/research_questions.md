@@ -2,6 +2,8 @@
 
 The purpose is to explain the characteristics of each variant through its equations and suitable experiments. Every study should connect **mathematical change → predicted effect → isolated numerical observation → control behavior**, including assumptions and cases where that prediction ceases to apply.
 
+The baseline covariance probes below are now implemented in the [covariance mechanism study](covariance_mechanisms.md), with [execution details](mathematical_investigations.md) and [observed findings](experimental_findings.md). The broader algorithm-family studies remain planned.
+
 ## Questions to answer for each family
 
 1. What objective or target distribution is defined, and under which assumptions?
@@ -40,7 +42,7 @@ All four chosen matrices have trace 0.44, fixing $\mathbb E\|\epsilon_t\|^2$. Th
 
 ## Proposed numerical probes for the implemented baseline
 
-These are investigation designs. Existing unit checks cover some identities; full sweeps and research figures have not been executed.
+These designs are now implemented for the fixed-proposal baseline in the [covariance mechanism study](covariance_mechanisms.md). Its [findings](experimental_findings.md) report executed sweeps and figures. The broader algorithm-family experiments in the following section remain proposed.
 
 | Probe | Controlled setup | Quantity to explain |
 |---|---|---|
