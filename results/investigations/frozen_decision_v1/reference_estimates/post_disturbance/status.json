@@ -1,0 +1,54 @@
+{
+  "status": "unresolved",
+  "note": "Finite-sample diagnostics cannot certify target coverage. Intervals describe block variation, not unknown SNIS bias.",
+  "pooled_ess": 2.186471075590169,
+  "pooled_max_weight": 0.6576956667668844,
+  "min_repetition_ess": 1.032309553572321,
+  "rms_ci95_halfwidth": 0.7347359746187005,
+  "samples_per_repetition": 65536,
+  "repetitions": 8,
+  "total_rollouts": 524288,
+  "proposal": "standard, centered on the identical frozen warm start",
+  "seed_sequences": [
+    [
+      202,
+      2,
+      0
+    ],
+    [
+      202,
+      2,
+      1
+    ],
+    [
+      202,
+      2,
+      2
+    ],
+    [
+      202,
+      2,
+      3
+    ],
+    [
+      202,
+      2,
+      4
+    ],
+    [
+      202,
+      2,
+      5
+    ],
+    [
+      202,
+      2,
+      6
+    ],
+    [
+      202,
+      2,
+      7
+    ]
+  ]
+}

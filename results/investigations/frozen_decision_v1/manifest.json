@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "level": "frozen_decision",
+  "phase": "evaluation",
+  "started_at_utc": "2026-10-29T05:24:30.518367+00:00",
+  "git": {
+    "commit": "7aaf76eaed90588b9404b2fbed483ae9efce1156",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/"
+  },
+  "source_sha256": "5eae7e46ca01990d85b7ceab0ce475e745cecf0b57896f0f2cf463e39e4d731c",
+  "configuration_sha256": "d51f0568e3f037a5e9e7485d6e823e9ce8ff941aaf906c28aa17ed83a34de908",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "SeedSequence([101,state_index,seed]) evaluation; [202,state_index,repetition] reference; PCG64; prefix-nested K",
+  "complete": true,
+  "snapshot_note": "All primary-K seed/proposal populations; all K metrics and mean plans. Budget clouds saved for representative seed only.",
+  "experiment_note": "Reference capture executes one standard prefix per state. Evaluation performs one frozen optimization, never Environment.step.",
+  "timing_note": "planning_latency_s excludes construction, nominal objective scoring and IO; captures add observation overhead; no performance guarantee",
+  "decisions": 7200,
+  "frozen_states": 3,
+  "evaluation_rollouts": 7660800,
+  "evaluation_dynamics_evaluations": 214704000,
+  "reference_rollouts": 1572864,
+  "snapshots": 1026
+}
