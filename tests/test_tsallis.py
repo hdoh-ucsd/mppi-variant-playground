@@ -88,3 +88,27 @@ def test_registry_counts_real_model_calls_and_rejects_unknown_names():
     config["controller"]["algorithm"] = "renamed_covariance"
     with pytest.raises(ValueError, match="unimplemented"):
         make_controller(config)
+
+
+def test_finite_sample_mean_converges_to_independent_quadrature_reference():
+    from scipy.integrate import quad
+    from scipy.stats import norm
+
+    # r=1.5, scale1 gives kernel [1-.5*(z-.4)^2]^2 inside its exact finite support.
+    low, high = 0.4 - np.sqrt(2), 0.4 + np.sqrt(2)
+
+    def density(z):
+        return norm.pdf(z) * max(1 - 0.5 * (z - 0.4) ** 2, 0) ** 2
+
+    mass = quad(density, low, high, epsabs=1e-12)[0]
+    exact = quad(lambda z: z * density(z), low, high, epsabs=1e-12)[0] / mass
+    errors = []
+    for samples in [128, 4096]:
+        estimates = []
+        for seed in range(32):
+            rng = np.random.default_rng(seed + 9700)
+            z = rng.normal(0.8, 1.2, samples)
+            ratio = norm.logpdf(z) - norm.logpdf(z, 0.8, 1.2)
+            estimates.append(tsallis_weights((z - 0.4) ** 2, 1.0, 1.5, ratio) @ z)
+        errors.append(np.mean((np.array(estimates) - exact) ** 2))
+    assert errors[1] < errors[0] / 8

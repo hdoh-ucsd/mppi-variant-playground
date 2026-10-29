@@ -77,3 +77,26 @@ def test_robust_seven_state_two_updates_work_and_reproducibility():
     assert one.diagnostics["tracking_control_norm"] > 0
     assert np.isclose(one.diagnostics["weights"].sum(), 1.0)
     assert np.isfinite(one.mean).all()
+
+
+def test_executed_command_uses_actual_weights_and_nominal_mean_uses_mixed_weights():
+    options = read_yaml("configs/variants/benchmark.yaml")
+    c, _ = case_config(options, "disturbance", "robust_mppi", 32)
+    c["controller"]["snapshot_steps"] = [0, 1]
+    controller = make_controller(c)
+    state = np.asarray(c["scenario"]["initial_state"])
+    controller.reset(state, 84)
+    controller.command(state)
+    controller.config["free_energy_threshold"] = 0.0
+    observed = controller.nominal_state.copy()
+    observed[1] += 0.8
+    command = controller.command(observed)
+    z = controller.get_rollout_snapshot()
+    actual_first = z["real_weights"] @ z["latent_controls"][:, 0] + z["feedback"][0, 0]
+    expected = controller.model.clip_control(actual_first * controller.model.control_scale)
+    np.testing.assert_allclose(command, expected, atol=1e-12)
+    np.testing.assert_allclose(
+        z["updated_mean"],
+        np.einsum("k,kti->ti", z["nominal_weights"], z["latent_controls"]),
+        atol=1e-12,
+    )

@@ -155,9 +155,28 @@ def plot(root):
 
     root = Path(root)
     data = pd.read_csv(root / "summary.csv")
+    trials = pd.read_csv(root / "per_seed.csv")
     algorithms = list(data.proposal.unique())
     scenarios = list(data.scenario.unique())
-    fig, axes = plt.subplots(2, 2, figsize=(13, 8), layout="constrained")
+    fig, axes = plt.subplots(3, 2, figsize=(14, 11), layout="constrained")
+    labels = {
+        "standard": "IT-MPPI",
+        "tsallis_vi": "Tsallis-VI",
+        "dial_mpc": "DIAL-MPC",
+        "dial_no_anneal": "DIAL fixed noise",
+        "tube_mppi": "Tube-MPPI",
+        "robust_mppi": "Robust-MPPI",
+        "cc_mppi": "CC-MPPI",
+    }
+    colors = {
+        "standard": "#2563eb",
+        "tsallis_vi": "#d97706",
+        "dial_mpc": "#059669",
+        "dial_no_anneal": "#64748b",
+        "tube_mppi": "#9333ea",
+        "robust_mppi": "#e11d48",
+        "cc_mppi": "#0891b2",
+    }
     for i, protocol in enumerate(["dynamics_budget", "wall_clock"]):
         sub = data[data.protocol == protocol]
         for j, algorithm in enumerate(algorithms):
@@ -167,10 +186,46 @@ def plot(root):
             err = np.maximum(
                 0, np.stack([mean - rows.success_ci95_low, rows.success_ci95_high - mean])
             )
-            axes[0, i].errorbar(x, mean, yerr=err, fmt="o", capsize=3, label=algorithm)
-            axes[1, i].plot(x, rows.mean_planning_latency_s_mean * 1000, "o-", label=algorithm)
+            axes[0, i].errorbar(
+                x,
+                mean,
+                yerr=err,
+                fmt="o",
+                capsize=3,
+                label=labels[algorithm],
+                color=colors[algorithm],
+            )
+            axes[1, i].plot(
+                x,
+                rows.mean_planning_latency_s_mean * 1000,
+                "o-",
+                label=labels[algorithm],
+                color=colors[algorithm],
+            )
+            axes[2, i].plot(
+                x,
+                rows.cumulative_evaluation_cost_mean,
+                "o-",
+                label=labels[algorithm],
+                color=colors[algorithm],
+            )
+            for position, scenario in zip(x, scenarios, strict=True):
+                values = trials[
+                    (trials.protocol == protocol)
+                    & (trials.proposal == algorithm)
+                    & (trials.scenario == scenario)
+                ].cumulative_evaluation_cost
+                offsets = np.linspace(-0.015, 0.015, len(values))
+                axes[2, i].scatter(
+                    position + offsets, values, s=18, color=colors[algorithm], alpha=0.55
+                )
+        axes[2, i].set(ylabel="External task cost: seeds + mean", yscale="log")
         axes[0, i].set(
-            title=protocol.replace("_", " "),
+            title=(
+                "Work ceiling (timing under concurrent load)"
+                if i == 0
+                else "Calibrated deadline (serial timing)"
+            ),
             ylabel="Completion / Wilson 95% interval",
             ylim=(-0.05, 1.05),
         )
@@ -187,6 +242,16 @@ def plot(root):
     )
     publish(fig, root, "primary", [root / "summary.csv", root / "per_seed.csv"])
     (root / "primary.png").write_bytes((root / "figures/primary.png").read_bytes())
+    import hashlib
+    import json
+
+    provenance_path = root / "primary_provenance.json"
+    provenance = json.loads(provenance_path.read_text())
+    provenance["figure"] = str(root / "primary.png")
+    provenance["variant_plot_source_sha256"] = hashlib.sha256(
+        Path(__file__).read_bytes()
+    ).hexdigest()
+    write_json(provenance_path, provenance)
 
 
 def run(study_id, output, raw, *, options_path="configs/variants/benchmark.yaml"):
