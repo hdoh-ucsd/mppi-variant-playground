@@ -77,6 +77,14 @@ uv run python experiments/seven_state_campaign.py --stage q04 --output runs/seve
 uv run python experiments/plot_seven_state.py --stage Q04 --input runs/seven_state/Q04/seven_state_q04_v1
 ```
 
+## Supporting numerical records
+
+- [per_seed.csv](../../runs/seven_state/Q04/seven_state_q04_v1/per_seed.csv)
+- [paired_differences.csv](../../runs/seven_state/Q04/seven_state_q04_v1/paired_differences.csv)
+- [goal_summary.csv](../../runs/seven_state/Q04/seven_state_q04_v1/goal_summary.csv)
+- [failure_modes.csv](../../runs/seven_state/Q04/seven_state_q04_v1/failure_modes.csv)
+- [selected_weight_components.csv](../../runs/seven_state/Q04/seven_state_q04_v1/selected_weight_components.csv)
+
 ## Supporting figures
 
 - [Saved-data figure](../../docs/figures/seven_state_Q04_diagnostics.png)

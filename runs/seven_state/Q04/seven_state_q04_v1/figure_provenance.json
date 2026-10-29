@@ -6,7 +6,7 @@
     "runs/seven_state/Q04/seven_state_q04_v1/representative_paths.json": "ba59126261402b2c2efbe255406a5b97ebcb86348928fc0e755e79370fe6e87d"
   },
   "reconstruction": "Saved compact records only; no simulation or sampling",
-  "plot_source_sha256": "0957a47fc0ff79db1ba3c3af27489d00b49effe6162ed7fc4842116d93ca070d",
+  "plot_source_sha256": "55dad81ad1b611161527d86702dc923cfc70db9a4d16d695ee876d5019e75bb8",
   "figure_sha256": "af746bf8eccecd3779770b3d83388e8e6b128105a9b5544dc77d25e5bdf0667e",
   "summary_sha256": "526734b18c74712c6aa458189e945eee6386f035b0cc5248cc4c5e8b4e500e67"
 }

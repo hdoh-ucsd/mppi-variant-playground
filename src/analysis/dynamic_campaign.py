@@ -81,7 +81,11 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
         covariance=config["proposals"][proposal],
         saved_rollouts=0,
         snapshot_steps=(capture_steps or [])
-        if seed in {42, 31000, 32000, config["frozen"]["seed"]}
+        if seed
+        in (
+            {42, 31000, 32000, config["frozen"]["seed"]}
+            | set(config["execution"].get("extra_snapshot_seeds", []))
+        )
         else [],
     )
     controller = make_controller(resolved)
@@ -233,6 +237,17 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
             np.mean(abs(controls[:, 1]) >= model.throttle_limit - 1e-9)
         ),
         control_effort=float(model.dt * np.sum((controls / model.control_scale) ** 2)),
+        max_command_slew=float(np.max(abs(np.diff(np.r_[0.0, controls[:, 0]]))) / model.dt),
+        rate_saturation_fraction=(
+            float(
+                np.mean(
+                    abs(np.diff(np.r_[0.0, controls[:, 0]]))
+                    >= config["controller"]["steering_rate_limit"] * model.dt - 1e-9
+                )
+            )
+            if config["controller"].get("steering_rate_limit")
+            else None
+        ),
         max_abs_vy=float(abs(states[:, 5]).max()),
         max_abs_yaw_rate=float(abs(states[:, 6]).max()),
         max_abs_roll=float(abs(states[:, 3]).max()),
@@ -275,6 +290,7 @@ def summary(frame, output, groups):
         "rhs_evaluations",
         "prediction_error_rmse",
     ]
+    metrics += [name for name in ["max_command_slew", "rate_saturation_fraction"] if name in frame]
     for keys, group in frame.groupby(groups, sort=False, dropna=False):
         if not isinstance(keys, tuple):
             keys = (keys,)
@@ -345,7 +361,7 @@ def job(args):
     clean = diag.replace([np.inf, -np.inf], np.nan)
     representative = (
         (path.to_dict("list"), clean.astype(object).where(pd.notna(clean), None).to_dict("list"))
-        if seed in [42, 31000, 32000]
+        if seed in ([42, 31000, 32000] + config["execution"].get("extra_snapshot_seeds", []))
         else None
     )
     return row, representative
@@ -378,6 +394,20 @@ def run_closed(
         for value in config["s_turn"]["clearance_levels"]:
             c, g, states, controls, check = resolved_case(config, "s_turn", clearance=value)
             cases.append((f"clearance_{value:g}", c, g, check))
+    elif stage == "rate_q05":
+        study = config["rate_study"]
+        for limit in study["limits"]:
+            c, g, states, controls, check = resolved_case(
+                config, "s_turn", clearance=study["clearance"]
+            )
+            if check["max_profile_rate"] > limit:
+                raise RuntimeError("Reference is not feasible under the command slew limit")
+            c["controller"]["steering_rate_limit"] = limit
+            c["execution"]["extra_snapshot_seeds"] = [study["representative_seed"]]
+            check = dict(
+                check, command_slew_limit=limit, constraint="discrete steering command change / dt"
+            )
+            cases.append((f"rate_{limit:g}", c, g, check))
     elif stage == "secondary_q05":
         secondary = config["secondary"]
         for speed in secondary["running_speed_targets"]:
@@ -432,6 +462,8 @@ def run_closed(
     seed_options = config["holdout_seeds"] if stage == "budget_q04" else config["s_turn_seeds"]
     if stage == "secondary_q05":
         seed_options = config["secondary"]["seeds"]
+    if stage == "rate_q05":
+        seed_options = config["rate_study"]["seeds"]
     reuse_case = None
     if stage.startswith("budget_"):
         q = "Q04" if stage == "budget_q04" else "Q05"

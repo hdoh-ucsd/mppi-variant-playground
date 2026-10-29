@@ -121,6 +121,9 @@ def driving_audit(root, raw=True):
             assert collision == bool(row.collision)
             assert (reached(states[-1], geometry, config) and not collision) == bool(row.success)
             assert np.all(abs(controls) <= model.control_scale + 1e-12)
+            rate = config["controller"].get("steering_rate_limit")
+            if rate is not None:
+                assert np.max(abs(np.diff(np.r_[0.0, controls[:, 0]]))) <= rate * model.dt + 1e-12
             assert row.model_transitions == len(controls) * (row.samples + 1) * row.horizon
             assert row.rhs_evaluations == row.model_transitions * model.substeps * 2
             if config["scenario"]["name"] == "model_mismatch":
@@ -143,6 +146,34 @@ def driving_audit(root, raw=True):
                         data["updated_mean"],
                         atol=1e-12,
                     )
+                    if rate is not None:
+                        step = int(path.stem.split("_")[-1])
+                        prior = controls[step - 1] if step else np.zeros(2)
+                        applied = model.clip_control(data["latent_controls"] * model.control_scale)
+                        prev = prior[0]
+                        for t in range(row.horizon):
+                            applied[:, t, 0] = np.clip(
+                                applied[:, t, 0], prev - rate * model.dt, prev + rate * model.dt
+                            )
+                            prev = applied[:, t, 0]
+                        np.testing.assert_allclose(applied, data["sampled_controls"], atol=1e-14)
+                        x = np.broadcast_to(data["current_state"], (row.samples, 7)).copy()
+                        prev = np.broadcast_to(prior, (row.samples, 2))
+                        costs = np.zeros(row.samples)
+                        for t in range(row.horizon):
+                            costs += controller.cost.running(x, applied[:, t], prev)
+                            x, substeps = model.step(x, applied[:, t], return_path=True)
+                            costs += (
+                                model.dt
+                                * config["cost"]["collision"]
+                                * (controller.cost.path_clearance(substeps) <= 0)
+                            )
+                            np.testing.assert_allclose(
+                                x, data["sampled_states"][:, t + 1], atol=1e-12
+                            )
+                            prev = applied[:, t]
+                        costs += controller.cost.terminal(x)
+                        np.testing.assert_allclose(costs, data["costs"], atol=1e-8)
                     assert data["sampled_states"].shape[-1] == 7
                 snapshots += 1
             episodes += 1
@@ -154,6 +185,10 @@ def driving_audit(root, raw=True):
         paired_cohorts_verified=True,
         model_and_substep_collisions_verified=raw,
         model_mismatch_parameters_verified=raw,
+        discrete_command_slew_verified=raw
+        and any(
+            cell["config"]["controller"].get("steering_rate_limit") is not None for cell in cases
+        ),
         state_dimension=7,
         control_fields=["steering", "throttle"],
     )

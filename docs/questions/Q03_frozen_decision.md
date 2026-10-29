@@ -73,6 +73,10 @@ uv run python experiments/seven_state_campaign.py --stage q03 --output runs/seve
 uv run python experiments/plot_seven_state.py --stage Q03 --input runs/seven_state/Q03/seven_state_q03_v1
 ```
 
+## Supporting numerical records
+
+- [per_seed.csv](../../runs/seven_state/Q03/seven_state_q03_v1/per_seed.csv)
+
 ## Supporting figures
 
 - [Saved-data figure](../../docs/figures/seven_state_Q03_convergence.png)

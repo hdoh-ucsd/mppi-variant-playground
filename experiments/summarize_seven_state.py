@@ -54,6 +54,19 @@ def summarize(root):
                 yaw_rate=abs(last.yaw_rate) > tol["yaw_rate_tolerance"],
                 roll=abs(last["roll"]) > tol["roll_tolerance"],
             )
+            diag = pd.read_csv(episode / "diagnostics.csv")
+            hits = np.flatnonzero(diag.clearance.to_numpy() <= 0)
+            collision_step = int(hits[0]) if len(hits) else None
+            event = config["scenario"].get("disturbance")
+            collision_phase = (
+                "at_imposed_impulse"
+                if event and collision_step == event["step"]
+                else "after_impulse"
+                if event and collision_step is not None and collision_step > event["step"]
+                else "collision"
+                if collision_step is not None
+                else "no_collision"
+            )
             failures.append(
                 dict(
                     case=row["case"],
@@ -61,6 +74,8 @@ def summarize(root):
                     seed=row.seed,
                     cohort=row.cohort,
                     termination=row.termination,
+                    collision_step=collision_step,
+                    collision_phase=collision_phase,
                     violated_checks=";".join(k for k, v in flags.items() if v),
                     final_x=last.px,
                     final_y=last.py,
@@ -94,8 +109,38 @@ def summarize(root):
                             max_weight=float(weights.max()),
                         )
                     )
-    pd.DataFrame(failures).to_csv(root / "failure_modes.csv", index=False)
-    pd.DataFrame(components).to_csv(root / "selected_weight_components.csv", index=False)
+    failures_frame = (
+        pd.DataFrame(failures)
+        if failures
+        else pd.DataFrame(
+            columns=[
+                "case",
+                "proposal",
+                "seed",
+                "cohort",
+                "termination",
+                "violated_checks",
+                "collision_step",
+                "collision_phase",
+            ]
+        )
+    )
+    failures_frame.to_csv(root / "failure_modes.csv", index=False)
+    pd.DataFrame(
+        components,
+        columns=[
+            "case",
+            "cohort",
+            "proposal",
+            "seed",
+            "snapshot",
+            "component",
+            "sampling_dimension",
+            "samples",
+            "ess",
+            "max_weight",
+        ],
+    ).to_csv(root / "selected_weight_components.csv", index=False)
     goals = pd.DataFrame(goals)
     records = []
     for keys, g in goals.groupby(["case", "cohort", "proposal"], sort=False):

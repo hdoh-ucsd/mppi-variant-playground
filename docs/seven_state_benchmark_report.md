@@ -32,7 +32,7 @@ $$\dot p_x=u\cos\psi-v\sin\psi,\quad
 $$\dot\phi=(hF_y-k_\phi\phi)/c_\phi,\quad
 \dot u=F_x/m+vr,\quad\dot v=F_y/m-ur,\quad\dot r=M_z/I_z.$$
 
-Roll is an explicit overdamped torque-balance state, not an algebraic equilibrium substitution. Roll inertia/rate is omitted to retain seven states; its relaxation time is cφ/kφ=.4 s. Tire loads remain static: this model omits load transfer, a friction ellipse, suspension/contact and roll-to-grip feedback. Tire forces saturate smoothly rather than remaining unbounded linear forces. Low-speed blending and viscous lateral/yaw relaxation avoid singular slip divisions and spurious steering forces at rest. These are disclosed regularizations, not an identified low-speed tire law.
+Roll is an explicit overdamped torque-balance state, not an algebraic equilibrium substitution. It affects the objective and finish checks but does not feed back into the planar force equations in this approximation. Roll inertia/rate is omitted to retain seven states; its relaxation time is cφ/kφ=.4 s. Tire loads remain static: this model omits load transfer, a friction ellipse, suspension/contact and roll-to-grip feedback. Tire forces saturate smoothly rather than remaining unbounded linear forces. Low-speed blending and viscous lateral/yaw relaxation avoid singular slip divisions and spurious steering forces at rest. These are disclosed regularizations, not an identified low-speed tire law.
 
 Parameters are in [vehicle.yaml](../configs/seven_state/vehicle.yaml): mass 35 kg, yaw inertia 8 kg m², lf=lr=.4 m, Cf=Cr=450 N/rad, μ=.9, Fe=70 N, Fb=105 N, CG height .2 m, net roll restoring stiffness 120 N m/rad and damping 48 N m s/rad. Positive throttle propels; negative throttle brakes. Reverse driving is disabled. A forward-speed governor projects midpoint and accepted speeds to [0,4] m/s; steering is clipped to ±.5 rad and throttle to ±1. The model has no hidden steering servo/rate state or actuator lag.
 
@@ -93,11 +93,21 @@ At K=4096 the corresponding MSE values are .000300, .001479, .000160, .004220 an
 
 The analytic temperature/dimension replication used the same 64 independent seeds, 71 cases and 4,544 trials. At isotropic K=512, mean ESS goes from 40.56 at λ=.1 to 450.61 at λ=10, while mean estimation error changes from .04284 to .05207. Temperature changes the exact target: this is not an accuracy comparison for one fixed target. The dimension controls separately apply cost-only, density-ratio-only and combined log weights; all have exact Gaussian target moments appropriate to that control.
 
+Dimension controls at λ=1, K=512 (mean ESS / mean Euclidean mean-estimation error):
+
+| Weight control | d=2 | d=56 |
+| --- | ---: | ---: |
+| Cost only | 278.84 / .0331 | 2.17 / 4.1203 |
+| Density ratio only | 338.47 / .0943 | 15.52 / 2.5530 |
+| Combined | 394.54 / .0286 | 6.41 / 2.0078 |
+
+The controls define different targets, so errors cannot be ranked as competing estimators of one target across rows. They isolate sources of concentration. Raw Euclidean error also changes with dimension; exact moments and all trials remain available.
+
 Vehicle diagnostics are separately labeled. For example, Q04 holdout two-route episode-mean ESS is 106.95 standard, 10.62 isotropic, 8.71 diagonal and 6.54 full at K=384. Successful closed-loop traversal can coexist with strongly concentrated weights. The full proposal also changes route frequencies. Neither fact certifies the accuracy of a single MPPI update. [Selected snapshot decompositions](../runs/seven_state/Q04/seven_state_q04_v1/selected_weight_components.csv) separate cost-only, ratio-only and combined ESS at the predeclared snapshot steps. These diagnostic controls do not change the executed controller or establish a causal decomposition of failure. Vehicle sampling dimension is 2×20=40; the state dimension is seven.
 
 ## Q03 — frozen decisions
 
-The new campaign executed **7,200 decisions**: three frozen states, six proposals, eight K values and 50 paired seeds 33000–33049. Source seed 31415 is separate. A raw audit verified 1,026 saved populations, shared inputs and paired normals, latent likelihood ratios, normalized weights and weighted control updates. Open-space input is step 8; obstacle input is the first declared x-window state with independently feasible upper/lower route witnesses; post-disturbance input is step 21. Selection does not inspect which proposal wins. Exact frozen states and warm starts are committed.
+The new campaign executed **7,200 decisions**: three frozen states, six proposals, eight K values and 50 paired seeds 33000–33049. Source seed 31415 is separate. The source controller is standard: this fixes one reference policy and one warm start per state, rather than a proposal-neutral distribution of encountered states. Every proposal receives that same frozen input. A raw audit verified 1,026 saved populations, shared inputs and paired normals, latent likelihood ratios, normalized weights and weighted control updates. Open-space input is step 8; obstacle input is the first declared x-window state with independently feasible upper/lower route witnesses; post-disturbance input is step 21. Selection does not inspect which proposal wins. Exact frozen states and warm starts are committed.
 
 Each high-sample reference pools eight independent batches of 65,536 rollouts (524,288 per state), with disjoint reference streams. Pooling uses log masses; reported uncertainty is a delete-block jackknife, not a bound on self-normalized importance-sampling bias.
 
@@ -117,7 +127,7 @@ Post-disturbance normalized plan RMS distance to the usable reference:
 | Sensitivity aligned | .24713 | .23591 | .15975 |
 | Sensitivity misaligned | .18179 | .11148 | .05014 |
 
-The aligned/misaligned matrices share eigenvalues .30,.10 and trace .40. “Aligned” means alignment with a documented local cost-sensitivity direction, not the unknown target covariance. The base prior, proposal mean and full 40-dimensional overlap also determine importance weights. Thus alignment alone need not improve this estimator; the observed negative result is retained. Paired distances between updates can remain substantial even where a reference is unresolved.
+The aligned/misaligned matrices share eigenvalues .30,.10 and trace .40. “Aligned” means alignment with the negative gradient of J(U+1_T d) at d=0: a constant two-channel latent offset across the horizon, differentiated with central steps .001 and .0005. It is not the unknown target covariance or a Hessian-optimal proposal. Both finite-difference gradients and their relative change are recorded. The base prior, proposal mean and full 40-dimensional overlap also determine importance weights. Thus alignment alone need not improve this estimator; the observed negative result is retained. Paired distances between updates can remain substantial even where a reference is unresolved.
 
 The [microscope](../results/showcase/Q03_key.png) uses one predeclared obstacle decision, seed 33000. It shows the first 48 unweighted paths, at most 64 displayed weighted paths, all 384 weighted endpoints, and the updated nominal prediction. All panels share limits derived from the full saved population bounds. Lowest raw cost and highest corrected weight are marked independently; they differ in this example because corrected weights also contain p/q. It is neither an executed path nor an occupancy distribution. [First-command distributions](figures/seven_state_Q03_commands.png) and [K convergence with intervals](figures/seven_state_Q03_convergence.png) use all 50 seeds. The “nominal” trajectory is a nonlinear rollout of the weighted latent mean, not a weighted average of state trajectories.
 
@@ -160,7 +170,57 @@ Planning time at K=384 averaged roughly .306–.342 s per command across primary
 
 ## Sample-budget sensitivity
 
-The Q04 two-route sweep has completed: at K=128 success is 18/20 standard, 20/20 isotropic, 16/20 diagonal and 17/20 full; at K=768 and 1536 every setting completes 20/20. The S-turn K sweep and secondary checks are still running at this checkpoint; their outcomes will be added from completed records. K=384 rows reference their original primary episode paths rather than duplicated raw arrays.
+Both selected scenarios use K=128,384,768,1536 at the same horizon, temperature, model, cost, limits and paired holdout seeds. Each sweep has 320 rows, but only 240 new episodes: 80 K=384 rows reference original primary episode paths. No raw arrays were copied for those rows.
+
+Q04 two-route completions (20 seeds per cell):
+
+| K | Standard | Isotropic | Diagonal | Full |
+| --- | ---: | ---: | ---: | ---: |
+| 128 | 18 | 20 | 16 | 17 |
+| 384 | 20 | 20 | 20 | 18 |
+| 768 | 20 | 20 | 20 | 20 |
+| 1536 | 20 | 20 | 20 | 20 |
+
+Q05 clearance .35 m completes 20/20 in every K/proposal cell except isotropic K=384 (19/20). The nonmonotonic success count is retained. All budget-sweep episodes are collision-free. Mean S-turn cost from K=128→1536 decreases 1612.46→1481.90 standard, 1683.11→1519.39 isotropic, 1569.77→1479.31 diagonal and 1653.94→1478.49 full. At K=1536, mean ESS is 91.92 standard versus 4.60 full while both complete 20/20. Thus similar traversal outcomes can coexist with quite different sampling diagnostics.
+
+Per-command work includes K sampled sequences and one updated nominal prediction:
+
+| K | Predicted transitions, (K+1)T | RK2 RHS evaluations, 6(K+1)T |
+| --- | ---: | ---: |
+| 128 | 2,580 | 15,480 |
+| 384 | 7,700 | 46,200 |
+| 768 | 15,380 | 92,280 |
+| 1536 | 30,740 | 184,440 |
+
+Per-episode work additionally depends on executed steps; exact counters are retained per seed. Execution and one-step model-check transitions are separate from prediction counters. Equal K is a per-decision rollout budget, not equal total episode work or wall time. Later stages ran concurrently, while reused K=384 records retain their original timings. These campaign timings cannot establish a clean latency scaling law across K. Single-process timing probes are reported separately below.
+
+## Separate S-turn secondary checks
+
+The preferred-cruising-speed/disturbance study used **400 new episodes**, seeds 35000–35019, clearance .35 m and K=384. Geometry and terminal speed remain fixed at the original 1.4 m/s reference. The speed axis changes only the running-cost speed preference, not the geometric reference or a hard speed constraint. This changes the objective across speed levels; cross-level cost numbers are not errors for one fixed target.
+
+| Condition | Standard | Isotropic | Diagonal | Full |
+| --- | ---: | ---: | ---: | ---: |
+| Preferred speed 1.0 m/s | 20/20 | 20/20 | 20/20 | 18/20 |
+| Preferred speed 1.4 m/s, no impulse | 20/20 | 20/20 | 20/20 | 20/20 |
+| Preferred speed 1.8 m/s | 20/20 | 20/20 | 20/20 | 20/20 |
+| Lateral impulse .10 m | 17/20 | 16/20 | 17/20 | 18/20 |
+| Lateral impulse .20 m | 15/20 | 11/20 | 13/20 | 9/20 |
+
+The baseline is executed once and reused in the two secondary plot panels, not stored as duplicate raw records. The two failures at preferred speed 1.0 are full-proposal terminal-speed timeouts. No parameters were retuned after observing a secondary outcome.
+
+The step-40 impulse is a seven-coordinate state jump: magnitude times `[0,1,.2,.02,−.5,.3,.1]`, multiplied by the common seed factor. It is neither a continuous physical force nor a forecasted disturbance. There are **44 collisions** in these secondary impulse checks: all 12 at .10 m occur at the imposed jump; at .20 m, 30 occur at the jump and two afterward. These are kept, audited and explicitly separated from the collision-free primary clearance campaign. The unperturbed corridor has a feasible witness; recovery feasibility from each induced jump is **unresolved**. Immediate exogenous boundary exits must not be interpreted as failures to recover after the jump, physical infeasibility of the corridor, or proof of poor covariance-family optimization. See [secondary failure records](../runs/seven_state/Q05/seven_state_q05_secondary_v1/failure_modes.csv).
+
+### Discrete steering command slew
+
+The controller can constrain the change in commanded steering using its already known previous command while retaining seven plant states. For rate b, each latent sequence is amplitude-clipped and then projected recursively so |δ_t−δ_(t−1)|≤b dt; the updated nominal sequence uses the identical transform anchored at the previous executed command. Both p/q densities and the weighted update remain in unprojected latent coordinates. This is a discrete command slew constraint, not a continuous steering servo/lag model.
+
+The declared .4,.8,1.6 rad/s levels all admit the same physical reference (maximum discrete profile rate .3592 rad/s), with fixed geometry, preferred speed, cost and K. Seeds 37000–37019 are independent of prior cohorts. The plant equations and physics validation remain unchanged; constrained sampled and nominal trajectories, pre-projection densities, executed slew bounds and default-unconstrained equivalence are tested before evaluation.
+
+RATE_OUTCOMES_PENDING
+
+### Isolated planning-time measurements
+
+TIMING_OUTCOMES_PENDING
 
 ## Uncertainty, failure interpretation and scientific scope
 
@@ -172,7 +232,7 @@ The mathematical target stays fixed within a covariance intervention, and all fu
 
 Supported: covariance orientation can help or harm exact-target estimation; cost and density ratios can each concentrate weights; locally aligned exploration need not minimize estimator error; frozen finite-K controls differ at identical inputs; feedback propagates those differences into route and completion distributions. Unsupported: universal covariance-family superiority, reproduction of AutoRally dynamics, certified collision safety, physical impossibility inferred from MPPI failure, or superiority of another published MPPI formulation.
 
-Q06 remains **PLANNED**. Future work should test genuine alternative weighting/feedback architectures, multiple calibrations and corridor handedness, wider horizons, better independent reference proposals, and secondary difficulty axes. The prescribed seven-state instantaneous-steering model has no hard steering-rate actuator limit; a controlled rate study requires additional actuator/history modeling and a new validation protocol. The preferred-cruising-speed and disturbance-magnitude S-turn checks are running with separately declared independent seeds 35000–35019; their outcomes are not yet reported at this checkpoint. The existing five-state rate study remains historical evidence, not a substitute seven-state result.
+Q06 remains **PLANNED**. Future work should test genuine alternative weighting/feedback architectures, multiple calibrations and corridor handedness, wider horizons, better independent reference proposals, and secondary difficulty axes. The plant retains instantaneous steering input; the optional controller command-slew projection uses explicit previous-command history. A continuous actuator/servo model remains future work. Preferred-cruising-speed and state-jump checks are separate completed studies, not inferred from the clearance/K sweeps. The existing five-state rate study remains historical evidence, not a substitute seven-state result.
 
 ## Source provenance
 

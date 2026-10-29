@@ -8,7 +8,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", required=True)
     parser.add_argument(
-        "--stage", required=True, choices=["Q01", "Q02", "Q03", "Q04", "Q05", "budget", "secondary"]
+        "--stage",
+        required=True,
+        choices=["Q01", "Q02", "Q03", "Q04", "Q05", "budget", "secondary", "rate"],
     )
     args = parser.parse_args()
     generate(args.input, args.stage)

@@ -189,3 +189,58 @@ def test_secondary_speed_changes_objective_without_regenerating_corridor():
     assert baseline.cost.speed == 1.4 and secondary.cost.speed == 1.8
     np.testing.assert_array_equal(secondary.cost.geometry.center.points, geometry.center.points)
     np.testing.assert_array_equal(secondary.cost.geometry.goal, baseline.cost.geometry.goal)
+
+
+def test_discrete_command_slew_projects_samples_nominal_and_execution():
+    from analysis.dynamic_campaign import configuration, resolved_case
+    from evaluation.runner import make_controller
+    from sampling.gaussian import importance_weights, log_base_over_proposal
+
+    config, *_ = resolved_case(configuration(), "s_turn", samples=32, clearance=0.35)
+    config["controller"].update(
+        kind="full",
+        covariance=config["proposals"]["full"],
+        steering_rate_limit=0.4,
+        snapshot_steps=[0],
+    )
+    controller = make_controller(config)
+    controller.previous_control = np.array([0.1, 0.2])
+    state = np.array(config["scenario"]["initial_state"])
+    z = np.random.default_rng(2).standard_normal((32, 20, 2))
+    previous = controller.previous_control.copy()
+    mean = controller.mean.copy()
+    command, updated = controller.plan(state, standard_normals=z)
+    snapshot = controller.get_rollout_snapshot()
+    physical = snapshot["sampled_controls"]
+    history = np.concatenate([np.full((32, 1), previous[0]), physical[:, :, 0]], axis=1)
+    assert np.max(abs(np.diff(history, axis=1))) <= 0.4 * controller.model.dt + 1e-14
+    assert abs(command[0] - previous[0]) <= 0.4 * controller.model.dt + 1e-14
+    nominal = controller.project_controls(updated)
+    replay = state.copy()
+    for t, control in enumerate(nominal):
+        replay = controller.model.step(replay, control)
+        np.testing.assert_allclose(replay, snapshot["nominal_states"][t + 1], atol=1e-14)
+    ratio = log_base_over_proposal(
+        snapshot["latent_controls"], mean, controller.base_covariance, controller.covariance
+    )
+    weights = importance_weights(snapshot["costs"], controller.temperature, ratio)
+    np.testing.assert_allclose(weights, snapshot["weights"], atol=1e-14)
+    np.testing.assert_allclose(
+        updated, np.einsum("k,kti->ti", weights, snapshot["latent_controls"])
+    )
+    np.testing.assert_array_equal(controller.previous_control, previous)
+    np.testing.assert_array_equal(controller.mean, mean)
+
+
+def test_unconstrained_pushforward_is_unchanged():
+    from analysis.dynamic_campaign import configuration, resolved_case
+    from evaluation.runner import make_controller
+
+    config, *_ = resolved_case(configuration(), "open_space", samples=8)
+    config["controller"].update(kind="standard", covariance=config["proposals"]["standard"])
+    controller = make_controller(config)
+    latent = np.random.default_rng(7).normal(size=(8, 20, 2)) * 3
+    np.testing.assert_array_equal(
+        controller.project_controls(latent),
+        controller.model.clip_control(latent * controller.model.control_scale),
+    )

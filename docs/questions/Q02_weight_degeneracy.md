@@ -73,6 +73,10 @@ uv run python experiments/seven_state_campaign.py --stage q02 --output runs/seve
 uv run python experiments/plot_seven_state.py --stage Q02 --input runs/seven_state/Q02/seven_state_q02_v1
 ```
 
+## Supporting numerical records
+
+- [paired_differences.csv](../../runs/seven_state/Q02/seven_state_q02_v1/paired_differences.csv)
+
 [Seven-state campaign report and methods](../seven_state_benchmark_report.md)
 
 [Historical methods (earlier model / original analytic seeds)](../covariance_mechanisms.md)

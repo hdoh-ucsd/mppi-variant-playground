@@ -127,11 +127,11 @@ evidence](results/archive/legacy_index.md)
 
 ![S-turn difficulty and controller limitations](results/showcase/Q05_key.png)
 
-**Finding:** Seven-state S-turn completion: 0.9 m: standard 20/20, isotropic 19/20, diagonal 20/20, full 20/20; 0.6 m: standard 20/20, isotropic 20/20, diagonal 20/20, full 20/20; 0.35 m: standard 20/20, isotropic 19/20, diagonal 20/20, full 20/20; 0.2 m: standard 20/20, isotropic 16/20, diagonal 20/20, full 19/20. Across 320 primary episodes, 0 collisions; all failed trajectories are retained.
+**Finding:** Seven-state S-turn completion: 0.9 m: standard 20/20, isotropic 19/20, diagonal 20/20, full 20/20; 0.6 m: standard 20/20, isotropic 20/20, diagonal 20/20, full 20/20; 0.35 m: standard 20/20, isotropic 19/20, diagonal 20/20, full 20/20; 0.2 m: standard 20/20, isotropic 16/20, diagonal 20/20, full 19/20. Across 320 primary episodes, 0 collisions; all failed trajectories are retained. The separate state-jump checks have 44 collisions, reported separately.
 
 **Interpretation:** A larger observed completion gap at the tightest clearance coexists with terminal speed/heading failures; this does not isolate covariance-driven route discovery.
 
-**Limitations:** One handedness, one horizon and specific matrices limit generalization. Completion allows straight-runout recovery. Intervals are pointwise. Steering-rate sweeps remain deferred; rate constraints need an augmented actuator/history model.
+**Limitations:** One handedness, one horizon and specific matrices limit generalization. Completion allows straight-runout recovery. Intervals are pointwise. Discrete command slew is studied separately; continuous steering actuator dynamics remain unmodeled.
 
 - [Detailed experiment](docs/questions/Q05_s_turn_difficulty.md)
 - [Original configuration](runs/seven_state/Q05/seven_state_q05_v1/config.yaml)
@@ -197,5 +197,5 @@ remain unresolved. The finish region allows runout recovery, not stopped-point p
 The model omits load transfer, roll inertia/feedback and an actuator-rate state; it has
 no reverse drive. Equal-K sweeps are not equal-wall-clock experiments or real-time guarantees.
 See the [scientific report](docs/seven_state_benchmark_report.md) for failures, uncertainty
-and the deferred steering-rate study.
+and the discrete command-slew study.
 

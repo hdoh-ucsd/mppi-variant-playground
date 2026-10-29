@@ -1,0 +1,6 @@
+# Discrete steering-command slew constraints, not a continuous actuator state.
+rate_study:
+  seeds: {start: 37000, count: 20}
+  limits: [0.4, 0.8, 1.6]  # rad/s; |delta_t-delta_(t-1)| <= limit * dt
+  clearance: 0.35
+  representative_seed: 37000

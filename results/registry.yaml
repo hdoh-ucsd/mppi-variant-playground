@@ -179,13 +179,16 @@ questions:
     is expected to win by construction.
   configuration: runs/seven_state/Q05/seven_state_q05_v1/config.yaml
   independent_variables: 'Primary: clearance .90,.60,.35,.20 m. Separate K=128/384/768/1536 at .35 m;
-    separate cruising-speed and disturbance checks; actuator-rate study deferred.'
+    separate cruising-speed and disturbance checks; discrete command slew studied separately; continuous
+    actuator dynamics omitted.'
   controlled_variables: Vehicle, objective, speed target, steering limit, horizon and samples within each
     clearance condition.
   metrics: Success/collision, censored progress, cross-track error, clearance, completion time, evaluation
     cost, ESS, entropy, effort, rate saturation, latency and transitions.
   run_ids:
   - seven_state_q05_v1
+  - seven_state_q05_secondary_v1
+  - seven_state_q05_budget_v1
   - seven_state_q05_pilot_v1
   - s_turn_clearance_v1
   key_figure: results/showcase/Q05_key.png
@@ -194,12 +197,13 @@ questions:
   main_finding: 'Seven-state S-turn completion: 0.9 m: standard 20/20, isotropic 19/20, diagonal 20/20,
     full 20/20; 0.6 m: standard 20/20, isotropic 20/20, diagonal 20/20, full 20/20; 0.35 m: standard 20/20,
     isotropic 19/20, diagonal 20/20, full 20/20; 0.2 m: standard 20/20, isotropic 16/20, diagonal 20/20,
-    full 19/20. Across 320 primary episodes, 0 collisions; all failed trajectories are retained.'
+    full 19/20. Across 320 primary episodes, 0 collisions; all failed trajectories are retained. The separate
+    state-jump checks have 44 collisions, reported separately.'
   interpretation: A larger observed completion gap at the tightest clearance coexists with terminal speed/heading
     failures; this does not isolate covariance-driven route discovery.
   limitations: One handedness, one horizon and specific matrices limit generalization. Completion allows
-    straight-runout recovery. Intervals are pointwise. Steering-rate sweeps remain deferred; rate constraints
-    need an augmented actuator/history model.
+    straight-runout recovery. Intervals are pointwise. Discrete command slew is studied separately; continuous
+    steering actuator dynamics remain unmodeled.
   reproduce: uv run python experiments/seven_state_campaign.py --stage q05 --output runs/seven_state/Q05/q05_reproduction
   regenerate: uv run python experiments/plot_seven_state.py --stage Q05 --input runs/seven_state/Q05/seven_state_q05_v1
   experiment_name: Seven-state feasible S-turn clearance campaign
@@ -213,6 +217,8 @@ questions:
   sampling_budget: Primary K=384; T=20; 320 episodes; separate K sweep
   supporting_figures:
   - docs/figures/seven_state_Q05_diagnostics.png
+  - docs/figures/seven_state_Q05_secondary.png
+  - docs/figures/seven_state_budget_seven_state_q05_budget_v1.png
 - id: Q06
   title: Published MPPI formulation comparisons
   document: docs/questions/Q06_variant_formulations.md
@@ -418,6 +424,18 @@ runs:
   dynamics_model: dynamic_single_track_7
   control_inputs: steering [rad], signed normalized throttle [−1,1]
   experiment_name: seven_state_q05_pilot_v1
+- id: seven_state_q05_budget_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/Q05/seven_state_q05_budget_v1
+  manifest: runs/seven_state/Q05/seven_state_q05_budget_v1/manifest.json
+  source_commit: 3ced0faafe0390e6377dfe85498787a33a5b2d39
+  configuration: runs/seven_state/Q05/seven_state_q05_budget_v1/config.yaml
+  summary: runs/seven_state/Q05/seven_state_q05_budget_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle [−1,1]
+  experiment_name: seven_state_q05_budget_v1
 - id: seven_state_dynamics_validation_v1
   question_ids:
   - Q03
@@ -432,3 +450,15 @@ runs:
   dynamics_model: dynamic_single_track_7
   control_inputs: steering [rad], signed normalized throttle
   experiment_name: Independent dynamic steady-turn and integration validation
+- id: seven_state_q05_secondary_v1
+  question_ids:
+  - Q05
+  status: EXECUTED
+  path: runs/seven_state/Q05/seven_state_q05_secondary_v1
+  manifest: runs/seven_state/Q05/seven_state_q05_secondary_v1/manifest.json
+  source_commit: 3ced0faafe0390e6377dfe85498787a33a5b2d39
+  configuration: runs/seven_state/Q05/seven_state_q05_secondary_v1/config.yaml
+  summary: runs/seven_state/Q05/seven_state_q05_secondary_v1/summary.csv
+  dynamics_model: dynamic_single_track_7
+  control_inputs: steering [rad], signed normalized throttle
+  experiment_name: Isolated cruising-speed and disturbance S-turn checks

@@ -24,6 +24,7 @@ if __name__ == "__main__":
             "pilot_q04",
             "pilot_q05",
             "secondary_q05",
+            "rate_q05",
         ],
     )
     p.add_argument("--output", required=True)
@@ -33,6 +34,8 @@ if __name__ == "__main__":
     )
     args = p.parse_args()
     config = configuration()
+    if args.stage == "rate_q05":
+        config.update(read_yaml("configs/seven_state/rate.yaml"))
     if args.stage == "secondary_q05":
         config.update(read_yaml("configs/seven_state/secondary.yaml"))
     if args.stage in ["q01", "q02"]:

@@ -295,6 +295,23 @@ evidence](results/archive/legacy_index.md)
                 "",
             ]
         )
+        if q["run_ids"]:
+            primary = next(run for run in registry["runs"] if run["id"] == q["run_ids"][0])
+            tables = [
+                str(Path(primary["path"]) / name)
+                for name in [
+                    "per_seed.csv",
+                    "paired_differences.csv",
+                    "goal_summary.csv",
+                    "failure_modes.csv",
+                    "selected_weight_components.csv",
+                ]
+                if (root / primary["path"] / name).is_file()
+            ]
+            if tables:
+                document.extend(["## Supporting numerical records", ""])
+                document.extend([f"- [{Path(path).name}](../../{path})" for path in tables])
+                document.append("")
         if q["supporting_figures"]:
             document.extend(["## Supporting figures", ""])
             document.extend(
@@ -396,7 +413,7 @@ remain unresolved. The finish region allows runout recovery, not stopped-point p
 The model omits load transfer, roll inertia/feedback and an actuator-rate state; it has
 no reverse drive. Equal-K sweeps are not equal-wall-clock experiments or real-time guarantees.
 See the [scientific report](docs/seven_state_benchmark_report.md) for failures, uncertainty
-and the deferred steering-rate study.
+and the discrete command-slew study.
 
 """.replace("§", backtick)
     (root / "README.md").write_text("\n".join(readme) + outro)

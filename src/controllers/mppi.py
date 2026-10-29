@@ -32,6 +32,13 @@ class MPPI(Controller):
             raise ValueError("Positive horizon, sample count and temperature required")
         self.covariance = validate_covariance(config["covariance"])
         self.base_covariance = validate_covariance(config["base_covariance"])
+        self.steering_rate_limit = config.get("steering_rate_limit")
+        if self.steering_rate_limit is not None and (
+            self.state_dimension != 7
+            or not np.isfinite(self.steering_rate_limit)
+            or self.steering_rate_limit <= 0
+        ):
+            raise ValueError("Positive discrete steering slew limit requires the seven-state model")
         self.snapshot_steps = frozenset(config.get("snapshot_steps", ()))
         if any(
             not isinstance(step, int) or isinstance(step, bool) or step < 0
@@ -64,6 +71,23 @@ class MPPI(Controller):
         self.planning_step = 0
         self._rollout_snapshot = None
 
+    def project_controls(self, latent):
+        """Physical pushforward, optionally slew-constrained using known command history.
+
+        Densities and the weighted update remain in the original latent coordinates.
+        This is a discrete command constraint, not a continuous actuator model.
+        """
+        applied = self.model.clip_control(latent * self.model.control_scale)
+        if self.steering_rate_limit is not None:
+            previous = self.previous_control[0]
+            change = self.steering_rate_limit * self.model.dt
+            for t in range(self.horizon):
+                applied[..., t, 0] = np.clip(
+                    applied[..., t, 0], previous - change, previous + change
+                )
+                previous = applied[..., t, 0]
+        return applied
+
     def plan(self, observed_state, *, standard_normals=None):
         """One optimization decision without shifting the warm start or executing a step.
 
@@ -84,7 +108,7 @@ class MPPI(Controller):
                 raise ValueError("Expected finite standard normals [samples, horizon, 2]")
             eps = z @ np.linalg.cholesky(self.covariance).T
         latent = self.mean[None] + eps
-        applied = self.model.clip_control(latent * self.model.control_scale)
+        applied = self.project_controls(latent)
         states = np.broadcast_to(observed_state, (self.samples, self.state_dimension)).copy()
         feasible = np.ones(self.samples, dtype=bool)
         costs = np.zeros(self.samples)
@@ -120,7 +144,12 @@ class MPPI(Controller):
         weights = importance_weights(costs, self.temperature, ratio)
         # Latent mean remains unconstrained; saturation is inside dynamics and at actuation.
         updated = weighted_update(self.mean, eps, weights)
-        command = self.model.clip_control(updated[0] * self.model.control_scale)
+        nominal_applied = self.project_controls(updated) if self.steering_rate_limit else None
+        command = (
+            self.model.clip_control(updated[0] * self.model.control_scale)
+            if nominal_applied is None
+            else nominal_applied[0].copy()
+        )
         planned = np.empty((self.horizon + 1, self.state_dimension))
         planned[0] = observed_state
         planned_substeps = (
@@ -129,11 +158,16 @@ class MPPI(Controller):
             else None
         )
         for t in range(self.horizon):
+            control = (
+                updated[t] * self.model.control_scale
+                if nominal_applied is None
+                else nominal_applied[t]
+            )
             if planned_substeps is None:
-                planned[t + 1] = self.model.step(planned[t], updated[t] * self.model.control_scale)
+                planned[t + 1] = self.model.step(planned[t], control)
             else:
                 planned[t + 1], planned_substeps[t] = self.model.step(
-                    planned[t], updated[t] * self.model.control_scale, return_path=True
+                    planned[t], control, return_path=True
                 )
         positive = weights > 0
         ess = float(1 / np.sum(weights**2))

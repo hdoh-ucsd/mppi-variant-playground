@@ -422,7 +422,7 @@ def budget(root):
             "Success / Wilson 95%",
             "Evaluation cost",
             "Mean ESS",
-            "Mean planning time [s]",
+            "Campaign planning time [s]",
             "Predicted transitions / episode",
         ],
         strict=True,
@@ -432,7 +432,8 @@ def budget(root):
     axes[-1].legend(fontsize=7)
     fig.suptitle(
         f"{read(root, 'manifest.json')['run_id']} · Equal K, not equal wall-clock budget · "
-        "K=384 reuses primary records"
+        "K=384 reuses primary records\n"
+        "Campaign timings span different CPU load; isolated timing probes are reported separately"
     )
     publish(
         fig,
@@ -474,6 +475,42 @@ def secondary(root):
     publish(fig, root, "Q05_secondary", [root / "summary.csv"], support=True)
 
 
+def rate_study(root):
+    root = Path(root)
+    d = pd.read_csv(root / "summary.csv")
+    d["rate_limit"] = d["case"].str.removeprefix("rate_").astype(float)
+    fig, axes = plt.subplots(2, 3, figsize=(12, 6), layout="constrained")
+    for ax, metric, label in zip(
+        axes.flat,
+        [
+            "success",
+            "cumulative_evaluation_cost",
+            "mean_ess",
+            "max_abs_vy",
+            "max_abs_yaw_rate",
+            "max_abs_roll",
+        ],
+        [
+            "Success / Wilson 95%",
+            "Evaluation cost",
+            "Episode mean ESS",
+            "Peak |vy| [m/s]",
+            "Peak |yaw rate| [rad/s]",
+            "Peak |roll| [rad]",
+        ],
+        strict=True,
+    ):
+        intervals(ax, d, metric, "rate_limit", label)
+        ax.set_xlabel("Discrete steering command slew limit [rad/s]")
+    axes[0, 0].set_ylim(-0.02, 1.02)
+    axes[0, 2].legend(fontsize=7)
+    fig.suptitle(
+        "Q05 · Command slew constraints using previous-command memory\n"
+        "Seven plant states · K=384 · clearance .35 m · paired seeds 37000–37019"
+    )
+    publish(fig, root, "Q05_rate", [root / "summary.csv"], support=True)
+
+
 def generate(root, stage):
     if not read(root, "manifest.json").get("complete"):
         raise ValueError("Cannot plot an incomplete run")
@@ -484,6 +521,8 @@ def generate(root, stage):
         frozen(root)
     elif stage in ["Q04", "Q05"]:
         driving(root, stage)
+    elif stage == "rate":
+        rate_study(root)
     elif stage == "secondary":
         secondary(root)
     else:
