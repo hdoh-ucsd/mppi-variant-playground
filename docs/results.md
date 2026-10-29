@@ -1,5 +1,21 @@
 # Executed milestone results
 
+## What the existing results establish
+
+The research goal is to understand the mathematical characteristics of MPPI variants. This report records **closed-loop observations for four fixed Gaussian proposals within one IT-MPPI implementation**. It is an initial source of behavioral examples and diagnostics. The other algorithm families have no executed results here.
+
+The mathematical interpretation of the current scope is:
+
+1. **Proposal geometry changes while the target stays fixed.** Isotropic, diagonal and correlated proposals redistribute exploration. The retained density ratio compensates for their unequal covariances. Task-dependent outcomes are compatible with finite-sample effects, but success counts alone cannot identify their mechanism.
+2. **ESS measures weight concentration.** The recorded low ESS establishes concentration in these sampled batches. It does not separate cost sharpness, proposal/target mismatch, horizon dimension or warm-start effects. Those contributions need isolated probes.
+3. **Latent sampling and applied controls differ under saturation.** The code and tests preserve Gaussian likelihoods before clipping. The logged saturation fraction helps interpret how proposal geometry translates into applied-control exploration; matched latent trace alone cannot establish matched physical exploration.
+4. **Vehicle scenarios show resulting behavior.** Open space, passage and disturbance runs supply examples of completion, obstacle interaction and post-impulse behavior. Disturbance failure does not characterize Tube-MPPI or RMPPI, since neither architecture is implemented.
+5. **Budget and replay checks have limited roles.** Wall-clock mode records behavior with calibrated sample allocations. Native mode reproduces the primary trajectories. Neither supplies a separate mathematical variant.
+
+The tables below preserve the measured outcomes. Read them as observations to explain through the [mechanism studies](research_questions.md), with derivations and numerical controls supplying the explanation.
+
+The four matrices are individual settings, with only one correlated proposal. Additional covariance values are needed to investigate a structural property. The two additional environments each have one standard-controller run and provide behavioral examples only.
+
 ## Evidence and scope
 
 Executed 2026-10-28 on Linux x86_64, an AMD Ryzen 7 7800X3D (8 cores / 16 logical CPUs), Python 3.12.2, NumPy 2.5.4, SciPy 1.18.1, with `OPENBLAS_NUM_THREADS=1`, `OMP_NUM_THREADS=1` and headless Matplotlib. First recorded benchmark start: `2026-10-29T02:38:47.165129+00:00`. Timings come from a shared host without CPU affinity or a controlled load guarantee.

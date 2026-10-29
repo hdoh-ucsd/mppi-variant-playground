@@ -1,5 +1,13 @@
 # Paired experimental protocol
 
+## Experimental questions
+
+This document specifies the existing shared vehicle experiments. Their role in the broader research is to illustrate behavior and provide reproducible diagnostics. The [mathematical investigation plan](research_questions.md) defines the mechanism-specific questions for each variant and the additional probes required to answer them.
+
+Choose the observable according to the mathematical question: weight concentration for a weighting law, update error for importance sampling, covariance geometry for exploration, or nominal/actual error for a tracking architecture. In the vehicle records, report task outcomes alongside these diagnostics. Report disturbance reference-line recovery separately from goal success, and completion times with the number of successful runs to avoid hiding timeouts.
+
+The three budget modes serve different purposes: matched dynamics evaluations are the primary covariance comparison, the calibrated wall-clock target compares behavior with a timing-based sample allocation, and native mode checks the supplied settings. The additional obstacle-field and model-mismatch episodes are single-run environment checks. The existing data do not include a controlled covariance-scale, correlation, horizon or sample-count sweep.
+
 ## Fixed conditions
 
 The first milestone compares standard, isotropic, diagonal and full fixed proposal covariances on open space, narrow passage and sudden disturbance. The four methods use one MPPI implementation and differ only in proposal covariance. Every scenario/controller pair runs seeds **42, 43, 44, 45, 46** in that order.
