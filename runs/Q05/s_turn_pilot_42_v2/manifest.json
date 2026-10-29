@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "level": "s_turn",
+  "phase": "pilot",
+  "started_at_utc": "2026-10-29T05:58:48.596976+00:00",
+  "git": {
+    "commit": "cfe67f959233967daf763e2f8fe771db12f2c39d",
+    "dirty": true,
+    "status_scope": "repository excluding generated results/"
+  },
+  "source_sha256": "00dc755d8c6710351ee674bff50a1d4f5c205821ebabc38a3ac19921947c4c54",
+  "configuration_sha256": "bbafd0873b8b8a70cb9b681e89583add869db8697f2e32ebf8f0ca5b44c825ec",
+  "python": "3.12.2",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0",
+    "matplotlib": "3.11.2"
+  },
+  "threads": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "rng": "NumPy PCG64; common standard-normal draws per seed and dimension",
+  "complete": true,
+  "episodes": 16,
+  "run_id": "s_turn_pilot_42",
+  "paired_seeds": [
+    42
+  ],
+  "source_covariance_note": "New normalized acceleration/rate covariances, trace .40; base fixed at diag(.26,.14)",
+  "collision_geometry": "Exact segment/polygon boundary distance for swept disk; Euler straight transitions",
+  "reference_note": "Mechanical feasibility verified before proposal evaluation; no reference controls supplied to MPPI",
+  "raw_records": "episodes/ and feasibility arrays are local and ignored; summaries and representative XY evidence versioned",
+  "primary_axis": "corridor clearance = nominal half-width minus disk radius; speed, horizon, limits and K fixed"
+}

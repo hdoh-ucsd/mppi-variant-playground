@@ -19,6 +19,7 @@ from scenarios.environment import swept_clearance
 class MPPI(Controller):
     def __init__(self, dynamics, cost, config):
         self.model, self.cost, self.config = dynamics, cost, deepcopy(config)
+        self.state_dimension = getattr(dynamics, "state_dimension", 4)
         self.horizon, self.samples = config["horizon"], config["samples"]
         self.temperature = config["temperature"]
         if (
@@ -48,11 +49,14 @@ class MPPI(Controller):
             self.covariance, np.eye(2) * self.covariance[0, 0]
         ):
             raise ValueError("Isotropic covariance required")
-        self.reset(np.zeros(4), 42)
+        self.reset(np.zeros(self.state_dimension), 42)
 
     def reset(self, initial_state, seed):
-        if np.shape(initial_state) != (4,) or not np.isfinite(initial_state).all():
-            raise ValueError("Expected finite four-dimensional initial state")
+        if (
+            np.shape(initial_state) != (self.state_dimension,)
+            or not np.isfinite(initial_state).all()
+        ):
+            raise ValueError("Initial state must match the model state dimension")
         self.rng = np.random.default_rng(seed)
         self.mean = np.zeros((self.horizon, 2))
         self.previous_control = np.zeros(2)
@@ -67,8 +71,11 @@ class MPPI(Controller):
         transformation. The ordinary command path retains its existing RNG sequence.
         """
         started = perf_counter()
-        if np.shape(observed_state) != (4,) or not np.isfinite(observed_state).all():
-            raise ValueError("Expected finite four-dimensional observation")
+        if (
+            np.shape(observed_state) != (self.state_dimension,)
+            or not np.isfinite(observed_state).all()
+        ):
+            raise ValueError("Observation must match the model state dimension")
         if standard_normals is None:
             eps = sample_gaussian(self.rng, (self.samples, self.horizon), self.covariance)
         else:
@@ -78,21 +85,26 @@ class MPPI(Controller):
             eps = z @ np.linalg.cholesky(self.covariance).T
         latent = self.mean[None] + eps
         applied = self.model.clip_control(latent * self.model.control_scale)
-        states = np.broadcast_to(observed_state, (self.samples, 4)).copy()
+        states = np.broadcast_to(observed_state, (self.samples, self.state_dimension)).copy()
+        feasible = np.ones(self.samples, dtype=bool)
         costs = np.zeros(self.samples)
         previous = np.broadcast_to(self.previous_control, (self.samples, 2))
         capture = self.planning_step in self.snapshot_steps
         keep = self.samples if capture else min(self.config.get("saved_rollouts", 32), self.samples)
-        saved = np.empty((keep, self.horizon + 1, 4))
+        saved = np.empty((keep, self.horizon + 1, self.state_dimension))
         saved[:, 0] = states[:keep]
         for t in range(self.horizon):
             control = applied[:, t]
             costs += self.cost.running(states, control, previous)
             next_states = self.model.step(states, control)
             # Swept collision penalty includes collisions between discrete states.
-            gap = swept_clearance(
-                states, next_states, self.cost.obstacles, self.cost.vehicle_radius
-            )
+            if hasattr(self.cost, "transition_clearance"):
+                gap = self.cost.transition_clearance(states, next_states)
+            else:
+                gap = swept_clearance(
+                    states, next_states, self.cost.obstacles, self.cost.vehicle_radius
+                )
+            feasible &= gap > 0
             costs += self.cost.dt * self.cost.weights["collision"] * (gap <= 0)
             states = next_states
             saved[:, t + 1] = states[:keep]
@@ -103,7 +115,7 @@ class MPPI(Controller):
         # Latent mean remains unconstrained; saturation is inside dynamics and at actuation.
         updated = weighted_update(self.mean, eps, weights)
         command = self.model.clip_control(updated[0] * self.model.control_scale)
-        planned = np.empty((self.horizon + 1, 4))
+        planned = np.empty((self.horizon + 1, self.state_dimension))
         planned[0] = observed_state
         for t in range(self.horizon):
             planned[t + 1] = self.model.step(planned[t], updated[t] * self.model.control_scale)
@@ -115,6 +127,7 @@ class MPPI(Controller):
             "max_weight": float(weights.max()),
             "degenerate": bool(ess < 2),
             "minimum_sample_cost": float(costs.min()),
+            "feasible_rollout_fraction": float(feasible.mean()),
             "weighted_sample_cost": float(weights @ costs),
             "trajectory_spread": float(np.var(states[:, :2], axis=0).sum()),
             "perturbation_mean": eps.mean(axis=(0, 1)),
@@ -143,6 +156,7 @@ class MPPI(Controller):
                 "nominal_role": "updated_mean_plan",
                 "latent_controls": latent,
                 "updated_mean": updated,
+                "proposal_mean": self.mean.copy(),
             }
             if capture
             else None

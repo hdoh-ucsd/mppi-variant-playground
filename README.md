@@ -1,116 +1,149 @@
 # MPPI Variant Playground
 
-**Understand MPPI variants through their mathematics and observable behavior.**
+A research companion for understanding MPPI formulations through their mathematics,
+finite-sample decisions and control behavior. Follow a scientific question from hypothesis
+to reproducible evidence, including negative results and unresolved estimates.
 
-This project is a research companion for readers who want to understand how Model Predictive Path Integral (MPPI) control and related sampling methods work. We study the choices behind each method: its objective, sampling distribution, cost-to-weight transformation, update rule, and feedback architecture.
+## The MPPI formulation
 
-Each investigation follows the same path:
+MPPI samples control sequences, predicts trajectories, scores them, updates a nominal
+sequence and executes its first command. The implemented Gaussian IT-MPPI uses
 
-**Derive the mechanism → predict its effect → isolate it in a small experiment → explain a control example.**
+$$p(Z)=\prod_t\mathcal N(z_t;0,C_0),\quad q_U(Z)=\prod_t\mathcal N(z_t;U_t,C),$$
+$$\pi(Z)\propto e^{-J(Z)/\lambda}p(Z),\qquad w_k\propto
+e^{-J(Z_k)/\lambda}p(Z_k)/q_U(Z_k),\qquad U^+=\sum_k w_kZ_k.$$
 
-The current code provides an information-theoretic MPPI baseline, four fixed sampling covariance settings, numerical checks, and reproducible vehicle experiments on Linux/CPU. Studies of the broader algorithm families are planned. The [research questions](docs/research_questions.md) describe the experiments needed to investigate their defining features.
+The base stays fixed when proposal covariance changes. Densities use normalized latent
+controls, weights are normalized in log space, and physical limits apply inside
+prediction. Finite self-normalized estimates can be weight-degenerate. See the
+[derivation](docs/formulations.md).
 
-## MPPI in a paragraph
-
-MPPI samples candidate control sequences, predicts their trajectories with a dynamics model, evaluates their costs, and uses weighted samples to update a control sequence. It executes the first command and repeats from the next observed state. Mathematical choices determine which trajectories are explored, how strongly they influence the update, and how feedback or uncertainty enters the calculation. Those choices are the subject of this repository.
-
-## Paper map
-
-The map organizes our eight references by the mathematical questions they help answer. Arrows show conceptual reading connections; they do not assert a formal citation graph or equivalence between methods. Numbers match the reference table below.
+## Paper formulation map
 
 ```mermaid
-flowchart TB
-    P1["[1] Williams et al. · 2016<br/>Original MPPI"]
-    P2["[2] Williams et al. · 2017<br/>Information-theoretic formulation<br/>Target, importance weights, mean update"]
-    P8["[8] Jordana et al. · 2025<br/>Zero-order optimization tutorial<br/>Random search and smoothing"]
-
-    subgraph SEARCH["Weighting and search"]
-        P5["[5] Wang et al. · 2021<br/>Tsallis-VI MPC<br/>Divergence and cost-to-weight transform"]
-        P7["[7] Xue et al. · 2024<br/>DIAL-MPC<br/>Iterative refinement and noise annealing"]
-    end
-
-    subgraph FEEDBACK["Feedback and uncertainty"]
-        P3["[3] Williams et al. · 2018<br/>Tube-MPPI<br/>Nominal planning and tracking"]
-        P4["[4] Gandhi et al. · 2021<br/>Robust-MPPI<br/>Tracking-aware rollout optimization"]
-        P6["[6] Yin et al. · 2022<br/>CC-MPPI<br/>Feedback sampling and state covariance"]
-        P3 -->|Account for tracking in planning| P4
-    end
-
-    P1 -->|Information-theoretic derivation| P2
-    P8 -.->|Optimization perspective| P2
-    P2 -->|Change the weighting law| P5
-    P2 -->|Change the search schedule| P7
-    P2 -->|Add a tracking architecture| P3
-    P2 -->|Control trajectory dispersion| P6
-
-    classDef baseline fill:#dbeafe,stroke:#2563eb,color:#172554
-    classDef planned fill:#fef3c7,stroke:#b45309,color:#451a03
-    classDef context fill:#f1f5f9,stroke:#64748b,color:#0f172a
-    class P2 baseline
-    class P3,P4,P5,P6,P7 planned
-    class P1,P8 context
+flowchart LR
+  A["Original MPPI · Williams 2016"] --> B["IT-MPPI · Williams 2017<br/>Implemented formulation"]
+  Z["Zero-order tutorial · Jordana 2025"] -.-> B
+  B --> C["Tsallis-VI · Wang 2021<br/>Weighting law · planned"]
+  B --> D["DIAL-MPC · Xue 2024<br/>Annealing · planned"]
+  B --> E["Tube-MPPI · Williams 2018<br/>Tracking architecture · planned"]
+  E --> F["Robust-MPPI · Gandhi 2021<br/>Tracking-aware planning · planned"]
+  B --> G["CC-MPPI · Yin 2022<br/>State covariance / feedback · planned"]
 ```
 
-**Blue:** formulation used by the implemented baseline. **Amber:** families planned for investigation. **Gray:** historical or tutorial context. The node labels and table also identify each role.
+Arrows are conceptual reading connections. [Eight papers, equation locations and source
+versions](docs/paper_map.md) separate paper-level claims from the implementation and
+experimentally verified claims.
 
-| Ref. | Paper | What we study |
-|---|---|---|
-| [1] | Williams et al., [Aggressive Driving with Model Predictive Path Integral Control](https://doi.org/10.1109/ICRA.2016.7487277), ICRA 2016 | Historical introduction of MPPI. The implemented derivation follows [2]; full text of [1] was unavailable during the source review. |
-| [2] | Williams et al., [Information Theoretic Model Predictive Control: Theory and Applications to Autonomous Driving](https://arxiv.org/abs/1707.02342v1), 2017 preprint | Optimal trajectory distribution, importance sampling, Gaussian mean projection, and control constraints. |
-| [3] | Williams et al., [Robust Sampling Based Model Predictive Control with Sparse Objective Information](https://www.roboticsproceedings.org/rss14/p42.pdf), RSS 2018 | How nominal sampling-based planning is coupled to a trajectory tracker in Tube-MPPI. |
-| [4] | Gandhi et al., [Robust Model Predictive Path Integral Control: Analysis and Performance Guarantees](https://arxiv.org/abs/2102.09027v1), RA-L 2021 | How nominal/actual dynamics and tracker capabilities enter planning and performance analysis. |
-| [5] | Wang et al., [Variational Inference MPC using Tsallis Divergence](https://arxiv.org/abs/2104.00241v1), 2021 | How divergence choice changes the cost-to-weight transformation and policy updates. |
-| [6] | Yin et al., [Trajectory Distribution Control for Model Predictive Path Integral Control using Covariance Steering](https://arxiv.org/abs/2109.12147v3), ICRA 2022 | How feedback sampling and covariance steering shape the distribution of future states. |
-| [7] | Xue et al., [Full-Order Sampling-Based MPC for Torque-Level Locomotion Control via Diffusion-Style Annealing](https://arxiv.org/abs/2409.15610v1), 2024 preprint | How iterative sampling and annealing balance exploration with refinement in DIAL-MPC. |
-| [8] | Jordana et al., [An Introduction to Zero-Order Optimization Techniques for Robotics](https://arxiv.org/abs/2506.22087v1), 2025 preprint | A broader view of random search, smoothing, and distribution-based optimization. |
+## Research Questions and Key Results
 
-Start with [2] for the baseline derivation and [8] for the optimization perspective. Follow [5] and [7] for weighting and search; [3] then [4] for tracking architectures; and [6] for state-distribution control. CEM is a related optimizer discussed in [2], [5], and [8] and is included as a planned study of elite selection and distribution fitting.
+[Research index](docs/research_index.md) · [Registry](results/registry.yaml) · [Historical
+evidence](results/archive/legacy_index.md)
 
-The [detailed paper map](docs/paper_map.md) records equation locations, reviewed versions, and reference software. The [investigation plan](docs/research_questions.md) connects each mechanism to a proposed experiment.
 
-## What is implemented
+### Q01 — Sampling covariance and estimation accuracy
 
-The four available controller names select fixed proposal covariances within one IT-MPPI implementation. Covariances are expressed in normalized acceleration/steering coordinates.
+![Sampling covariance and estimation accuracy](results/showcase/Q01_key.png)
 
-| Configuration | Proposal covariance | Feature available to investigate |
-|---|---|---|
-| `standard` | `diag(0.28, 0.16)` | Proposal covariance equals the shared base covariance. |
-| `isotropic` | `0.22 I` | Equal variance in both normalized input directions. |
-| `diagonal` | `diag(0.34, 0.10)` | Independent input perturbations with unequal variances. |
-| `full` | `[[0.28, 0.08], [0.08, 0.16]]` | Correlated acceleration/steering perturbations. |
+**Finding:** At K=256 in the declared quadratic case, MSE is 0.007657 for isotropic, 0.003699 for +45° anisotropy and 0.049254 for −45°. Geometry helps or hurts depending on alignment.
 
-All four use the same fixed base covariance, `diag(0.28, 0.16)`, and the full base/proposal density correction. This preserves a common target distribution while changing the sampling proposal. The proposals have equal trace, 0.44, which fixes total latent normalized variance; their determinants and behavior after actuator clipping differ. Samples remain independent across horizon steps. See the [mathematical formulation](docs/formulations.md).
+**Interpretation:** A common Gaussian Gibbs target separates proposal-induced finite-sample error from a changed optimization problem. ESS alone does not determine mean-estimation variance.
 
-**Planned:** CEM MPC, Tsallis-VI MPC, DIAL-MPC, Tube-MPPI, Robust-MPPI, and CC-MPPI. Their defining updates or feedback architectures are not implemented. The [fidelity report](docs/implementation_fidelity.md) documents the current scope.
+**Limitations:** An exact quadratic target is not a vehicle task. Trace matching does not match determinant; one matrix cannot represent a covariance family.
 
-## How to read the experiments
+- [Detailed experiment](docs/questions/Q01_sampling_accuracy.md)
+- [Original configuration](results/investigations/gaussian_v1/config.yaml)
+- [Data summary](results/investigations/gaussian_v1/summary.csv)
+- [Reproduction commands](docs/questions/Q01_sampling_accuracy.md#reproduce-and-regenerate)
 
-For presentation-ready behavior comparisons, use the [trajectory distribution study](docs/trajectory_behavior_findings.md). It records full rollout populations and produces executed-path bundles, empirical occupancy maps, weighted local clouds, progress-aligned dispersion bands, and a behavior dashboard for the four implemented settings across paired seeds. The analytic Figures 1 and 2 remain methodological/appendix material.
+### Q02 — Importance-weight concentration
 
-The [covariance mechanism study](docs/covariance_mechanisms.md) adds an exact Gaussian target, rotation/anisotropy/scale sweeps, repeated finite-sample estimation, temperature and dimension diagnostics, clipped-control analysis, nonconvex updates, and a separate bicycle parameter sweep. See the [investigation protocol](docs/mathematical_investigations.md) for commands and the [new findings](docs/experimental_findings.md) for executed evidence. These additions preserve the original vehicle results described below.
+![Importance-weight concentration](results/showcase/Q02_key.png)
 
-Existing vehicle runs illustrate the behavior of the fixed-covariance baseline. They include open space, a narrow passage, and a sudden disturbance; the code also supports an obstacle field and model mismatch. The saved records include executed trajectories, control commands, effective sample size (ESS, a measure of weight concentration), saturation, and timing.
+**Finding:** In the isotropic K=512 slice, mean ESS rises from 41.95 at λ=.1 to 453.29 at λ=10 while mean error is nonmonotonic. Separate dimension probes isolate cost and density-ratio concentration.
 
-Use these observations to ask a mathematical question. For example: does changing proposal geometry increase estimation variability? Does low ESS come from the cost transform or poor proposal overlap? How does clipping alter the sampled control distribution? Answer those questions with isolated probes before interpreting a vehicle trajectory.
+**Interpretation:** ESS summarizes normalized weights. Temperature changes the target; density ratios alone can concentrate in high dimensions.
 
-The [results report](docs/results.md) preserves 180 recorded episodes across three budget modes, plus two additional environment checks. Native-mode trajectories duplicate the primary runs. These records cover the implemented covariance settings; studies of the broader families remain outstanding. The [protocol](docs/benchmark_protocol.md) defines budgets and metrics, and the [limitations](docs/limitations.md) explain the model and evidence boundaries.
+**Limitations:** This is not a fixed-target temperature accuracy ranking or a causal diagnosis of every vehicle failure. Finite ESS does not certify population overlap.
 
-## Read by interest
+- [Detailed experiment](docs/questions/Q02_weight_degeneracy.md)
+- [Original configuration](results/investigations/temperature_v1/config.yaml)
+- [Data summary](results/investigations/temperature_v1/summary.csv)
+- [Reproduction commands](docs/questions/Q02_weight_degeneracy.md#reproduce-and-regenerate)
 
-| If you want to… | Start here |
-|---|---|
-| Understand the literature and its connections | [Paper map and equation references](docs/paper_map.md) |
-| Work through the implemented equations | [Mathematical formulation](docs/formulations.md) |
-| Design an experiment around a mathematical feature | [Research questions and proposed probes](docs/research_questions.md) |
-| Inspect recorded behavior and diagnostics | [Executed results](docs/results.md) |
-| Reproduce the vehicle experiments | [Experimental protocol](docs/benchmark_protocol.md) |
-| Check what the implementation actually supports | [Implementation fidelity](docs/implementation_fidelity.md) and [limitations](docs/limitations.md) |
+### Q03 — Frozen-state MPPI decision analysis
 
-## Run the playground
+![Frozen-state MPPI decision analysis](results/showcase/Q03_key.png)
 
-Requires Linux, Python 3.11+, and [uv](https://docs.astral.sh/uv/). The checked-in Python version is 3.12. Computation uses CPU NumPy; a GPU is unnecessary.
+**Finding:** 7,200 decisions isolate covariance at common frozen inputs. High-sample reference ESS is only 1.10–2.19 from 524,288 rollouts per state; all three reference means remain unresolved.
 
-From the repository root:
+**Interpretation:** Proposal geometry changes finite sampled rollouts, corrected weights, controls and open-loop predictions, even with the same target.
+
+**Limitations:** Distances to unresolved references are not validated target-mean errors. Three states, one warm start per state and pointwise intervals do not establish general superiority.
+
+- [Detailed experiment](docs/questions/Q03_frozen_decision.md)
+- [Original configuration](results/investigations/frozen_decision_v1/config.yaml)
+- [Data summary](results/investigations/frozen_decision_v1/summary.csv)
+- [Reproduction commands](docs/questions/Q03_frozen_decision.md#reproduce-and-regenerate)
+
+### Q04 — Closed-loop trajectory differences
+
+![Closed-loop trajectory differences](results/showcase/Q04_key.png)
+
+**Finding:** The full setting takes 3 upper and 17 lower station crossings in the two-route task; others take 20 lower. Its aligned mean path has −0.206 m clearance despite collision-free individual executions.
+
+**Interpretation:** Executed bundles, occupancy, local rollout clouds and inter-seed dispersion describe different distributions. A mean over routes need not be feasible.
+
+**Limitations:** States and warm starts differ across closed-loop variants. Twenty seeds and one matrix per structure do not isolate covariance as the sole cause of route choice.
+
+- [Detailed experiment](docs/questions/Q04_closed_loop.md)
+- [Original configuration](results/investigations/trajectory_behavior_v1/config.yaml)
+- [Data summary](results/investigations/trajectory_behavior_v1/behavior_summary.csv)
+- [Reproduction commands](docs/questions/Q04_closed_loop.md#reproduce-and-regenerate)
+
+### Q05 — S-turn difficulty and controller limitations
+
+**PLANNED — no executed result or figure.**
+
+**Finding:** PLANNED — implementation and mechanical feasibility are validated; the final finish-gate seed-42 pilot and multi-seed evaluation are pending.
+
+**Interpretation:** The study separates physical feasibility from finite-horizon, finite-sampling and objective limitations.
+
+**Limitations:** Do not attribute failure to covariance before geometry and reference feasibility are validated.
+
+- [Detailed experiment](docs/questions/Q05_s_turn_difficulty.md)
+- [Original configuration](configs/investigations/s_turn.yaml)
+- [Reproduction commands](docs/questions/Q05_s_turn_difficulty.md#reproduce-and-regenerate)
+
+### Q06 — Published MPPI formulation comparisons
+
+**PLANNED — no executed result or figure.**
+
+**Finding:** PLANNED — CEM, Tsallis-VI, DIAL, Tube-MPPI, Robust-MPPI and CC-MPPI are not implemented or evaluated.
+
+**Interpretation:** Paper-level changes to weighting, annealing, feedback and state-covariance design require distinct implementations and appropriate isolated tests.
+
+**Limitations:** No experimental claims or placeholder figures. Covariance ablations are not these published formulations.
+
+- [Detailed experiment](docs/questions/Q06_variant_formulations.md)
+- [Original configuration](configs/investigations/published_formulations_plan.yaml)
+- [Reproduction commands](docs/questions/Q06_variant_formulations.md#reproduce-and-regenerate)
+
+## Current implementation status
+
+Standard, isotropic, diagonal and full are covariance settings of one IT-MPPI
+implementation. The original four-state acceleration/steering bicycle remains available.
+The S-turn study adds a separate five-state acceleration/steering-rate bicycle and newly
+declared normalized covariances; see [Q05](docs/questions/Q05_s_turn_difficulty.md) for
+its execution status.
+
+CEM, Tsallis-VI, DIAL-MPC, Tube-MPPI, Robust-MPPI and CC-MPPI remain **PLANNED**.
+Covariance ablations are not those published formulations. See [implementation
+fidelity](docs/implementation_fidelity.md) and [limitations](docs/limitations.md).
+
+## Reproduction
+
+Linux, Python 3.11+ and uv; CPU NumPy, no GPU required.
 
 ```bash
 uv sync --frozen
@@ -118,48 +151,19 @@ export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLBACKEND=Agg
 uv run ruff check .
 uv run ruff format --check .
 uv run pytest
+uv run python experiments/research_index.py
 ```
 
-Run one episode and reconstruct its figures and GIF:
-
-```bash
-uv run python experiments/run_single.py --controller standard --scenario open_space --seed 42 --output results/my_run
-uv run python experiments/generate_figures.py --input results/my_run --animate
-```
-
-Select `standard`, `isotropic`, `diagonal`, or `full` with `--controller`. Select `open_space`, `narrow_passage`, `multiple_obstacles`, `disturbance`, or `model_mismatch` with `--scenario`. Output directories must be new; choose another name when repeating a run.
-
-Reproduce the shared covariance experiment, or run a short smoke check:
-
-```bash
-# Four covariance settings, three scenarios, five seeds
-uv run python experiments/run_benchmark.py --mode dynamics --output results/my_comparison
-uv run python experiments/generate_figures.py --input results/my_comparison
-
-# Four-step execution check
-uv run python experiments/run_single.py --samples 64 --steps 4 --output results/my_smoke
-```
-
-The benchmark also accepts `--mode wall_clock` for offline latency-calibrated sample allocation and `--mode native` for the supplied configuration. Report the modes separately; the calibrated timing target permits deadline misses.
-
-Each episode saves its resolved configuration, provenance, numerical results, trajectories, commands, diagnostics, and a compact rollout archive. CSV/JSON/YAML records and PNG/SVG figures can be versioned. Rollout archives and animations are ignored by Git and can be regenerated. GIF export is supported; MP4 export is not implemented.
-
-## Repository guide
+Use a fresh `runs/Qxx/<run_id>` directory for execution. Use saved data and `--plots-only`
+to reconstruct figures. Historical `results/` directories retain their original records.
+No new bulk binary archive is committed.
 
 ```text
-configs/                       Dynamics, costs, controllers, scenarios, and budgets
-src/                           Sampling, MPPI, dynamics, evaluation, and visualization
-experiments/                   Episode, benchmark, and figure entry points
-tests/                         Numerical identities, behavior, and reproducibility checks
-docs/                          Derivations, paper map, study plans, and recorded findings
-results/                       Experiment records and generated figures
-.github/workflows/ci.yml        CPU lint, tests, and headless smoke checks
+configs/       Declared models, costs, controllers and experiment designs
+src/           Shared MPPI, sampling, dynamics, geometry and analysis
+experiments/   Execution, reconstruction and registry validation CLIs
+docs/          Question documents, derivations, paper map and findings
+results/       Registry, curated showcase and preserved historical evidence
+runs/Qxx/      Raw new records and relative references to historical runs
+tests/         Numerical, physical and evidence-consistency checks
 ```
-
-[Hydrax](https://github.com/vincekurtz/hydrax) and [MPPI-Generic](https://github.com/ACDSLab/MPPI-Generic) are reference implementations reviewed for design context. Their reviewed revisions and differences from this code are recorded in the [paper map](docs/paper_map.md#reference-implementation-review).
-
-## Frozen-state decision microscope
-
-To isolate proposal effects from different closed-loop states and warm starts, see the [frozen-state decision analysis](docs/frozen_decision_analysis.md). It compares six trace-matched Gaussian proposals at identical inputs, with shared random draws, 50 paired seeds, eight rollout budgets and independent high-sample reference diagnostics. This studies finite-sample decisions and predicted consequences; it does not add a new MPPI variant.
-
-Executed evidence: [findings and exact figure paths](results/investigations/frozen_decision_v1/interpretation.md). The 7,200-decision run shows persistent finite-budget proposal effects and severe weight degeneracy, including unresolved high-sample references.

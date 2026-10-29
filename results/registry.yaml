@@ -1,0 +1,204 @@
+schema_version: 1
+questions:
+- id: Q01
+  title: Sampling covariance and estimation accuracy
+  document: docs/questions/Q01_sampling_accuracy.md
+  status: EXECUTED
+  research_question: Sampling covariance and estimation accuracy?
+  mathematical_motivation: The Gaussian Gibbs mean is (P⁻¹+H/λ)⁻¹Hb/λ, independent of the proposal covariance.
+  hypothesis: A suitably oriented proposal can reduce finite-sample MSE; misalignment can reverse the
+    effect.
+  configuration: results/investigations/gaussian_v1/config.yaml
+  independent_variables: Orientation, anisotropy, sample count, scale constraint; cost rotation in a separate
+    factorial slice.
+  controlled_variables: Base distribution, quadratic cost and temperature within each comparison; common
+    random numbers per paired seed.
+  metrics: Bias, variance, MSE, ESS and moment error across 64 evaluation seeds.
+  run_ids:
+  - gaussian_v1
+  key_figure: results/showcase/Q01_key.png
+  source_figure: results/investigations/gaussian_v1/figures/03_alignment_sweep.png
+  summary: results/investigations/gaussian_v1/summary.csv
+  main_finding: At K=256 in the declared quadratic case, MSE is 0.007657 for isotropic, 0.003699 for +45°
+    anisotropy and 0.049254 for −45°. Geometry helps or hurts depending on alignment.
+  interpretation: A common Gaussian Gibbs target separates proposal-induced finite-sample error from a
+    changed optimization problem. ESS alone does not determine mean-estimation variance.
+  limitations: An exact quadratic target is not a vehicle task. Trace matching does not match determinant;
+    one matrix cannot represent a covariance family.
+  reproduce: uv run python experiments/analytic_gaussian.py --output runs/Q01/gaussian_reproduction
+  regenerate: uv run python experiments/analytic_gaussian.py --output results/investigations/gaussian_v1
+    --plots-only
+- id: Q02
+  title: Importance-weight concentration
+  document: docs/questions/Q02_weight_degeneracy.md
+  status: EXECUTED
+  research_question: Importance-weight concentration?
+  mathematical_motivation: ESS=1/Σw² measures weight concentration, whereas estimator variance also depends
+    on the integrand.
+  hypothesis: Sharper Boltzmann factors and high-dimensional proposal mismatch can each concentrate weights.
+  configuration: results/investigations/temperature_v1/config.yaml
+  independent_variables: Temperature and dimension; cost-only, ratio-only and combined controls.
+  controlled_variables: Analytic target recomputed for each temperature; paired seeds and sample budgets
+    within each comparison.
+  metrics: ESS, entropy, largest weight, exact mean error and Gaussian overlap diagnostics.
+  run_ids:
+  - temperature_v1
+  key_figure: results/showcase/Q02_key.png
+  source_figure: results/investigations/temperature_v1/figures/05b_dimension_diagnostics.png
+  summary: results/investigations/temperature_v1/summary.csv
+  main_finding: In the isotropic K=512 slice, mean ESS rises from 41.95 at λ=.1 to 453.29 at λ=10 while
+    mean error is nonmonotonic. Separate dimension probes isolate cost and density-ratio concentration.
+  interpretation: ESS summarizes normalized weights. Temperature changes the target; density ratios alone
+    can concentrate in high dimensions.
+  limitations: This is not a fixed-target temperature accuracy ranking or a causal diagnosis of every
+    vehicle failure. Finite ESS does not certify population overlap.
+  reproduce: uv run python experiments/temperature_sweep.py --output runs/Q02/temperature_reproduction
+  regenerate: uv run python experiments/temperature_sweep.py --output results/investigations/temperature_v1
+    --plots-only
+- id: Q03
+  title: Frozen-state MPPI decision analysis
+  document: docs/questions/Q03_frozen_decision.md
+  status: EXECUTED
+  research_question: Frozen-state MPPI decision analysis?
+  mathematical_motivation: Fixing p, J, λ and the proposal mean isolates the covariance intervention in
+    self-normalized importance sampling.
+  hypothesis: Covariance changes finite-budget decisions; differences may diminish with K if sampling
+    adequately covers the target.
+  configuration: results/investigations/frozen_decision_v1/config.yaml
+  independent_variables: Six trace-matched proposals, K=64…4096 and 50 paired evaluation seeds.
+  controlled_variables: Observed state, warm start, previous control, bicycle model, cost, base, temperature
+    and horizon.
+  metrics: Paired command differences, ESS, entropy, mean-plan objective, reference diagnostics and latency.
+  run_ids:
+  - frozen_decision_v1
+  key_figure: results/showcase/Q03_key.png
+  source_figure: results/investigations/frozen_decision_v1/figures/post_disturbance_B_first_command_difference.png
+  summary: results/investigations/frozen_decision_v1/summary.csv
+  main_finding: 7,200 decisions isolate covariance at common frozen inputs. High-sample reference ESS
+    is only 1.10–2.19 from 524,288 rollouts per state; all three reference means remain unresolved.
+  interpretation: Proposal geometry changes finite sampled rollouts, corrected weights, controls and open-loop
+    predictions, even with the same target.
+  limitations: Distances to unresolved references are not validated target-mean errors. Three states,
+    one warm start per state and pointwise intervals do not establish general superiority.
+  reproduce: uv run python experiments/frozen_state_decision.py --output runs/Q03/frozen_decision_reproduction
+  regenerate: uv run python experiments/frozen_state_decision.py --output results/investigations/frozen_decision_v1
+    --plots-only
+- id: Q04
+  title: Closed-loop trajectory differences
+  document: docs/questions/Q04_closed_loop.md
+  status: EXECUTED
+  research_question: Closed-loop trajectory differences?
+  mathematical_motivation: Closed-loop feedback changes observed states and warm starts, so static estimation
+    benefits need not transfer.
+  hypothesis: Proposal changes may accumulate into visibly different route and recovery distributions.
+  configuration: results/investigations/trajectory_behavior_v1/config.yaml
+  independent_variables: Four covariance settings and four scenarios across 20 paired seeds.
+  controlled_variables: Costs, dynamics, limits, budgets and exogenous disturbances within each scenario.
+  metrics: Completion, collision, clearance, route station crossing, occupancy, ESS and progress-aligned
+    dispersion.
+  run_ids:
+  - trajectory_behavior_v1
+  key_figure: results/showcase/Q04_key.png
+  source_figure: results/investigations/trajectory_behavior_v1/figures/two_route_obstacle_D_progress_dispersion.png
+  summary: results/investigations/trajectory_behavior_v1/behavior_summary.csv
+  main_finding: The full setting takes 3 upper and 17 lower station crossings in the two-route task; others
+    take 20 lower. Its aligned mean path has −0.206 m clearance despite collision-free individual executions.
+  interpretation: Executed bundles, occupancy, local rollout clouds and inter-seed dispersion describe
+    different distributions. A mean over routes need not be feasible.
+  limitations: States and warm starts differ across closed-loop variants. Twenty seeds and one matrix
+    per structure do not isolate covariance as the sole cause of route choice.
+  reproduce: uv run python experiments/trajectory_density_study.py --scenarios narrow_passage open_space
+    sudden_disturbance two_route_obstacle --output runs/Q04/trajectory_reproduction
+  regenerate: uv run python experiments/trajectory_density_study.py --output results/investigations/trajectory_behavior_v1
+    --plots-only
+- id: Q05
+  title: S-turn difficulty and controller limitations
+  document: docs/questions/Q05_s_turn_difficulty.md
+  status: PLANNED
+  research_question: S-turn difficulty and controller limitations?
+  mathematical_motivation: Finite-budget importance sampling, actuator limits and a restricted horizon
+    interact with feasible-set geometry.
+  hypothesis: Sequential steering reversals with less clearance may expose proposal inefficiency; no proposal
+    is expected to win by construction.
+  configuration: configs/investigations/s_turn.yaml
+  independent_variables: 'Primary: corridor clearance. Secondary planned checks: rollout count and steering-rate
+    limit.'
+  controlled_variables: Vehicle, objective, speed target, steering limit, horizon and samples within each
+    clearance condition.
+  metrics: Success/collision, censored progress, cross-track error, clearance, completion time, evaluation
+    cost, ESS, entropy, effort, rate saturation, latency and transitions.
+  run_ids: []
+  key_figure: null
+  source_figure: null
+  summary: null
+  main_finding: PLANNED — implementation and mechanical feasibility are validated; the final finish-gate
+    seed-42 pilot and multi-seed evaluation are pending.
+  interpretation: The study separates physical feasibility from finite-horizon, finite-sampling and objective
+    limitations.
+  limitations: Do not attribute failure to covariance before geometry and reference feasibility are validated.
+  reproduce: uv run python experiments/s_turn_study.py --phase evaluation --output runs/Q05/s_turn_clearance_v1
+  regenerate: uv run python experiments/s_turn_study.py --plots-only --output runs/Q05/s_turn_clearance_v1
+- id: Q06
+  title: Published MPPI formulation comparisons
+  document: docs/questions/Q06_variant_formulations.md
+  status: PLANNED
+  research_question: Published MPPI formulation comparisons?
+  mathematical_motivation: Different objectives and feedback architectures cannot be compared merely by
+    renaming one Gaussian sampler.
+  hypothesis: Each defining mathematical change should produce a measurable mechanism under its own assumptions.
+  configuration: configs/investigations/published_formulations_plan.yaml
+  independent_variables: Future divergence/weighting law, search schedule, feedback architecture and state
+    covariance objectives.
+  controlled_variables: To be declared per formulation, including target, tracker, noise assumptions and
+    all inner-loop work.
+  metrics: 'To be declared: update identities, oracle checks, task outcomes, actual computational work
+    and assumptions.'
+  run_ids: []
+  key_figure: null
+  source_figure: null
+  summary: null
+  main_finding: PLANNED — CEM, Tsallis-VI, DIAL, Tube-MPPI, Robust-MPPI and CC-MPPI are not implemented
+    or evaluated.
+  interpretation: Paper-level changes to weighting, annealing, feedback and state-covariance design require
+    distinct implementations and appropriate isolated tests.
+  limitations: No experimental claims or placeholder figures. Covariance ablations are not these published
+    formulations.
+  reproduce: 'PLANNED: no executable study exists; follow docs/paper_map.md and docs/implementation_fidelity.md.'
+  regenerate: 'PLANNED: no figures to regenerate.'
+runs:
+- id: gaussian_v1
+  question_ids:
+  - Q01
+  status: EXECUTED
+  path: results/investigations/gaussian_v1
+  manifest: results/investigations/gaussian_v1/manifest.json
+  source_commit: dd50f534ad47e765bec39715f6f801b790a251b2
+  configuration: results/investigations/gaussian_v1/config.yaml
+  summary: results/investigations/gaussian_v1/summary.csv
+- id: temperature_v1
+  question_ids:
+  - Q02
+  status: EXECUTED
+  path: results/investigations/temperature_v1
+  manifest: results/investigations/temperature_v1/manifest.json
+  source_commit: dd50f534ad47e765bec39715f6f801b790a251b2
+  configuration: results/investigations/temperature_v1/config.yaml
+  summary: results/investigations/temperature_v1/summary.csv
+- id: frozen_decision_v1
+  question_ids:
+  - Q03
+  status: EXECUTED
+  path: results/investigations/frozen_decision_v1
+  manifest: results/investigations/frozen_decision_v1/manifest.json
+  source_commit: 7aaf76eaed90588b9404b2fbed483ae9efce1156
+  configuration: results/investigations/frozen_decision_v1/config.yaml
+  summary: results/investigations/frozen_decision_v1/summary.csv
+- id: trajectory_behavior_v1
+  question_ids:
+  - Q04
+  status: EXECUTED
+  path: results/investigations/trajectory_behavior_v1
+  manifest: results/investigations/trajectory_behavior_v1/manifest.json
+  source_commit: 077e7d90eb2f2d3fd302a284daf5d9868bf28135
+  configuration: results/investigations/trajectory_behavior_v1/config.yaml
+  summary: results/investigations/trajectory_behavior_v1/behavior_summary.csv

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Research evidence registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "questions",
+    "runs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "document",
+          "status",
+          "research_question",
+          "mathematical_motivation",
+          "hypothesis",
+          "configuration",
+          "independent_variables",
+          "controlled_variables",
+          "metrics",
+          "run_ids",
+          "key_figure",
+          "source_figure",
+          "summary",
+          "main_finding",
+          "interpretation",
+          "limitations",
+          "reproduce",
+          "regenerate"
+        ],
+        "properties": {
+          "status": {
+            "enum": [
+              "PLANNED",
+              "EXECUTED"
+            ]
+          },
+          "id": {
+            "pattern": "^Q0[1-6]$"
+          }
+        }
+      }
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "question_ids",
+          "status",
+          "path",
+          "manifest",
+          "source_commit",
+          "configuration",
+          "summary"
+        ]
+      }
+    }
+  },
+  "description": "Semantic validator checks paths, unique IDs, provenance, completion and figure/result associations."
+}

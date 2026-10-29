@@ -1,0 +1,130 @@
+[
+  {
+    "feasible": true,
+    "min_clearance": 0.8986002916423621,
+    "max_steering": 0.3217505543966422,
+    "max_steering_rate": 0.3314212975270783,
+    "steering_reversals": 2,
+    "turning_radius": 3.0,
+    "reference_steps": 122,
+    "duration_s": 18.3,
+    "centerline_length": 17.250000000000025,
+    "initial_state": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "goal_state": [
+      16.54061690791919,
+      -1.8316012768970758e-15,
+      -4.440892098500626e-16,
+      0.0,
+      0.0
+    ],
+    "corridor_width": 2.24,
+    "disk_radius": 0.22,
+    "cell": "c0.9_K256_r0.8",
+    "clearance": 0.9,
+    "samples": 256,
+    "steering_rate_limit": 0.8,
+    "suite": "primary"
+  },
+  {
+    "feasible": true,
+    "min_clearance": 0.5989752135238723,
+    "max_steering": 0.3217505543966422,
+    "max_steering_rate": 0.3314212975270783,
+    "steering_reversals": 2,
+    "turning_radius": 3.0,
+    "reference_steps": 122,
+    "duration_s": 18.3,
+    "centerline_length": 17.250000000000025,
+    "initial_state": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "goal_state": [
+      16.54061690791919,
+      -1.8316012768970758e-15,
+      -4.440892098500626e-16,
+      0.0,
+      0.0
+    ],
+    "corridor_width": 1.64,
+    "disk_radius": 0.22,
+    "cell": "c0.6_K256_r0.8",
+    "clearance": 0.6,
+    "samples": 256,
+    "steering_rate_limit": 0.8,
+    "suite": "primary"
+  },
+  {
+    "feasible": true,
+    "min_clearance": 0.3492876484251305,
+    "max_steering": 0.3217505543966422,
+    "max_steering_rate": 0.3314212975270783,
+    "steering_reversals": 2,
+    "turning_radius": 3.0,
+    "reference_steps": 122,
+    "duration_s": 18.3,
+    "centerline_length": 17.250000000000025,
+    "initial_state": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "goal_state": [
+      16.54061690791919,
+      -1.8316012768970758e-15,
+      -4.440892098500626e-16,
+      0.0,
+      0.0
+    ],
+    "corridor_width": 1.14,
+    "disk_radius": 0.22,
+    "cell": "c0.35_K256_r0.8",
+    "clearance": 0.35,
+    "samples": 256,
+    "steering_rate_limit": 0.8,
+    "suite": "primary"
+  },
+  {
+    "feasible": true,
+    "min_clearance": 0.19947510936588578,
+    "max_steering": 0.3217505543966422,
+    "max_steering_rate": 0.3314212975270783,
+    "steering_reversals": 2,
+    "turning_radius": 3.0,
+    "reference_steps": 122,
+    "duration_s": 18.3,
+    "centerline_length": 17.250000000000025,
+    "initial_state": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "goal_state": [
+      16.54061690791919,
+      -1.8316012768970758e-15,
+      -4.440892098500626e-16,
+      0.0,
+      0.0
+    ],
+    "corridor_width": 0.8400000000000001,
+    "disk_radius": 0.22,
+    "cell": "c0.2_K256_r0.8",
+    "clearance": 0.2,
+    "samples": 256,
+    "steering_rate_limit": 0.8,
+    "suite": "primary"
+  }
+]
