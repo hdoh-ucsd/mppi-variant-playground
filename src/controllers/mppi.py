@@ -88,6 +88,10 @@ class MPPI(Controller):
                 previous = applied[..., t, 0]
         return applied
 
+    def rollout_control(self, t, states, control):
+        """Optional causal feedback transform; baseline leaves physical controls unchanged."""
+        return control
+
     def compute_weights(self, costs, log_ratio):
         """Fixed-base IT-MPPI law; variants override only their defining weight law."""
         return importance_weights(costs, self.temperature, log_ratio)
@@ -122,7 +126,8 @@ class MPPI(Controller):
         saved = np.empty((keep, self.horizon + 1, self.state_dimension))
         saved[:, 0] = states[:keep]
         for t in range(self.horizon):
-            control = applied[:, t]
+            control = self.rollout_control(t, states, applied[:, t])
+            applied[:, t] = control
             costs += self.cost.running(states, control, previous)
             detailed_sweep = getattr(self.cost, "substep_sweep", False)
             if detailed_sweep:
