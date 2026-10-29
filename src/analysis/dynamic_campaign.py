@@ -73,7 +73,9 @@ def reached(state, geometry, config):
     )
 
 
-def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_rule=None):
+def run_episode(
+    config, proposal, seed, output, *, capture_steps=None, freeze_rule=None, controller_factory=None
+):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
     resolved = deepcopy(config)
@@ -91,7 +93,7 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
         )
         else [],
     )
-    controller = make_controller(resolved)
+    controller = (controller_factory or make_controller)(resolved)
     geometry = controller.cost.geometry
     model = controller.model
     execution = DynamicVehicle(
@@ -162,12 +164,12 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
         logs.append(
             dict(
                 step=step,
-                ess=diag["ess"],
-                weight_entropy=diag["weight_entropy"],
-                max_weight=diag["max_weight"],
-                feasible_rollout_fraction=diag["feasible_rollout_fraction"],
-                saturation_fraction=diag["saturation_fraction"],
-                minimum_sample_cost=diag["minimum_sample_cost"],
+                ess=diag.get("ess", np.nan),
+                weight_entropy=diag.get("weight_entropy", np.nan),
+                max_weight=diag.get("max_weight", np.nan),
+                feasible_rollout_fraction=diag.get("feasible_rollout_fraction", np.nan),
+                saturation_fraction=diag.get("saturation_fraction", np.nan),
+                minimum_sample_cost=diag.get("minimum_sample_cost", np.nan),
                 planning_latency_s=diag["planning_latency_s"],
                 dynamics_evaluations=diag["dynamics_evaluations"],
                 rhs_evaluations=diag["rhs_evaluations"],
@@ -180,6 +182,20 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
             for key, value in diag.items():
                 if key not in logs[-1] and np.isscalar(value) and not isinstance(value, str):
                     logs[-1][key] = value
+            # Optional vector observations use the existing scalar CSV recorder.
+            for key in (
+                "nominal_state",
+                "nominal_before_reset",
+                "tracking_error_vector",
+                "tracking_correction",
+                "planner_control",
+                "applied_correction",
+                "execution_noise",
+                "auxiliary_state",
+            ):
+                if key in diag:
+                    for index, value in enumerate(np.asarray(diag[key]).ravel()):
+                        logs[-1][f"{key}_{index}"] = float(value)
             logs[-1]["commanded_steering"] = float(commanded_control[0])
             logs[-1]["commanded_throttle"] = float(commanded_control[1])
             logs[-1]["deadline_violation"] = bool(
@@ -209,7 +225,9 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
         controls.append(control)
         state = nxt
         previous = control
-        if gap <= 0 or reached(state, geometry, config):
+        if config["execution"].get("stop_on_terminal", True) and (
+            gap <= 0 or reached(state, geometry, config)
+        ):
             break
     states, controls = np.array(states), np.array(controls)
     trajectory = pd.DataFrame(states, columns=STATE_FIELDS)
@@ -256,9 +274,13 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
         time_to_goal_s=len(controls) * model.dt if success else None,
         executed_duration_s=len(controls) * model.dt,
         cumulative_evaluation_cost=total,
-        mean_ess=float(diag.ess.mean()),
-        mean_weight_entropy=float(diag.weight_entropy.mean()),
-        mean_feasible_rollout_fraction=float(diag.feasible_rollout_fraction.mean()),
+        mean_ess=float(diag.ess.mean()) if diag.ess.notna().any() else None,
+        mean_weight_entropy=float(diag.weight_entropy.mean())
+        if diag.weight_entropy.notna().any()
+        else None,
+        mean_feasible_rollout_fraction=float(diag.feasible_rollout_fraction.mean())
+        if diag.feasible_rollout_fraction.notna().any()
+        else None,
         steering_saturation_fraction=float(
             np.mean(abs(controls[:, 0]) >= model.steering_limit - 1e-9)
         ),

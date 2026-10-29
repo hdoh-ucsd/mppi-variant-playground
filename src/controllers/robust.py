@@ -127,6 +127,7 @@ class RobustMPPI(MPPI):
         index, infeasible = candidate_index(
             candidates, observed, energies, self.config.get("free_energy_threshold", 5000.0)
         )
+        self.nominal_candidates = candidates.copy()
         self.mean = means[index].copy()
         return candidates[index], index, infeasible, energies
 
@@ -173,6 +174,13 @@ class RobustMPPI(MPPI):
             nominal_candidate_free_energies=energies,
             nominal_selection_infeasible=infeasible,
             nominal_state=nominal,
+            nominal_candidates=self.nominal_candidates.copy(),
+            tracking_gains=self.gains,
+            tracking_error_vector=state_error(observed_state, nominal),
+            tracking_correction=correction.copy(),
+            planner_control=self.model.clip_control(real_update[0] * self.model.control_scale),
+            applied_correction=command
+            - self.model.clip_control(real_update[0] * self.model.control_scale),
             rollout_evaluations=2 * self.samples + 5 * self.config.get("candidate_samples", 8),
             linearization_evaluations=18 * self.horizon,
             dynamics_evaluations=transitions,
@@ -181,6 +189,10 @@ class RobustMPPI(MPPI):
         )
         if self._rollout_snapshot is not None:
             self._rollout_snapshot.update(
+                nominal_candidates=self.nominal_candidates.copy(),
+                candidate_free_energies=np.array(energies),
+                real_updated_mean=real_update.copy(),
+                reference_nominal_states=reference,
                 nominal_weights=nominal_weights,
                 nominal_costs=self.nominal_costs,
                 nominal_samples=self.nominal_samples,

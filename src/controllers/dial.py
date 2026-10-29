@@ -48,6 +48,7 @@ class DIAL(MPPI):
         started = perf_counter()
         original = self.mean.copy()
         records = []
+        populations = []
         try:
             for iteration in range(self.iterations):
                 scales = noise_scales(
@@ -71,6 +72,11 @@ class DIAL(MPPI):
                         variance_scales=(scales**2).tolist(),
                     )
                 )
+                if self._rollout_snapshot is not None:
+                    populations.append(self.get_rollout_snapshot())
+                    populations[-1]["planned_substeps"] = self.diagnostics[
+                        "planned_substeps"
+                    ].copy()
                 self.mean = updated
         finally:
             self.mean = original
@@ -86,6 +92,21 @@ class DIAL(MPPI):
             planning_latency_s=perf_counter() - started,
         )
         if self._rollout_snapshot is not None:
+            for key in (
+                "sampled_states",
+                "sampled_controls",
+                "latent_controls",
+                "costs",
+                "weights",
+                "proposal_mean",
+                "updated_mean",
+                "nominal_states",
+                "planned_substeps",
+            ):
+                self._rollout_snapshot["inner_" + key] = np.stack([p[key] for p in populations])
+            self._rollout_snapshot["inner_variance_scales"] = np.array(
+                [record["variance_scales"] for record in records]
+            )
             self._rollout_snapshot["log_base_over_proposal"] = np.zeros(self.samples)
             self._rollout_snapshot["weight_law"] = "cost_only; final inner pass"
         return control, updated
