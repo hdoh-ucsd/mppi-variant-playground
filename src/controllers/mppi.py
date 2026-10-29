@@ -88,6 +88,10 @@ class MPPI(Controller):
                 previous = applied[..., t, 0]
         return applied
 
+    def compute_weights(self, costs, log_ratio):
+        """Fixed-base IT-MPPI law; variants override only their defining weight law."""
+        return importance_weights(costs, self.temperature, log_ratio)
+
     def plan(self, observed_state, *, standard_normals=None):
         """One optimization decision without shifting the warm start or executing a step.
 
@@ -141,7 +145,7 @@ class MPPI(Controller):
             previous = control
         costs += self.cost.terminal(states)
         ratio = log_base_over_proposal(latent, self.mean, self.base_covariance, self.covariance)
-        weights = importance_weights(costs, self.temperature, ratio)
+        weights = self.compute_weights(costs, ratio)
         # Latent mean remains unconstrained; saturation is inside dynamics and at actuation.
         updated = weighted_update(self.mean, eps, weights)
         nominal_applied = self.project_controls(updated) if self.steering_rate_limit else None

@@ -86,3 +86,10 @@ core.*
 /runs/Q05/s_turn_pilot_42/
 
 /runs/seven_state/validation/dynamics_pilot_v1/
+
+# Curated published-formulation evidence; complete raw records stay local.
+!/results/variants/
+!/results/variants/**/
+!/results/variants/**/*.csv
+/results/variants/**/figures/
+/runs/variants/

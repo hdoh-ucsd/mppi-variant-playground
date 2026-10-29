@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class Controller(ABC):
-    """Observations [px,py,heading,speed]; commands [acceleration,steering]."""
+    """Common reset/command/diagnostics interface; state and inputs follow the supplied model."""
 
     @abstractmethod
     def reset(self, initial_state, seed): ...

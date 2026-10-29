@@ -15,6 +15,7 @@ import pandas as pd
 import yaml
 
 from controllers.mppi import MPPI
+from controllers.registry import create_controller
 from costs.shared import SharedCost
 from dynamics.bicycle import Bicycle, wrap_angle
 from evaluation.metrics import episode_metrics, reached
@@ -44,7 +45,7 @@ def make_controller(config):
 
         model = DynamicVehicle(**config["vehicle"])
         geometry = geometry_for_config(config)
-        return MPPI(
+        return create_controller(
             model,
             VehicleCost(
                 geometry,

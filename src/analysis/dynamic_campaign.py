@@ -6,6 +6,7 @@ from concurrent.futures import ProcessPoolExecutor
 from copy import deepcopy
 from datetime import UTC, datetime
 from pathlib import Path
+from time import perf_counter
 
 import numpy as np
 import pandas as pd
@@ -77,8 +78,10 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
     output.mkdir(parents=True, exist_ok=False)
     resolved = deepcopy(config)
     resolved["controller"].update(
-        kind=proposal,
-        covariance=config["proposals"][proposal],
+        kind="standard" if "algorithm" in config["controller"] else proposal,
+        covariance=config["controller"].get("covariance", config["proposals"]["standard"])
+        if "algorithm" in config["controller"]
+        else config["proposals"][proposal],
         saved_rollouts=0,
         snapshot_steps=(capture_steps or [])
         if seed
@@ -122,8 +125,15 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
             if freeze_rule(candidate):
                 frozen = candidate
                 break
+        count_before = getattr(model, "transitions", 0)
+        command_started = perf_counter()
         control = controller.command(state.copy())
+        command_seconds = perf_counter() - command_started
         diag = controller.diagnostics
+        if "algorithm" in config["controller"]:
+            diag["planning_latency_s"] = command_seconds
+            diag["dynamics_evaluations"] = model.transitions - count_before
+            diag["rhs_evaluations"] = diag["dynamics_evaluations"] * 2 * model.substeps
         nxt, path = execution.step(state, control, return_path=True)
         if event and step == event["step"]:
             nxt += event_delta
@@ -154,6 +164,13 @@ def run_episode(config, proposal, seed, output, *, capture_steps=None, freeze_ru
                 prediction_error_norm=float(np.linalg.norm(error)),
             )
         )
+        if "algorithm" in config["controller"]:
+            for key, value in diag.items():
+                if key not in logs[-1] and np.isscalar(value) and not isinstance(value, str):
+                    logs[-1][key] = value
+            logs[-1]["deadline_violation"] = bool(
+                diag["planning_latency_s"] > config.get("planning_deadline_s", model.dt)
+            )
         snap = controller.get_rollout_snapshot()
         if snap is not None:
             folder = output / "snapshots"
