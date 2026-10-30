@@ -952,6 +952,24 @@ registry does not relabel covariance settings as published algorithms.
 
 ## 8. Reproduction instructions
 
+### Environment setup (Conda + uv)
+
+Create a dedicated Conda environment for Python and uv, then install the locked
+project dependencies with uv. Run these commands from the repository root:
+
+```bash
+conda env create -f environment.yml
+conda activate mppi-tools
+uv sync --frozen
+```
+
+For later sessions, run `conda activate mppi-tools` before the commands below.
+Conda owns the Python/uv tooling environment; uv manages the project's `.venv`
+using `uv.lock`. `uv run` selects that project environment automatically, so no
+separate `.venv` activation is needed. The environment created in WSL/Linux is
+separate from Windows Conda environments; use these commands in the same terminal
+where you cloned the repository.
+
 ### Unified decision traces
 
 ```bash
