@@ -17,7 +17,7 @@ questions:
   metrics: Bias, variance, MSE, ESS and moment error across 64 evaluation seeds.
   run_ids:
   - seven_state_q01_v1
-  key_figure: results/showcase/Q01_key.png
+  key_figure: results/historical/showcase/Q01_key.png
   source_figure: null
   summary: runs/seven_state/Q01/seven_state_q01_v1/summary.csv
   main_finding: 'An independent 64-seed replication preserves positive and negative orientation examples:
@@ -27,8 +27,8 @@ questions:
     changed optimization problem. ESS alone does not determine mean-estimation variance.
   limitations: An exact quadratic target is not a vehicle task. Trace matching does not match determinant;
     empirical 64-seed variance and bias are finite-sample quantities.
-  reproduce: uv run python experiments/seven_state_campaign.py --stage q01 --output runs/seven_state/Q01/q01_reproduction
-  regenerate: uv run python experiments/plot_seven_state.py --stage Q01 --input runs/seven_state/Q01/seven_state_q01_v1
+  reproduce: uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q01 --output runs/seven_state/Q01/q01_reproduction
+  regenerate: uv run python experiments/legacy/seven_state/plot_seven_state.py --stage Q01 --input runs/seven_state/Q01/seven_state_q01_v1
   experiment_name: Independent-seed exact Gaussian covariance replication
   source_commit: 0006f840f99ab6be155b66ea7833e9210fe40367
   primary_run_id: seven_state_q01_v1
@@ -54,7 +54,7 @@ questions:
   metrics: ESS, entropy, largest weight, exact mean error and Gaussian overlap diagnostics.
   run_ids:
   - seven_state_q02_v1
-  key_figure: results/showcase/Q02_key.png
+  key_figure: results/historical/showcase/Q02_key.png
   source_figure: null
   summary: runs/seven_state/Q02/seven_state_q02_v1/summary.csv
   main_finding: At K=512 the isotropic mean ESS grows from 40.56 at λ=.1 to 450.61 at λ=10, while mean
@@ -64,8 +64,8 @@ questions:
     can concentrate in high dimensions.
   limitations: Temperature changes the target. ESS does not certify estimation accuracy or target coverage.
     Seven states correspond to a 40-dimensional sampled control sequence here.
-  reproduce: uv run python experiments/seven_state_campaign.py --stage q02 --output runs/seven_state/Q02/q02_reproduction
-  regenerate: uv run python experiments/plot_seven_state.py --stage Q02 --input runs/seven_state/Q02/seven_state_q02_v1
+  reproduce: uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q02 --output runs/seven_state/Q02/q02_reproduction
+  regenerate: uv run python experiments/legacy/seven_state/plot_seven_state.py --stage Q02 --input runs/seven_state/Q02/seven_state_q02_v1
   experiment_name: Independent-seed temperature and dimension concentration replication
   source_commit: 0006f840f99ab6be155b66ea7833e9210fe40367
   primary_run_id: seven_state_q02_v1
@@ -92,7 +92,7 @@ questions:
   metrics: Paired command differences, ESS, entropy, mean-plan objective, reference diagnostics and latency.
   run_ids:
   - seven_state_q03_v1
-  key_figure: results/showcase/Q03_key.png
+  key_figure: results/historical/showcase/Q03_key.png
   source_figure: null
   summary: runs/seven_state/Q03/seven_state_q03_v1/summary.csv
   main_finding: '7,200 seven-state frozen decisions show finite-budget differences. Only the post-disturbance
@@ -103,8 +103,8 @@ questions:
   limitations: Two reference means fail overlap/precision diagnostics. Distances to those estimates are
     not validated target errors. Local sensitivity alignment is not target covariance matching; three
     states and one warm start each limit inference.
-  reproduce: uv run python experiments/seven_state_campaign.py --stage q03 --output runs/seven_state/Q03/q03_reproduction
-  regenerate: uv run python experiments/plot_seven_state.py --stage Q03 --input runs/seven_state/Q03/seven_state_q03_v1
+  reproduce: uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q03 --output runs/seven_state/Q03/q03_reproduction
+  regenerate: uv run python experiments/legacy/seven_state/plot_seven_state.py --stage Q03 --input runs/seven_state/Q03/seven_state_q03_v1
   experiment_name: Seven-state frozen MPPI decisions at three common inputs
   source_commit: 0006f840f99ab6be155b66ea7833e9210fe40367
   primary_run_id: seven_state_q03_v1
@@ -138,7 +138,7 @@ questions:
   - seven_state_q04_timing_v1
   - seven_state_q04_budget_v1
   - seven_state_q04_pilot_v1
-  key_figure: results/showcase/Q04_key.png
+  key_figure: results/historical/showcase/Q04_key.png
   source_figure: null
   summary: runs/seven_state/Q04/seven_state_q04_v1/summary.csv
   main_finding: Across five seven-state scenes, compatibility completion is 397/400 and independent holdout
@@ -150,8 +150,8 @@ questions:
   limitations: Twenty seeds per scenario and cohort give wide intervals. Feedback changes state and warm
     start. Failures are terminal-region timeouts; one calibration and selected matrices cannot establish
     general superiority. Collision counts use a centered disk proxy; full-body avoidance is not established.
-  reproduce: uv run python experiments/seven_state_campaign.py --stage q04 --output runs/seven_state/Q04/q04_reproduction
-  regenerate: uv run python experiments/plot_seven_state.py --stage Q04 --input runs/seven_state/Q04/seven_state_q04_v1
+  reproduce: uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q04 --output runs/seven_state/Q04/q04_reproduction
+  regenerate: uv run python experiments/legacy/seven_state/plot_seven_state.py --stage Q04 --input runs/seven_state/Q04/seven_state_q04_v1
   experiment_name: Seven-state five-scenario paired closed-loop campaign
   source_commit: fe98accd84213647c0ff7c006226df6ef1dd3d1f
   primary_run_id: seven_state_q04_v1
@@ -188,7 +188,7 @@ questions:
   - seven_state_q05_secondary_v1
   - seven_state_q05_budget_v1
   - seven_state_q05_pilot_v1
-  key_figure: results/showcase/Q05_key.png
+  key_figure: results/historical/showcase/Q05_key.png
   source_figure: null
   summary: runs/seven_state/Q05/seven_state_q05_v1/summary.csv
   main_finding: 'Seven-state S-turn completion: 0.9 m: standard 20/20, isotropic 19/20, diagonal 20/20,
@@ -202,8 +202,8 @@ questions:
     straight-runout recovery. Intervals are pointwise. Discrete command slew is separate; continuous actuator
     dynamics are omitted. Executed collision counts use a centered disk proxy that does not enclose the
     axles; full-body collision avoidance is not established.
-  reproduce: uv run python experiments/seven_state_campaign.py --stage q05 --output runs/seven_state/Q05/q05_reproduction
-  regenerate: uv run python experiments/plot_seven_state.py --stage Q05 --input runs/seven_state/Q05/seven_state_q05_v1
+  reproduce: uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q05 --output runs/seven_state/Q05/q05_reproduction
+  regenerate: uv run python experiments/legacy/seven_state/plot_seven_state.py --stage Q05 --input runs/seven_state/Q05/seven_state_q05_v1
   experiment_name: Seven-state feasible S-turn clearance campaign
   source_commit: 7bea369e3455bf62785fcf8fc0db59c8bcbfc6a7
   primary_run_id: seven_state_q05_v1
@@ -241,9 +241,9 @@ questions:
     controllers.
   limitations: Use the current README for formulation fidelity, experiments and limits; do not interpret
     this historical plan as current implementation status.
-  reproduce: uv run python experiments/variant_benchmark.py --study V06_unified --output results/variants/V06_reproduction
+  reproduce: uv run python experiments/benchmarks/variant_benchmark.py --study V06_unified --output results/variants/benchmarks/V06_reproduction
     --raw runs/variants/V06_reproduction
-  regenerate: uv run python experiments/formulation_mechanisms.py --plot-only --output results/variants/mechanisms
+  regenerate: uv run python experiments/mechanisms/formulation_mechanisms.py --plot-only --output results/variants/mechanisms
   experiment_name: Historical unexecuted formulation plan
   dynamics_model: Not specified in the historical plan
   control_inputs: Not specified in the historical plan

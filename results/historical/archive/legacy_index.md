@@ -31,6 +31,6 @@ figures. Its `inventory.json` records moved roots. A fresh clone does not contai
 that local archive or other ignored raw executions. Historical internal paths refer
 to their original revision; use a checkout of that revision for legacy replay.
 
-Current evidence and reproduction commands are in the [README](../../README.md),
-[consolidated research index](../../docs/research_index.md), and
-[seven-state model report](../../docs/seven_state_benchmark_report.md).
+Current evidence and reproduction commands are in the [README](../../../README.md),
+[consolidated research index](../../../docs/research_index.md), and
+[seven-state model report](../../../docs/seven_state_benchmark_report.md).

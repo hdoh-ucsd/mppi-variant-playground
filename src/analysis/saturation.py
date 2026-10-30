@@ -114,5 +114,5 @@ def run_saturation(config, output):
         "moments and boundary masses provide independent marginal references. Cross-covariance "
         "is empirical. No Gaussian likelihood is evaluated on the applied controls. Equal latent "
         "trace need not imply equal applied covariance trace or physical marginal variance. "
-        "See results/archive/legacy_index.md for actual numerical comparisons.",
+        "See results/historical/archive/legacy_index.md for actual numerical comparisons.",
     )

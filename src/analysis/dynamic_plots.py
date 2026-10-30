@@ -36,7 +36,7 @@ def publish(fig, root, name, sources, *, key=None, support=False):
     hashes = {str(Path(p)): hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in sources}
     target = None
     if key:
-        target = Path(f"results/showcase/{key}_key.png")
+        target = Path(f"results/historical/showcase/{key}_key.png")
     elif support:
         target = Path("docs/figures") / f"seven_state_{name}.png"
     if target:

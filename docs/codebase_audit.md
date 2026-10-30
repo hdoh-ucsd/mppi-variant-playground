@@ -1,5 +1,9 @@
 # Codebase audit and preservation plan
 
+The initial audit below is historical. The final section records the subsequent
+experiment/result relocation; use the current README and `results/relocations.json`
+for current commands and paths.
+
 Audited main at `74ba5d81a16a8c6c01bc7c18eb466caa2d7d0408`, before refactoring.
 `uv sync --frozen` succeeded; the existing suite passed **232 tests in 52.19 s**.
 The local uv cache must be set to `.uv-cache` in this environment.
@@ -178,3 +182,54 @@ Relative to the audited main revision. R100 denotes a byte-identical relocation.
 | M | `src/controllers/tube.py` |
 | M | `src/sampling/gaussian.py` |
 | A | `tests/test_decision_trace.py` |
+
+
+## Experiment and result organization after the README merge
+
+The README organization was merged at `87b738f`. This follow-up audited all 34 CLI
+files, their imports, CI commands, report generators, tests and registry references
+before moving them. All 34 entry-point bodies remain byte-identical. Shared numerical
+modules, controller code, configurations, original raw runs and media remain in place.
+
+| Former location | Current location | Callers updated / evidence treatment |
+| --- | --- | --- |
+| Root benchmark run/audit/summary CLIs | `experiments/benchmarks/` | README; benchmark figure/video input consumers now read `results/variants/benchmarks/`. |
+| Root formulation mechanism CLI | `experiments/mechanisms/` | README, historical Q06 registry and generated research-index commands. Output remains `results/variants/mechanisms/`. |
+| Root decision/comparison trace CLIs | `experiments/traces/` | README; output remains `results/variants/traces/`. |
+| Root video CLI | `experiments/videos/` | README; existing media and render records stay unchanged. |
+| Plant/footprint validation CLIs | `experiments/validation/` | Vehicle report; original validation output paths retained. |
+| Four-state and analytic launchers, including the original eight legacy files | `experiments/legacy/covariance/` | CI smoke commands and CLI compatibility tests; same shared implementations. |
+| Historical frozen-decision CLIs | `experiments/legacy/frozen/` | Vehicle report and frozen-report generator commands. |
+| Historical seven-state run/plot/audit/timing/finalization CLIs | `experiments/legacy/seven_state/` | Vehicle report, research index and question registry. |
+| Historical five-state S-turn CLIs | `experiments/legacy/s_turn/` | Historical commands documented in the relocation index. |
+| Root historical registry CLI | `experiments/legacy/research_index.py` | Registry report generator and research-index instructions. |
+| `results/variants/V01…V06/` | `results/variants/benchmarks/V01…V06/` | All 84 files moved byte-for-byte; original embedded paths and hashes are retained as provenance. |
+| `results/showcase/` | `results/historical/showcase/` | All five images moved byte-for-byte; README, docs, registry and publisher paths updated. |
+| `results/registry.yaml` | `results/historical/registry.yaml` | Only current navigation/CLI paths changed; questions, findings, source commits and numerical run references retained. |
+| `results/archive/` | `results/historical/archive/` | Recovery index moved; only three relative documentation links adjusted for depth. Immutable Git URLs retained. |
+
+`results/relocations.json` lists every entry-point move and result-directory mapping,
+with SHA-256 preservation checks for all 148 numerical/figure/provenance results and
+all 34 CLI files. The historical registry and recovery index are the only edited
+result files, and those edits update navigation. No evidence is deleted or regenerated.
+Personal commands using old entry-point paths need the new folder prefix; an original
+Git checkout still provides historical paths. Current consumers and CI use new paths,
+without duplicate wrappers, symlink aliases or a second experiment framework.
+
+
+The historical figure audit hashes `dynamic_plots.py`. Its sole edit changes the
+publication directory from `results/showcase/` to `results/historical/showcase/`.
+The relocation index records both source hashes and that directory mapping. The audit
+accepts it only if reversing the declared path replacement reproduces the exact
+original source hash; altered plotting logic still fails. Original figure provenance
+files are not rewritten to claim a new source or rendering date.
+
+Validation after organization: all 266 tests passed in 71.30 seconds, including
+all 34 relocated CLI `--help` checks, preserved-result checksums, original benchmark
+provenance resolution and rejection of non-path plotting changes. Ruff lint and
+format checks passed (150 Python files); `git diff --check` passed. All 203 local
+links in the README, research index, vehicle report and recovery index resolve.
+All 210 tracked raw-run and media files retain their original hashes. Git recognizes
+125 file relocations, 123 byte-identical and two with navigation-only edits; there
+are no unpaired deletions. No research campaigns were rerun or committed figures
+regenerated.

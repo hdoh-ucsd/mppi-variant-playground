@@ -18,7 +18,29 @@ FIELDS = (
 
 
 def read_registry(root=ROOT):
-    return yaml.safe_load((Path(root) / "results/registry.yaml").read_text())
+    return yaml.safe_load((Path(root) / "results/historical/registry.yaml").read_text())
+
+
+def matches_plot_source(code, expected, root=ROOT):
+    """Accept exact source or a reversible, recorded output-directory relocation only."""
+    code, root = Path(code), Path(root)
+    current = code.read_bytes()
+    current_hash = hashlib.sha256(current).hexdigest()
+    if current_hash == expected:
+        return True
+    index_path = root / "results/relocations.json"
+    if not index_path.is_file():
+        return False
+    index = json.loads(index_path.read_text())
+    edit = index.get("source_path_edits", {}).get(str(code.relative_to(root)))
+    if not edit or edit["before_sha256"] != expected or edit["after_sha256"] != current_hash:
+        return False
+    restored = current.decode()
+    for original, relocated in edit["replacements"].items():
+        if index["result_directories"].get(original) != relocated:
+            return False
+        restored = restored.replace(relocated + "/", original + "/")
+    return hashlib.sha256(restored.encode()).hexdigest() == expected
 
 
 def validate(registry, root=ROOT):
@@ -121,7 +143,7 @@ def validate(registry, root=ROOT):
                     raise ValueError("Figure input provenance hash mismatch")
             if data.get("plot_source_sha256"):
                 code = root / "src/analysis/dynamic_plots.py"
-                if hashlib.sha256(code.read_bytes()).hexdigest() != data["plot_source_sha256"]:
+                if not matches_plot_source(code, data["plot_source_sha256"], root):
                     raise ValueError("Figure reconstruction source is stale")
     return dict(
         questions=len(questions),
@@ -193,11 +215,12 @@ def render(registry, root=ROOT):
         [
             "## Storage and recovery",
             "",
-            "- `results/showcase/` retains the five primary Q01–Q05 figures.",
+            "- `results/historical/showcase/` retains the five primary Q01–Q05 figures.",
             "- `runs/seven_state/` retains exact configurations, compact summaries and provenance. "
             "Full episodes and rollout arrays are ignored; reproduce them before raw audits.",
             "- `results/variants/` retains current formulation comparisons and mechanism evidence.",
-            "- [Historical recovery index](../results/archive/legacy_index.md) links superseded "
+            "- [Historical recovery index](../results/historical/archive/legacy_index.md) "
+            "links superseded "
             "documents and bulky earlier results at their immutable pre-cleanup revision.",
             "",
             "[Seven-state model equations, validation and campaign report]"
@@ -206,8 +229,8 @@ def render(registry, root=ROOT):
             "Validate or regenerate this single index (the README is maintained separately):",
             "",
             "```bash",
-            "uv run python experiments/research_index.py --render",
-            "uv run python experiments/research_index.py",
+            "uv run python experiments/legacy/research_index.py --render",
+            "uv run python experiments/legacy/research_index.py",
             "```",
             "",
         ]

@@ -426,11 +426,11 @@ shared optimum. Vehicle Tsallis additionally uses batch normalization and an ada
 
 **Original formulation comparison.**
 
-![V01 · Divergence and weighting](results/variants/V01_tsallis/primary.png)
+![V01 · Divergence and weighting](results/variants/benchmarks/V01_tsallis/primary.png)
 
 Both methods completed open space. In the two-route task, IT-MPPI completed 3/3 and this Tsallis setting 0/3 under both protocols, with no collisions. The command-weighted mean ESS in the work-budget two-route runs was 98.80 for IT-MPPI and 197.14 for Tsallis, whose retained support fraction was 0.7995. Higher ESS accompanied stalled progress; it does not establish a better update. Batch normalization and the adaptive cutoff change the objective.
 
-[Configuration](results/variants/V01_tsallis/config.yaml) · [Per-seed records](results/variants/V01_tsallis/per_seed.csv) · [Summary](results/variants/V01_tsallis/summary.csv) · [Command diagnostics](results/variants/V01_tsallis/diagnostics_summary.csv) · [Audit](results/variants/V01_tsallis/audit.json) · [Fidelity and limitations](results/variants/V01_tsallis/findings.json)
+[Configuration](results/variants/benchmarks/V01_tsallis/config.yaml) · [Per-seed records](results/variants/benchmarks/V01_tsallis/per_seed.csv) · [Summary](results/variants/benchmarks/V01_tsallis/summary.csv) · [Command diagnostics](results/variants/benchmarks/V01_tsallis/diagnostics_summary.csv) · [Audit](results/variants/benchmarks/V01_tsallis/audit.json) · [Fidelity and limitations](results/variants/benchmarks/V01_tsallis/findings.json)
 
 ### V02 · Refinement and annealing
 
@@ -485,11 +485,11 @@ so the DIAL/fixed-noise pair is the cleaner test of the annealing schedule itsel
 
 **Original formulation comparison.**
 
-![V02 · Refinement and annealing](results/variants/V02_dial/primary.png)
+![V02 · Refinement and annealing](results/variants/benchmarks/V02_dial/primary.png)
 
 All 36 episodes completed without collisions. Under the work ceiling, two-route mean external cost was 260.31 for IT-MPPI, 223.80 for DIAL, and 230.32 for the fixed-noise ablation. This is a small, specific-setting result; all inner work is included.
 
-[Configuration](results/variants/V02_dial/config.yaml) · [Per-seed records](results/variants/V02_dial/per_seed.csv) · [Summary](results/variants/V02_dial/summary.csv) · [Command diagnostics](results/variants/V02_dial/diagnostics_summary.csv) · [Audit](results/variants/V02_dial/audit.json) · [Fidelity and limitations](results/variants/V02_dial/findings.json)
+[Configuration](results/variants/benchmarks/V02_dial/config.yaml) · [Per-seed records](results/variants/benchmarks/V02_dial/per_seed.csv) · [Summary](results/variants/benchmarks/V02_dial/summary.csv) · [Command diagnostics](results/variants/benchmarks/V02_dial/diagnostics_summary.csv) · [Audit](results/variants/benchmarks/V02_dial/audit.json) · [Fidelity and limitations](results/variants/benchmarks/V02_dial/findings.json)
 
 ### V03 · Tracking architecture
 
@@ -534,11 +534,11 @@ the same reset equation, and this comparison matches population size, not total 
 
 **Original formulation comparison.**
 
-![V03 · Tracking architecture](results/variants/V03_tube/primary.png)
+![V03 · Tracking architecture](results/variants/benchmarks/V03_tube/primary.png)
 
 All 24 episodes completed without collisions. The actual-state plan was selected whenever discrepancies arose, and the recorded ancillary correction was zero throughout. The benchmark therefore does not demonstrate a tracking benefit; targeted tests separately exercise the active tracker.
 
-[Configuration](results/variants/V03_tube/config.yaml) · [Per-seed records](results/variants/V03_tube/per_seed.csv) · [Summary](results/variants/V03_tube/summary.csv) · [Command diagnostics](results/variants/V03_tube/diagnostics_summary.csv) · [Audit](results/variants/V03_tube/audit.json) · [Fidelity and limitations](results/variants/V03_tube/findings.json)
+[Configuration](results/variants/benchmarks/V03_tube/config.yaml) · [Per-seed records](results/variants/benchmarks/V03_tube/per_seed.csv) · [Summary](results/variants/benchmarks/V03_tube/summary.csv) · [Command diagnostics](results/variants/benchmarks/V03_tube/diagnostics_summary.csv) · [Audit](results/variants/benchmarks/V03_tube/audit.json) · [Fidelity and limitations](results/variants/benchmarks/V03_tube/findings.json)
 
 ### V04 · Feedback-aware robustness
 
@@ -598,11 +598,11 @@ observation is separate from the disturbed fallback experiment above.
 
 **Original formulation comparison.**
 
-![V04 · Feedback-aware robustness](results/variants/V04_robust/primary.png)
+![V04 · Feedback-aware robustness](results/variants/benchmarks/V04_robust/primary.png)
 
 All work-budget episodes completed. In serial timing runs, Robust-MPPI completed 0/3 disturbance and 2/3 mismatch episodes, versus 3/3 for IT-MPPI in each. Candidate-search overhead left only 32 and 16 augmented samples respectively. The default candidate threshold selected the actual state, so these runs do not establish an active-feedback robustness benefit.
 
-[Configuration](results/variants/V04_robust/config.yaml) · [Per-seed records](results/variants/V04_robust/per_seed.csv) · [Summary](results/variants/V04_robust/summary.csv) · [Command diagnostics](results/variants/V04_robust/diagnostics_summary.csv) · [Audit](results/variants/V04_robust/audit.json) · [Fidelity and limitations](results/variants/V04_robust/findings.json)
+[Configuration](results/variants/benchmarks/V04_robust/config.yaml) · [Per-seed records](results/variants/benchmarks/V04_robust/per_seed.csv) · [Summary](results/variants/benchmarks/V04_robust/summary.csv) · [Command diagnostics](results/variants/benchmarks/V04_robust/diagnostics_summary.csv) · [Audit](results/variants/benchmarks/V04_robust/audit.json) · [Fidelity and limitations](results/variants/benchmarks/V04_robust/findings.json)
 
 ### V05 · State uncertainty
 
@@ -675,11 +675,11 @@ receding-horizon controller's executed uncertainty distribution.
 
 **Original formulation comparison.**
 
-![V05 · State uncertainty](results/variants/V05_covariance_steering/primary.png)
+![V05 · State uncertainty](results/variants/benchmarks/V05_covariance_steering/primary.png)
 
 All 24 episodes completed without collisions. The constrained linearized solutions passed their PSD bounds; no empirical controlled-population terminal covariance violations were observed. The nonlinear empirical covariance still differed from the prediction (mean Frobenius discrepancy roughly 0.27–0.29 in mixed state units). This does not certify executed trajectory safety.
 
-[Configuration](results/variants/V05_covariance_steering/config.yaml) · [Per-seed records](results/variants/V05_covariance_steering/per_seed.csv) · [Summary](results/variants/V05_covariance_steering/summary.csv) · [Command diagnostics](results/variants/V05_covariance_steering/diagnostics_summary.csv) · [Audit](results/variants/V05_covariance_steering/audit.json) · [Fidelity and limitations](results/variants/V05_covariance_steering/findings.json)
+[Configuration](results/variants/benchmarks/V05_covariance_steering/config.yaml) · [Per-seed records](results/variants/benchmarks/V05_covariance_steering/per_seed.csv) · [Summary](results/variants/benchmarks/V05_covariance_steering/summary.csv) · [Command diagnostics](results/variants/benchmarks/V05_covariance_steering/diagnostics_summary.csv) · [Audit](results/variants/benchmarks/V05_covariance_steering/audit.json) · [Fidelity and limitations](results/variants/benchmarks/V05_covariance_steering/findings.json)
 
 ## 5. Detailed formulations and paper map
 
@@ -938,6 +938,27 @@ second dynamics engine. Covariance and tracking states remain inside controllers
 
 ## 7. Reproduction instructions
 
+### Experiment entry points and their outputs
+
+Run commands from the repository root. The folders group launchers by purpose;
+they continue to use the existing controllers, runners and recorders.
+
+| Experiment family | Entry points | Curated output |
+| --- | --- | --- |
+| Formulation benchmarks | [Run](experiments/benchmarks/variant_benchmark.py), [audit](experiments/benchmarks/audit_variants.py), [summarize](experiments/benchmarks/summarize_variants.py) | [V01–V06 records](results/variants/benchmarks); V06 remains supplementary |
+| Mechanism studies | [Formulation mechanisms](experiments/mechanisms/formulation_mechanisms.py) | [V01–V05 mechanisms](results/variants/mechanisms) |
+| Decision tracing | [Single decision/episode](experiments/traces/trace_decision.py), [comparison and plots](experiments/traces/compare_traces.py) | [Pipeline figures and traces](results/variants/traces) |
+| Experiment videos | [Render videos and GIFs](experiments/videos/render_experiment_video.py) | [Clips, previews and compact records](media/experiments) |
+| Model validation | [Seven-state plant](experiments/validation/validate_dynamic_vehicle.py), [reference footprint](experiments/validation/verify_reference_footprint.py) | Validation runs under `runs/seven_state/validation/`; curated figures under [docs/figures](docs/figures) |
+| Historical studies | [Covariance](experiments/legacy/covariance), [frozen decisions](experiments/legacy/frozen), [seven-state campaign](experiments/legacy/seven_state), [S-turn](experiments/legacy/s_turn) | [Question registry and primary figures](results/historical); original runs under `runs/` |
+
+The [relocation index](results/relocations.json) maps earlier commands and result paths
+to their current locations. Numerical files and their original manifests remain
+byte-identical; paths embedded in old provenance refer to the original revision.
+Raw-run and media paths remain unchanged, so their recorded hashes and episode links
+continue to resolve. Historical regeneration uses the updated commands in the
+[research index](docs/research_index.md).
+
 ### Environment setup (Conda + uv)
 
 Create a dedicated Conda environment for Python and uv, then install the locked
@@ -961,16 +982,16 @@ where you cloned the repository.
 ```bash
 uv sync --frozen
 # Rebuild all six figures using tracked compact records only; no simulation or raw files.
-uv run python experiments/compare_traces.py --plots-only
+uv run python experiments/traces/compare_traces.py --plots-only
 
 # Extract existing V01–V05 snapshots, then run only the selected six decisions
 # and six 12-step episodes. Use NEW directories to preserve existing evidence.
-uv run python experiments/compare_traces.py \
+uv run python experiments/traces/compare_traces.py \
   --output results/variants/traces_reproduction --raw runs/variants/traces_reproduction
 # Extraction alone: same command with --extract-only (no new simulations or six-method plots).
 
 # A single decision from the tracked frozen task; works without historical raw archives:
-uv run python experiments/trace_decision.py --mode FROZEN_DECISION \
+uv run python experiments/traces/trace_decision.py --mode FROZEN_DECISION \
   --algorithm it_mppi \
   --output runs/variants/traces_individual
 
@@ -1000,8 +1021,8 @@ the feedback-shaped controls. Robust records its latent proposals separately fro
 the feedback-corrected physical controls. Historical backend metadata describes the
 reconstruction environment; the original source revision remains attached, but an
 unrecorded original library version cannot be recovered. The
-[cleanup audit](docs/codebase_audit.md) documents retained dependencies and the eight
-byte-identical historical CLI relocations to `experiments/legacy/`; historical
+[cleanup audit](docs/codebase_audit.md) documents retained dependencies and all 34
+byte-identical CLI relocations into the organized experiment folders. Historical
 configurations, numerical modules, tests, figures and results are preserved.
 
 ### Experiment videos (no simulation required)
@@ -1012,20 +1033,20 @@ benchmark runs, optimization, sampling, or network access:
 
 ```bash
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLBACKEND=Agg MPLCONFIGDIR=.mpl-cache \
-  uv run python experiments/render_experiment_video.py --video all
+  uv run python experiments/videos/render_experiment_video.py --video all
 # Or render just one: --video V03_tube
 # Generate the README previews from existing MP4s (no simulation):
-uv run python experiments/render_experiment_video.py --gif-previews --video all
+uv run python experiments/videos/render_experiment_video.py --gif-previews --video all
 uv run pytest -q tests/test_experiment_video.py
 ```
 
 To rebuild the compact records from the original local raw runs, use:
 
 ```bash
-uv run python experiments/render_experiment_video.py --prepare-records --prepare-only
+uv run python experiments/videos/render_experiment_video.py --prepare-records --prepare-only
 # Only when the V04 diagnostic replay is missing; replays one original episode:
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 \
-  uv run python experiments/render_experiment_video.py --prepare-records --replay-missing
+  uv run python experiments/videos/render_experiment_video.py --prepare-records --replay-missing
 ```
 
 The optional replay keeps the original configuration and seed, enabling only passive
@@ -1053,20 +1074,20 @@ uv run pytest
 Run the variant studies individually, in order, with **fresh output and raw directories**:
 
 ```bash
-uv run python experiments/variant_benchmark.py --study V01_tsallis \
-  --output results/variants/V01_tsallis_reproduction --raw runs/variants/V01_tsallis_reproduction
-uv run python experiments/variant_benchmark.py --study V02_dial \
-  --output results/variants/V02_dial_reproduction --raw runs/variants/V02_dial_reproduction
-uv run python experiments/variant_benchmark.py --study V03_tube \
-  --output results/variants/V03_tube_reproduction --raw runs/variants/V03_tube_reproduction
-uv run python experiments/variant_benchmark.py --study V04_robust \
-  --output results/variants/V04_robust_reproduction --raw runs/variants/V04_robust_reproduction
-uv run python experiments/variant_benchmark.py --study V05_covariance_steering \
-  --output results/variants/V05_covariance_steering_reproduction --raw runs/variants/V05_covariance_steering_reproduction
+uv run python experiments/benchmarks/variant_benchmark.py --study V01_tsallis \
+  --output results/variants/benchmarks/V01_tsallis_reproduction --raw runs/variants/V01_tsallis_reproduction
+uv run python experiments/benchmarks/variant_benchmark.py --study V02_dial \
+  --output results/variants/benchmarks/V02_dial_reproduction --raw runs/variants/V02_dial_reproduction
+uv run python experiments/benchmarks/variant_benchmark.py --study V03_tube \
+  --output results/variants/benchmarks/V03_tube_reproduction --raw runs/variants/V03_tube_reproduction
+uv run python experiments/benchmarks/variant_benchmark.py --study V04_robust \
+  --output results/variants/benchmarks/V04_robust_reproduction --raw runs/variants/V04_robust_reproduction
+uv run python experiments/benchmarks/variant_benchmark.py --study V05_covariance_steering \
+  --output results/variants/benchmarks/V05_covariance_steering_reproduction --raw runs/variants/V05_covariance_steering_reproduction
 ```
 
 The current config includes the final calibration policy. For exact historical protocol
-reproduction, pass `--config results/variants/<study>/config.yaml`; the saved configuration
+reproduction, pass `--config results/variants/benchmarks/<study>/config.yaml`; the saved configuration
 contains the original seeds, candidate grid and algorithm settings. Wall-clock calibration
 is machine/load dependent and may select different sample counts on another machine.
 
@@ -1074,20 +1095,20 @@ Reproduce the mechanism experiments using fresh directories (the official record
 are protected from overwrite):
 
 ```bash
-uv run python experiments/formulation_mechanisms.py \
+uv run python experiments/mechanisms/formulation_mechanisms.py \
   --config configs/variants/mechanisms.yaml \
   --output results/variants/mechanisms_reproduction \
   --raw runs/variants/mechanisms_reproduction
-uv run python experiments/formulation_mechanisms.py --plot-only \
+uv run python experiments/mechanisms/formulation_mechanisms.py --plot-only \
   --output results/variants/mechanisms_reproduction
-uv run python experiments/formulation_mechanisms.py --audit-only \
+uv run python experiments/mechanisms/formulation_mechanisms.py --audit-only \
   --output results/variants/mechanisms_reproduction
 ```
 
 Rebuild all five committed mechanism figures **from compact saved records alone**:
 
 ```bash
-uv run python experiments/formulation_mechanisms.py --plot-only \
+uv run python experiments/mechanisms/formulation_mechanisms.py --plot-only \
   --output results/variants/mechanisms
 ```
 
@@ -1100,14 +1121,14 @@ or dynamics calls during saved-record figure regeneration.
 Regenerate a figure from committed compact data, with no controller execution:
 
 ```bash
-uv run python experiments/variant_benchmark.py --plot-only --output results/variants/V01_tsallis
+uv run python experiments/benchmarks/variant_benchmark.py --plot-only --output results/variants/benchmarks/V01_tsallis
 ```
 
 Replay a completed run's ignored raw trajectories and selected populations:
 
 ```bash
-uv run python experiments/audit_variants.py results/variants/V01_tsallis
-uv run python experiments/summarize_variants.py results/variants/V01_tsallis
+uv run python experiments/benchmarks/audit_variants.py results/variants/benchmarks/V01_tsallis
+uv run python experiments/benchmarks/summarize_variants.py results/variants/benchmarks/V01_tsallis
 # After a fresh reproduction, substitute its output directory above.
 ```
 
@@ -1121,26 +1142,33 @@ regeneration. No new result overwrites the historical Q01–Q05 evidence.
 The maintained documentation has two roles: this README contains formulations and
 experimental interpretation; `docs/` contains the detailed vehicle report and one
 consolidated historical evidence index. Superseded reports and bulk earlier outputs
-are recoverable through the [historical recovery index](results/archive/legacy_index.md).
+are recoverable through the [historical recovery index](results/historical/archive/legacy_index.md).
 The local ignored archive is `runs/archive/02a331f_cleanup/`; it is not part of a clone.
 
 ```text
-docs/                   Seven-state report, consolidated Q01–Q06 index, three key supplements
-results/showcase/       Five primary Q01–Q05 historical figures
-results/archive/        One index linking superseded evidence at an immutable Git revision
-src/controllers/        Explicit formulations, registry and shared feedback/accounting
-src/dynamics/           Existing validated physical plant
-src/costs/              Existing common external task objectives
-src/analysis/           Shared runner, five-stage traces, plots and variant audit
-experiments/legacy/     Eight historical launchers; shared numerical modules retained
-results/variants/traces/ Compact records, index and six stage/coverage figures
-runs/variants/traces/    Ignored full arrays and immutable configurations
-configs/variants/       Frozen staged experiment settings
-results/variants/       Compact V01–V06 evidence and one primary image per study
-media/diagrams/         MPPI pipeline and data-collection overview
-media/experiments/      Six MP4s with GIF previews, compact records, provenance and validation
-runs/variants/          Ignored executed trajectories and selected populations
-tests/                  Mathematical references, invariants and baseline regression
+experiments/
+  benchmarks/          Run, audit and summarize V01–V06 comparisons
+  mechanisms/          V01–V05 mechanism studies
+  traces/              Individual decisions and pipeline comparisons
+  videos/              Saved-record video and GIF rendering
+  validation/          Seven-state plant and footprint validation
+  legacy/              Historical covariance, frozen, seven_state and s_turn CLIs
+results/
+  variants/
+    benchmarks/        Original V01–V06 compact evidence (V06 supplementary)
+    mechanisms/        V01–V05 mechanism figures and records
+    traces/            Five stage figures, coverage map and compact traces
+  historical/
+    showcase/          Q01–Q05 primary figures
+    registry.yaml      Historical question-to-evidence index
+    archive/           Recovery links to immutable historical revisions
+  relocations.json     Old-to-current paths and preserved result checksums
+media/experiments/     Videos, looping GIFs, render records and provenance
+runs/                  Original raw-run paths; large episode arrays remain ignored
+configs/variants/      Benchmark, mechanism and tracing specifications
+docs/                  Vehicle report, historical research index and cleanup audit
+src/                   Shared controllers, models, costs, analysis and visualization
+tests/                 Mathematical, recording and evidence checks
 ```
 
 ## 8. Limitations and future work
@@ -1165,7 +1193,7 @@ tests/                  Mathematical references, invariants and baseline regress
 - CEM, adaptive covariance/policy classes, contraction-metric trackers and hardware
   reproductions remain unimplemented. The formulations and paper map are embedded
   in this README; superseded source notes are available through the
-  [historical recovery index](results/archive/legacy_index.md).
+  [historical recovery index](results/historical/archive/legacy_index.md).
 
 ## 9. Historical and supplementary evidence
 
@@ -1174,36 +1202,36 @@ tests/                  Mathematical references, invariants and baseline regress
 
 Q01–Q05 below are the earlier fixed-proposal studies, not published-formulation
 comparisons. Their original configurations, manifests, figures and raw paths are retained.
-The [historical registry](results/registry.yaml) and [question index](docs/research_index.md)
+The [historical registry](results/historical/registry.yaml) and [question index](docs/research_index.md)
 continue to describe that evidence.
 
 ### Q01 · Does covariance geometry improve finite-sample estimation?
 
-![Q01: sampling covariance and estimation accuracy](results/showcase/Q01_key.png)
+![Q01: sampling covariance and estimation accuracy](results/historical/showcase/Q01_key.png)
 
 For a **fixed, analytically solvable Gaussian target**, proposal orientation can help *or* hurt. At $K=256$ with 64 independent replication seeds, observed mean squared error was **0.003646** for the +45° full proposal, **0.006505** for isotropic, and **0.065524** for the −45° full proposal. These results concern estimation, **not vehicle performance**. [Experiment Q01](docs/research_index.md#q01).
 
 ### Q02 · What makes importance weights concentrate?
 
-![Q02: importance-weight concentration](results/showcase/Q02_key.png)
+![Q02: importance-weight concentration](results/historical/showcase/Q02_key.png)
 
 Temperature and high-dimensional proposal mismatch can concentrate weights by different mechanisms. Effective sample size (ESS) is an overlap diagnostic, **not a guarantee of estimator accuracy**; changing temperature also changes the target. [Experiment Q02](docs/research_index.md#q02).
 
 ### Q03 · How does sampling geometry change one MPPI decision?
 
-![Q03: frozen-state sampling, weighting and updated plan](results/showcase/Q03_key.png)
+![Q03: frozen-state sampling, weighting and updated plan](results/historical/showcase/Q03_key.png)
 
 At an identical seven-state vehicle observation and warm start, different proposal covariances produce different sampled trajectories, corrected weights, and updated controls. The high-sample target reference is **unresolved** for the open-space and pre-obstacle decisions; only the post-disturbance reference passes the stated diagnostic screens. The pre-obstacle reference's pooled ESS is just **1.51 despite 524,288 samples**. [Experiment Q03](docs/research_index.md#q03).
 
 ### Q04 · Do decision differences persist in closed-loop driving?
 
-![Q04: seven-state vehicle closed-loop comparisons](results/showcase/Q04_key.png)
+![Q04: seven-state vehicle closed-loop comparisons](results/historical/showcase/Q04_key.png)
 
 The seven-state study recorded **391 completions in 400 independent holdout episodes** across five scenarios. Completion is often nearly saturated, but route selection can differ: in the two-route task, the full proposal selected the upper route in **17/20** holdout runs, versus **5/20** for standard and isotropic and **2/20** for diagonal. These are observations about specific covariance matrices, **not general rankings of MPPI families**. [Experiment Q04](docs/research_index.md#q04).
 
 ### Q05 · When does a more demanding S-turn expose limitations?
 
-![Q05: S-turn success, representative paths and lateral dynamics](results/showcase/Q05_key.png)
+![Q05: S-turn success, representative paths and lateral dynamics](results/historical/showcase/Q05_key.png)
 
 In the primary seven-state S-turn study ($K=384$, 20 paired holdout seeds per setting), **313/320 episodes completed**. At the tightest 0.20 m clearance, completions were 20/20 standard, 16/20 isotropic, 20/20 diagonal, and 19/20 full. All seven primary failures were terminal-state timeouts; there were zero disk-proxy collisions. Separate studies investigate command-slew limits, speed preference, state-jump disturbances and sample budgets; they are **not pooled** into the primary clearance results. [Experiment Q05](docs/research_index.md#q05).
 
@@ -1222,7 +1250,7 @@ registry does not relabel covariance settings as published algorithms.
 
 **Mathematical question.** Which interventions become active across all six scenes, and how do their consequences change with the computational protocol? Read the scene-specific records rather than a pooled ranking.
 
-![V06 unified results](results/variants/V06_unified/primary.png)
+![V06 unified results](results/variants/benchmarks/V06_unified/primary.png)
 
 Completion counts below are out of three seeds per scene. Entries show **work-budget /
 wall-clock** results. The two values are distinct protocols, not pooled trials.
@@ -1259,24 +1287,24 @@ fractions. The minimum calibration setting already exceeded the 120 ms target fo
 Robust in mismatch and S-turn, and DIAL in S-turn. Equal calibrated deadlines do
 not imply equal delivered computation or that the deadline is achievable.
 
-[Configuration](results/variants/V06_unified/config.yaml) ·
-[Per-seed results](results/variants/V06_unified/per_seed.csv) ·
-[Summary and intervals](results/variants/V06_unified/summary.csv) ·
-[Command diagnostics](results/variants/V06_unified/diagnostics_summary.csv) ·
-[Calibration](results/variants/V06_unified/calibration.csv) ·
-[Audit](results/variants/V06_unified/audit.json) ·
-[Findings and limitations](results/variants/V06_unified/findings.json)
+[Configuration](results/variants/benchmarks/V06_unified/config.yaml) ·
+[Per-seed results](results/variants/benchmarks/V06_unified/per_seed.csv) ·
+[Summary and intervals](results/variants/benchmarks/V06_unified/summary.csv) ·
+[Command diagnostics](results/variants/benchmarks/V06_unified/diagnostics_summary.csv) ·
+[Calibration](results/variants/benchmarks/V06_unified/calibration.csv) ·
+[Audit](results/variants/benchmarks/V06_unified/audit.json) ·
+[Findings and limitations](results/variants/benchmarks/V06_unified/findings.json)
 
 Reproduce this supplementary campaign with fresh directories:
 
 ```bash
-uv run python experiments/variant_benchmark.py --study V06_unified \
-  --output results/variants/V06_unified_reproduction --raw runs/variants/V06_unified_reproduction
+uv run python experiments/benchmarks/variant_benchmark.py --study V06_unified \
+  --output results/variants/benchmarks/V06_unified_reproduction --raw runs/variants/V06_unified_reproduction
 # Rebuild its figure from existing compact records:
-uv run python experiments/variant_benchmark.py --plot-only --output results/variants/V06_unified
+uv run python experiments/benchmarks/variant_benchmark.py --plot-only --output results/variants/benchmarks/V06_unified
 # These audits require the original ignored raw records:
-uv run python experiments/audit_variants.py results/variants/V06_unified
-uv run python experiments/summarize_variants.py results/variants/V06_unified
+uv run python experiments/benchmarks/audit_variants.py results/variants/benchmarks/V06_unified
+uv run python experiments/benchmarks/summarize_variants.py results/variants/benchmarks/V06_unified
 ```
 
 </details>

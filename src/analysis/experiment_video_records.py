@@ -136,7 +136,7 @@ def prepare(output, raw="runs/variants", replay_missing=False):
         np.savez_compressed(path, **arrays)
         study = "V02" if name == "V02_dial_decision" else name[:3]
         if name in ["V01_tsallis", "V02_dial"]:
-            source_manifest = Path("results/variants") / name / "manifest.json"
+            source_manifest = Path("results/variants/benchmarks") / name / "manifest.json"
         else:
             source_manifest = Path("results/variants/mechanisms") / study / "manifest.json"
         manifest["clips"][name] = dict(
@@ -160,7 +160,7 @@ def prepare(output, raw="runs/variants", replay_missing=False):
                 sources,
             )
         # Audit actual JSON schema and every trajectory field, rather than assuming completeness.
-        representative = Path("results/variants") / study / "representative_paths.json"
+        representative = Path("results/variants/benchmarks") / study / "representative_paths.json"
         saved = read_json(representative)
         for s in sources:
             alg = s["config"]["controller"]["algorithm"]

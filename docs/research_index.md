@@ -45,13 +45,13 @@ This index retains Q01–Q05 configurations, findings and provenance. The [READM
 
 [Exact configuration](../runs/seven_state/Q01/seven_state_q01_v1/config.yaml)
 
-[Primary figure](../results/showcase/Q01_key.png) · [Numerical summary](../runs/seven_state/Q01/seven_state_q01_v1/summary.csv)
+[Primary figure](../results/historical/showcase/Q01_key.png) · [Numerical summary](../runs/seven_state/Q01/seven_state_q01_v1/summary.csv)
 
 - **seven_state_q01_v1**: [manifest](../runs/seven_state/Q01/seven_state_q01_v1/manifest.json), [summary](../runs/seven_state/Q01/seven_state_q01_v1/summary.csv), source `0006f840f99ab6be155b66ea7833e9210fe40367`.
 
 ```bash
-uv run python experiments/seven_state_campaign.py --stage q01 --output runs/seven_state/Q01/q01_reproduction
-uv run python experiments/plot_seven_state.py --stage Q01 --input runs/seven_state/Q01/seven_state_q01_v1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q01 --output runs/seven_state/Q01/q01_reproduction
+uv run python experiments/legacy/seven_state/plot_seven_state.py --stage Q01 --input runs/seven_state/Q01/seven_state_q01_v1
 ```
 
 
@@ -89,13 +89,13 @@ uv run python experiments/plot_seven_state.py --stage Q01 --input runs/seven_sta
 
 [Exact configuration](../runs/seven_state/Q02/seven_state_q02_v1/config.yaml)
 
-[Primary figure](../results/showcase/Q02_key.png) · [Numerical summary](../runs/seven_state/Q02/seven_state_q02_v1/summary.csv)
+[Primary figure](../results/historical/showcase/Q02_key.png) · [Numerical summary](../runs/seven_state/Q02/seven_state_q02_v1/summary.csv)
 
 - **seven_state_q02_v1**: [manifest](../runs/seven_state/Q02/seven_state_q02_v1/manifest.json), [summary](../runs/seven_state/Q02/seven_state_q02_v1/summary.csv), source `0006f840f99ab6be155b66ea7833e9210fe40367`.
 
 ```bash
-uv run python experiments/seven_state_campaign.py --stage q02 --output runs/seven_state/Q02/q02_reproduction
-uv run python experiments/plot_seven_state.py --stage Q02 --input runs/seven_state/Q02/seven_state_q02_v1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q02 --output runs/seven_state/Q02/q02_reproduction
+uv run python experiments/legacy/seven_state/plot_seven_state.py --stage Q02 --input runs/seven_state/Q02/seven_state_q02_v1
 ```
 
 
@@ -133,7 +133,7 @@ uv run python experiments/plot_seven_state.py --stage Q02 --input runs/seven_sta
 
 [Exact configuration](../runs/seven_state/Q03/seven_state_q03_v1/config.yaml)
 
-[Primary figure](../results/showcase/Q03_key.png) · [Numerical summary](../runs/seven_state/Q03/seven_state_q03_v1/summary.csv)
+[Primary figure](../results/historical/showcase/Q03_key.png) · [Numerical summary](../runs/seven_state/Q03/seven_state_q03_v1/summary.csv)
 
 - **seven_state_q03_v1**: [manifest](../runs/seven_state/Q03/seven_state_q03_v1/manifest.json), [summary](../runs/seven_state/Q03/seven_state_q03_v1/summary.csv), source `0006f840f99ab6be155b66ea7833e9210fe40367`.
 
@@ -142,8 +142,8 @@ uv run python experiments/plot_seven_state.py --stage Q02 --input runs/seven_sta
 [Supporting figure](../docs/figures/seven_state_Q03_commands.png)
 
 ```bash
-uv run python experiments/seven_state_campaign.py --stage q03 --output runs/seven_state/Q03/q03_reproduction
-uv run python experiments/plot_seven_state.py --stage Q03 --input runs/seven_state/Q03/seven_state_q03_v1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q03 --output runs/seven_state/Q03/q03_reproduction
+uv run python experiments/legacy/seven_state/plot_seven_state.py --stage Q03 --input runs/seven_state/Q03/seven_state_q03_v1
 ```
 
 
@@ -181,7 +181,7 @@ uv run python experiments/plot_seven_state.py --stage Q03 --input runs/seven_sta
 
 [Exact configuration](../runs/seven_state/Q04/seven_state_q04_v1/config.yaml)
 
-[Primary figure](../results/showcase/Q04_key.png) · [Numerical summary](../runs/seven_state/Q04/seven_state_q04_v1/summary.csv)
+[Primary figure](../results/historical/showcase/Q04_key.png) · [Numerical summary](../runs/seven_state/Q04/seven_state_q04_v1/summary.csv)
 
 - **seven_state_q04_v1**: [manifest](../runs/seven_state/Q04/seven_state_q04_v1/manifest.json), [summary](../runs/seven_state/Q04/seven_state_q04_v1/summary.csv), source `fe98accd84213647c0ff7c006226df6ef1dd3d1f`.
 
@@ -192,8 +192,8 @@ uv run python experiments/plot_seven_state.py --stage Q03 --input runs/seven_sta
 - **seven_state_q04_timing_v1**: [manifest](../runs/seven_state/Q04/seven_state_q04_timing_v1/manifest.json), [summary](../runs/seven_state/Q04/seven_state_q04_timing_v1/summary.csv), source `79d626f2ba41e88416a52993d98599e4ce9acae5`.
 
 ```bash
-uv run python experiments/seven_state_campaign.py --stage q04 --output runs/seven_state/Q04/q04_reproduction
-uv run python experiments/plot_seven_state.py --stage Q04 --input runs/seven_state/Q04/seven_state_q04_v1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q04 --output runs/seven_state/Q04/q04_reproduction
+uv run python experiments/legacy/seven_state/plot_seven_state.py --stage Q04 --input runs/seven_state/Q04/seven_state_q04_v1
 ```
 
 
@@ -231,7 +231,7 @@ uv run python experiments/plot_seven_state.py --stage Q04 --input runs/seven_sta
 
 [Exact configuration](../runs/seven_state/Q05/seven_state_q05_v1/config.yaml)
 
-[Primary figure](../results/showcase/Q05_key.png) · [Numerical summary](../runs/seven_state/Q05/seven_state_q05_v1/summary.csv)
+[Primary figure](../results/historical/showcase/Q05_key.png) · [Numerical summary](../runs/seven_state/Q05/seven_state_q05_v1/summary.csv)
 
 - **seven_state_q05_v1**: [manifest](../runs/seven_state/Q05/seven_state_q05_v1/manifest.json), [summary](../runs/seven_state/Q05/seven_state_q05_v1/summary.csv), source `7bea369e3455bf62785fcf8fc0db59c8bcbfc6a7`.
 
@@ -248,8 +248,8 @@ uv run python experiments/plot_seven_state.py --stage Q04 --input runs/seven_sta
 - **seven_state_reference_footprint_v1**: [manifest](../runs/seven_state/validation/footprint_v1/manifest.json), [summary](../runs/seven_state/validation/footprint_v1/validation.json), source `79d626f2ba41e88416a52993d98599e4ce9acae5`.
 
 ```bash
-uv run python experiments/seven_state_campaign.py --stage q05 --output runs/seven_state/Q05/q05_reproduction
-uv run python experiments/plot_seven_state.py --stage Q05 --input runs/seven_state/Q05/seven_state_q05_v1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q05 --output runs/seven_state/Q05/q05_reproduction
+uv run python experiments/legacy/seven_state/plot_seven_state.py --stage Q05 --input runs/seven_state/Q05/seven_state_q05_v1
 ```
 
 
@@ -288,22 +288,22 @@ uv run python experiments/plot_seven_state.py --stage Q05 --input runs/seven_sta
 [Exact configuration](../configs/investigations/published_formulations_plan.yaml)
 
 ```bash
-uv run python experiments/variant_benchmark.py --study V06_unified --output results/variants/V06_reproduction --raw runs/variants/V06_reproduction
-uv run python experiments/formulation_mechanisms.py --plot-only --output results/variants/mechanisms
+uv run python experiments/benchmarks/variant_benchmark.py --study V06_unified --output results/variants/benchmarks/V06_reproduction --raw runs/variants/V06_reproduction
+uv run python experiments/mechanisms/formulation_mechanisms.py --plot-only --output results/variants/mechanisms
 ```
 
 ## Storage and recovery
 
-- `results/showcase/` retains the five primary Q01–Q05 figures.
+- `results/historical/showcase/` retains the five primary Q01–Q05 figures.
 - `runs/seven_state/` retains exact configurations, compact summaries and provenance. Full episodes and rollout arrays are ignored; reproduce them before raw audits.
 - `results/variants/` retains current formulation comparisons and mechanism evidence.
-- [Historical recovery index](../results/archive/legacy_index.md) links superseded documents and bulky earlier results at their immutable pre-cleanup revision.
+- [Historical recovery index](../results/historical/archive/legacy_index.md) links superseded documents and bulky earlier results at their immutable pre-cleanup revision.
 
 [Seven-state model equations, validation and campaign report](seven_state_benchmark_report.md)
 
 Validate or regenerate this single index (the README is maintained separately):
 
 ```bash
-uv run python experiments/research_index.py --render
-uv run python experiments/research_index.py
+uv run python experiments/legacy/research_index.py --render
+uv run python experiments/legacy/research_index.py
 ```

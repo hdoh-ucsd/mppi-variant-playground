@@ -12,7 +12,7 @@ from dynamics.dynamic_vehicle import DynamicVehicle
 
 def test_variant_plot_reconstructs_without_sampling_or_dynamics(tmp_path, monkeypatch):
     root = Path(__file__).resolve().parents[1]
-    source = root / "results/variants/V05_covariance_steering"
+    source = root / "results/variants/benchmarks/V05_covariance_steering"
     target = tmp_path / "clone_plot"
     target.mkdir()
     for name in ["summary.csv", "per_seed.csv"]:

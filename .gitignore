@@ -56,9 +56,8 @@ Desktop.ini
 
 # Generated experiment results and data
 /results/*
-!/results/registry.yaml
-!/results/showcase/
-!/results/archive/
+!/results/historical/
+!/results/relocations.json
 /results_*/
 *.csv
 !/runs/Q*/*/*.csv

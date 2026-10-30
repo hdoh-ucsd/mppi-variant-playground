@@ -75,7 +75,7 @@ The common finish region uses terminal progress shortfall ≤.30 m, lateral goal
 
 ## Q01 — analytic reproducibility
 
-The independent replication used seeds 34000–34063, 447 cases and 28,608 trials with the original declared target parameters. It is independent of vehicle dynamics. Original records are available through the [historical recovery index](../results/archive/legacy_index.md); the retained independent replication records are under [Q01](../runs/seven_state/Q01/seven_state_q01_v1/).
+The independent replication used seeds 34000–34063, 447 cases and 28,608 trials with the original declared target parameters. It is independent of vehicle dynamics. Original records are available through the [historical recovery index](../results/historical/archive/legacy_index.md); the retained independent replication records are under [Q01](../runs/seven_state/Q01/seven_state_q01_v1/).
 
 For the fixed quadratic target and K=256:
 
@@ -129,7 +129,7 @@ Post-disturbance normalized plan RMS distance to the usable reference:
 
 The aligned/misaligned matrices share eigenvalues .30,.10 and trace .40. “Aligned” means alignment with the negative gradient of J(U+1_T d) at d=0: a constant two-channel latent offset across the horizon, differentiated with central steps .001 and .0005. It is not the unknown target covariance or a Hessian-optimal proposal. Both finite-difference gradients and their relative change are recorded. The base prior, proposal mean and full 40-dimensional overlap also determine importance weights. Thus alignment alone need not improve this estimator; the observed negative result is retained. Paired distances between updates can remain substantial even where a reference is unresolved.
 
-The [microscope](../results/showcase/Q03_key.png) uses one predeclared obstacle decision, seed 33000. It shows the first 48 unweighted paths, at most 64 displayed weighted paths, all 384 weighted endpoints, and the updated nominal prediction. All panels share limits derived from the full saved population bounds. Lowest raw cost and highest corrected weight are marked independently; they differ in this example because corrected weights also contain p/q. It is neither an executed path nor an occupancy distribution. [First-command distributions](figures/seven_state_Q03_commands.png) and [K convergence with intervals](figures/seven_state_Q03_convergence.png) use all 50 seeds. The “nominal” trajectory is a nonlinear rollout of the weighted latent mean, not a weighted average of state trajectories.
+The [microscope](../results/historical/showcase/Q03_key.png) uses one predeclared obstacle decision, seed 33000. It shows the first 48 unweighted paths, at most 64 displayed weighted paths, all 384 weighted endpoints, and the updated nominal prediction. All panels share limits derived from the full saved population bounds. Lowest raw cost and highest corrected weight are marked independently; they differ in this example because corrected weights also contain p/q. It is neither an executed path nor an occupancy distribution. [First-command distributions](figures/seven_state_Q03_commands.png) and [K convergence with intervals](figures/seven_state_Q03_convergence.png) use all 50 seeds. The “nominal” trajectory is a nonlinear rollout of the weighted latent mean, not a weighted average of state trajectories.
 
 ## Q04 — closed-loop propagation
 
@@ -268,22 +268,22 @@ The following are fresh-directory reproduction commands (the recorded `*_v1` run
 ```bash
 uv sync --frozen
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLBACKEND=Agg MPLCONFIGDIR=.mpl-cache
-uv run python experiments/validate_dynamic_vehicle.py --output runs/seven_state/validation/dynamics_reproduction_r1
-uv run python experiments/verify_reference_footprint.py --output runs/seven_state/validation/footprint_reproduction_r1
-uv run python experiments/seven_state_campaign.py --stage q01 --output runs/seven_state/Q01/q01_reproduction_r1
-uv run python experiments/seven_state_campaign.py --stage q02 --output runs/seven_state/Q02/q02_reproduction_r1
-uv run python experiments/seven_state_campaign.py --stage q03 --output runs/seven_state/Q03/q03_reproduction_r1
-uv run python experiments/seven_state_campaign.py --stage pilot_q04 --output runs/seven_state/Q04/pilot_reproduction_r1
-uv run python experiments/seven_state_campaign.py --stage q04 --output runs/seven_state/Q04/q04_reproduction_r1
-uv run python experiments/seven_state_campaign.py --stage pilot_q05 --output runs/seven_state/Q05/pilot_reproduction_r1
-uv run python experiments/seven_state_campaign.py --stage q05 --output runs/seven_state/Q05/q05_reproduction_r1
-uv run python experiments/seven_state_campaign.py --stage budget_q04 --parent runs/seven_state/Q04/q04_reproduction_r1 --output runs/seven_state/Q04/budget_reproduction_r1
-uv run python experiments/seven_state_campaign.py --stage budget_q05 --parent runs/seven_state/Q05/q05_reproduction_r1 --output runs/seven_state/Q05/budget_reproduction_r1
-uv run python experiments/seven_state_campaign.py --stage secondary_q05 --output runs/seven_state/Q05/secondary_reproduction_r1
-uv run python experiments/seven_state_campaign.py --stage rate_q05 --output runs/seven_state/Q05/rate_reproduction_r1
+uv run python experiments/validation/validate_dynamic_vehicle.py --output runs/seven_state/validation/dynamics_reproduction_r1
+uv run python experiments/validation/verify_reference_footprint.py --output runs/seven_state/validation/footprint_reproduction_r1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q01 --output runs/seven_state/Q01/q01_reproduction_r1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q02 --output runs/seven_state/Q02/q02_reproduction_r1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q03 --output runs/seven_state/Q03/q03_reproduction_r1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage pilot_q04 --output runs/seven_state/Q04/pilot_reproduction_r1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q04 --output runs/seven_state/Q04/q04_reproduction_r1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage pilot_q05 --output runs/seven_state/Q05/pilot_reproduction_r1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage q05 --output runs/seven_state/Q05/q05_reproduction_r1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage budget_q04 --parent runs/seven_state/Q04/q04_reproduction_r1 --output runs/seven_state/Q04/budget_reproduction_r1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage budget_q05 --parent runs/seven_state/Q05/q05_reproduction_r1 --output runs/seven_state/Q05/budget_reproduction_r1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage secondary_q05 --output runs/seven_state/Q05/secondary_reproduction_r1
+uv run python experiments/legacy/seven_state/seven_state_campaign.py --stage rate_q05 --output runs/seven_state/Q05/rate_reproduction_r1
 # Run timing probes sequentially after the other stages finish.
-uv run python experiments/time_seven_state.py --scenario two_route_obstacle --output runs/seven_state/Q04/timing_reproduction_r1
-uv run python experiments/time_seven_state.py --scenario s_turn --output runs/seven_state/Q05/timing_reproduction_r1
+uv run python experiments/legacy/seven_state/time_seven_state.py --scenario two_route_obstacle --output runs/seven_state/Q04/timing_reproduction_r1
+uv run python experiments/legacy/seven_state/time_seven_state.py --scenario s_turn --output runs/seven_state/Q05/timing_reproduction_r1
 uv run ruff check .
 uv run ruff format --check .
 uv run pytest
@@ -293,31 +293,31 @@ Rebuild the curated figures from committed compact data without optimization:
 
 ```bash
 for q in Q01 Q02 Q03 Q04 Q05; do
-  uv run python experiments/plot_seven_state.py --stage "$q" --input "runs/seven_state/$q/seven_state_${q,,}_v1"
+  uv run python experiments/legacy/seven_state/plot_seven_state.py --stage "$q" --input "runs/seven_state/$q/seven_state_${q,,}_v1"
 done
-uv run python experiments/plot_seven_state.py --stage budget --input runs/seven_state/Q04/seven_state_q04_budget_v1
-uv run python experiments/plot_seven_state.py --stage budget --input runs/seven_state/Q05/seven_state_q05_budget_v1
-uv run python experiments/plot_seven_state.py --stage secondary --input runs/seven_state/Q05/seven_state_q05_secondary_v1
-uv run python experiments/plot_seven_state.py --stage rate --input runs/seven_state/Q05/seven_state_q05_rate_v1
-uv run python experiments/research_index.py --render
-uv run python experiments/research_index.py
+uv run python experiments/legacy/seven_state/plot_seven_state.py --stage budget --input runs/seven_state/Q04/seven_state_q04_budget_v1
+uv run python experiments/legacy/seven_state/plot_seven_state.py --stage budget --input runs/seven_state/Q05/seven_state_q05_budget_v1
+uv run python experiments/legacy/seven_state/plot_seven_state.py --stage secondary --input runs/seven_state/Q05/seven_state_q05_secondary_v1
+uv run python experiments/legacy/seven_state/plot_seven_state.py --stage rate --input runs/seven_state/Q05/seven_state_q05_rate_v1
+uv run python experiments/legacy/research_index.py --render
+uv run python experiments/legacy/research_index.py
 ```
 
 The loop uses Bash lowercase expansion. Raw audits require the locally regenerated raw records; cloning supplies compact reconstruction inputs and the original audit reports. Substitute the fresh reproduction ID when auditing a newly executed replica:
 
 ```bash
-uv run python experiments/verify_seven_state.py --frozen --input runs/seven_state/Q03/seven_state_q03_v1
-uv run python experiments/verify_seven_state.py --input runs/seven_state/Q04/seven_state_q04_v1
-uv run python experiments/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_v1
-uv run python experiments/verify_seven_state.py --input runs/seven_state/Q04/seven_state_q04_budget_v1
-uv run python experiments/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_budget_v1
-uv run python experiments/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_secondary_v1
-uv run python experiments/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_rate_v1
+uv run python experiments/legacy/seven_state/verify_seven_state.py --frozen --input runs/seven_state/Q03/seven_state_q03_v1
+uv run python experiments/legacy/seven_state/verify_seven_state.py --input runs/seven_state/Q04/seven_state_q04_v1
+uv run python experiments/legacy/seven_state/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_v1
+uv run python experiments/legacy/seven_state/verify_seven_state.py --input runs/seven_state/Q04/seven_state_q04_budget_v1
+uv run python experiments/legacy/seven_state/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_budget_v1
+uv run python experiments/legacy/seven_state/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_secondary_v1
+uv run python experiments/legacy/seven_state/verify_seven_state.py --input runs/seven_state/Q05/seven_state_q05_rate_v1
 # Optional, when raw records are present:
-uv run python experiments/summarize_seven_state.py --input runs/seven_state/Q05/seven_state_q05_rate_v1
+uv run python experiments/legacy/seven_state/summarize_seven_state.py --input runs/seven_state/Q05/seven_state_q05_rate_v1
 ```
 
-Use fresh suffixed IDs for reproductions; completed run directories are never overwritten. The five primary figures are curated under `results/showcase`. `docs/figures` retains the model validation and two Q03 supplements; other regenerated supplements remain ignored. The registry links the retained seven-state runs, exact source commits/configuration hashes and reconstruction commands. Earlier four/five-state figures and bulk result trees are available through the [historical recovery index](../results/archive/legacy_index.md).
+Use fresh suffixed IDs for reproductions; completed run directories are never overwritten. The five primary figures are curated under `results/historical/showcase`. `docs/figures` retains the model validation and two Q03 supplements; other regenerated supplements remain ignored. The registry links the retained seven-state runs, exact source commits/configuration hashes and reconstruction commands. Earlier four/five-state figures and bulk result trees are available through the [historical recovery index](../results/historical/archive/legacy_index.md).
 
 
 ## Final execution and review ledger

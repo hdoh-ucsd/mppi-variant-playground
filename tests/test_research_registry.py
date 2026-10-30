@@ -59,7 +59,7 @@ def test_readme_has_at_most_one_existing_primary_image_per_question():
 def test_showcase_contains_only_registered_primary_figures():
     registry = read_registry()
     expected = {Path(q["key_figure"]).name for q in registry["questions"] if q["key_figure"]}
-    assert {p.name for p in (ROOT / "results/showcase").iterdir()} == expected
+    assert {p.name for p in (ROOT / "results/historical/showcase").iterdir()} == expected
 
 
 def test_render_preserves_curated_readme(tmp_path):

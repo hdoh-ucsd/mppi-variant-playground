@@ -262,7 +262,9 @@ def test_relocated_legacy_cli_still_runs(name):
     import sys
 
     subprocess.run(
-        [sys.executable, f"experiments/legacy/{name}.py", "--help"], check=True, capture_output=True
+        [sys.executable, f"experiments/legacy/covariance/{name}.py", "--help"],
+        check=True,
+        capture_output=True,
     )
 
 

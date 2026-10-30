@@ -218,7 +218,7 @@ def run_study(config, output, *, controller_factories=None):
         "explicit seed/time weights. It is neither proposal covariance nor a predictive state PDF. "
         "Failures remain included. Paired seed/time snapshots can have different current states "
         "and warm starts. Pointwise 50/90% bands are descriptive sample quantiles. "
-        "See results/archive/legacy_index.md for interpretation and inference limits.",
+        "See results/historical/archive/legacy_index.md for interpretation and inference limits.",
     )
     manifest["complete"] = False
     write_json(output / "manifest.json", manifest)

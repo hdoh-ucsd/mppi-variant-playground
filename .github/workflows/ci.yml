@@ -17,5 +17,5 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run pytest
-      - run: uv run python experiments/run_single.py --samples 64 --steps 4 --output results/smoke
-      - run: uv run python experiments/generate_figures.py --input results/smoke
+      - run: uv run python experiments/legacy/covariance/run_single.py --samples 64 --steps 4 --output results/smoke
+      - run: uv run python experiments/legacy/covariance/generate_figures.py --input results/smoke

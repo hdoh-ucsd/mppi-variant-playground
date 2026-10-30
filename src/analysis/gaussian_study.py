@@ -253,6 +253,6 @@ def run_gaussian(config, output, suites=("budget", "geometry", "cost_rotation"))
         "a statistically significant ordering. Read the determinant-constrained cases separately "
         "from trace-constrained cases. The dimension diagnostic separates zero-cost density "
         "ratios, cost-only concentration (proposal equals base), and their combination.\n\n"
-        "See results/archive/legacy_index.md for the executed numerical interpretation.",
+        "See results/historical/archive/legacy_index.md for the executed numerical interpretation.",
     )
     return frame
