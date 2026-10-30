@@ -122,6 +122,7 @@ class MPPI(Controller):
         costs = np.zeros(self.samples)
         previous = np.broadcast_to(self.previous_control, (self.samples, 2))
         capture = self.planning_step in self.snapshot_steps
+        swept_contacts = np.empty((self.samples, self.horizon), dtype=bool) if capture else None
         keep = self.samples if capture else min(self.config.get("saved_rollouts", 32), self.samples)
         saved = np.empty((keep, self.horizon + 1, self.state_dimension))
         saved[:, 0] = states[:keep]
@@ -144,6 +145,8 @@ class MPPI(Controller):
                     states, next_states, self.cost.obstacles, self.cost.vehicle_radius
                 )
             feasible &= gap > 0
+            if capture:
+                swept_contacts[:, t] = gap <= 0
             costs += self.cost.dt * self.cost.weights["collision"] * (gap <= 0)
             states = next_states
             saved[:, t + 1] = states[:keep]
@@ -216,12 +219,18 @@ class MPPI(Controller):
                 "latent_controls": latent,
                 "updated_mean": updated,
                 "proposal_mean": self.mean.copy(),
+                "previous_control": self.previous_control.copy(),
+                "first_command": command.copy(),
+                "feasible": feasible.copy(),
+                "swept_contacts": swept_contacts,
             }
             if capture
             else None
         )
         if planned_substeps is not None:
             self.diagnostics["planned_substeps"] = planned_substeps
+            if capture:
+                self._rollout_snapshot["planned_substeps"] = planned_substeps
             self.diagnostics["rhs_evaluations"] = (
                 (self.samples + 1) * self.horizon * self.model.substeps * 2
             )

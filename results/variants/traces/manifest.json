@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "git": {
+    "commit": "5863f2a95fa39150585e282a51ca1b16375b7ccc",
+    "dirty": false,
+    "status_scope": "repository excluding generated results/ and runs/"
+  },
+  "configuration": {
+    "schema_version": "1.0",
+    "experiment_id": "unified-decision-tracing-v1",
+    "seed": 51000,
+    "source_seed": 49000,
+    "frozen_scene": "two_route_obstacle",
+    "frozen_step": 8,
+    "frozen_transition_cap": 7700,
+    "frozen_source": "results/variants/mechanisms/V01/frozen_inputs.json",
+    "algorithms": [
+      "it_mppi",
+      "tsallis_vi",
+      "dial_mpc",
+      "tube_mppi",
+      "robust_mppi",
+      "cc_mppi"
+    ],
+    "closed_loop": {
+      "source_config": "runs/variants/mechanisms/V03/impulse_1/tube_0/51000/config.yaml",
+      "steps": 12,
+      "samples_per_population": 64,
+      "capture_steps": [
+        0,
+        8,
+        9,
+        11
+      ],
+      "tube_reset_threshold": 0.0,
+      "interpretation": "Short observation window of the existing positive-impulse setup; not task-completion or work-matched rankings."
+    },
+    "selection_rule": "First predeclared mechanism seed, positive disturbance, fixed source step 8; no outcome-based selection. All six methods retained.",
+    "retroactive": {
+      "source": "runs/variants/mechanisms",
+      "rules": "V01 first-seed two-route IT/Tsallis; V02 first-seed DIAL; V03 positive impulse Tube thresholds 0/450; V04 positive offset thresholds 100/5000; V05 narrow-passage planner and all 256 full-noise fixed-policy executions."
+    }
+  },
+  "raw": "runs/variants/traces",
+  "baseline_tests": "232 passed before refactoring",
+  "complete": true,
+  "selection": "Fixed first seed and source step; extraction precedes any new simulation",
+  "traces": 148,
+  "retroactive": 70,
+  "fresh_frozen": 6,
+  "fresh_closed_decisions": 72,
+  "metadata_correction": {
+    "reason": "Missing population stages imply a partial decision, even without missing-field leaves.",
+    "decision_ids": [
+      "decision-0e86174377f785e4cc6cb9bb",
+      "decision-17ecd18139c8840332687c80",
+      "decision-1bbd9b79f2518ec14f253674",
+      "decision-22f5f9f2eb65c391e721ceb6",
+      "decision-24a0272b0a82cbaa731054f4",
+      "decision-2a567e10ce5f7486a5edebc8",
+      "decision-3425473773a89cdbd43d879b",
+      "decision-3f855fff7926ef3785555399",
+      "decision-4950d8b5f512b3d7266b9da4",
+      "decision-4b42cbab419257d2ffaf32ba",
+      "decision-511b5eafc7bd829785413add",
+      "decision-5185239554c2d8e318cef172",
+      "decision-569428647cb1462905de42f1",
+      "decision-5992165092f6076f844bbed4",
+      "decision-5bde13d4f300dbb42c06407f",
+      "decision-7d4f33d1c4f43eb7e1fcdcf1",
+      "decision-8c072afaa2c6976a8801aeac",
+      "decision-9107627a891628910d85b59b",
+      "decision-98e10e853c197d627d2fef01",
+      "decision-9dfb0cb8b907bceca98c398d",
+      "decision-b40d8d084d35444685be9939",
+      "decision-c2be1f29bbec0a228fb22d5f",
+      "decision-c4944795dc35c845354a5a28",
+      "decision-c4a5b3d40d18a576b988344b",
+      "decision-c53cf59be128013f6c341f5a",
+      "decision-c7a067be90f3d3245ac41045",
+      "decision-cf955e67dfd49767727a04bf",
+      "decision-cfdfa64b9dee3efbb326f042",
+      "decision-d5f8d96eabaeffefcdf43018",
+      "decision-e1e8b83d0ef3c3bf5f70adcd",
+      "decision-edfecc440d085a886504a5cf",
+      "decision-fcd302760c28537e67a665dc"
+    ],
+    "numerical_arrays_changed": false
+  },
+  "completeness_counts": {
+    "partial": 118,
+    "complete_for_mode": 30
+  },
+  "postprocessing_sources": {
+    "src/analysis/decision_trace.py": "2b57257aeb370b514ccb43a791c360e2cbb1a99724757abfaa7af12bbb769bec",
+    "src/analysis/trace_adapters.py": "809b95d1f00664d4576a1e504c588d13d57338268d15a4827a5531a57afe1d09",
+    "src/analysis/trace_comparison.py": "2550b5b575e827eb8596d17b20fb8b1eb8dc215477076dae80457bcf5c535afc"
+  }
+}

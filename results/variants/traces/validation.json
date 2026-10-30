@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "traces_validated": 148,
+  "array_roundtrips": true,
+  "configuration_hashes": true,
+  "weight_normalization": true,
+  "covariance_psd": true,
+  "stage_classification": true,
+  "limitations": "Missing history retained; instrumented timing is not a speed ranking.",
+  "baseline": {
+    "tests_passed": 232,
+    "seconds": 52.19,
+    "before_refactoring": true
+  },
+  "final_suite": {
+    "tests_passed": 262,
+    "seconds": 62.11,
+    "new_tests": 30
+  },
+  "required_commands": {
+    "uv sync --frozen": "passed",
+    "uv run ruff check .": "passed",
+    "uv run ruff format --check .": "149 files formatted",
+    "uv run pytest": "262 passed"
+  },
+  "passive_observer": {
+    "algorithms": [
+      "it_mppi",
+      "tsallis_vi",
+      "dial_mpc",
+      "tube_mppi",
+      "robust_mppi",
+      "cc_mppi"
+    ],
+    "modes": [
+      "FROZEN_DECISION",
+      "CLOSED_LOOP"
+    ],
+    "unchanged": [
+      "commands",
+      "updated plans",
+      "RNG consumption",
+      "model evaluation counts"
+    ],
+    "small_fixture": {
+      "samples_per_population": 8,
+      "horizon": 4,
+      "closed_steps": 4
+    }
+  },
+  "historical_exact_replays": {
+    "algorithms": [
+      "it_mppi",
+      "tsallis_vi",
+      "dial_mpc"
+    ],
+    "arrays": [
+      "raw costs",
+      "normalized weights",
+      "first command"
+    ],
+    "dial_passes": 4
+  },
+  "plots_only": {
+    "figures": 6,
+    "png_hashes_match": true,
+    "controller_calls_forbidden": true,
+    "dynamics_calls_forbidden": true,
+    "random_draws_forbidden": true,
+    "all_readme_images_resolve": true
+  },
+  "completeness": {
+    "complete_for_mode": 30,
+    "partial": 118,
+    "noncapture_classification_corrected": 32
+  },
+  "preservation": {
+    "historical_result_files_changed": 0,
+    "byte_identical_legacy_cli_moves": 8
+  },
+  "scientific_limits": [
+    "One seed and one frozen state do not establish statistical superiority.",
+    "Closed-loop inputs diverge; short execution work is not equalized.",
+    "Optimizer weights and sampled proposal dispersion are not physical uncertainty.",
+    "CC independent ensemble executes the fixed warm-start/gain policy, not optimized mean.",
+    "No new task-completion or real-time claim; some trackers inactive."
+  ]
+}

@@ -44,6 +44,7 @@ class TubeMPPI(MPPI):
         self.previous_control = prior_control
         _, actual_update = super().plan(observed_state, standard_normals=standard_normals)
         actual_diag = self.get_diagnostics()
+        actual_snap = self.get_rollout_snapshot()
         actual_cost = self.solution_cost(actual_update, actual_diag, prior_control)
         threshold = self.config.get(
             "reset_threshold", self.model.dt * self.cost.weights["collision"]
@@ -91,6 +92,16 @@ class TubeMPPI(MPPI):
             * 2,
             planning_latency_s=perf_counter() - started,
         )
+        if self._rollout_snapshot is not None:
+            # Preserve both solved populations, including the one rejected by the reset rule.
+            populations = (
+                ("tube_nominal", list(nominal_snap.items())),
+                ("tube_actual", list(actual_snap.items())),
+            )
+            for label, entries in populations:
+                for key, value in entries:
+                    if isinstance(value, np.ndarray):
+                        self._rollout_snapshot[f"{label}_{key}"] = value
         return command, updated
 
     def command(self, observed_state):

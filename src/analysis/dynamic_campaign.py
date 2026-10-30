@@ -74,7 +74,15 @@ def reached(state, geometry, config):
 
 
 def run_episode(
-    config, proposal, seed, output, *, capture_steps=None, freeze_rule=None, controller_factory=None
+    config,
+    proposal,
+    seed,
+    output,
+    *,
+    capture_steps=None,
+    freeze_rule=None,
+    controller_factory=None,
+    trace_recorder=None,
 ):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
@@ -94,6 +102,8 @@ def run_episode(
         else [],
     )
     controller = (controller_factory or make_controller)(resolved)
+    if trace_recorder is not None:
+        controller.snapshot_steps = controller.snapshot_steps | trace_recorder.steps
     geometry = controller.cost.geometry
     model = controller.model
     execution = DynamicVehicle(
@@ -137,8 +147,18 @@ def run_episode(
                 frozen = candidate
                 break
         count_before = getattr(model, "transitions", 0)
+        trace_inputs = (
+            trace_recorder.before(controller, state, previous)
+            if trace_recorder is not None
+            else None
+        )
         command_started = perf_counter()
-        control = controller.command(state.copy())
+        try:
+            control = controller.command(state.copy())
+        except (RuntimeError, FloatingPointError) as error:
+            if trace_recorder is not None:
+                trace_recorder.failed(resolved, seed, step, trace_inputs, error)
+            raise
         command_seconds = perf_counter() - command_started
         diag = controller.diagnostics
         if "algorithm" in config["controller"]:
@@ -158,6 +178,31 @@ def run_episode(
         expected = model.step(state, commanded_control)
         error = nxt - expected
         error[2] = wrap_angle(error[2])
+        if trace_recorder is not None:
+            trace_recorder.after(
+                controller,
+                resolved,
+                seed,
+                step,
+                trace_inputs,
+                commanded_control,
+                dict(
+                    next_executed_state=nxt.copy(),
+                    predicted_next_state=expected.copy(),
+                    prediction_error=error.copy(),
+                    final_clipped_command=commanded_control.copy(),
+                    executed_control=control.copy(),
+                    actuator_noise=control - commanded_control,
+                    state_impulse=event_delta.copy()
+                    if event and step == event["step"]
+                    else np.zeros(7),
+                    disturbance_applied=bool(event and step == event["step"]),
+                    collision=bool(gap <= 0),
+                    clearance_m=float(gap) if np.isfinite(gap) else None,
+                    time_s=step * model.dt,
+                    next_time_s=(step + 1) * model.dt,
+                ),
+            )
         total += float(
             controller.cost.running(state, control, previous)
         ) + model.dt * controller.cost.weights["collision"] * (gap <= 0)
