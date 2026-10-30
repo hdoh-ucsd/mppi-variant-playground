@@ -5,15 +5,17 @@ from pathlib import Path
 
 from analysis.decision_trace import TraceStore
 from analysis.dynamic_campaign import run_episode
-from analysis.trace_adapters import TraceRecorder
-from analysis.trace_comparison import historical_inputs, read, trace_frozen
+from analysis.trace_adapters import ALGORITHMS, TraceRecorder
+from analysis.trace_comparison import frozen_config, historical_inputs, read, trace_frozen
+from analysis.variant_campaign import equal_work_samples
 from evaluation.runner import git_info
 from utils.config import read_yaml
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mode", choices=["FROZEN_DECISION", "CLOSED_LOOP"], required=True)
-    parser.add_argument("--config", required=True, help="Resolved seven-state episode YAML")
+    parser.add_argument("--config", help="Resolved seven-state episode YAML")
+    parser.add_argument("--algorithm", choices=ALGORITHMS, help="Frozen mode without --config")
     parser.add_argument("--seed", type=int, default=51000)
     parser.add_argument("--output", required=True, help="New ignored raw directory")
     parser.add_argument("--experiment-id", default="individual-trace")
@@ -26,10 +28,23 @@ if __name__ == "__main__":
     root = Path(args.output)
     if root.exists():
         parser.error("--output must be a new directory")
-    config = read_yaml(args.config)
+    if args.config and args.algorithm:
+        parser.error("Use either an exact --config or --algorithm with the saved frozen task")
+    if args.mode == "CLOSED_LOOP" and not args.config:
+        parser.error("CLOSED_LOOP requires a resolved episode --config")
+    config = read_yaml(args.config) if args.config else None
     store = TraceStore(root)
     if args.mode == "FROZEN_DECISION":
-        inputs = historical_inputs(read(args.frozen_inputs)[args.scene])
+        saved = read(args.frozen_inputs)[args.scene]
+        if config is None:
+            options = read_yaml("configs/variants/benchmark.yaml")
+            algorithm = args.algorithm or "it_mppi"
+            config = frozen_config(
+                saved, options, algorithm, equal_work_samples(options, algorithm)
+            )
+        if config["scenario"]["name"] != saved["config"]["scenario"]["name"]:
+            parser.error("The resolved config must match the saved frozen scene")
+        inputs = historical_inputs(saved)
         trace = trace_frozen(config, inputs, args.seed, store, args.experiment_id)
         print(trace.decision_id)
     else:

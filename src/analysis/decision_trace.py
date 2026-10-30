@@ -167,6 +167,11 @@ class DecisionTrace:
         state = self.get(self.stages["dynamics_task"].data.get("observed_state"))
         if state is not None and np.shape(state) != (7,):
             raise ValueError("Observed state dimensions")
+        if (
+            state is not None
+            and self.stages["dynamics_task"].data["observed_state"]["units"] != STATE_UNITS
+        ):
+            raise ValueError("Observed state units")
         populations = self.stages["sample_refine"].data.get("populations", [])
         ids = [p["population_id"] for p in populations]
         if len(ids) != len(set(ids)):
@@ -176,6 +181,10 @@ class DecisionTrace:
             latent = self.get(p["latent_controls"])
             controls = self.get(p["physical_controls"])
             k = p["samples"]
+            if states is not None and p["states"]["units"] != STATE_UNITS:
+                raise ValueError("Population state units")
+            if controls is not None and p["physical_controls"]["units"] != CONTROL_UNITS:
+                raise ValueError("Population control units")
             for value, shape in [
                 (states, (k, h + 1, 7)),
                 (latent, (k, h, 2)),
@@ -215,6 +224,13 @@ class DecisionTrace:
         execution = self.stages["feedback_execute"].data
         if "decision_id" in execution and execution["decision_id"] != self.decision_id:
             raise ValueError("Execution decision ID mismatch")
+        if "record_completeness" in m:
+            partial = any(
+                s.missing_fields or s.status in ("missing", "numerical_failure")
+                for s in self.stages.values()
+            )
+            if m["record_completeness"] != ("partial" if partial else "complete_for_mode"):
+                raise ValueError("Incomplete stages cannot be classified as a complete record")
         canonical(self.document())
         return self
 

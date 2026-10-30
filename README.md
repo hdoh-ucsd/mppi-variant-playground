@@ -60,6 +60,128 @@ interventions: an individual method need not optimize every variable or impose e
 constraint. In particular, CC-MPPI uses an auxiliary noise state for its sampling
 feedback, as specified in its equations below.
 
+### One decision, five recorded stages
+
+The diagram above is the formulation map. The dotted connections below lead to
+**numerical experiments**, generated from saved `DecisionTrace` records. A trace
+links the observed state and immutable task configuration to its populations,
+weights, updated controls and subsequent execution using one stable decision ID.
+
+```mermaid
+flowchart LR
+    S1["1 · Dynamics + Task"] --> S2["2 · Distributional Objective"]
+    S2 --> S3["3 · Sample + Refine"] --> S4["4 · Weight + Update"]
+    S4 --> S5["5 · Feedback + Execute"]
+    S1 -.-> F1["State, task costs and prediction error"]
+    S2 -.-> F2["Scores, support and reference targets"]
+    S3 -.-> F3["Recorded populations and refinement"]
+    S4 -.-> F4["Weights, ESS and command candidates"]
+    S5 -.-> F5["Tracking, selection and covariance"]
+    click F1 "results/variants/traces/stage_01_dynamics.png" "Open measured dynamics figure"
+    click F2 "results/variants/traces/stage_02_objective.png" "Open measured objective figure"
+    click F3 "results/variants/traces/stage_03_sampling.png" "Open measured sampling figure"
+    click F4 "results/variants/traces/stage_04_update.png" "Open measured update figure"
+    click F5 "results/variants/traces/stage_05_feedback.png" "Open measured feedback figure"
+```
+
+The [trace index](results/variants/traces/index.json) contains **148 decisions**:
+70 reconstructed from existing V01–V05 records, six new frozen decisions, and
+72 decisions from six short, 12-step executions. There are **30 complete-for-mode
+records and 118 partial records**. Historical records remain partial;
+we do not fill missing internal states from figures. Full arrays stay under ignored
+`runs/variants/traces/`; identical historical arrays are referenced with source
+hashes. The compact records needed for all six figures are versioned in
+[plot_data.json](results/variants/traces/plot_data.json).
+
+**Selection was fixed before execution:** mechanism seed 51000, the saved two-route
+state at source step 8 from seed 49000, and the existing positive disturbance event.
+`FROZEN_DECISION` holds the state, task, model and warm start fixed. IT and Tsallis
+also receive identical standard-normal draws. The other methods preserve their own
+sampling and feedback structures under a 7,700-transition cap. `CLOSED_LOOP` uses
+paired disturbance streams and 64 candidates per population for a short observation
+window; its work is **not matched**, and inputs diverge as commands are executed.
+Full populations are saved at steps 0, 8, 9 and 11; every step retains its decision
+ID, observed state, command and next executed state. This is not a new task-success
+benchmark. Exact selection rules are in [traces.yaml](configs/variants/traces.yaml).
+
+![Coverage of all five stages for the six formulations](results/variants/traces/pipeline_overview.png)
+
+**Evidence coverage.** Stages 1–4 use each frozen decision; stage 5 uses each
+controller's closed-loop step 9. Each cell includes a trace-ID suffix and a measured
+quantity. “Available” means recorded, not superior. Missing, not applicable,
+mechanism inactive and numerical failure are distinct schema statuses. The
+[figure provenance](results/variants/traces/figure_provenance.json) maps cells and
+figures to complete IDs. Historical missing-field lists remain in the index.
+
+![Shared dynamics, task costs and actual prediction errors](results/variants/traces/stage_01_dynamics.png)
+
+**1 · Dynamics + Task.** All frozen decisions start from the same seven-state
+vehicle state. IT/Tsallis have identical unweighted task-cost components because
+they evaluate the same candidate controls. The short executions record predicted
+and executed next states separately: the injected lateral displacement appears
+after decision 8, at 1.35 s. Subsequent paths differ, so later states are not a
+controlled same-input comparison. Cost components reuse the existing evaluator,
+including recorded swept contacts; no second cost model is introduced.
+
+![Same-sample objective weights and separate scalar reference distributions](results/variants/traces/stage_02_objective.png)
+
+**2 · Distributional Objective.** For the same 384 vehicle candidates, IT uses
+$\log p(Z_k)-\log q(Z_k)-J_k/\lambda$, with $\lambda=8$. Tsallis uses the same
+density correction with its deformed score, $r=1.5$, transformed scale **0.258684**
+and normalized cutoff **0.517368**; **307/384** candidates remain in its support.
+The scalar quadrature panel uses a **different objective**, $J(z)=(z-1)^2/2$,
+prior $N(0,1)$ and scale 0.8. Its KL and Tsallis targets have different means;
+neither is a reference optimum for the vehicle experiment.
+
+![Actual sampling populations, DIAL schedules and optimization progress](results/variants/traces/stage_03_sampling.png)
+
+**3 · Sample + Refine.** DIAL records all four passes, each with 95 candidates,
+its horizon-dependent covariance schedule and its updated path. External updated-plan
+costs are **164.28 → 155.55 → 155.42 → 154.34**, using **7,680** total model
+transitions. IT uses 384 candidates and **7,700** transitions, producing an updated-plan
+cost of **201.35** in this decision. Tube, Robust and CC use 182, 159 and 364
+candidates per principal population, respectively; their transition totals include
+additional plans, candidate selection and linearization. This one-state observation
+supports a refinement mechanism, not a general performance ranking. Displayed
+trajectories are the first eight unweighted samples per pass, chosen by index.
+
+![Raw costs, distinct Robust weight populations, ESS and control updates](results/variants/traces/stage_04_update.png)
+
+**4 · Weight + Update.** IT and Tsallis assign different optimizer weights to the
+same costs: ESS is **2.232 versus 1.196**, and their first steering candidates are
+**0.369182 versus 0.214516 rad**; normalized signed throttle is **0.689426 versus
+0.348386**. These are candidate commands from a frozen decision, not observed
+closed-loop improvements. Robust's nominal and actual weight populations coincide
+in this selected frozen case; both remain recorded separately. The lowest raw-cost
+candidate, highest-weight candidate and updated mean are separately identified in
+the trace. ESS measures concentration of optimizer weights, not physical uncertainty.
+
+![Recorded tracking and nominal selection, plus independent covariance validation](results/variants/traces/stage_05_feedback.png)
+
+**5 · Feedback + Execute.** The historical paired Tube runs have **8/32** active
+tracking corrections at reset threshold 0 and **0/32** at threshold 450. The latter
+resets to the observed state after the disturbance, leaving its tracker inactive.
+Historical Robust with selection threshold 100 has no feasible candidate and uses
+the recorded fallback; threshold 5000 selects the observed-state candidate. In the
+new short-run step 9, Robust again selects the observed state and has **zero applied
+ancillary correction**. These inactive mechanisms are retained, not filtered out.
+
+CC's covariance panel uses the existing **256 independent full-noise executions of
+a fixed warm-start/gain policy**, not execution of the optimized mean. Terminal
+variance summed after normalization by the diagonal covariance bounds is **0.659
+predicted versus 0.767 empirical**; the relative Frobenius covariance error is
+**1.441**. Both terminal covariance matrices satisfy the specified matrix bound in
+this case, yet **64/256** executions contact the obstacle proxy. All executions are
+retained, and there is no physical impact model. This exposes the limits of the
+linearized covariance prediction and of covariance bounds as a collision criterion.
+Neither weighted planning samples nor a single executed trajectory estimate the
+independent physical state distribution.
+
+The trace checks establish recording correctness and passive instrumentation; they
+do not establish universal method superiority, real-time performance, or statistical
+significance from one seed. The original multi-seed formulation comparisons,
+mechanism figures, mathematical definitions and paper references remain below.
+
 ## 2. Experimental Setup
 
 All vehicle experiments use a shared **seven-state dynamic single-track vehicle** with
@@ -782,6 +904,9 @@ second dynamics engine. Covariance and tracking states remain inside controllers
 
 ## 7. Preserved covariance studies
 
+<details>
+<summary>Historical Q01–Q06 evidence and original study context</summary>
+
 Q01–Q05 below are the earlier fixed-proposal studies, not published-formulation
 comparisons. Their original configurations, manifests, figures and raw paths are retained.
 The [historical registry](results/registry.yaml) and [question index](docs/research_index.md)
@@ -823,7 +948,57 @@ The original Q06 plan is preserved as historical context. The V01–V06 studies
 above implement and evaluate six formulations; CEM remains planned. The historical
 registry does not relabel covariance settings as published algorithms.
 
+</details>
+
 ## 8. Reproduction instructions
+
+### Unified decision traces
+
+```bash
+uv sync --frozen
+# Rebuild all six figures using tracked compact records only; no simulation or raw files.
+uv run python experiments/compare_traces.py --plots-only
+
+# Extract existing V01–V05 snapshots, then run only the selected six decisions
+# and six 12-step episodes. Use NEW directories to preserve existing evidence.
+uv run python experiments/compare_traces.py \
+  --output results/variants/traces_reproduction --raw runs/variants/traces_reproduction
+# Extraction alone: same command with --extract-only (no new simulations or six-method plots).
+
+# A single decision from the tracked frozen task; works without historical raw archives:
+uv run python experiments/trace_decision.py --mode FROZEN_DECISION \
+  --algorithm it_mppi \
+  --output runs/variants/traces_individual
+
+uv run ruff check .
+uv run ruff format --check .
+uv run pytest
+```
+
+Plots-only works on a fresh checkout. Full retroactive extraction requires the
+original ignored mechanism archives listed in each source provenance; absent raw
+files are not replaced with invented traces. Individual frozen tracing uses the tracked task, warm start and algorithm settings;
+`--config` can instead supply an exact resolved seven-state YAML matching the frozen
+scene. To trace an execution, use `--mode CLOSED_LOOP --config PATH`, a resolved
+episode YAML, and
+`--capture-steps 0 8 9 11`. Episode length and disturbance settings remain in that
+YAML. Numerical runs here use `OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1`; headless
+plots use `MPLBACKEND=Agg`. In a restricted environment also set
+`UV_CACHE_DIR=.uv-cache MPLCONFIGDIR=.mpl-cache`.
+
+Schema 1.0 records units, dimensions, source revision, backend, configuration hash,
+mode, seed, per-population sample budget and complete work counts. Configurations
+are stored once by hash, arrays are lossless versioned NPZ, and IDs omit timing and
+capture settings. Unavailable fields carry explicit reasons. Feasibility flags mean
+no swept disk-proxy contact, not satisfaction of every physical constraint. Proposal
+covariance describes the Gaussian driving noise; for CC it is not the covariance of
+the feedback-shaped controls. Robust records its latent proposals separately from
+the feedback-corrected physical controls. Historical backend metadata describes the
+reconstruction environment; the original source revision remains attached, but an
+unrecorded original library version cannot be recovered. The
+[cleanup audit](docs/codebase_audit.md) documents retained dependencies and the eight
+byte-identical historical CLI relocations to `experiments/legacy/`; historical
+configurations, numerical modules, tests, figures and results are preserved.
 
 ### Experiment videos (no simulation required)
 
@@ -953,7 +1128,10 @@ results/archive/        One index linking superseded evidence at an immutable Gi
 src/controllers/        Explicit formulations, registry and shared feedback/accounting
 src/dynamics/           Existing validated physical plant
 src/costs/              Existing common external task objectives
-src/analysis/           Shared runner, artifacts, figures and variant audit
+src/analysis/           Shared runner, five-stage traces, plots and variant audit
+experiments/legacy/     Eight historical launchers; shared numerical modules retained
+results/variants/traces/ Compact records, index and six stage/coverage figures
+runs/variants/traces/    Ignored full arrays and immutable configurations
 configs/variants/       Frozen staged experiment settings
 results/variants/       Compact V01–V06 evidence and one primary image per study
 media/diagrams/         MPPI pipeline and data-collection overview

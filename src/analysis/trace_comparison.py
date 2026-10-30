@@ -332,7 +332,12 @@ def trace_frozen(
         if key in inputs and hasattr(ctrl, key):
             setattr(ctrl, key, np.array(inputs[key]).copy())
     before = capture_inputs(ctrl, state, inputs.get("previous_executed_control"))
-    command, _ = ctrl.plan(state, standard_normals=standard_normals)
+    try:
+        command, _ = ctrl.plan(state, standard_normals=standard_normals)
+    except (RuntimeError, FloatingPointError) as error:
+        observer = TraceRecorder(store, experiment_id, source_commit or git_info()["commit"], [0])
+        observer.failed(c, seed, 0, before, error, mode="FROZEN_DECISION")
+        raise
     t = build_trace(
         c,
         before,
@@ -456,6 +461,7 @@ def compact(trace):
             mean_xy=states[:, :, :2].mean(axis=0),
             selected_xy=states[:8, :, :2],
             first_latent=latent[:, 0] if latent is not None else None,
+            proposal_covariance=get(p["proposal_covariance"]),
             model_transitions=p.get("model_transitions"),
         )
         one["populations"].append(record)
@@ -465,6 +471,8 @@ def compact(trace):
             for k in [
                 "population_id",
                 "role",
+                "lowest_raw_cost_index",
+                "highest_weight_index",
                 "raw_costs",
                 "weights",
                 "ess",
@@ -512,6 +520,23 @@ def compact(trace):
     return native(one)
 
 
+def write_compact(store, traces, output):
+    """Save the display reductions and each scene once; no full population duplication."""
+    data = dict(
+        schema_version="1.0",
+        traces=[compact(t) for t in traces],
+        scenes={
+            t.metadata["configuration_hash"]: read(
+                store.root / "configurations" / (t.metadata["configuration_hash"] + ".json")
+            )["scenario"]
+            for t in traces
+        },
+    )
+    (Path(output) / "plot_data.json").write_text(
+        json.dumps(data, separators=(",", ":"), allow_nan=False) + "\n"
+    )
+
+
 def run(
     output="results/variants/traces",
     raw="runs/variants/traces",
@@ -547,19 +572,7 @@ def run(
         output / "index.json",
         dict(schema_version="1.0", raw=str(raw), traces=[brief(t) for t in traces]),
     )
-    write_json(
-        output / "plot_data.json",
-        dict(
-            schema_version="1.0",
-            traces=[compact(t) for t in traces],
-            scenes={
-                t.metadata["configuration_hash"]: read(
-                    store.root / "configurations" / (t.metadata["configuration_hash"] + ".json")
-                )["scenario"]
-                for t in traces
-            },
-        ),
-    )
+    write_compact(store, traces, output)
     manifest.update(
         complete=True,
         traces=len(traces),

@@ -120,6 +120,8 @@ def test_closed_loop_observer_does_not_change_trajectory_or_stream(algorithm, tm
     for step, t in enumerate(recorder.traces):
         assert t.metadata["planning_step"] == step
         assert t.metadata["mode"] == "CLOSED_LOOP"
+        if step not in [0, 2]:
+            assert t.metadata["record_completeness"] == "partial"
         assert t.stages["feedback_execute"].data["decision_id"] == t.decision_id
         assert t.stages["sample_refine"].status == ("available" if step in [0, 2] else "missing")
     event = recorder.traces[1].stages["feedback_execute"].data
@@ -290,3 +292,53 @@ def test_readme_images_and_historical_records_preserved():
             assert Path(target).is_file(), target
     for i in range(1, 6):
         assert Path(f"results/variants/mechanisms/V0{i}/manifest.json").is_file()
+
+
+def test_frozen_numerical_failure_is_preserved(tmp_path, monkeypatch):
+    from analysis.trace_comparison import trace_frozen
+    from controllers.mppi import MPPI
+
+    def fail(*args, **kwargs):
+        raise FloatingPointError("invalid population")
+
+    monkeypatch.setattr(MPPI, "plan", fail)
+    store = TraceStore(tmp_path)
+    c = small_config("it_mppi")
+    inputs = dict(
+        observed_state=np.array(c["scenario"]["initial_state"]),
+        warm_start=np.zeros((4, 2)),
+        previous_control=np.zeros(2),
+    )
+    with pytest.raises(FloatingPointError, match="invalid population"):
+        trace_frozen(c, inputs, 51, store, "failure", source_commit="test")
+    folder = next(tmp_path.glob("decision-*"))
+    trace = store.load(folder.name)
+    assert trace.metadata["mode"] == "FROZEN_DECISION"
+    assert trace.stages["distributional_objective"].status == "numerical_failure"
+    assert trace.stages["feedback_execute"].status == "not_applicable"
+
+
+def test_array_units_checked_independently_of_metadata():
+    _, _, t, _, _ = frozen()
+    t.stages["dynamics_task"].data["observed_state"]["units"] = ["unknown"] * 7
+    with pytest.raises(ValueError, match="units"):
+        t.validate()
+
+
+def test_curated_same_sample_comparison_and_complete_work():
+    records = read("results/variants/traces/plot_data.json")["traces"]
+    frozen_records = {t["algorithm"]: t for t in records if t["experiment_id"].endswith("-frozen")}
+    first = frozen_records["it_mppi"]
+    for t in frozen_records.values():
+        np.testing.assert_array_equal(t["observed"], first["observed"])
+    ts = frozen_records["tsallis_vi"]
+    np.testing.assert_array_equal(first["updates"][0]["raw_costs"], ts["updates"][0]["raw_costs"])
+    np.testing.assert_array_equal(
+        first["populations"][0]["first_latent"], ts["populations"][0]["first_latent"]
+    )
+    assert frozen_records["dial_mpc"]["model_transitions"] == sum(
+        p["model_transitions"] for p in frozen_records["dial_mpc"]["populations"]
+    )
+    for t in records:
+        if t["experiment_id"].startswith("retro-"):
+            assert any(t["stages_missing"].values())

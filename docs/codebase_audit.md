@@ -96,3 +96,85 @@ not the execution distribution of the optimizer's updated command.
 Full arrays and immutable shared configurations go under ignored `runs/variants/traces/`.
 Only the trace index, compact numerical figure inputs, one group manifest, six curated
 figures and concise validation/interpretation records belong in `results/variants/traces/`.
+
+
+## Completed cleanup and trace validation
+
+All eight proposed launcher moves were byte-identical (`git` detects 100% similarity).
+No existing result, configuration, numerical implementation, video or test was removed.
+The supplied formulation map is retained; Q01–Q06 are now in an expandable README
+supplement. Active reproduction uses `variant_benchmark.py`, the existing mechanism
+and video launchers, and the two new trace entry points.
+
+Historical extraction preceded the new simulations. A preliminary adapter check and
+the final source-pinned run each used only six frozen decisions and six 12-step
+executions; neither reran a historical campaign. The curated group contains 70
+historical records plus 78 fresh decisions from source `5863f2a95fa39150585e282a51ca1b16375b7ccc`.
+Thirty records are complete for their mode and 118 are partial. A final validation
+review corrected the completeness label on 32 non-capture steps: missing stages 3/4
+must imply a partial record even when their empty population lists have no individual
+missing-field leaves. This changed metadata only; the manifest names all affected
+IDs, records source hashes, and preserves the original simulation revision.
+
+Tests cover frozen and closed-loop command/plan/RNG/model-work invariance for all six
+controllers, local/external array hashes and round trips, immutable configurations,
+units/dimensions, ID stability, meaningful normalized weights, DIAL ordering/work,
+Tube's rejected population and active correction, Robust dual populations and
+infeasible selection, CC auxiliary states and PSD covariance, numerical-failure
+classification in both modes, legacy CLIs, README images and plots-only reconstruction.
+The plots-only test forbids controller planning, dynamics steps and random draws and
+compares all six PNG hashes. Fresh IT, Tsallis and all four DIAL pass costs/weights and
+commands additionally match the original saved mechanism arrays **exactly**.
+
+The README contains the scientific interpretation and reproduction commands. It
+separates different targets, one-decision effects, short execution behavior and the
+independent fixed-policy covariance ensemble. No universal ranking is inferred.
+Full arrays are ignored; compact records and six PNGs are committed. Per-step
+recording overhead is not a timing benchmark.
+
+Final required checks: `uv sync --frozen`, `uv run ruff check .`, and
+`uv run ruff format --check .` passed; **262 tests passed in 62.11 s**, including
+30 new trace tests. The baseline had 232 passing tests.
+
+## Exact changed-file inventory
+
+Relative to the audited main revision. R100 denotes a byte-identical relocation.
+
+| Status | Path |
+| --- | --- |
+| M | `README.md` |
+| A | `configs/variants/traces.yaml` |
+| A | `docs/codebase_audit.md` |
+| A | `experiments/compare_traces.py` |
+| R100 | `experiments/actuator_saturation.py` → `experiments/legacy/actuator_saturation.py` |
+| R100 | `experiments/analytic_gaussian.py` → `experiments/legacy/analytic_gaussian.py` |
+| R100 | `experiments/covariance_alignment.py` → `experiments/legacy/covariance_alignment.py` |
+| R100 | `experiments/covariance_closed_loop.py` → `experiments/legacy/covariance_closed_loop.py` |
+| R100 | `experiments/mechanism_summary.py` → `experiments/legacy/mechanism_summary.py` |
+| R100 | `experiments/nonconvex_optimization.py` → `experiments/legacy/nonconvex_optimization.py` |
+| R100 | `experiments/temperature_sweep.py` → `experiments/legacy/temperature_sweep.py` |
+| R100 | `experiments/trajectory_density_study.py` → `experiments/legacy/trajectory_density_study.py` |
+| A | `experiments/trace_decision.py` |
+| A | `results/variants/traces/figure_provenance.json` |
+| A | `results/variants/traces/index.json` |
+| A | `results/variants/traces/manifest.json` |
+| A | `results/variants/traces/pipeline_overview.png` |
+| A | `results/variants/traces/plot_data.json` |
+| A | `results/variants/traces/stage_01_dynamics.png` |
+| A | `results/variants/traces/stage_02_objective.png` |
+| A | `results/variants/traces/stage_03_sampling.png` |
+| A | `results/variants/traces/stage_04_update.png` |
+| A | `results/variants/traces/stage_05_feedback.png` |
+| A | `results/variants/traces/validation.json` |
+| A | `src/analysis/decision_trace.py` |
+| M | `src/analysis/dynamic_campaign.py` |
+| A | `src/analysis/trace_adapters.py` |
+| A | `src/analysis/trace_comparison.py` |
+| A | `src/analysis/trace_plots.py` |
+| M | `src/controllers/covariance.py` |
+| M | `src/controllers/dial.py` |
+| M | `src/controllers/mppi.py` |
+| M | `src/controllers/robust.py` |
+| M | `src/controllers/tube.py` |
+| M | `src/sampling/gaussian.py` |
+| A | `tests/test_decision_trace.py` |

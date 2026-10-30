@@ -180,7 +180,7 @@ def plot_all(output, destination=None):
         [frozen["it_mppi"], frozen["tsallis_vi"], ref],
     )
 
-    fig, ax = plt.subplots(2, 2, figsize=(13, 8))
+    fig, ax = plt.subplots(2, 3, figsize=(15, 8))
     for alg in ["it_mppi", "tsallis_vi"]:
         p = frozen[alg]["populations"][0]
         v = np.asarray(p["first_latent"])
@@ -219,22 +219,52 @@ def plot_all(output, destination=None):
         ylabel="First latent throttle",
     )
     ax[1, 0].legend(fontsize=8)
-    ax[1, 1].bar(
+    ax[1, 2].bar(
         list(NAMES.values()),
         [t["model_transitions"] for t in frozen.values()],
         color=list(COLORS.values()),
     )
-    ax[1, 1].axhline(7700, color="black", linestyle="--", lw=1)
-    ax[1, 1].set(
+    ax[1, 2].axhline(7700, color="black", linestyle="--", lw=1)
+    ax[1, 2].set(
         title="Total work, including internal passes / linearization", ylabel="Model transitions"
     )
-    ax[1, 1].text(
+    ax[1, 2].text(
         0.02,
         0.08,
         "DIAL: 4 × 1,920 = 7,680 transitions\nIT: 1 × 7,700 transitions",
-        transform=ax[1, 1].transAxes,
+        transform=ax[1, 2].transAxes,
         fontsize=9,
     )
+    for p in dial["populations"]:
+        covariance = np.asarray(p["proposal_covariance"])
+        ax[0, 2].plot(
+            np.arange(len(covariance)), covariance[:, 0, 0], label=f"Pass {p['iteration'] + 1}"
+        )
+    ax[0, 2].set(
+        title="Recorded annealing schedule",
+        xlabel="Horizon index",
+        ylabel="Latent steering variance",
+    )
+    ax[0, 2].legend(fontsize=8)
+    work = np.cumsum([p["model_transitions"] for p in dial["populations"]])
+    ax[1, 1].plot(
+        work,
+        [u["updated_plan_external_cost"] for u in dial["updates"]],
+        "o-",
+        label="DIAL updated plan",
+    )
+    baseline = frozen["it_mppi"]
+    ax[1, 1].scatter(
+        [baseline["model_transitions"]],
+        [baseline["updates"][0]["updated_plan_external_cost"]],
+        label="IT updated plan",
+    )
+    ax[1, 1].set(
+        title="External task cost after each update",
+        xlabel="Cumulative model transitions",
+        ylabel="Updated-plan cost",
+    )
+    ax[1, 1].legend(fontsize=8)
     finish(
         fig,
         "stage_03_sampling.png",
@@ -439,9 +469,33 @@ def plot_all(output, destination=None):
             ]
             measurement = values[i]
             if i == 1:
-                measurement = "\n".join(
-                    measurement[j : j + 30] for j in range(0, len(measurement), 30)
-                )
+                objective = t["objective"]
+                if alg == "it_mppi":
+                    measurement = f"KL; temperature={objective['temperature']:g}"
+                elif alg == "tsallis_vi":
+                    ts = objective["tsallis"]
+                    measurement = (
+                        f"r={ts['parameter']}; scale={ts['transformed_scale']:.3f}"
+                        f"\nsupport={sum(ts['support'])}/{len(ts['support'])}"
+                    )
+                elif alg == "dial_mpc":
+                    measurement = (
+                        f"{objective['dial']['iterations']} smoothing passes"
+                        f"\nanneal={objective['dial']['anneal']}"
+                    )
+                elif alg == "tube_mppi":
+                    measurement = (
+                        f"Two KL plans"
+                        f"\nreset threshold={objective['selection']['reset_threshold']:g}"
+                    )
+                elif alg == "robust_mppi":
+                    measurement = (
+                        f"Augmented objective pair"
+                        f"\nselection α={objective['selection']['free_energy_threshold']:g}"
+                    )
+                else:
+                    measurement = f"Covariance steering\nresidual={objective['cc']['residual']:.2g}"
+
             rows.append(
                 status.replace("_", " ") + "\n" + measurement + "\n" + record["decision_id"][-8:]
             )
@@ -451,7 +505,7 @@ def plot_all(output, destination=None):
                     stage=stage,
                     status=status,
                     decision_id=record["decision_id"],
-                    measurement=values[i],
+                    measurement=measurement,
                 )
             )
         cells.append(rows)
@@ -496,6 +550,7 @@ def plot_all(output, destination=None):
     )
     provenance = {
         "schema_version": "1.0",
+        "renderer_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "plot_data_sha256": hashlib.sha256((output / "plot_data.json").read_bytes()).hexdigest(),
         "figures": sources,
         "coverage_cells": audit,

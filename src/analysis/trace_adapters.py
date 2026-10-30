@@ -582,7 +582,12 @@ def build_trace(
 
         collect(stage.data)
     trace.metadata["record_completeness"] = (
-        "partial" if any(s.missing_fields for s in trace.stages.values()) else "complete_for_mode"
+        "partial"
+        if any(
+            s.missing_fields or s.status in ("missing", "numerical_failure")
+            for s in trace.stages.values()
+        )
+        else "complete_for_mode"
     )
     return trace.validate()
 
@@ -621,7 +626,7 @@ class TraceRecorder:
         self.traces.append(trace)
         return trace
 
-    def failed(self, config, seed, step, inputs, error):
+    def failed(self, config, seed, step, inputs, error, *, mode="CLOSED_LOOP"):
         trace = build_trace(
             config,
             inputs,
@@ -631,7 +636,7 @@ class TraceRecorder:
             experiment_id=self.experiment_id,
             seed=seed,
             planning_step=step,
-            mode="CLOSED_LOOP",
+            mode=mode,
             source_commit=self.source_commit,
             provenance={"origin": "live numerical failure; no fallback"},
         )
