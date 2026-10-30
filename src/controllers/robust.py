@@ -148,6 +148,7 @@ class RobustMPPI(MPPI):
         self.feedback_samples = np.zeros_like(self.noise)
         self.config["saved_rollouts"] = self.samples
         MPPI.plan(self, nominal, standard_normals=normals)
+        nominal_snapshot = self.get_rollout_snapshot()
         self.nominal_costs = self.population_costs.copy()
         self.nominal_samples = self.diagnostics["saved_rollouts"].copy()
         self.phase = "actual"
@@ -188,6 +189,12 @@ class RobustMPPI(MPPI):
             planning_latency_s=perf_counter() - started,
         )
         if self._rollout_snapshot is not None:
+            self._rollout_snapshot["real_updated_states"] = self._rollout_snapshot["nominal_states"]
+            self._rollout_snapshot["real_planned_substeps"] = self._rollout_snapshot[
+                "planned_substeps"
+            ]
+            for key in ("sampled_controls", "latent_controls", "feasible", "swept_contacts"):
+                self._rollout_snapshot["robust_nominal_" + key] = nominal_snapshot[key]
             self._rollout_snapshot.update(
                 nominal_candidates=self.nominal_candidates.copy(),
                 candidate_free_energies=np.array(energies),
@@ -203,6 +210,7 @@ class RobustMPPI(MPPI):
                 feedback=self.feedback_samples,
                 updated_mean=updated,
                 nominal_states=planned,
+                planned_substeps=paths,
                 nominal_role="mixed-cost nominal update; actual command uses real weights",
             )
         return command, updated

@@ -102,6 +102,9 @@ class DIAL(MPPI):
                 "updated_mean",
                 "nominal_states",
                 "planned_substeps",
+                "feasible",
+                "swept_contacts",
+                "first_command",
             ):
                 self._rollout_snapshot["inner_" + key] = np.stack([p[key] for p in populations])
             self._rollout_snapshot["inner_variance_scales"] = np.array(

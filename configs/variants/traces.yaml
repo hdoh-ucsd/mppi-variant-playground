@@ -1,0 +1,20 @@
+schema_version: '1.0'
+experiment_id: unified-decision-tracing-v1
+seed: 51000
+source_seed: 49000
+frozen_scene: two_route_obstacle
+frozen_step: 8
+frozen_transition_cap: 7700
+frozen_source: results/variants/mechanisms/V01/frozen_inputs.json
+algorithms: [it_mppi, tsallis_vi, dial_mpc, tube_mppi, robust_mppi, cc_mppi]
+closed_loop:
+  source_config: runs/variants/mechanisms/V03/impulse_1/tube_0/51000/config.yaml
+  steps: 12
+  samples_per_population: 64
+  capture_steps: [0, 8, 9, 11]
+  tube_reset_threshold: 0.0
+  interpretation: Short observation window of the existing positive-impulse setup; not task-completion or work-matched rankings.
+selection_rule: First predeclared mechanism seed, positive disturbance, fixed source step 8; no outcome-based selection. All six methods retained.
+retroactive:
+  source: runs/variants/mechanisms
+  rules: V01 first-seed two-route IT/Tsallis; V02 first-seed DIAL; V03 positive impulse Tube thresholds 0/450; V04 positive offset thresholds 100/5000; V05 narrow-passage planner and all 256 full-noise fixed-policy executions.

@@ -135,6 +135,8 @@ class CovarianceMPPI(MPPI):
         self.shaped_latent[:, t] = v + self.noise[:, t]
         self.control_means[:, t] = v
         self.auxiliary = self.auxiliary @ self.a[t].T + self.noise[:, t] @ self.b[t].T
+        if self.auxiliary_history is not None:
+            self.auxiliary_history[:, t + 1] = self.auxiliary
         return self.model.clip_control(self.shaped_latent[:, t] * self.model.control_scale)
 
     def compute_weights(self, costs, log_ratio):
@@ -180,6 +182,11 @@ class CovarianceMPPI(MPPI):
             standard_normals = self.rng.standard_normal((self.samples, self.horizon, 2))
         self.noise = standard_normals @ np.linalg.cholesky(self.covariance).T
         self.auxiliary = np.zeros((self.samples, self.state_dimension))
+        self.auxiliary_history = (
+            np.zeros((self.samples, self.horizon + 1, self.state_dimension))
+            if self.planning_step in self.snapshot_steps
+            else None
+        )
         self.shaped_latent = np.zeros_like(self.noise)
         self.control_means = np.zeros_like(self.noise)
         self.controlled_count = max(2, int((1 - self.uncontrolled) * self.samples))
@@ -222,8 +229,13 @@ class CovarianceMPPI(MPPI):
                 predicted_covariances=self.predicted_covariances,
                 empirical_terminal_covariance=empirical,
                 feedback_gains=self.gains,
+                auxiliary_states=self.auxiliary_history,
+                reference_states=reference,
+                terminal_bound=bound,
                 log_base_over_proposal=np.zeros(self.samples),
                 nominal_states=planned,
+                planned_substeps=paths,
+                first_command=self.project_controls(updated)[0],
                 weight_law="Yin Eq3 augmented cost; shaped control mean fit",
             )
         return self.project_controls(updated)[0], updated

@@ -21,6 +21,23 @@ def sample_gaussian(rng, shape, covariance):
     return rng.standard_normal((*shape, len(cov))) @ np.linalg.cholesky(cov).T
 
 
+def log_sequence_density(samples, mean, covariance):
+    """Normalized Gaussian log density in latent units; independent horizon steps.
+
+    Observation helper for either one covariance or a per-timestep schedule. This
+    never draws samples or changes the controller's existing density-ratio arithmetic.
+    """
+    samples, mean = np.asarray(samples), np.asarray(mean)
+    horizon, dimension = samples.shape[-2:]
+    cov = np.broadcast_to(covariance, (horizon, dimension, dimension))
+    for matrix in cov:
+        validate_covariance(matrix, dimension)
+    centered = samples - mean
+    quadratic = np.einsum("kti,tij,ktj->k", centered, np.linalg.inv(cov), centered)
+    constant = horizon * dimension * np.log(2 * np.pi) + np.linalg.slogdet(cov)[1].sum()
+    return -0.5 * (quadratic + constant)
+
+
 def log_base_over_proposal(samples, mean, base_covariance, proposal_covariance):
     """log N(V;0,C0)/N(V;U,C), summed over independent horizon steps.
 
