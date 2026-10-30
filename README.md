@@ -35,33 +35,13 @@ $$
 
 This **umbrella is not a theorem asserted by all six papers**. For the IT-MPPI baseline, $\mathcal R=D_{\mathrm{KL}}$ and the ideal latent target is $\pi^*(Z)\propto p(Z)e^{-J(Z)/\lambda}$. Other variants may change that target, the optimization procedure, the feedback architecture, or the state uncertainty constraints.
 
-### Formulation map: shared pipeline and intervention points
+### Formulation map: pipeline and data collection
 
-```mermaid
-flowchart LR
-    subgraph SHARED["Shared MPC computational pipeline"]
-        direction LR
-        A["Dynamics + task<br/>f, g, J"] --> B["Distributional objective<br/>R(Q,P)"]
-        B --> C["Sample + refine<br/>q, A"]
-        C --> D["Weight + update<br/>ω, U"]
-        D --> E["Feedback + execute<br/>κ, u"]
-    end
-    E -. "next observation" .-> A
-    T["Tsallis-VI<br/>divergence + support"] -.-> B
-    T -.-> D
-    I["DIAL-MPC<br/>iterative annealing"] -.-> C
-    U["Tube-MPPI<br/>nominal + tracker"] -.-> E
-    R["Robust-MPPI<br/>tracking-aware rollouts"] -.-> A
-    R -.-> E
-    S["CC-MPPI<br/>covariance steering"] -.-> C
-    S -.-> E
-    classDef core fill:#eaf2ff,stroke:#3b65a2,color:#18355b
-    classDef variant fill:#fff2df,stroke:#b77925,color:#59370c
-    class A,B,C,D,E core
-    class T,I,U,R,S variant
-```
+![MPPI Data Collection Flowchart: formulation interventions, logged quantities, and closed-loop replanning](media/diagrams/mppi_data_collection_flowchart.png)
 
-*Solid arrows indicate the planning sequence. Dashed arrows identify the principal mathematical modifications. These dependencies are conceptual: feedback and uncertainty can enter multiple equations.*
+*Conceptual overview of formulation interventions and data collection. The small
+example plots illustrate the quantities logged at each stage; measured findings are
+reported in Experimental Results below.*
 
 | Formulation | Defining mathematical intervention | Main evaluation |
 |---|---|---|
@@ -976,6 +956,7 @@ src/costs/              Existing common external task objectives
 src/analysis/           Shared runner, artifacts, figures and variant audit
 configs/variants/       Frozen staged experiment settings
 results/variants/       Compact V01–V06 evidence and one primary image per study
+media/diagrams/         MPPI pipeline and data-collection overview
 media/experiments/      Six MP4s with GIF previews, compact records, provenance and validation
 runs/variants/          Ignored executed trajectories and selected populations
 tests/                  Mathematical references, invariants and baseline regression
