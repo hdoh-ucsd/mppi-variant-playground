@@ -4,6 +4,13 @@ A reproducible research repository for understanding the mathematics and behavio
 **six MPPI formulations on one seven-state vehicle**: IT-MPPI, Tsallis-VI, DIAL-MPC,
 Tube-MPPI, Robust-MPPI and CC-MPPI. The original covariance studies remain preserved.
 
+Start with the [experimental setup](#2-experimental-setup), follow
+[one decision through its five stages](#3-inside-an-mppi-decision), then read the
+[V01–V05 findings](#4-comparing-mppi-variants). The
+[formulations and paper map](#5-detailed-formulations-and-paper-map) provide the
+mathematical detail, and [reproduction instructions](#7-reproduction-instructions)
+explain how to inspect or rerun the saved experiments.
+
 ## 1. Unified mathematical framework: where the variants intervene
 
 The six formulations share a planning problem but **not necessarily the same variational objective**. The following notation provides a comparison scaffold, not a claim that every paper optimizes the same equation.
@@ -41,7 +48,8 @@ This **umbrella is not a theorem asserted by all six papers**. For the IT-MPPI b
 
 *Conceptual overview of formulation interventions and data collection. The small
 example plots illustrate the quantities logged at each stage; measured findings are
-reported in Experimental Results below.*
+explained in [Inside an MPPI Decision](#3-inside-an-mppi-decision) and
+[Comparing MPPI Variants](#4-comparing-mppi-variants) below.*
 
 | Formulation | Defining mathematical intervention | Main evaluation |
 |---|---|---|
@@ -59,128 +67,6 @@ count; a subscripted $K_t$ denotes a feedback gain. The scaffold collects possib
 interventions: an individual method need not optimize every variable or impose every
 constraint. In particular, CC-MPPI uses an auxiliary noise state for its sampling
 feedback, as specified in its equations below.
-
-### One decision, five recorded stages
-
-The diagram above is the formulation map. The dotted connections below lead to
-**numerical experiments**, generated from saved `DecisionTrace` records. A trace
-links the observed state and immutable task configuration to its populations,
-weights, updated controls and subsequent execution using one stable decision ID.
-
-```mermaid
-flowchart LR
-    S1["1 · Dynamics + Task"] --> S2["2 · Distributional Objective"]
-    S2 --> S3["3 · Sample + Refine"] --> S4["4 · Weight + Update"]
-    S4 --> S5["5 · Feedback + Execute"]
-    S1 -.-> F1["State, task costs and prediction error"]
-    S2 -.-> F2["Scores, support and reference targets"]
-    S3 -.-> F3["Recorded populations and refinement"]
-    S4 -.-> F4["Weights, ESS and command candidates"]
-    S5 -.-> F5["Tracking, selection and covariance"]
-    click F1 "results/variants/traces/stage_01_dynamics.png" "Open measured dynamics figure"
-    click F2 "results/variants/traces/stage_02_objective.png" "Open measured objective figure"
-    click F3 "results/variants/traces/stage_03_sampling.png" "Open measured sampling figure"
-    click F4 "results/variants/traces/stage_04_update.png" "Open measured update figure"
-    click F5 "results/variants/traces/stage_05_feedback.png" "Open measured feedback figure"
-```
-
-The [trace index](results/variants/traces/index.json) contains **148 decisions**:
-70 reconstructed from existing V01–V05 records, six new frozen decisions, and
-72 decisions from six short, 12-step executions. There are **30 complete-for-mode
-records and 118 partial records**. Historical records remain partial;
-we do not fill missing internal states from figures. Full arrays stay under ignored
-`runs/variants/traces/`; identical historical arrays are referenced with source
-hashes. The compact records needed for all six figures are versioned in
-[plot_data.json](results/variants/traces/plot_data.json).
-
-**Selection was fixed before execution:** mechanism seed 51000, the saved two-route
-state at source step 8 from seed 49000, and the existing positive disturbance event.
-`FROZEN_DECISION` holds the state, task, model and warm start fixed. IT and Tsallis
-also receive identical standard-normal draws. The other methods preserve their own
-sampling and feedback structures under a 7,700-transition cap. `CLOSED_LOOP` uses
-paired disturbance streams and 64 candidates per population for a short observation
-window; its work is **not matched**, and inputs diverge as commands are executed.
-Full populations are saved at steps 0, 8, 9 and 11; every step retains its decision
-ID, observed state, command and next executed state. This is not a new task-success
-benchmark. Exact selection rules are in [traces.yaml](configs/variants/traces.yaml).
-
-![Coverage of all five stages for the six formulations](results/variants/traces/pipeline_overview.png)
-
-**Evidence coverage.** Stages 1–4 use each frozen decision; stage 5 uses each
-controller's closed-loop step 9. Each cell includes a trace-ID suffix and a measured
-quantity. “Available” means recorded, not superior. Missing, not applicable,
-mechanism inactive and numerical failure are distinct schema statuses. The
-[figure provenance](results/variants/traces/figure_provenance.json) maps cells and
-figures to complete IDs. Historical missing-field lists remain in the index.
-
-![Shared dynamics, task costs and actual prediction errors](results/variants/traces/stage_01_dynamics.png)
-
-**1 · Dynamics + Task.** All frozen decisions start from the same seven-state
-vehicle state. IT/Tsallis have identical unweighted task-cost components because
-they evaluate the same candidate controls. The short executions record predicted
-and executed next states separately: the injected lateral displacement appears
-after decision 8, at 1.35 s. Subsequent paths differ, so later states are not a
-controlled same-input comparison. Cost components reuse the existing evaluator,
-including recorded swept contacts; no second cost model is introduced.
-
-![Same-sample objective weights and separate scalar reference distributions](results/variants/traces/stage_02_objective.png)
-
-**2 · Distributional Objective.** For the same 384 vehicle candidates, IT uses
-$\log p(Z_k)-\log q(Z_k)-J_k/\lambda$, with $\lambda=8$. Tsallis uses the same
-density correction with its deformed score, $r=1.5$, transformed scale **0.258684**
-and normalized cutoff **0.517368**; **307/384** candidates remain in its support.
-The scalar quadrature panel uses a **different objective**, $J(z)=(z-1)^2/2$,
-prior $N(0,1)$ and scale 0.8. Its KL and Tsallis targets have different means;
-neither is a reference optimum for the vehicle experiment.
-
-![Actual sampling populations, DIAL schedules and optimization progress](results/variants/traces/stage_03_sampling.png)
-
-**3 · Sample + Refine.** DIAL records all four passes, each with 95 candidates,
-its horizon-dependent covariance schedule and its updated path. External updated-plan
-costs are **164.28 → 155.55 → 155.42 → 154.34**, using **7,680** total model
-transitions. IT uses 384 candidates and **7,700** transitions, producing an updated-plan
-cost of **201.35** in this decision. Tube, Robust and CC use 182, 159 and 364
-candidates per principal population, respectively; their transition totals include
-additional plans, candidate selection and linearization. This one-state observation
-supports a refinement mechanism, not a general performance ranking. Displayed
-trajectories are the first eight unweighted samples per pass, chosen by index.
-
-![Raw costs, distinct Robust weight populations, ESS and control updates](results/variants/traces/stage_04_update.png)
-
-**4 · Weight + Update.** IT and Tsallis assign different optimizer weights to the
-same costs: ESS is **2.232 versus 1.196**, and their first steering candidates are
-**0.369182 versus 0.214516 rad**; normalized signed throttle is **0.689426 versus
-0.348386**. These are candidate commands from a frozen decision, not observed
-closed-loop improvements. Robust's nominal and actual weight populations coincide
-in this selected frozen case; both remain recorded separately. The lowest raw-cost
-candidate, highest-weight candidate and updated mean are separately identified in
-the trace. ESS measures concentration of optimizer weights, not physical uncertainty.
-
-![Recorded tracking and nominal selection, plus independent covariance validation](results/variants/traces/stage_05_feedback.png)
-
-**5 · Feedback + Execute.** The historical paired Tube runs have **8/32** active
-tracking corrections at reset threshold 0 and **0/32** at threshold 450. The latter
-resets to the observed state after the disturbance, leaving its tracker inactive.
-Historical Robust with selection threshold 100 has no feasible candidate and uses
-the recorded fallback; threshold 5000 selects the observed-state candidate. In the
-new short-run step 9, Robust again selects the observed state and has **zero applied
-ancillary correction**. These inactive mechanisms are retained, not filtered out.
-
-CC's covariance panel uses the existing **256 independent full-noise executions of
-a fixed warm-start/gain policy**, not execution of the optimized mean. Terminal
-variance summed after normalization by the diagonal covariance bounds is **0.659
-predicted versus 0.767 empirical**; the relative Frobenius covariance error is
-**1.441**. Both terminal covariance matrices satisfy the specified matrix bound in
-this case, yet **64/256** executions contact the obstacle proxy. All executions are
-retained, and there is no physical impact model. This exposes the limits of the
-linearized covariance prediction and of covariance bounds as a collision criterion.
-Neither weighted planning samples nor a single executed trajectory estimate the
-independent physical state distribution.
-
-The trace checks establish recording correctness and passive instrumentation; they
-do not establish universal method superiority, real-time performance, or statistical
-significance from one seed. The original multi-seed formulation comparisons,
-mechanism figures, mathematical definitions and paper references remain below.
 
 ## 2. Experimental Setup
 
@@ -204,6 +90,33 @@ formulations.
 | **Disturbance and model mismatch** | Introduce an external state perturbation or a difference between planning and execution dynamics. | Evaluate tracking feedback, nominal-state selection, and robustness. |
 | **Frozen-state mechanism test** | Hold the vehicle state, nominal control sequence, and relevant sampling inputs fixed while changing a formulation component. | Isolate the numerical effect of weighting, annealing, or feedback without confounding it with accumulated closed-loop differences. |
 | **Stochastic covariance test** | Execute a fixed policy across independent disturbance realizations and estimate the resulting state covariance. | Compare covariance-steering predictions, empirical state dispersion, and constraint satisfaction. |
+
+### Shared seven-state dynamics
+
+Every formulation uses the existing validated dynamic single-track model:
+
+$$x=[p_x,p_y,\psi,\phi,v_x,v_y,r],\qquad u=[\delta,\tau].$$
+
+The states are global position, heading, roll, body longitudinal/lateral velocity and
+yaw rate; controls are steering angle and signed normalized throttle. Tire forces
+saturate smoothly, body velocities are coupled, and roll obeys an overdamped torque
+balance. Integration remains midpoint RK2 with three substeps per 0.15 s command interval.
+Steering is bounded at ±0.5 rad, throttle at ±1, and forward speed at 0–4 m/s.
+
+No vehicle parameters, state order, goal rules, geometry or cost implementation were
+changed to favor a method. The plant omits reverse drive, full load transfer, roll
+inertia/feedback and continuous steering-actuator dynamics. It is a physics approximation,
+not the learned AutoRally model. The [validated equations and prior campaign](docs/seven_state_benchmark_report.md)
+remain available. Collision checks retain the centered 0.22 m disk proxy, which does not
+enclose the axles; full-body avoidance is not established.
+
+V01–V04 retain the original deterministic execution plus declared scene disturbances.
+V05–V06 add common independent Gaussian normalized actuator noise with covariance
+$0.01C_0$, using `SeedSequence([4402, seed])`. All algorithms in those studies receive
+the same realized noise stream. Noise is applied before the existing physical clipping;
+the commanded and realized controls are recorded separately. CC sampling uses $C_0$,
+100 times the execution-noise covariance, so its sampled dispersion is not a direct
+prediction of executed closed-loop uncertainty.
 
 ### Evaluation methodology
 
@@ -267,7 +180,128 @@ not simulated. External metrics include completion, collision, goal error, cost,
 effort, time and work. Internal weights, tracking and covariance metrics retain their
 algorithm-specific meanings.
 
-## 3. Experimental Results
+### Decision-tracing protocol
+
+**Selection was fixed before execution:** mechanism seed 51000, the saved two-route
+state at source step 8 from seed 49000, and the existing positive disturbance event.
+`FROZEN_DECISION` holds the state, task, model and warm start fixed. IT and Tsallis
+also receive identical standard-normal draws. The other methods preserve their own
+sampling and feedback structures under a 7,700-transition cap. `CLOSED_LOOP` uses
+paired disturbance streams and 64 candidates per population for a short observation
+window; its work is **not matched**, and inputs diverge as commands are executed.
+Full populations are saved at steps 0, 8, 9 and 11; every step retains its decision
+ID, observed state, command and next executed state. This is not a new task-success
+benchmark. Exact selection rules are in [traces.yaml](configs/variants/traces.yaml).
+
+## 3. Inside an MPPI Decision
+
+A `DecisionTrace` follows an observed state through planning and execution. Its
+stable decision ID connects the task configuration, sampled populations, costs,
+weights, updated controls and next executed state. The overview shows which parts
+of that computation were observed for each formulation.
+
+![Coverage of all five stages for the six formulations](results/variants/traces/pipeline_overview.png)
+
+Stages 1–4 in the overview use the shared frozen decision; stage 5 uses each
+controller's closed-loop step 9, when their inputs have already diverged. A cell's
+trace-ID suffix identifies its recorded measurement. “Available” describes evidence,
+not performance; missing, not applicable, mechanism inactive and numerical failure
+are separate statuses. The [figure provenance](results/variants/traces/figure_provenance.json)
+connects every cell and figure to full decision IDs.
+
+The [trace index](results/variants/traces/index.json) contains **148 decisions**:
+70 reconstructed historical records, six frozen decisions and 72 decisions from
+six short executions. There are **30 complete-for-mode records and 118 partial
+records**. Historical gaps and uncaptured populations remain explicit. Full arrays
+stay under ignored `runs/variants/traces/`; the versioned
+[compact figure records](results/variants/traces/plot_data.json) reproduce these
+figures without simulation. The fifth figure combines related historical tracking,
+selection and covariance experiments, rather than depicting one common execution.
+
+### Stage 1 · Dynamics + Task
+
+![Shared dynamics, task costs and actual prediction errors](results/variants/traces/stage_01_dynamics.png)
+
+The observed state, warm-start controls, vehicle model, obstacle geometry, actuator
+limits and task weights define the decision. The controller predicts seven-state
+trajectories and evaluates running, terminal and swept-contact costs. The trace
+records these inputs and cost components; execution adds the predicted and actual
+next states and their difference.
+
+The figure shows identical unweighted task costs for IT/Tsallis on shared candidates,
+and a prediction error at the injected disturbance. Later closed-loop states differ
+because each controller executes its own commands. This checks the connection from
+model to task and execution; it does not validate full-body collision safety or
+isolate same-input effects after the trajectories diverge.
+
+### Stage 2 · Distributional Objective
+
+![Same-sample objective weights and separate scalar reference distributions](results/variants/traces/stage_02_objective.png)
+
+Candidate costs, reference/proposal densities and the formulation's scale or
+regularizer determine how a trajectory contributes to the objective. IT assigns
+log scores $\log p(Z_k)-\log q(Z_k)-J_k/\lambda$; Tsallis replaces the exponential
+cost transform with a deformed, support-limited transform. The trace retains density
+corrections, normalization, transformed scale, cutoff, support and resulting scores.
+
+The figure connects those choices to different weights on identical vehicle
+candidates. Its independent scalar references use $J(z)=(z-1)^2/2$ and a Gaussian
+prior: they validate distinct target distributions, not a common vehicle optimum.
+The adaptive vehicle target and this separate tractable objective cannot be treated
+as interchangeable accuracy references.
+
+### Stage 3 · Sample + Refine
+
+![Actual sampling populations, DIAL schedules and optimization progress](results/variants/traces/stage_03_sampling.png)
+
+The warm start, proposal parameters and random stream generate latent controls,
+which are mapped to physical controls and rolled through the model. DIAL repeats
+this calculation with a new mean and annealed covariance at each pass. The records
+retain every pass's population, pre/post-update plan, horizon-dependent covariance,
+updated-plan cost and total model evaluations, including additional planning work.
+
+The figure shows identical IT/Tsallis samples alongside DIAL's changing populations,
+plans and optimization progress. Displayed paths use the first eight samples per
+pass, chosen by index. These are unweighted planning populations, not physical
+uncertainty distributions. DIAL also changes the objective and proposal schedule;
+its frozen-state progress alone cannot establish an annealing benefit in execution.
+
+### Stage 4 · Weight + Update
+
+![Raw costs, distinct Robust weight populations, ESS and control updates](results/variants/traces/stage_04_update.png)
+
+The algorithm-specific scores are normalized into weights and used to update the
+latent control sequence. The trace keeps raw costs, corrected weights, ESS, entropy,
+the updated plan and its first physical command candidate. It identifies the lowest
+raw-cost candidate and highest-weight candidate separately from the updated mean;
+Robust's nominal and actual fits remain distinct records.
+
+The figure shows how different weights change the command even when candidate costs
+are shared. Robust's two weight populations coincide in this selected frozen case,
+so it does not expose a difference between the two fits. ESS describes optimizer-weight
+concentration, not estimator accuracy or state covariance. A frozen command
+candidate does not demonstrate a closed-loop improvement.
+
+### Stage 5 · Feedback + Execute
+
+![Recorded tracking and nominal selection, plus independent covariance validation](results/variants/traces/stage_05_feedback.png)
+
+The updated plan, observed state and any selected nominal state enter execution.
+Tube applies its reset rule and ancillary tracker; Robust selects a nominal origin
+and separates the planner action from tracking. Records distinguish requested and
+clipped corrections, resets or candidate selections, disturbances and subsequent
+states. The figure connects those decisions to active tracking, suppressed tracking
+and infeasible-selection fallback cases.
+
+The covariance panels use a separate ensemble of independent executions of a fixed
+CC warm-start/gain policy, comparing predicted and empirical covariance and contacts.
+They do not execute the optimized mean. Neither a single trajectory nor weighted
+planning samples estimates that ensemble's uncertainty. Local covariance bounds,
+proxy contacts without impact dynamics, and short disturbance windows leave
+nonlinear safety and general feedback benefits unresolved. The variant comparisons
+below give the measured effects and their experimental limits.
+
+## 4. Comparing MPPI Variants
 
 The following studies examine the defining mathematical interventions of five MPPI
 formulations relative to the information-theoretic baseline:
@@ -278,8 +312,8 @@ formulations relative to the information-theoretic baseline:
 - **V04 — Robust-MPPI:** Feedback-aware planning and nominal-state selection.
 - **V05 — CC-MPPI:** State covariance steering and uncertainty propagation.
 
-Each study presents its defining formulation, experimental setup, measured numerical
-behavior, and limitations. The broader original comparison is retained in the
+The pipeline section follows the computations. Here, each study relates its defining
+formulation to measured experimental findings, execution videos and limitations. The broader original comparison is retained in the
 supplementary expandable section at the end of this README.
 
 The original comparison figures use this reading order: **top** is completion with Wilson 95%
@@ -324,7 +358,7 @@ and threshold is retained. Representative panels use the first seed, selected be
 seeing outcomes. Shared samples are exact for the KL/Tsallis pair and for Robust's
 plain-IT counterfactual; DIAL's different schedules deliberately transform its noise.
 
-| Study | New numerical experiment | Recorded variables |
+| Study | Mechanism experiment | Recorded variables |
 | --- | --- | --- |
 | V01 | Two frozen states × three seeds × two weight laws; independent scalar quadrature and 18 Monte Carlo estimates | Costs, separate base/proposal log densities, normalized weights, ESS, latent updates and first commands |
 | V02 | One frozen state × three seeds × three algorithms, each with 7,680 model transitions | Every DIAL population, pre/post-update mean, horizon noise schedule, predicted trajectory and task cost |
@@ -366,9 +400,18 @@ At the frozen two-route state, mean ESS across three seeds was **1.48 for KL and
 1.66 for Tsallis out of 384 samples**. Tsallis retained 307 samples under its explicit
 cutoff, but importance correction still concentrated almost all weight on a few.
 Numerical zero weights in KL can arise from floating-point underflow; KL has no
-finite-support cutoff. In the first seed, steering changed from **0.369 to 0.215 rad**
-and throttle from **0.689 to 0.348**. Mean predicted updated-plan cost was **221.68
-versus 1,075.40**. These are one-step effects, not an executed task comparison.
+finite-support cutoff. Mean predicted updated-plan cost was **221.68 versus
+1,075.40**. These are one-step effects, not an executed task comparison.
+
+For the first seed (51000), reused in the decision-trace figures, IT uses
+$\lambda=8$; Tsallis uses $r=1.5$, transformed scale **0.258684** and normalized
+cutoff **0.517368**. The same candidate population gives:
+
+| Quantity | IT-MPPI | Tsallis-VI |
+| --- | ---: | ---: |
+| Optimizer ESS | 2.232 | 1.196 |
+| First steering candidate [rad] | 0.369182 | 0.214516 |
+| First signed throttle candidate [normalized] | 0.689426 | 0.348386 |
 
 The lower panels separately solve a scalar objective
 $J(z)=\tfrac12(z-1)^2$, $p=\mathcal N(0,1)$, with fixed transformed scale 0.8 and
@@ -423,6 +466,13 @@ $4(95+1)20=7{,}680$ transitions; IT-MPPI uses $(383+1)20=7{,}680$. The nominal-p
 rollout is included in each pass. Mean DIAL predicted task cost progressed
 **164.34 → 155.13 → 155.09 → 154.19**, versus **157.88** for the fixed-noise final
 plan and **221.68** for IT-MPPI. Individual seeds include nonmonotone changes.
+
+The decision-trace figure follows only seed 51000: its DIAL costs are
+**164.28 → 155.55 → 155.42 → 154.34**. That trace uses the common 7,700-transition
+ceiling described in the setup: DIAL consumes 7,680 transitions, while IT uses
+384 candidates and all 7,700, with updated-plan cost **201.35**. The original
+mechanism comparison above instead matches exactly 7,680 transitions with 383 IT
+candidates. These are different allocations, not conflicting estimates of one run.
 
 The density panels count **unweighted sample-time points** with a shared full
 spatial extent and color scale across the four passes. The curves show changed
@@ -538,6 +588,11 @@ robust operation:** the active examples are fallback cases, $\alpha$ changes bot
 selection and the mixed objective, and no physical step is executed here. The
 zero-disturbance and inactive original-threshold cases remain in the figure and data.
 
+The additional short closed-loop trace also selects the observed-state candidate
+at step 9 and records **zero applied ancillary correction**. The frozen dual weights
+coincide in the shared-state decision when nominal and actual states agree. This
+observation is separate from the disturbed fallback experiment above.
+
 [Mechanism records](results/variants/mechanisms/V04/summary.csv) ·
 [Audit](results/variants/mechanisms/V04/audit.json)
 
@@ -599,6 +654,13 @@ is about **0.35–0.36** at $C_0$ and **0.00069–0.00126** at $0.01C_0$, showin
 importance of the local-linearization/noise regime. The optimized bound is slack in
 these cases; the gain objective still changes dispersion substantially.
 
+The stage-5 trace figure reuses the full-noise, steered narrow-passage ensemble in
+the table. Its normalized terminal trace is **0.659 predicted versus 0.767 empirical**;
+the relative Frobenius covariance discrepancy is **1.441** in the original state
+coordinates. That latter metric mixes physical units and is not interchangeable
+with the normalized error above. Both terminal matrices satisfy the specified bound
+in this case, while the recorded contacts remain visible.
+
 **Covariance control is not collision avoidance.** The passing steered covariance
 bound coexists with 64 narrow-passage contacts at the larger noise scale. Executions
 continue for the full horizon after proxy contact to avoid conditioning covariance on
@@ -619,7 +681,7 @@ All 24 episodes completed without collisions. The constrained linearized solutio
 
 [Configuration](results/variants/V05_covariance_steering/config.yaml) · [Per-seed records](results/variants/V05_covariance_steering/per_seed.csv) · [Summary](results/variants/V05_covariance_steering/summary.csv) · [Command diagnostics](results/variants/V05_covariance_steering/diagnostics_summary.csv) · [Audit](results/variants/V05_covariance_steering/audit.json) · [Fidelity and limitations](results/variants/V05_covariance_steering/findings.json)
 
-## 4. Detailed formulations and paper map
+## 5. Detailed formulations and paper map
 
 ### IT-MPPI foundation and importance correction
 
@@ -673,7 +735,6 @@ When $C=C_0$, this reduces, up to a sample-independent term, to
 $-\sum_t U_t^\top C^{-1}\epsilon_t^{(k)}$. The familiar cross-term correction
 therefore applies to that equal-covariance case; changing $C$ generally requires the
 full ratio. Cost-only weights generally define a different target.
-
 
 The current IT-MPPI reference retains $C_0=C=\mathrm{diag}(0.14,0.26)$,
 $\lambda=8$ and $T=20$. Its latent sequence has dimension $2T=40$.
@@ -854,33 +915,6 @@ flowchart TB
 | [7] | [Xue et al., DIAL-MPC, 2409.15610v1](https://arxiv.org/html/2409.15610v1). |
 | [8] | [Jordana et al., zero-order optimization tutorial, 2506.22087v1](https://arxiv.org/html/2506.22087v1). Conceptual context. |
 
-## 5. Shared seven-state dynamics
-
-Every formulation uses the existing validated dynamic single-track model:
-
-$$x=[p_x,p_y,\psi,\phi,v_x,v_y,r],\qquad u=[\delta,\tau].$$
-
-The states are global position, heading, roll, body longitudinal/lateral velocity and
-yaw rate; controls are steering angle and signed normalized throttle. Tire forces
-saturate smoothly, body velocities are coupled, and roll obeys an overdamped torque
-balance. Integration remains midpoint RK2 with three substeps per 0.15 s command interval.
-Steering is bounded at ±0.5 rad, throttle at ±1, and forward speed at 0–4 m/s.
-
-No vehicle parameters, state order, goal rules, geometry or cost implementation were
-changed to favor a method. The plant omits reverse drive, full load transfer, roll
-inertia/feedback and continuous steering-actuator dynamics. It is a physics approximation,
-not the learned AutoRally model. The [validated equations and prior campaign](docs/seven_state_benchmark_report.md)
-remain available. Collision checks retain the centered 0.22 m disk proxy, which does not
-enclose the axles; full-body avoidance is not established.
-
-V01–V04 retain the original deterministic execution plus declared scene disturbances.
-V05–V06 add common independent Gaussian normalized actuator noise with covariance
-$0.01C_0$, using `SeedSequence([4402, seed])`. All algorithms in those studies receive
-the same realized noise stream. Noise is applied before the existing physical clipping;
-the commanded and realized controls are recorded separately. CC sampling uses $C_0$,
-100 times the execution-noise covariance, so its sampled dispersion is not a direct
-prediction of executed closed-loop uncertainty.
-
 ## 6. Implementation status and mathematical validation
 
 All six entries are **IMPLEMENTED seven-state adaptations**: defining mechanisms are
@@ -902,55 +936,7 @@ Controllers share the existing dynamics, costs, collision checker, episode recor
 figure publisher. A wrapper counts actual calls to the plant; it does not implement a
 second dynamics engine. Covariance and tracking states remain inside controllers.
 
-## 7. Preserved covariance studies
-
-<details>
-<summary>Historical Q01–Q06 evidence and original study context</summary>
-
-Q01–Q05 below are the earlier fixed-proposal studies, not published-formulation
-comparisons. Their original configurations, manifests, figures and raw paths are retained.
-The [historical registry](results/registry.yaml) and [question index](docs/research_index.md)
-continue to describe that evidence.
-
-### Q01 · Does covariance geometry improve finite-sample estimation?
-
-![Q01: sampling covariance and estimation accuracy](results/showcase/Q01_key.png)
-
-For a **fixed, analytically solvable Gaussian target**, proposal orientation can help *or* hurt. At $K=256$ with 64 independent replication seeds, observed mean squared error was **0.003646** for the +45° full proposal, **0.006505** for isotropic, and **0.065524** for the −45° full proposal. These results concern estimation, **not vehicle performance**. [Experiment Q01](docs/research_index.md#q01).
-
-### Q02 · What makes importance weights concentrate?
-
-![Q02: importance-weight concentration](results/showcase/Q02_key.png)
-
-Temperature and high-dimensional proposal mismatch can concentrate weights by different mechanisms. Effective sample size (ESS) is an overlap diagnostic, **not a guarantee of estimator accuracy**; changing temperature also changes the target. [Experiment Q02](docs/research_index.md#q02).
-
-### Q03 · How does sampling geometry change one MPPI decision?
-
-![Q03: frozen-state sampling, weighting and updated plan](results/showcase/Q03_key.png)
-
-At an identical seven-state vehicle observation and warm start, different proposal covariances produce different sampled trajectories, corrected weights, and updated controls. The high-sample target reference is **unresolved** for the open-space and pre-obstacle decisions; only the post-disturbance reference passes the stated diagnostic screens. The pre-obstacle reference's pooled ESS is just **1.51 despite 524,288 samples**. [Experiment Q03](docs/research_index.md#q03).
-
-### Q04 · Do decision differences persist in closed-loop driving?
-
-![Q04: seven-state vehicle closed-loop comparisons](results/showcase/Q04_key.png)
-
-The seven-state study recorded **391 completions in 400 independent holdout episodes** across five scenarios. Completion is often nearly saturated, but route selection can differ: in the two-route task, the full proposal selected the upper route in **17/20** holdout runs, versus **5/20** for standard and isotropic and **2/20** for diagonal. These are observations about specific covariance matrices, **not general rankings of MPPI families**. [Experiment Q04](docs/research_index.md#q04).
-
-### Q05 · When does a more demanding S-turn expose limitations?
-
-![Q05: S-turn success, representative paths and lateral dynamics](results/showcase/Q05_key.png)
-
-In the primary seven-state S-turn study ($K=384$, 20 paired holdout seeds per setting), **313/320 episodes completed**. At the tightest 0.20 m clearance, completions were 20/20 standard, 16/20 isotropic, 20/20 diagonal, and 19/20 full. All seven primary failures were terminal-state timeouts; there were zero disk-proxy collisions. Separate studies investigate command-slew limits, speed preference, state-jump disturbances and sample budgets; they are **not pooled** into the primary clearance results. [Experiment Q05](docs/research_index.md#q05).
-
-### Q06 · Original published-formulation plan
-
-The original Q06 plan is preserved as historical context. The V01–V06 studies
-above implement and evaluate six formulations; CEM remains planned. The historical
-registry does not relabel covariance settings as published algorithms.
-
-</details>
-
-## 8. Reproduction instructions
+## 7. Reproduction instructions
 
 ### Environment setup (Conda + uv)
 
@@ -1052,7 +1038,6 @@ and conversion settings are recorded in the same manifest. Rendered first/main/l
 inspection images stay under ignored `runs/variants/videos/previews/`. Rendering checks codecs,
 frame counts, dimensions, durations, and successful first/last-frame decoding.
 
-
 Linux, Python 3.11+, `uv`; CPU NumPy/SciPy and CVXPY/Clarabel. No GPU is required.
 
 ```bash
@@ -1063,7 +1048,9 @@ uv run ruff format --check .
 uv run pytest
 ```
 
-Run the stages individually, in order, with **fresh output and raw directories**:
+### V01–V05 comparisons and mechanism studies
+
+Run the variant studies individually, in order, with **fresh output and raw directories**:
 
 ```bash
 uv run python experiments/variant_benchmark.py --study V01_tsallis \
@@ -1076,8 +1063,6 @@ uv run python experiments/variant_benchmark.py --study V04_robust \
   --output results/variants/V04_robust_reproduction --raw runs/variants/V04_robust_reproduction
 uv run python experiments/variant_benchmark.py --study V05_covariance_steering \
   --output results/variants/V05_covariance_steering_reproduction --raw runs/variants/V05_covariance_steering_reproduction
-uv run python experiments/variant_benchmark.py --study V06_unified \
-  --output results/variants/V06_unified_reproduction --raw runs/variants/V06_unified_reproduction
 ```
 
 The current config includes the final calibration policy. For exact historical protocol
@@ -1115,14 +1100,14 @@ or dynamics calls during saved-record figure regeneration.
 Regenerate a figure from committed compact data, with no controller execution:
 
 ```bash
-uv run python experiments/variant_benchmark.py --plot-only --output results/variants/V06_unified
+uv run python experiments/variant_benchmark.py --plot-only --output results/variants/V01_tsallis
 ```
 
 Replay a completed run's ignored raw trajectories and selected populations:
 
 ```bash
-uv run python experiments/audit_variants.py results/variants/V06_unified
-uv run python experiments/summarize_variants.py results/variants/V06_unified
+uv run python experiments/audit_variants.py results/variants/V01_tsallis
+uv run python experiments/summarize_variants.py results/variants/V01_tsallis
 # After a fresh reproduction, substitute its output directory above.
 ```
 
@@ -1158,7 +1143,7 @@ runs/variants/          Ignored executed trajectories and selected populations
 tests/                  Mathematical references, invariants and baseline regression
 ```
 
-## 9. Limitations and future work
+## 8. Limitations and future work
 
 - The original comparison has three seeds per condition and one tuning per method.
   The mechanism extension declares additional threshold sensitivities and fixed-policy
@@ -1181,6 +1166,54 @@ tests/                  Mathematical references, invariants and baseline regress
   reproductions remain unimplemented. The formulations and paper map are embedded
   in this README; superseded source notes are available through the
   [historical recovery index](results/archive/legacy_index.md).
+
+## 9. Historical and supplementary evidence
+
+<details>
+<summary>Historical Q01–Q06 evidence and original study context</summary>
+
+Q01–Q05 below are the earlier fixed-proposal studies, not published-formulation
+comparisons. Their original configurations, manifests, figures and raw paths are retained.
+The [historical registry](results/registry.yaml) and [question index](docs/research_index.md)
+continue to describe that evidence.
+
+### Q01 · Does covariance geometry improve finite-sample estimation?
+
+![Q01: sampling covariance and estimation accuracy](results/showcase/Q01_key.png)
+
+For a **fixed, analytically solvable Gaussian target**, proposal orientation can help *or* hurt. At $K=256$ with 64 independent replication seeds, observed mean squared error was **0.003646** for the +45° full proposal, **0.006505** for isotropic, and **0.065524** for the −45° full proposal. These results concern estimation, **not vehicle performance**. [Experiment Q01](docs/research_index.md#q01).
+
+### Q02 · What makes importance weights concentrate?
+
+![Q02: importance-weight concentration](results/showcase/Q02_key.png)
+
+Temperature and high-dimensional proposal mismatch can concentrate weights by different mechanisms. Effective sample size (ESS) is an overlap diagnostic, **not a guarantee of estimator accuracy**; changing temperature also changes the target. [Experiment Q02](docs/research_index.md#q02).
+
+### Q03 · How does sampling geometry change one MPPI decision?
+
+![Q03: frozen-state sampling, weighting and updated plan](results/showcase/Q03_key.png)
+
+At an identical seven-state vehicle observation and warm start, different proposal covariances produce different sampled trajectories, corrected weights, and updated controls. The high-sample target reference is **unresolved** for the open-space and pre-obstacle decisions; only the post-disturbance reference passes the stated diagnostic screens. The pre-obstacle reference's pooled ESS is just **1.51 despite 524,288 samples**. [Experiment Q03](docs/research_index.md#q03).
+
+### Q04 · Do decision differences persist in closed-loop driving?
+
+![Q04: seven-state vehicle closed-loop comparisons](results/showcase/Q04_key.png)
+
+The seven-state study recorded **391 completions in 400 independent holdout episodes** across five scenarios. Completion is often nearly saturated, but route selection can differ: in the two-route task, the full proposal selected the upper route in **17/20** holdout runs, versus **5/20** for standard and isotropic and **2/20** for diagonal. These are observations about specific covariance matrices, **not general rankings of MPPI families**. [Experiment Q04](docs/research_index.md#q04).
+
+### Q05 · When does a more demanding S-turn expose limitations?
+
+![Q05: S-turn success, representative paths and lateral dynamics](results/showcase/Q05_key.png)
+
+In the primary seven-state S-turn study ($K=384$, 20 paired holdout seeds per setting), **313/320 episodes completed**. At the tightest 0.20 m clearance, completions were 20/20 standard, 16/20 isotropic, 20/20 diagonal, and 19/20 full. All seven primary failures were terminal-state timeouts; there were zero disk-proxy collisions. Separate studies investigate command-slew limits, speed preference, state-jump disturbances and sample budgets; they are **not pooled** into the primary clearance results. [Experiment Q05](docs/research_index.md#q05).
+
+### Q06 · Original published-formulation plan
+
+The original Q06 plan is preserved as historical context. The V01–V06 studies
+above implement and evaluate six formulations; CEM remains planned. The historical
+registry does not relabel covariance settings as published algorithms.
+
+</details>
 
 <details>
 <summary>Supplementary V06 benchmark: preserved original comparison</summary>
@@ -1234,5 +1267,16 @@ not imply equal delivered computation or that the deadline is achievable.
 [Audit](results/variants/V06_unified/audit.json) ·
 [Findings and limitations](results/variants/V06_unified/findings.json)
 
+Reproduce this supplementary campaign with fresh directories:
+
+```bash
+uv run python experiments/variant_benchmark.py --study V06_unified \
+  --output results/variants/V06_unified_reproduction --raw runs/variants/V06_unified_reproduction
+# Rebuild its figure from existing compact records:
+uv run python experiments/variant_benchmark.py --plot-only --output results/variants/V06_unified
+# These audits require the original ignored raw records:
+uv run python experiments/audit_variants.py results/variants/V06_unified
+uv run python experiments/summarize_variants.py results/variants/V06_unified
+```
 
 </details>
